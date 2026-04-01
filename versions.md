@@ -6,3 +6,8 @@
 | 0.0.2   | 01/04/2026 | Dante Mateo Aleman Romano | Realicé el registro de versiones del informe mediante la creación de una tabla estructurada, siguiendo los lineamientos del *Project Statement*, con el objetivo de llevar un control claro y ordenado de las actualizaciones, cambios y responsables a lo largo del desarrollo del documento. |
 |         |            |                           |                                                              |
 
+# Project Report Collaboration Insights
+
+# Contenido
+
+Tabla de contenidos
