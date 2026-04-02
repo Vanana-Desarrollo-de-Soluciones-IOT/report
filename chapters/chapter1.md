@@ -8,13 +8,13 @@
 
 ### 1.1.2. Perfiles de integrantes del equipo
 
-| Foto del estudiante                                          | Nombres y apellidos                     | Código de estudiante | Descripcion                                                  |
-| ------------------------------------------------------------ | --------------------------------------- | -------------------- | ------------------------------------------------------------ |
-| <img src="../assets/members/U202319963.jpg" alt="Dante Mateo Aleman Romano" width="100"> | Dante Mateo Aleman Romano               | u202319963           | Soy un desarrollador de 20 años que usa Linux como su sistema operativo principal. Disfruto crear servicios y configurar máquinas, con un fuerte interés en las prácticas de seguridad. |
-|                                                              | Contreras Peralta, Fabrizio Alessandro  | u202319889           |                                                              |
-|                                                              | Curipaco Huayllani, Neil Aldrin Wilhelm | U20231B866           |                                                              |
-|                                                              | Macavilca Quispe, Ian                   | U202121325           |                                                              |
-|                                                              | Paiva Quispe, Josue Gonzalo             | u202119095           |                                                              |
+| Foto del estudiante                                                                                  | Nombres y apellidos                     | Código de estudiante | Descripcion                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------- | --------------------------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <img src="../assets/members/U202319963.jpg" alt="Dante Mateo Aleman Romano" width="100">             | Dante Mateo Aleman Romano               | u202319963           | Soy un desarrollador de 20 años que usa Linux como su sistema operativo principal. Disfruto crear servicios y configurar máquinas, con un fuerte interés en las prácticas de seguridad.                          |
+| <img src="../assets/members/U202319889.jpg" alt="Fabrizio Alessandro Contreras Peralta" width="100"> | Contreras Peralta, Fabrizio Alessandro  | u202319889           | Estudiante de 21 años, disfrutó resolver problemas a través de ideas creativas. Tengo bastante interés por la automatización del desarrollo de proyectos con LLMs, asimismo, por nuevas herramientas emergentes. |
+|                                                                                                      | Curipaco Huayllani, Neil Aldrin Wilhelm | U20231B866           |                                                                                                                                                                                                                  |
+|                                                                                                      | Macavilca Quispe, Ian                   | U202121325           |                                                                                                                                                                                                                  |
+|                                                                                                      | Paiva Quispe, Josue Gonzalo             | u202119095           |                                                                                                                                                                                                                  |
 
 
 
@@ -22,15 +22,28 @@
 
 ### 1.2.1 Antecedentes y problemática
 
-​	Como parte del proceso de definición de la problemática, se aplicó la técnica The 5 W’s and 2 H’s (Who, What, Where, When, Why, How, How Much), permitiendo estructurar de manera preliminar la descripción de los antecedentes y el planteamiento del problema.
+​La calidad del aire se ha consolidado, a través de los años, como uno de los principales retos de salud pública, adquiriendo matices críticos en metrópolis con alta densidad vehicular. En este contexto, Lima figura recurrentemente entre las ciudades con peor calidad del aire en América Latina. Según reportes de monitoreo global, nuestra capital registra promedios de material particulado fino (PM2.5) que superan de forma sostenida las directrices de la Organización Mundial de la Salud (OMS), llegando en determinadas zonas de la ciudad a exceder hasta en nueve veces el límite máximo recomendado de 5 µg/m³ (IQAir, 2024).
 
-1. Who (Quién
-2. What (Qué)
-3. Where (Dónde)
-4. When (Cuándo)
-5. Why (Por qué)
-6. How (Cómo)
-7. How Much (Cuánto)
+La gravedad de esta exposición radica en la naturaleza del PM2.5. Al medir menos de 2.5 micrómetros de diámetro, estas partículas evaden las defensas respiratorias primarias, penetran profundamente en los alvéolos pulmonares y logran ingresar directamente al torrente sanguíneo. Esta infiltración desencadena inflamación sistémica y estrés oxidativo.
+
+A pesar de estas alarmantes cifras, las estrategias de mitigación y evaluación se han enfocado casi exclusivamente en el ámbito macroscópico. Entidades del gobierno operan redes de monitoreo y estaciones meteorológicas a escala metropolitana que evalúan únicamente la contaminación del exterior. Sin embargo, existe un vacío crítico en la medición a nivel micro, específicamente dentro de las edificaciones donde las personas transcurren más del 80% de su tiempo. La evidencia científica deja en claro que la contaminación ambiental se infiltra en los interiores, sumándose a los contaminantes generados por la propia ocupación humana. El mercado peruano aún no ofrece las soluciones tecnológicas necesarias para gestionar esta variable en espacios comerciales.
+
+El problema central radica principalmente en la incapacidad tecnológica y estructural para monitorear, visibilizar y gestionar la calidad del aire dentro de locales comerciales cerrados en Lima, lo que expone a los ocupantes a riesgos sanitarios y deterioros cognitivos. Para estructurar y delimitar la problemática, se aplicó el marco analítico de las 5 ‘W’s y 2 ‘H’s:
+
+1. What (Qué): Existe una carencia significativa de sistemas de monitoreo de aire de grado industrial que sean asequibles para el sector de servicios. Esto convierte a la contaminación interior en un riesgo invisible, presentando problemas graves como la acumulación de dióxido de carbono (CO2) dentro de un ambiente cerrado y la presencia de PM2.5
+
+2. Who (Quién): Los segmentos directamente afectados son los consumidores y usuarios que permanecen tiempos prolongados en espacios cerrados (gimnasios, restaurantes, _coworkings_ y aulas).
+
+3. Where (Dónde): El problema ocurre en espacios comerciales, educativos e institucionales de uso público situados en Lima Metropolitana
+
+4. When (Cuándo): La exposición es un evento continuo, acentuándose mayormente durante las horas de máxima ocupación operativa de los locales (horas pico).
+
+5. Why (Por qué): Existe una alta barrera de entrada tecnológica; los sensores industriales son sumamente costosos. Segundo, a diferencia de las calificaciones de higiene alimentaria, no existe un mecanismo normativo o comercial que obligue a transparentar la calidad del aire, dejando al consumidor sin capacidad de verificar la salubridad del local antes de ingresar.
+
+6. How (Cómo): La problemática se manifiesta de forma silente y progresiva. En recintos de alta densidad y pobre renovación de aire, se asume erróneamente que el ambiente está purificado solo por contar con aire acondicionado.
+
+7. How Much (Cuánto): La infiltración de aire exterior contaminado somete a los usuarios a niveles de PM2.5 hasta 9 veces superiores a lo tolerable. Por otro, la exhalación humana en espacios cerrados dispara rápidamente el CO2 por encima de las 1000 partes por millón (ppm). Según los estándares de la _American Society of Heating, Refrigerating and Air-Conditioning Engineers_, superar este umbral de 1000 ppm degrada el rendimiento cognitivo, altera la concentración e incrementa la fatiga mental de forma significativa (ASHRAE, 2022).
+
 
 ### 1.2.2 Lean UX Process.
 
