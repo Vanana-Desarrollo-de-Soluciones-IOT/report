@@ -4,17 +4,22 @@
 
 ### 1.1.1. Descripción de la Startup
 
+Somos Vanana y buscamos identificar la calidad del aire interior en espacios comerciales cerrados de Lima Metropolitana, con el fin de visibilizar esta variable y permitir a los usuarios tomar decisiones informadas sobre su salud.
+Para ello implementaremos Clair, un sistema de monitoreo de calidad del aire que integra un sensor PM2.5, con una plataforma tanto móvil como web que ofrece visualización en tiempo real, alertas personalizadas y recomendaciones para mejorar la ventilación.
 
+**Misión:** Fomentar la conciencia y el cuidado de la calidad de aire en espacios comerciales con el fin de mejorar la salud y el bienestar de los usuarios.
+
+**Visión:** Crecer como la plataforma líder en monitoreo de calidad del aire interior en el Perú, promoviendo espacios más saludables.
 
 ### 1.1.2. Perfiles de integrantes del equipo
 
 | Foto del estudiante                                                                                  | Nombres y apellidos                     | Código de estudiante | Descripcion                                                                                                                                                                                                      |
-| ---------------------------------------------------------------------------------------------------- | --------------------------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|------------------------------------------------------------------------------------------------------|-----------------------------------------|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | <img src="../assets/members/U202319963.jpg" alt="Dante Mateo Aleman Romano" width="100">             | Dante Mateo Aleman Romano               | u202319963           | Soy un desarrollador de 20 años que usa Linux como su sistema operativo principal. Disfruto crear servicios y configurar máquinas, con un fuerte interés en las prácticas de seguridad.                          |
 | <img src="../assets/members/U202319889.jpg" alt="Fabrizio Alessandro Contreras Peralta" width="100"> | Contreras Peralta, Fabrizio Alessandro  | u202319889           | Estudiante de 21 años, disfrutó resolver problemas a través de ideas creativas. Tengo bastante interés por la automatización del desarrollo de proyectos con LLMs, asimismo, por nuevas herramientas emergentes. |
 |                                                                                                      | Curipaco Huayllani, Neil Aldrin Wilhelm | U20231B866           |                                                                                                                                                                                                                  |
 |                                                                                                      | Macavilca Quispe, Ian                   | U202121325           |                                                                                                                                                                                                                  |
-|                                                                                                      | Paiva Quispe, Josue Gonzalo             | u202119095           |                                                                                                                                                                                                                  |
+| <img src="../assets/members/U202119095.jpeg" alt="Josue Gonzalo Paiva Quispe" width="100">           | Paiva Quispe, Josue Gonzalo             | u202119095           | Soy estudiante de Ingeniería de Software, me encuentro cursando el 8vo ciclo y realizando prácticas pre profesionales como fullstack junior web developer                                                        |
 
 
 
@@ -82,14 +87,14 @@ Cuando
 ## 1.3. Segmentos objetivo
 
 | Segmento Objetivo #1:  |                                                        |
-| ---------------------- | ------------------------------------------------------ |
+|------------------------|--------------------------------------------------------|
 | Aspectos demográficos  | Sexo:<br />Edad:<br />Nivel socioeconómico:            |
 | Aspectos geográficos   | Nacionalidad:<br />Zona geográfica:<br />Departamento: |
 | Aspectos psicográficos |                                                        |
 | Aspectos conductuales  |                                                        |
 
 | Segmento Objetivo #1:  |                                                        |
-| ---------------------- | ------------------------------------------------------ |
+|------------------------|--------------------------------------------------------|
 | Aspectos demográficos  | Sexo:<br />Edad:<br />Nivel socioeconómico:            |
 | Aspectos geográficos   | Nacionalidad:<br />Zona geográfica:<br />Departamento: |
 | Aspectos psicográficos |                                                        |
