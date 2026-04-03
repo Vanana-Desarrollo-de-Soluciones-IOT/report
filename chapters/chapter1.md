@@ -13,13 +13,13 @@ Para ello implementaremos Clair, un sistema de monitoreo de calidad del aire que
 
 ### 1.1.2. Perfiles de integrantes del equipo
 
-| Foto del estudiante                                          | Nombres y apellidos                     | Código de estudiante | Descripcion                                                  |
-| ------------------------------------------------------------ | --------------------------------------- | -------------------- | ------------------------------------------------------------ |
-| <img src="../assets/members/U202319963.jpg" alt="Dante Mateo Aleman Romano" width="100"> | Dante Mateo Aleman Romano               | u202319963           | Soy un desarrollador de 20 años que usa Linux como su sistema operativo principal. Disfruto crear servicios y configurar máquinas, con un fuerte interés en las prácticas de seguridad. |
-| <img src="../assets/members/U202319889.jpg" alt="Fabrizio Alessandro Contreras Peralta" width="100"> | Contreras Peralta, Fabrizio Alessandro  | u202319889           | Estudiante de 21 años, disfrutó resolver problemas a través de ideas creativas. Tengo bastante interés por la automatización del desarrollo de proyectos con LLMs, asimismo, por nuevas herramientas emergentes. |
-| <img src="../assets/members/u20231b866.jpeg" alt="Neil Curipaco" width="100"> | Curipaco Huayllani, Neil Aldrin Wilhelm | U20231B866           | Soy Neil Curipaco Huayllani. Estoy cursando el 7to ciclo de la carrera de Ingeniería de Software en la UPC. Me gusta jugar videojuegos, aprender cosas nuevas, escuchar música y mejorar mis habilidades para ser de ayuda en el equipo de trabajo del que formo parte. |
-| <img src="../assets/members/U202121325.jpg" alt="Ian Macavilca Quispe" width="100">  | Macavilca Quispe, Ian | U202121325      | Soy un estudiante de 21 años, con interes en optimización y diseño de Apps Web/Mobile. Me gusta resolver problemas con ideas creativas.              |
-| <img src="../assets/members/U202119095.jpeg" alt="Josue Gonzalo Paiva Quispe" width="100"> | Paiva Quispe, Josue Gonzalo             | u202119095           | Soy estudiante de Ingeniería de Software, me encuentro cursando el 8vo ciclo y realizando prácticas pre profesionales como fullstack junior web developer |
+| Foto del estudiante                                                                                  | Nombres y apellidos                     | Código de estudiante | Descripcion                                                                                                                                                                                                                                                             |
+|------------------------------------------------------------------------------------------------------|-----------------------------------------|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <img src="../assets/members/U202319963.jpg" alt="Dante Mateo Aleman Romano" width="100">             | Dante Mateo Aleman Romano               | u202319963           | Soy un desarrollador de 20 años que usa Linux como su sistema operativo principal. Disfruto crear servicios y configurar máquinas, con un fuerte interés en las prácticas de seguridad.                                                                                 |
+| <img src="../assets/members/U202319889.jpg" alt="Fabrizio Alessandro Contreras Peralta" width="100"> | Contreras Peralta, Fabrizio Alessandro  | u202319889           | Estudiante de 21 años, disfrutó resolver problemas a través de ideas creativas. Tengo bastante interés por la automatización del desarrollo de proyectos con LLMs, asimismo, por nuevas herramientas emergentes.                                                        |
+| <img src="../assets/members/u20231b866.jpeg" alt="Neil Curipaco" width="100">                        | Curipaco Huayllani, Neil Aldrin Wilhelm | U20231B866           | Soy Neil Curipaco Huayllani. Estoy cursando el 7to ciclo de la carrera de Ingeniería de Software en la UPC. Me gusta jugar videojuegos, aprender cosas nuevas, escuchar música y mejorar mis habilidades para ser de ayuda en el equipo de trabajo del que formo parte. |
+| <img src="../assets/members/U202121325.jpg" alt="Ian Macavilca Quispe" width="100">                  | Macavilca Quispe, Ian                   | U202121325           | Soy un estudiante de 21 años, con interes en optimización y diseño de Apps Web/Mobile. Me gusta resolver problemas con ideas creativas.                                                                                                                                 |
+| <img src="../assets/members/U202119095.jpeg" alt="Josue Gonzalo Paiva Quispe" width="100">           | Paiva Quispe, Josue Gonzalo             | u202119095           | Soy estudiante de Ingeniería de Software, me encuentro cursando el 8vo ciclo y realizando prácticas pre profesionales como fullstack junior web developer                                                                                                               |
 
 
 
@@ -102,11 +102,9 @@ Sabremos que tenemos éxito cuando observemos que el 50% de los locales afiliado
 
 #### 1.2.2.3. Lean UX Hypothesis Statements.
 
-Creemos
+1. Hypothesis Statement #1: **Creemos que** los dueños de locales comerciales empezaran a tomar conciencia sobre el factor de riesgo que representa la calidad del aire en espacios cerrados para sus clientes, **Sabremos** que esto es cierto **Cuando** al menos el 50% de dueños de locales comerciales afiliados a Clair consulten las medidas correctivas tras haber analizado los reportes de calidad del aire en sus locales.
+2. Hypothesis Statement #2: **Creemos que** los padres de familia tomaran medidas para mejorar la calidad de sus hogares gracias a Clair **Sabremos** que esto es cierto **Cuando** al menos el 40% de usuarios registrados como padres de familia obtengan una tendencia de decrecimiento en los niveles de PM2.5 y CO2 en el reporte de sus hogares durante los primeros 3 meses de uso.
 
-Sabremos
-
-Cuando
 
 #### 1.2.2.4. Lean UX Canvas.
 
@@ -114,16 +112,16 @@ Cuando
 
 ## 1.3. Segmentos objetivo
 
-| Segmento Objetivo #1:  | Administradores de Espacios Comerciales y Servicios          |
-| ---------------------- | ------------------------------------------------------------ |
-| Aspectos demográficos  | Sexo: Indistinto<br />Edad: 25 a 55 años<br />Nivel socioeconómico: Dueños de PYMES o administradores. |
-| Aspectos geográficos   | Nacionalidad: Peruana<br />Zona geográfica: Lima Metropolitana (Zonas de alta densidad: Gamarra, Miraflores, Lima Centro).<br />Departamento: Lima |
-| Aspectos psicográficos | Emprendedores y administradores preocupados por el bienestar de sus clientes y la productividad de su personal. Valoran la tecnología como un diferenciador competitivo y buscan soluciones de bajo costo pero efectivas. |
+| Segmento Objetivo #1:  | Administradores de Espacios Comerciales y Servicios                                                                                                                                                                                       |
+|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Aspectos demográficos  | Sexo: Indistinto<br />Edad: 25 a 55 años<br />Nivel socioeconómico: Dueños de PYMES o administradores.                                                                                                                                    |
+| Aspectos geográficos   | Nacionalidad: Peruana<br />Zona geográfica: Lima Metropolitana (Zonas de alta densidad: Gamarra, Miraflores, Lima Centro).<br />Departamento: Lima                                                                                        |
+| Aspectos psicográficos | Emprendedores y administradores preocupados por el bienestar de sus clientes y la productividad de su personal. Valoran la tecnología como un diferenciador competitivo y buscan soluciones de bajo costo pero efectivas.                 |
 | Aspectos conductuales  | Buscan optimizar el uso de aire acondicionado y ventilación. Necesitan reportes (Web App) para demostrar que su local es seguro. Suelen estar en movimiento y requieren alertas en el celular si los niveles de CO2 exceden lo permitido. |
 
-| Segmento Objetivo #2:  | Padres de Familia Preocupados por la Salud                   |
-| ---------------------- | ------------------------------------------------------------ |
-| Aspectos demográficos  | Sexo: Indistinto<br />Edad: 25 a 45 años<br />Nivel socioeconómico: Medio-Alto, Medio y Medio-Bajo |
-| Aspectos geográficos   | Nacionalidad: Peruana<br />Zona geográfica: Distritos con alta contaminación vehicular (ej. San Juan de Lurigancho, Ate, Carabayllo) o zonas residenciales densas.<br />Departamento: Lima |
-| Aspectos psicográficos | Personas con un estilo de vida saludable o que tienen hijos/familiares con problemas respiratorios. Son usuarios frecuentes de gadgets tecnológicos y buscan tener el control de la seguridad de su hogar desde el smartphone. |
+| Segmento Objetivo #2:  | Padres de Familia Preocupados por la Salud                                                                                                                                                                                               |
+|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Aspectos demográficos  | Sexo: Indistinto<br />Edad: 25 a 45 años<br />Nivel socioeconómico: Medio-Alto, Medio y Medio-Bajo                                                                                                                                       |
+| Aspectos geográficos   | Nacionalidad: Peruana<br />Zona geográfica: Distritos con alta contaminación vehicular (ej. San Juan de Lurigancho, Ate, Carabayllo) o zonas residenciales densas.<br />Departamento: Lima                                               |
+| Aspectos psicográficos | Personas con un estilo de vida saludable o que tienen hijos/familiares con problemas respiratorios. Son usuarios frecuentes de gadgets tecnológicos y buscan tener el control de la seguridad de su hogar desde el smartphone.           |
 | Aspectos conductuales  | Monitorean constantemente el estado de su casa mediante apps. Activan/desactivan dispositivos remotamente. Prefieren interfaces móviles sencillas y visuales para tomar decisiones rápidas como abrir ventanas o encender purificadores. |
