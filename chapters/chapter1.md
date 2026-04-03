@@ -27,7 +27,7 @@ Para ello implementaremos Clair, un sistema de monitoreo de calidad del aire que
 
 ### 1.2.1 Antecedentes y problemática
 
-​La calidad del aire se ha consolidado, a través de los años, como uno de los principales retos de salud pública, adquiriendo matices críticos en metrópolis con alta densidad vehicular. En este contexto, Lima figura recurrentemente entre las ciudades con peor calidad del aire en América Latina. Según reportes de monitoreo global, nuestra capital registra promedios de material particulado fino (PM2.5) que superan de forma sostenida las directrices de la Organización Mundial de la Salud (OMS), llegando en determinadas zonas de la ciudad a exceder hasta en nueve veces el límite máximo recomendado de 5 µg/m³ (IQAir, 2024).
+La calidad del aire se ha consolidado, a través de los años, como uno de los principales retos de salud pública, adquiriendo matices críticos en metrópolis con alta densidad vehicular. En este contexto, Lima figura recurrentemente entre las ciudades con peor calidad del aire en América Latina. Según reportes de monitoreo global, nuestra capital registra promedios de material particulado fino (PM2.5) que superan de forma sostenida las directrices de la Organización Mundial de la Salud (OMS), llegando en determinadas zonas de la ciudad a exceder hasta en nueve veces el límite máximo recomendado de 5 µg/m³ (IQAir, 2024).
 
 La gravedad de esta exposición radica en la naturaleza del PM2.5. Al medir menos de 2.5 micrómetros de diámetro, estas partículas evaden las defensas respiratorias primarias, penetran profundamente en los alvéolos pulmonares y logran ingresar directamente al torrente sanguíneo. Esta infiltración desencadena inflamación sistémica y estrés oxidativo.
 
@@ -66,11 +66,39 @@ Pregunta de mejora
 
 #### 1.2.2.2. Lean UX Assumptions.
 
-- **User Assumptions:** Necesidades y comportamientos esperados de los usuarios.
-- **User Outcome Assumptions:** Beneficios que los usuarios deberían obtener.
-- **Business Assumptions:** Modelo de negocio y el entorno de mercado.
-- **Business Outcome Assumptions:** Impactos positivos esperados en el negocio.
-- **Feature Assumptions:** Funcionalidades específicas y resolución de necesidades.
+**User Assumptions**
+
+- Creemos que los usuarios que permanecen en espacios cerrados por largos periodos no son conscientes de la calidad del aire interior, porque no cuentan con información visible ni accesible en tiempo real.
+- Creemos que los administradores de espacios comerciales valoran la salud y bienestar de sus clientes, porque esto influye directamente en la percepción de su negocio y en la fidelización
+- Creemos que los usuarios prefieren soluciones tecnológicas simples e intuitivas, porque no tienen conocimiento técnico sobre indicadores tecnicos
+- Creemos que, si los usuarios reciben información clara y visual sobre la calidad del aire, tomarán decisiones inmediatas para mejorar su entorno.
+
+**User Outcome Assumptions**
+
+- Creemos que, si los usuarios pueden visualizar la calidad del aire en tiempo real, se sentirán más seguros dentro de los espacios que frecuentan, lo que aumentará su confianza en el entorno.
+- Creemos que, si los administradores cuentan con datos accesibles sobre la calidad del aire, podrán tomar decisiones operativas para mejorar la ventilación, lo que impactará positivamente en la experiencia del usuario.
+- Creemos que, si los usuarios reciben alertas oportunas, modificarán su comportamiento (ventilar, reducir aforo, etc.), lo que contribuirá a mejorar la calidad del aire.
+
+**Business Assumptions**
+
+- Creemos que existe una oportunidad de mercado en Lima Metropolitana, porque actualmente no hay soluciones accesibles de monitoreo de calidad del aire interior.
+- Creemos que los negocios están dispuestos a invertir en soluciones que mejoren su reputación, porque la percepción de seguridad y bienestar es un factor diferenciador competitivo.
+- Creemos que un modelo de suscripción será viable, porque los usuarios necesitarán acceso continuo a datos, alertas y reportes.
+- Creemos que la integración de hardware (sensor) y software (plataforma digital) es viable, porque la tecnología actual permite monitoreo en tiempo real a bajo costo.
+
+**Business Outcome Assumptions**
+
+- Creemos que, si la solución se implementa en espacios comerciales, los negocios mejorarán su percepción de seguridad y confianza frente a los clientes, lo que fortalecerá su posicionamiento.
+- Creemos que, si el producto demuestra valor en etapas iniciales, se logrará adopción progresiva en diferentes tipos de locales (gimnasios, restaurantes, coworkings).
+- Creemos que el uso continuo de la plataforma generará ingresos recurrentes, porque el servicio depende del monitoreo constante y actualización de datos.
+
+**Feature Assumptions**
+
+- Creemos que un sensor capaz de medir PM2.5 y CO2 en tiempo real es suficiente para generar valor inicial, porque estos son los principales indicadores de calidad del aire interior.
+- Creemos que una interfaz basada en indicadores visuales (colores, niveles) facilitará la comprensión del usuario, porque reduce la necesidad de interpretar datos técnicos.
+- Creemos que las alertas en tiempo real incentivarán la acción inmediata, porque informan al usuario en el momento en que ocurre el problema.
+- Creemos que los reportes históricos serán valorados por los administradores, porque les permitirán demostrar condiciones seguras en sus espacios.
+- Creemos que incluir recomendaciones automáticas (ej. abrir ventanas) aumentará el uso de la plataforma, porque guía al usuario sin necesidad de conocimiento previo.
 
 #### 1.2.2.3. Lean UX Hypothesis Statements.
 
@@ -85,8 +113,6 @@ Cuando
 /report/assets/lean-ux-canvas usar la plantilla ppt de esta ruta
 
 ## 1.3. Segmentos objetivo
-
-## 
 
 | Segmento Objetivo #1:  | Administradores de Espacios Comerciales y Servicios          |
 | ---------------------- | ------------------------------------------------------------ |

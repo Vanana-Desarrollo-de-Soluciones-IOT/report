@@ -6,6 +6,7 @@
 | 0.0.2   | 01/04/2026 | Dante Mateo Aleman Romano             | Realicé el registro de versiones del informe mediante la creación de una tabla estructurada, siguiendo los lineamientos del *Project Statement*, con el objetivo de llevar un control claro y ordenado de las actualizaciones, cambios y responsables a lo largo del desarrollo del documento.<br />Asimismo, agregué la plantilla correspondiente al Capítulo 1, con la finalidad de que el equipo cuente con una base organizada que facilite su participación y permita iniciar de manera estructurada el desarrollo del contenido. |
 | 0.0.3   | 02/04/2024 | Fabrizio Alessandro Contreras Peralta | Desarrollé la problemática y antecedentes del proyecto, por ello creé añadí las fuentes en la carpeta de bibliografía. Asimismo, llene mi parte en el perfil de integrantes. |
 | 0.0.4   | 02/04/2024 | Neil Curipaco Huayllani               | Definí y desarrollé de los Segmentos Objetivos bajo criterios demográficos, geográficos, psicográficos y conductuales. Siguiendo la plantilla de mi compañero |
+| 0.0.5   | 02/04/2024 | Dante Mateo Aleman Romano             | Redacté y estructuré las Lean UX Assumptions del proyecto, definiendo supuestos de usuario, negocio y funcionalidades con enfoque claro, testable y alineado al problema del proyecto. |
 
 # Project Report Collaboration Insights
 
