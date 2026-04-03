@@ -7,6 +7,7 @@
 | 0.0.3   | 02/04/2024 | Fabrizio Alessandro Contreras Peralta | Desarrollé la problemática y antecedentes del proyecto, por ello creé añadí las fuentes en la carpeta de bibliografía. Asimismo, llene mi parte en el perfil de integrantes. |
 | 0.0.4   | 02/04/2024 | Neil Curipaco Huayllani               | Definí y desarrollé de los Segmentos Objetivos bajo criterios demográficos, geográficos, psicográficos y conductuales. Siguiendo la plantilla de mi compañero |
 | 0.0.5   | 02/04/2024 | Dante Mateo Aleman Romano             | Redacté y estructuré las Lean UX Assumptions del proyecto, definiendo supuestos de usuario, negocio y funcionalidades con enfoque claro, testable y alineado al problema del proyecto. |
+| 0.0.6   | 03/04/2024 | Ian Macavilca Quispe             | Elaboré el Lean UX Problem Statement del proyecto, integrando métricas de éxito (KPIs) basadas en estándares internacionales (ASHRAE/OMS) y alineando las necesidades de los usuarios con los objetivos estratégicos de la startup.|
 
 # Project Report Collaboration Insights
 

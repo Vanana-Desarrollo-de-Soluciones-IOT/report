@@ -18,7 +18,7 @@ Para ello implementaremos Clair, un sistema de monitoreo de calidad del aire que
 | <img src="../assets/members/U202319963.jpg" alt="Dante Mateo Aleman Romano" width="100"> | Dante Mateo Aleman Romano               | u202319963           | Soy un desarrollador de 20 años que usa Linux como su sistema operativo principal. Disfruto crear servicios y configurar máquinas, con un fuerte interés en las prácticas de seguridad. |
 | <img src="../assets/members/U202319889.jpg" alt="Fabrizio Alessandro Contreras Peralta" width="100"> | Contreras Peralta, Fabrizio Alessandro  | u202319889           | Estudiante de 21 años, disfrutó resolver problemas a través de ideas creativas. Tengo bastante interés por la automatización del desarrollo de proyectos con LLMs, asimismo, por nuevas herramientas emergentes. |
 | <img src="../assets/members/u20231b866.jpeg" alt="Neil Curipaco" width="100"> | Curipaco Huayllani, Neil Aldrin Wilhelm | U20231B866           | Soy Neil Curipaco Huayllani. Estoy cursando el 7to ciclo de la carrera de Ingeniería de Software en la UPC. Me gusta jugar videojuegos, aprender cosas nuevas, escuchar música y mejorar mis habilidades para ser de ayuda en el equipo de trabajo del que formo parte. |
-|                                                              | Macavilca Quispe, Ian                   | U202121325           |                                                              |
+| <img src="../assets/members/U202121325.jpg" alt="Ian Macavilca Quispe" width="100">  | Macavilca Quispe, Ian | U202121325      | Soy un estudiante de 21 años, con interes en optimización y diseño de Apps Web/Mobile. Me gusta resolver problemas con ideas creativas.              |
 | <img src="../assets/members/U202119095.jpeg" alt="Josue Gonzalo Paiva Quispe" width="100"> | Paiva Quispe, Josue Gonzalo             | u202119095           | Soy estudiante de Ingeniería de Software, me encuentro cursando el 8vo ciclo y realizando prácticas pre profesionales como fullstack junior web developer |
 
 
@@ -54,15 +54,15 @@ El problema central radica principalmente en la incapacidad tecnológica y estru
 
 #### 1.2.2.1. Lean UX Problem Statements.
 
-Contexto
+El estado actual del monitoreo ambiental en Lima Metropolitana se ha centrado exclusivamente en redes de escala macroscópica para exteriores, donde los administradores de locales comerciales y usuarios carecen de visibilidad sobre la calidad del aire interior (PM2.5 y CO2) y dependen de suposiciones erróneas sobre la eficacia del aire acondicionado.
 
-Observación del problema
+Lo que los servicios y normativas existentes no logran abordar es la medición a nivel micro en espacios cerrados que, según la OMS (2021) y IQAir (2024), suelen exceder hasta en nueve veces los límites de material particulado fino, ni la gestión de niveles de CO2 que, al superar las 1000 ppm, degradan el rendimiento cognitivo y la salud sistémica de los ocupantes (ASHRAE, 2022; AAP, 2024).
 
-Impacto
+Nuestro producto, Clair, abordará esta brecha mediante un sistema de monitoreo en tiempo real (sensor PM2.5 y plataforma web/móvil) que facilite la visibilización de contaminantes invisibles y permita la toma de decisiones informadas para mejorar la ventilación.
 
-Necesidad insatisfecha
+Nuestro enfoque inicial serán los administradores de espacios comerciales cerrados (gimnasios, restaurantes, coworkings) y padres de familia preocupados por la salud respiratoria en distritos de alta densidad vehicular en Lima.
 
-Pregunta de mejora
+Sabremos que tenemos éxito cuando observemos que el 50% de los locales afiliados logren reducir sus picos de CO2 por debajo del umbral crítico de 1000 ppm mediante acciones correctivas sugeridas por la app, y cuando al menos el 20% de los usuarios recurrentes de dichos locales consulten el estado del aire en la plataforma antes de su permanencia, durante los primeros seis meses de implementación.
 
 #### 1.2.2.2. Lean UX Assumptions.
 
