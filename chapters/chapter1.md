@@ -54,15 +54,17 @@ El problema central radica principalmente en la incapacidad tecnológica y estru
 
 #### 1.2.2.1. Lean UX Problem Statements.
 
-El estado actual del monitoreo ambiental en Lima Metropolitana se ha centrado exclusivamente en redes de escala macroscópica para exteriores, donde los administradores de locales comerciales y usuarios carecen de visibilidad sobre la calidad del aire interior (PM2.5 y CO2) y dependen de suposiciones erróneas sobre la eficacia del aire acondicionado.
+En Lima Metropolitana, la calidad del aire se monitorea principalmente a nivel exterior mediante redes macroscópicas, mientras que los espacios comerciales cerrados carecen de sistemas accesibles que permitan medir y gestionar la calidad del aire interior.
 
-Lo que los servicios y normativas existentes no logran abordar es la medición a nivel micro en espacios cerrados que, según la OMS (2021) y IQAir (2024), suelen exceder hasta en nueve veces los límites de material particulado fino, ni la gestión de niveles de CO2 que, al superar las 1000 ppm, degradan el rendimiento cognitivo y la salud sistémica de los ocupantes (ASHRAE, 2022; AAP, 2024).
+Como consecuencia, administradores y usuarios no cuentan con visibilidad sobre indicadores críticos como PM2.5 y CO2, a pesar de que estos pueden superar significativamente los límites recomendados por organismos como la OMS y ASHRAE, especialmente durante horas de alta ocupación.
 
-Nuestro producto, Clair, abordará esta brecha mediante un sistema de monitoreo en tiempo real (sensor PM2.5 y plataforma web/móvil) que facilite la visibilización de contaminantes invisibles y permita la toma de decisiones informadas para mejorar la ventilación.
+Esta falta de información convierte la contaminación del aire interior en un riesgo invisible, generando impactos negativos en la salud respiratoria, el rendimiento cognitivo y la experiencia de los usuarios dentro de estos espacios.
 
-Nuestro enfoque inicial serán los administradores de espacios comerciales cerrados (gimnasios, restaurantes, coworkings) y padres de familia preocupados por la salud respiratoria en distritos de alta densidad vehicular en Lima.
+Actualmente, el mercado peruano no ofrece soluciones tecnológicas accesibles que integren monitoreo en tiempo real, visualización clara de datos y recomendaciones accionables, lo que evidencia una brecha entre las necesidades del usuario moderno y la oferta disponible.
 
-Sabremos que tenemos éxito cuando observemos que el 50% de los locales afiliados logren reducir sus picos de CO2 por debajo del umbral crítico de 1000 ppm mediante acciones correctivas sugeridas por la app, y cuando al menos el 20% de los usuarios recurrentes de dichos locales consulten el estado del aire en la plataforma antes de su permanencia, durante los primeros seis meses de implementación.
+Como resultado, los administradores toman decisiones basadas en suposiciones como confiar únicamente en sistemas de aire acondicionado sin garantizar condiciones adecuadas de ventilación y salubridad.
+
+¿Cómo podríamos visibilizar, monitorear y mejorar la calidad del aire interior en espacios comerciales cerrados de Lima mediante una solución tecnológica accesible, en tiempo real y fácil de usar?
 
 #### 1.2.2.2. Lean UX Assumptions.
 
@@ -102,13 +104,15 @@ Sabremos que tenemos éxito cuando observemos que el 50% de los locales afiliado
 
 #### 1.2.2.3. Lean UX Hypothesis Statements.
 
-1. Hypothesis Statement #1: **Creemos que** los dueños de locales comerciales empezaran a tomar conciencia sobre el factor de riesgo que representa la calidad del aire en espacios cerrados para sus clientes, **Sabremos** que esto es cierto **Cuando** al menos el 50% de dueños de locales comerciales afiliados a Clair consulten las medidas correctivas tras haber analizado los reportes de calidad del aire en sus locales.
-2. Hypothesis Statement #2: **Creemos que** los padres de familia tomaran medidas para mejorar la calidad de sus hogares gracias a Clair **Sabremos** que esto es cierto **Cuando** al menos el 40% de usuarios registrados como padres de familia obtengan una tendencia de decrecimiento en los niveles de PM2.5 y CO2 en el reporte de sus hogares durante los primeros 3 meses de uso.
-
+1. **Creemos que** los administradores de espacios comerciales tomarán mejores decisiones para proteger la salud de sus clientes y mejorar la confianza en su negocio. **Sabremos** que esto es cierto cuando al menos el 50% de los administradores consulten en tiempo real los datos de PM2.5 y CO2 de sus espacios al menos una vez por día.
+2. **Creemos que** los usuarios comprenderán más fácilmente el estado de la calidad del aire interior. **Sabremos** que esto es cierto **cuando** al menos el 70% de los usuarios interpreten correctamente los niveles de riesgo usando la interfaz visual de colores y niveles sin necesidad de explicación adicional.
+3. **Creemos que** los administradores y usuarios reaccionarán oportunamente ante episodios de mala calidad del aire **Sabremos** que esto es cierto **cuando** al menos el 40% de las alertas generadas produzcan una acción correctiva, como ventilar el espacio o reducir el aforo.
+4. **Creemos que** los administradores percibirán mayor valor en la plataforma al contar con evidencia histórica sobre la calidad del aire de sus locales. **Sabremos** que esto es cierto **cuando** al menos el 50% de los administradores revisen o descarguen reportes históricos al menos una vez por semana.
+5. **Creemos que** los usuarios mejorarán las condiciones de su entorno siguiendo la orientación de la plataforma. **Sabremos** que esto es cierto **cuando** al menos el 40% de los usuarios apliquen las recomendaciones automáticas y registren una mejora en los niveles de calidad del aire durante el periodo de uso.
 
 #### 1.2.2.4. Lean UX Canvas.
 
-/report/assets/lean-ux-canvas usar la plantilla ppt de esta ruta
+<img src="../assets/lean-ux-canvas/image-leanux-canvas.jpg" alt="Lean Ux Canvas">
 
 ## 1.3. Segmentos objetivo
 
