@@ -21,62 +21,62 @@ En esta sección se realiza la identificación y descripción de los principales
     <tbody>
         <tr>
             <td colspan="2">¿Por qué llevar a cabo este análisis?</td>
-            <td colspan="4">Escriba en el recuadro la pregunta que busca responder o el objetivo de este análisis.</td>
+            <td colspan="4">El objetivo es identificar las brechas tecnológicas y de experiencia de usuario en las plataformas actuales de monitoreo de aire en Perú, para validar que la integración de alertas personalizadas de Clair responde a una demanda insatisfecha en espacios cerrados.</td>
         </tr>
         <tr>
             <td colspan="2">(En la cabecera colocar por cada competidor nombre y logo)</td>
             <td>Vanana <img src="../assets/competitors/Clair.svg" alt="Su startup"></td>
-            <td>Competidor 1</td>
-            <td>Competidor 2</td>
-            <td>Competidor 3</td>
+            <td>Airly <img src="../assets/competitors/airly.png" alt="Su startup"></td>
+            <td>IQAir <img src="../assets/competitors/iqair.jpg" alt="Su startup"></td>
+            <td>Kaiterra <img src="../assets/competitors/kaiterra.jpg" alt="Su startup"></td>
         </tr>
         <tr>
             <td rowspan="2"><strong>Perfil</strong></td>
             <td>Overview</td>
-            <td>texto 1</td><td>texto 1</td><td>texto 1</td><td>texto 1</td>
+            <td>Clair se enfoca en el microclima de espacios comerciales cerrados, integrando sensores PM2.5/CO2 con una plataforma que prioriza la interpretabilidad visual y la acción correctiva.</td><td>Empresa polaca con una de las redes de sensores de aire más grandes del mundo. En Lima, son el referente en monitoreo de exteriores (calle) mediante mapas de calor comunitarios y datos abiertos.</td><td>Estándar de oro global en tecnología de purificación y monitoreo. Su serie Visual es el dispositivo de referencia para oficinas de alto nivel y sedes corporativas que buscan prestigio y precisión suiza.</td><td>Empresa enfocada exclusivamente en el sector B2B y Smart Buildings. Sus dispositivos, como el Sensedge, están diseñados para ser empotrados en paredes y techos, integrándose directamente con los sistemas de aire acondicionado (HVAC).</td>
         </tr>
         <tr>
             <td>Ventaja competitiva ¿Qué valor ofrece a los clientes?</td>
-            <td>texto 1</td><td>texto 1</td><td>texto 1</td><td>texto 1</td>
+            <td>Gestión Basada en Evidencia: Ofrece reportes históricos semanales que transforman suposiciones en decisiones de gestión de aforo y ventilación. <br> Accesibilidad Operativa: Diseñado para administradores que no son expertos en calidad del aire, facilitando una tasa de respuesta del 40% ante alertas.</td><td>Efecto de Red: Sus datos son utilizados por municipalidades y medios de comunicación, lo que les da una visibilidad de marca masiva. <br> Familiaridad: Los usuarios de Lima ya reconocen sus estaciones en distritos como Miraflores o San Borja.</td><td>Autoridad de Marca: Poseen la base de datos de calidad del aire más consultada del mundo; aparecer en su ranking otorga validación internacional. <br> Certificación de Datos: Sus sensores están validados para auditorías de salud ambiental de alto rigor.</td><td>Cumplimiento Normativo: Sus productos son los únicos que garantizan puntos directos para certificaciones internacionales de edificios verdes como LEED, WELL y RESET. <br> Integración BMS: Se comunica mediante protocolos industriales (BACnet, Modbus) con la infraestructura inteligente del edificio.</td>
         </tr>
         <tr>
             <td rowspan="2"><strong>Perfil de Marketing</strong></td>
             <td>Mercado objetivo</td>
-            <td>texto 1</td><td>texto 1</td><td>texto 1</td><td>texto 1</td>
+            <td>Primario: Administradores de centros comerciales, gimnasios, oficinas y restaurantes en Lima. <br> Secundario: Personas preocupadas por la calidad del aire en el Hogar. </td><td>Gobiernos municipales, ONGs ambientales y empresas de Retail con fuertes políticas de responsabilidad social (ESG) que operan principalmente en Lima (Miraflores, San Isidro).</td><td>Consumidores de lujo, instituciones de salud privadas y embajadas en Perú que no escatiman en costos para garantizar pureza total.</td><td>Desarrolladoras inmobiliarias corporativas y administradores de Centros Comerciales que necesitan cumplir con estándares internacionales de construcción sostenible.</td>
         </tr>
         <tr>
             <td>Estrategias de marketing</td>
-            <td>texto 1</td><td>texto 1</td><td>texto 1</td><td>texto 1</td>
+            <td>Estrategia de Gamificación y Reportes: Envío de un "Reporte de Salud Semanal" a los administradores.</td><td>Open Data: Mantener un mapa de acceso gratuito para el ciudadano común, lo que sirve como "caballo de Troya" para vender soluciones privadas a las empresas del entorno.</td><td>Inbound Marketing Global: Uso de su App para enviar notificaciones de alerta de polución en Lima, sugiriendo la compra de sus equipos como solución inmediata.</td><td>Account-Based Marketing (ABM): Campañas dirigidas específicamente a arquitectos y gestores de infraestructura para que incluyan sus sensores en los planos de nuevos proyectos desde la fase de diseño.</td>
         </tr>
         <tr>
             <td rowspan="3"><strong>Perfil de Producto</strong></td>
             <td>Productos & Servicios</td>
-            <td>texto 1</td><td>texto 1</td><td>texto 1</td><td>texto 1</td>
+            <td>Hardware: Sensor "Clair-V1". <br> Software: App móvil para usuarios/clientes y Dashboard Web para administradores con reportes históricos semanales. <br> Servicio: Sistema de alertas inteligentes vía Notificaciones con recomendaciones de ventilación basadas en niveles de ocupación. </td><td>Hardware: Sensores de exterior de alta resistencia y sensores de interior simplificados.<br> Software: Mapa global de calidad del aire (Airly Map) y API de datos para integración en pantallas publicitarias o webs municipales.<br> Servicio: Pronóstico de calidad del aire a 24h mediante Inteligencia Artificial.</td><td>Hardware: Monitor AirVisual Pro (pantalla a color de alta resolución incorporada). <br> Software: Integración con la red global AirVisual. <br> Servicio: Sincronización automática con purificadores de aire de la misma marca.</td><td>Hardware: Sensedge y Sensedge Mini (sensores modulares calibrables). <br> Software: Dashboard de nivel industrial con protocolos de seguridad de datos para empresas. <br> Servicio: Consultoría para obtención de certificaciones WELL, LEED y RESET. Integración total con sistemas HVAC (Aire acondicionado centralizado).</td>
         </tr>
         <tr>
             <td>Precios & Costos</td>
-            <td>texto 1</td><td>texto 1</td><td>texto 1</td><td>texto 1</td>
+            <td>Modelo Híbrido: Venta del hardware (pago único accesible) + Suscripción mensual "Clair Pro" para acceso a analítica avanzada y reportes históricos (SaaS).</td><td>Modelo B2B/B2G: Contratos anuales de "Aire como Servicio" (Air as a Service) que incluyen mantenimiento y acceso a la plataforma de datos. <br> Costo Estimado: Suscripciones anuales desde $500 - $1,000 USD por punto de monitoreo.</td><td>Modelo Retail Premium: Venta directa de hardware de alto costo. No suele requerir suscripción para funciones básicas, pero el equipo es costoso. <br> Costo Estimado: Hardware $280 - $350 USD por unidad.</td><td>Modelo de Proyecto: Presupuestos por volumen para edificios completos o centros comerciales. Incluye planes de reemplazo de módulos de sensores cada 2 años. <br> Costo Estimado: Proyectos desde $1,500 USD en adelante según la escala del edificio.</td>
         </tr>
         <tr>
             <td>Canales de distribución (Web y/o Móvil)</td>
-            <td>texto 1</td><td>texto 1</td><td>texto 1</td><td>texto 1</td>
+            <td>Web: Plataforma de gestión centralizada para administradores de múltiples locales. <br> Móvil: App (iOS/Android) para monitoreo en tiempo real y recepción de alertas.</td><td>Web: Mapa interactivo público y panel de control para clientes corporativos. <br> Móvil: App Airly (enfocada en el ciudadano que consulta el aire de su zona).</td><td>Web: E-commerce global y base de datos de consulta mundial. <br> Móvil: App AirVisual (líder en descargas, usada como canal de marketing para vender sus purificadores).</td><td>Web: Dashboard empresarial compatible con protocolos industriales (BACnet, Modbus). <br> Móvil: App de visualización técnica para gestores de mantenimiento de edificios (Facility Managers).</td>
         </tr>
         <tr>
             <td rowspan="4"><strong>Análisis SWOT</strong></td>
             <td>Fortalezas</td>
-            <td>texto 1</td><td>texto 1</td><td>texto 1</td><td>texto 1</td>
+            <td>Profundo conocimiento del contexto de Lima; interfaz intuitiva basada en Lean UX; bajo costo de implementación.</td><td>Red de sensores ya establecida en distritos clave de Lima; algoritmos de IA predictiva muy avanzados; fuerte presencia en medios de comunicación.</td><td>Marca número 1 a nivel mundial en confianza; ecosistema completo que conecta monitores con purificadores de aire.</td><td>Único que garantiza puntos para certificaciones LEED/WELL; diseño modular que facilita el mantenimiento en grandes infraestructuras.</td>
         </tr>
         <tr>
             <td>Debilidades</td>
-            <td>texto 1</td><td>texto 1</td><td>texto 1</td><td>texto 1</td>
+            <td>Marca nueva en el mercado; recursos limitados para I+D comparado con globales; dependencia inicial de la adopción de los administradores.</td><td>Su enfoque principal es el exterior (calle), perdiendo precisión en las dinámicas de flujo de personas dentro de comercios cerrados.</td><td>Precios muy elevados para el mercado promedio peruano; soporte técnico remoto o inexistente en Lima (depende de distribuidores).</td><td>Demasiado complejo y caro para un comercio mediano o pequeño; requiere instalación técnica especializada.</td>
         </tr>
         <tr>
             <td>Oportunidades</td>
-            <td>texto 1</td><td>texto 1</td><td>texto 1</td><td>texto 1</td>
+            <td>Creciente preocupación por la salud post-pandemia en Lima; falta de soluciones específicas para el sector comercial peruano; posibilidad de crear un "Sello de Calidad de Aire" local.</td><td>Alianzas con municipalidades para integrar datos de interiores en proyectos de "Smart Cities".</td><td>Capturar el mercado de lujo y corporativos transnacionales en San Isidro y Miraflores.</td><td>Crecimiento de la construcción de edificios de oficinas clase A+ en el centro financiero de Lima.</td>
         </tr>
         <tr>
             <td>Amenazas</td>
-            <td>texto 1</td><td>texto 1</td><td>texto 1</td><td>texto 1</td>
+            <td>Ingreso de clones económicos de China; cambios bruscos en las normativas de salud del gobierno peruano que favorezcan certificaciones internacionales caras.</td><td>Saturación de datos públicos gratuitos que hagan que las empresas no quieran pagar por una versión privada.</td><td>Aparición de sensores de bajo costo con precisión "suficiente" para el usuario común que no requiere estándares suizos.</td><td>Crisis en el sector inmobiliario comercial que detenga la construcción de nuevos edificios "Smart".</td>
         </tr>
     </tbody>
 </table>
