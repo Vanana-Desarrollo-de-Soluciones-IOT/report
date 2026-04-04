@@ -10,6 +10,7 @@
 | 0.0.6   | 03/04/2024 | Ian Macavilca Quispe                  | Elaboré el Lean UX Problem Statement del proyecto, integrando métricas de éxito (KPIs) basadas en estándares internacionales (ASHRAE/OMS) y alineando las necesidades de los usuarios con los objetivos estratégicos de la startup. |
 | 0.0.7   | 03/04/2024 | Josue Paiva                           | Redacte la descripción de la startup y planteé 2 hypothesis statements, centrados en los resultados que obtendrán los 2 segmentos objetivos tras usar Clair durante un determinado periodo de tiempo. |
 | 0.0.8   | 03/04/2024 | Dante Mateo Aleman Romano             | Elaboré el Lean UX Canvas del proyecto, organizando y consolidando los apartados de Business Problem, Users, User Outcomes & Benefits, Business Outcomes, Hypotheses y Solutions, alineándolos con la problemática identificada y los segmentos objetivo del proyecto |
+| 0.0.9   | 03/04/2024 | Neil Curipaco Huayllani               | Corregí los segmentos objetivos haciendo un enfoque mas claro |
 
 # Project Report Collaboration Insights
 
