@@ -84,17 +84,21 @@ En esta sección se realiza la identificación y descripción de los principales
 
 ### 2.1.2. Estrategias y tácticas frente a competidores.
 
-Para afrontar de manera estratégica el panorama competitivo en Lima Metropolitana, Vanana implementará una serie de tácticas ofensivas y defensivas diseñadas para capitalizar las brechas de servicio de los actores globales y mitigar las amenazas del mercado local. Nuestra principal estrategia se centrará en la especialización sobre el microclima de interiores, diferenciándonos de competidores como Airly, cuyo enfoque principal es el monitoreo de exteriores, mediante el desarrollo de un ecosistema de alertas inteligentes y reportes de gestión de aforo que transforman datos crudos en decisiones operativas inmediatas para administradores de espacios cerrados.
+Para afrontar de manera estratégica el panorama competitivo en Lima Metropolitana, Vanana implementará una serie de tácticas ofensivas y defensivas diseñadas para capitalizar las brechas de servicio de los actores globales y mitigar las amenazas del mercado local. 
 
-Frente a la autoridad de marca de gigantes como IQAir o la complejidad técnica de Kaiterra, Clair se posicionará como una solución de alta precisión técnica pero de baja barrera de entrada, ofreciendo un modelo de costos híbrido que combina hardware accesible con una suscripción SaaS de analítica avanzada, eliminando la necesidad de grandes inversiones iniciales o personal especializado para su instalación.
+1. Nuestra principal estrategia se centrará en la especialización sobre el microclima de interiores, diferenciándonos de competidores como Airly, cuyo enfoque principal es el monitoreo de exteriores, mediante el desarrollo de un ecosistema de alertas inteligentes y reportes de gestión de aforo que transforman datos crudos en decisiones operativas inmediatas para administradores de espacios cerrados.
 
-Asimismo, para neutralizar la amenaza de dispositivos genéricos de bajo costo, fortaleceremos nuestra propuesta de valor mediante la creación de un "Sello de Calidad de Aire" local y un soporte técnico presencial garantizado en menos de 24 horas, aprovechando nuestra ubicación estratégica en Lima para ofrecer una cercanía y confianza que los proveedores internacionales no pueden replicar.
+2. Frente a la autoridad de marca de gigantes como IQAir o la complejidad técnica de Kaiterra, Clair se posicionará como una solución de alta precisión técnica, pero de baja barrera de entrada, ofreciendo un modelo de costos híbrido que combina hardware accesible con una suscripción SaaS de analítica avanzada, eliminando la necesidad de grandes inversiones iniciales o personal especializado para su instalación.
 
-Finalmente, aprovecharemos la creciente preocupación post-pandemia por la salud ambiental para ejecutar tácticas de marketing de contenidos y alianzas con gremios comerciales, posicionando a Clair no solo como un sensor de IoT, sino como una herramienta indispensable de responsabilidad social y seguridad laboral que protege activamente la salud de la comunidad peruana.
+3. Para neutralizar la amenaza de dispositivos genéricos de bajo costo, fortaleceremos nuestra propuesta de valor mediante la creación de un "Sello de Calidad de Aire" local y un soporte técnico presencial garantizado en menos de 24 horas, aprovechando nuestra ubicación estratégica en Lima para ofrecer una cercanía y confianza que los proveedores internacionales no pueden replicar.
+
+4. Aprovecharemos la creciente preocupación post-pandemia por la salud ambiental para ejecutar tácticas de marketing de contenidos y alianzas con gremios comerciales, posicionando a Clair no solo como un sensor de IoT, sino como una herramienta indispensable de responsabilidad social y seguridad laboral que protege activamente la salud de la comunidad peruana.
+
+5. Buscaremos ofrecer soluciones prácticas y personalizadas a los locales u hogares que usen Clair con las recomendaciones ofrecidas en la aplicación móvil, para que los usuarios puedan tomar acciones concretas, el resultado de dichas acciones se podrá observar en los reportes históricos semanales.
 
 ## 2.2. Entrevistas.
 
-En esta sección se aborda la investigación tomando como base la recolección de información en base a entrevistas a representantes de los segmentos objetivo.
+En esta sección se aborda la investigación tomando como base la recolección de información basándonos en entrevistas a representantes de los segmentos objetivo.
 
 ### 2.2.1. Diseño de entrevistas.
 
