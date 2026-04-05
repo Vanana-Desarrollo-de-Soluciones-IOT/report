@@ -13,6 +13,7 @@
 | 0.0.9   | 03/04/2026 | Neil Curipaco Huayllani               | Corregí los segmentos objetivos haciendo un enfoque mas claro. |
 | 0.1.0   | 04/04/2026 | Fabrizio Alessandro Contreras Peralta | Modifique el Lean UX Canvas para simplificar el enfoque de negocio, asimismo, cambié la descripción del startup para alinearlo más a la visión y misión interna. |
 | 0.1.1   | 05/04/2026 | Neil Curipaco Huayllani               | Agregue la sección estrategias y tácticas frente a competidores según la información obtenida por mi compañero |
+| 0.1.2   | 05/04/2026 | Dante Mateo Aleman Romano             | Elaboré el diseño de las entrevistas correspondientes al Capítulo 2 del informe, definiendo la estructura de preguntas para los segmentos objetivo y organizando su contenido para facilitar el posterior registro, análisis y sustento de las entrevistas dentro del proceso de Requirements Elicitation & Analysis. |
 
 # Project Report Collaboration Insights
 
