@@ -10,6 +10,16 @@ Para los diagramas de EventStorming se utilizará LucidChart / Miro.
 
 En esta sección se realiza la identificación y descripción de los principales competidores directos (3 como mínimo) con modelos de negocio basados en productos digitales similares, o en su defecto competidores indirectos con ofertas parcialmente similares
 
+
+**Airly**
+Airly es una empresa de origen polaco que ha consolidado una de las redes de monitoreo de calidad del aire más extensas y dinámicas a nivel global. Su propuesta de valor se fundamenta en la implementación de sensores de alta resistencia diseñados principalmente para entornos exteriores, utilizando algoritmos avanzados de inteligencia artificial para generar pronósticos predictivos y mapas de calor comunitarios de acceso abierto. En el contexto de Lima Metropolitana, se han posicionado como el referente principal para municipalidades y organizaciones gubernamentales (B2G), apalancando una estrategia de *Open Data* que otorga visibilidad masiva a su marca mientras facilita la comercialización de soluciones privadas de monitoreo ambiental para el sector retail y corporativo.
+
+**IQAir** 
+Establecida como el estándar de oro global en tecnología de purificación y monitoreo, IQAir es una organización suiza cuya autoridad de marca se sustenta en poseer la base de datos de calidad del aire más consultada del mundo. Su línea de productos, destacando la serie AirVisual, está orientada a un segmento de mercado premium que incluye instituciones de salud privadas, embajadas y corporaciones de alto nivel que requieren una precisión técnica certificada para auditorías de salud ambiental. Su ecosistema se distingue por una integración vertical perfecta entre dispositivos de monitoreo y sistemas de purificación, utilizando su plataforma móvil líder en descargas como un canal de marketing directo para capturar a consumidores de alto poder adquisitivo preocupados por la pureza total del entorno.
+
+**Kaiterra** 
+Kaiterra es una compañía especializada en el sector B2B y la gestión de *Smart Buildings*, enfocada en proporcionar soluciones de hardware modular, como el sistema Sensedge, que se integran nativamente con la infraestructura de climatización (HVAC) de grandes edificaciones. Su ventaja competitiva reside en el cumplimiento normativo estricto, siendo sus dispositivos los únicos en el mercado que garantizan puntajes directos para la obtención de certificaciones internacionales de sostenibilidad como LEED, WELL y RESET. Al emplear protocolos de comunicación industrial (BACnet y Modbus), Kaiterra se dirige específicamente a desarrolladoras inmobiliarias y gestores de infraestructura que buscan optimizar el rendimiento del edificio y asegurar estándares de construcción verde, consolidándose como un aliado técnico esencial en proyectos de edificación de clase A+.
+
 ### 2.1.1. Análisis competitivo.
 
 <table>
