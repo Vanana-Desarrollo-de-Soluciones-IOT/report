@@ -7,3 +7,9 @@
 - IQAir. (2024). _World Air Quality Report 2023_. IQAir. [https://www.iqair.com/world-air-quality-report](https://www.iqair.com/world-air-quality-report)
 
 - Organización Mundial de la Salud [OMS]. (2021). _WHO global air quality guidelines: Particulate matter (PM2.5 and PM10), ozone, nitrogen dioxide, sulfur dioxide and carbon monoxide_. World Health Organization.
+
+- Airly. (s. f.). Air Quality Monitoring in the UK, EU, and Worldwide. Airly Data Platform and Monitors. Recuperado el 6 de abril de 2026, de https://airly.org/en/
+
+- Kaiterra. (s. f.). Soluciones de monitoreo de la calidad del aire para edificios saludables y sostenibles. Recuperado el 6 de abril de 2026, de https://www.kaiterra.com/es/
+
+- IQAir. (s. f.). Información sobre la calidad del aire en todo el mundo. Recuperado el 6 de abril de 2026, de https://www.iqair.com/es/
