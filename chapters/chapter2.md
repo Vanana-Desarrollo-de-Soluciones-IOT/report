@@ -136,11 +136,79 @@ En esta sección se aborda la investigación tomando como base la recolección d
 
 ### 2.2.2. Registro de entrevistas.
 
-Para cada segmento se requiere de 3 a 5 entrevistas. Para cada una de las entrevistas se debe indicar la información de nombres, apellidos, edad, distrito, un screenshot de un cuadro de video y el URL del video subido en Microsoft Stream/Clipchamp (es un solo video editado para todas las entrevistas) incluyendo el timing donde inicia la entrevista y su duración. La entrevista debe ser registrada en video, que sirve de evidencia de entrevistas. Para cada entrevista debe redactarse en este informe un resumen, que explique de forma descriptiva las respuestas del entrevistado a las preguntas realizadas. Todas las características objetivas y subjetivas, incluyendo aspectos como personalidad, marcas e influencias, tecnología, canales de interacción, browser, dispositivos, etc. Deben estar incluidas como parte de los resúmenes para cada entrevista. Debe ser evidente que cada característica de los arquetipos que se construirán en base a esta información provienen de datos recolectados. Ver otras indicaciones importantes en el Anexo C. Indicaciones para secciones que incluyen Videos.
+**Segmento objetivo 1: Administradores de Establecimientos Públicos y Privados**
+
+**Segmento objetivo 2: Personas preocupadas por la calidad del aire en el hogar**
+
+**Entrevista 1: Guliana Nisbet Curipaco Huayllani**
+
+<img src="../assets/entrevistas/segmento 2 entrevista 1.png" alt="segmento 2 entrevista 1" width="500">
+
+- **URL:** 
+
+- **Inicio:**
+
+- **Fin:** 
+
+**Resumen:** 
+
+**Datos Demográficos:** 
+La entrevistada tiene 29 años de edad , vive en el distrito de Chorrillos y comparte su hogar con otra persona adulta, por lo que no convive con niños ni adultos mayores.
+
+**Ocupación y Background:** 
+Actualmente se desempeña como médico residente de psiquiatría en el Hospital San José. Lleva viviendo cuatro meses en su hogar actual en Chorrillos, habiendo residido anteriormente en Bellavista, Callao. Describe su zona como "fatal" respecto al tráfico vehicular debido a las limitadas vías de acceso y señala que existe una alta densidad urbana con mucha gente alrededor.
+
+**Perfil Psicográfico:**
+ Se considera regularmente activa en la toma de decisiones preventivas para la salud de su familia. En su hogar utiliza diversos dispositivos como televisor inteligente, laptops, tablets, celulares y una lavadora con conexión Wi-Fi. Debido a su profesión médica, busca información de bienestar exclusivamente en páginas con evidencia científica , aunque también consulta redes sociales y a colegas de otras especialidades para mantenerse actualizada.
+
+**Calidad del Aire:** 
+Desde que se mudó a Chorrillos, percibe que el aire es más seco, caliente y con mayor presencia de polvo que en su vivienda anterior. Ha experimentado una activación de su rinitis alérgica , la cual asocia directamente al ambiente actual de su casa , y menciona que la persona con la que vive padece de asma. Aunque no ha revisado datos objetivos sobre la contaminación exterior, sospecha que esta afecta el interior de su hogar. Por temor a los insectos (mosquitos y polillas), mantiene las ventanas cerradas con cortinas, lo que la lleva a imaginar que los contaminantes se concentran más en el interior. Para mitigar estas molestias, emplea ventiladores y un enfriador portátil, aunque admite no saber si son realmente efectivos.
+
+**Objetivos y Frustraciones:** 
+Su mayor preocupación es la concentración de polvo y de $CO_2$ en el ambiente debido a la falta de ventilación. Reconoce que actúa por intuición y no tiene un control real sobre la calidad del aire. Tomaría una acción concreta si sus episodios de rinitis se incrementaran o si su acompañante sufriera una crisis de asma. Considera que sería muy útil ver la calidad del aire en tiempo real , siempre que el dispositivo sea portátil, duradero y fácil de entender, ya sea mediante dígitos o letras.
+
+**Tecnología y Canales:** 
+Los dispositivos que más utiliza durante el día son el celular y el televisor inteligente , aunque no usa aplicaciones relacionadas con la salud o el hogar. Preferiría visualizar la información del aire en su celular mediante notificaciones y el uso de colorimetría para facilitar la interpretación visual. Valora que la aplicación utilice un lenguaje coloquial y comprensible para todos , y le resultaría cómodo recibir sugerencias automáticas sobre qué acciones realizar.
+
+**Comportamiento de Decisión:** 
+Estaría dispuesta a adquirir el dispositivo si tiene un precio adecuado, un tamaño portátil y ofrece opciones de acción simples. Aunque no ha comprado antes productos similares (más allá de equipos para ejercicio) , recomendaría esta solución en el Perú, notando que en países como Corea o Japón el uso de sensores de polución es una práctica rutinaria debido a la evidencia de su impacto en la salud.
+
+
+
+**Entrevista 2: Geraldine Curipaco**
+
+<img src="../assets/entrevistas/segmento 2 entrevista 2.png" alt="segmento 2 entrevista 2" width="500">
+
+- **URL:** 
+
+- **Inicio:**
+
+- **Fin:** 
+
+**Datos Demográficos:** 
+La entrevistada tiene 26 años de edad, reside en el distrito de Jesús María y vive en un hogar conformado por tres personas, donde no hay presencia de niños ni adultos mayores.
+
+**Ocupación y Background:** 
+Se desempeña como ingeniera de software en una entidad bancaria. Reside en su vivienda actual desde hace aproximadamente 6 años. Describe su zona con presencia de tráfico vehicular, especialmente en horas punta, y menciona que vive en un edificio grande rodeado de muchas personas.
+
+**Perfil Psicográfico:**
+No se considera una persona muy activa en la toma de decisiones preventivas de salud, indicando que no se alarma rápidamente ante situaciones médicas. Utiliza cotidianamente celular, laptop y televisión inteligente. Para resolver dudas de salud o bienestar, recurre a búsquedas generales en Internet o consulta a la inteligencia artificial Perplexity.
+
+**Calidad del Aire:** 
+Si bien no siente el aire "cargado" de forma constante, nota que en ciertos días la ciudad amanece con olores extraños. Padece de alergias que se activan principalmente por las mañanas. Asocia estos síntomas con la humedad y los cambios de estación. Es consciente de que la contaminación exterior afecta el interior de su hogar y ha percibido el ambiente cargado en momentos de alta polución. Aunque no conocía específicamente el impacto del $CO_2$, sí estaba al tanto de la contaminación general en interiores. Actualmente no utiliza ningún dispositivo como purificadores o humedecedores para mejorar el ambiente de su casa.
+
+**Objetivos y Frustraciones:** 
+No manifiesta una preocupación profunda respecto al aire, ya que ha tratado de controlar sus alergias mediante medicamentos. Admite no tener un control real sobre la calidad del aire. Tomaría una acción concreta si sus alergias persistieran durante todo el día y le impidieran respirar con normalidad, lo que la obligaría a acudir al médico. Considera útil visualizar el nivel de contaminación en tiempo real para saber qué actividades realizar, dado su limitado conocimiento previo sobre el tema.
+
+**Tecnología y Canales:** 
+Utiliza principalmente el celular y la laptop durante el día, pero no emplea aplicaciones de salud o bienestar. Preferiría recibir la información del aire a través de notificaciones en su celular. Asimismo, le resultaría muy cómodo que el dispositivo le sugiriera pasos a seguir de forma automática, como abrir ventanas o encender la ventilación.
+
+**Comportamiento de Decisión:** 
+La decisión de compra dependería de que el dispositivo sea accesible económicamente y ofrezca instrucciones detalladas "paso a paso". Compraría el monitor de aire si llegara a enfermarse por un periodo prolongado. Ella sería la única encargada de tomar la decisión de compra en su familia. Finalmente, si el producto le resultara efectivo, lo recomendaría a familiares y amigos que también padezcan de alergias.
 
 ### 2.2.3. Análisis de entrevistas.
 
-En esta sección se debe realizar un análisis por cada segmento objetivo, identificando con sustento estadístico (porcentajes) todas las características objetivas y subjetivas que representan los aspectos más comunes de cada segmento y que son necesarios para la construcción de los arquetipos. La fuente de información para este análisis proviene de las entrevistas registradas. Debe evidenciarse que cada característica tiene relación con las entrevistas registradas y los resúmenes realizados para las mismas.
+
 
 ## 2.3. Needfinding.
 
