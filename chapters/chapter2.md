@@ -206,6 +206,39 @@ Utiliza principalmente el celular y la laptop durante el día, pero no emplea ap
 **Comportamiento de Decisión:** 
 La decisión de compra dependería de que el dispositivo sea accesible económicamente y ofrezca instrucciones detalladas "paso a paso". Compraría el monitor de aire si llegara a enfermarse por un periodo prolongado. Ella sería la única encargada de tomar la decisión de compra en su familia. Finalmente, si el producto le resultara efectivo, lo recomendaría a familiares y amigos que también padezcan de alergias.
 
+
+
+**Entrevista 2: Dana Sofía Cabrera Sosa**
+
+<img src="../assets/entrevistas/segmento 2 entrevista 3.png" alt="segmento 2 entrevista 3" width="500">
+
+- **URL:** 
+
+- **Inicio:**
+
+- **Fin:** 
+
+**Datos Demográficos:** 
+La entrevistada tiene 27 años de edad, reside en la provincia de Ayacucho y vive en un hogar conformado por dos personas, donde no hay presencia de niños pequeños ni adultos mayores.
+
+**Ocupación y Background:** 
+Dana se desempeña actualmente como médico y trabaja en un hospital. Reside en su vivienda actual desde hace aproximadamente un año y medio. Describe su zona con niveles regulares tanto de tráfico vehicular como de densidad urbana.
+
+**Perfil Psicográfico:**
+Se considera una persona bastante activa en la toma de decisiones preventivas sobre la salud de su familia. Los dispositivos tecnológicos que utiliza en casa incluyen celulares, laptops y parlantes. Debido a su formación y labor en el sector salud, busca información confiable sobre bienestar en guías de práctica médica y artículos científicos (*papers*)
+
+**Calidad del Aire:** 
+La entrevistada manifiesta no haber sentido el aire de su hogar cargado o incómodo, y señala que nadie en su casa ha presentado síntomas como dolores de cabeza o problemas respiratorios recurrentes. Aunque desconoce si la contaminación exterior afecta el interior de su vivienda, es consciente de que el aire en espacios cerrados puede concentrar contaminantes como $CO_2$ o partículas finas. Actualmente, sus únicas acciones para cuidar el ambiente son la limpieza general y abrir las ventanas, admitiendo que no cuenta con ninguna medida de control técnica.
+
+**Objetivos y Frustraciones:** 
+Su mayor preocupación ambiental actual es la contaminación sonora, debido a la cercanía de un centro de convenciones que genera ruido excesivo durante sus eventos. Respecto al aire, admite no tener un control real sobre su calidad, por lo que considera que sería bastante útil contar con un sistema que le permita visualizar el estado del aire en tiempo real y recibir recomendaciones. Para justificar la compra de un dispositivo, este debería ofrecer un conteo de $CO_2$ en tiempo real y ser útil al brindar sugerencias de acción.
+
+**Tecnología y Canales:** 
+Los dispositivos que más utiliza durante el día son la laptop y el celular. En cuanto a la visualización de datos, preferiría recibir la información a través de una combinación de colores y notificaciones en su teléfono móvil. Además, afirma que le resultaría cómodo que el dispositivo sugiriera automáticamente acciones preventivas, como ventilar los ambientes.
+
+**Comportamiento de Decisión:** 
+Su principal motivación para adquirir un dispositivo de monitoreo sería la prevención de la salud. Aunque no ha comprado productos similares anteriormente por falta de conocimiento sobre su existencia en el mercado, se muestra dispuesta a recomendar este tipo de solución a personas cercanas tras conocer la propuesta del proyecto.
+
 ### 2.2.3. Análisis de entrevistas.
 
 
