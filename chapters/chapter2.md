@@ -136,180 +136,23 @@ En esta sección se aborda la investigación tomando como base la recolección d
 
 ### 2.2.2. Registro de entrevistas.
 
-**Segmento objetivo 1: Administradores de Establecimientos Públicos y Privados**
+| Segmento objetivo                                            | Administradores de Establecimientos Públicos y Privados      | Video                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | --------------------------- |
+| Santiago Temoche<br /><img src="../assets/entrevistas/segmento 1 entrevista 1.png" alt="segmento 1 entrevista 1" width="500"> | **Datos Demográficos:** <br/>El entrevistado tiene 18 años de edad. Su establecimiento se ubica en el Centro Comercial Arenales, específicamente en el sótano<br/><br/>**Ocupación y Background:** <br/>Se encarga de la atención, ventas y entrega de productos en una tienda de coleccionables. El local es frecuentado por 20 a 30 personas en un día normal y él trabaja de forma fija desde hace 2 a 3 años, con apoyo ocasional de compañeros.<br/><br/>**Perfil Psicográfico:**<br/>Ante problemas que afectan la experiencia del cliente, busca soluciones inmediatas que estén a su alcance para asegurar la satisfacción. Se considera abierto a adoptar nueva tecnología "de vez en cuando" si ayuda a mejorar el local, específicamente en temas de ventilación.<br/><br/>**Calidad del Aire:** <br/>Utiliza ventiladores cuando hay mucha afluencia de gente o calor excesivo. Confía en que la ventilación existente es suficiente y solo ha recibido observaciones sobre el calor en tono de broma, no como quejas formales. No sabía que el $CO_2$ puede superar los límites recomendados sin ser notado y admite no saber cómo determinar si el aire está en rangos seguros.<br/><br/>**Objetivos y Frustraciones:** <br/>Considera importante el bienestar de los clientes, ofreciéndoles sillas para descansar y prendiendo el ventilador para que se sientan frescos. Estaría dispuesto a usar una solución de monitoreo en tiempo real siempre que tenga un bajo precio o una buena relación calidad-precio.<br/><br/>**Tecnología y Canales:** <br/>Usa diariamente computadoras y dispositivos POS para la gestión de la tienda. Afirma que le serviría una aplicación con alertas en tiempo real para saber qué arreglar al momento y le resultaría útil generar reportes históricos de seguridad.<br/><br/>**Comportamiento de Decisión:** <br/>El entrevistado muestra disposición a recomendar soluciones que den resultados concretos a otros administradores. | URL:<br />Inicio:<br />Fin: |
+| Rafael Barraza<br /><img src="../assets/entrevistas/segmento 1 entrevista 2.png" alt="segmento 1 entrevista 2" width="500"> | **Datos Demográficos:** <br/>El entrevistado tiene 39 años de edad. Su establecimiento también se encuentra en el Centro Comercial Arenales, en el distrito de Lince. Su cargo es el de dueño de la tienda.<br/><br/>**Ocupación y Background:** <br/>Administra un local dedicado a la venta de juguetería (peluches, llaveros, *blindboxes*). Recibe entre 30 y 40 personas los días bajos, y hasta 120 personas por día los fines de semana. Lleva administrando este espacio un año y medio.<br/><br/>**Perfil Psicográfico:**<br/>Utiliza sistemas POS del BCP para la gestión de pagos, tables y teléfonos celulares y se muestra dispuesto a recibir sugerencias tecnológicas para mejorar la experiencia en su local.<br/><br/>**Calidad del Aire:** <br/>No cuenta con un sistema o práctica específica para controlar la ventilación y no confía en que la ventilación actual sea suficiente para mantener un ambiente saludable. A diferencia de otros casos, sí ha notado que sus empleados experimentan fatiga o malestar físico durante la jornada laboral.<br/><br/>**Objetivos y Frustraciones:** <br/>Siente que actualmente hay aspectos del ambiente que no puede controlar ni medir. Sin embargo, afirma que cumpliría con estándares de salubridad si existiera una forma sencilla de demostrarlo. Estaría dispuesto a usar una solución de monitoreo en tiempo real que le indique cuándo actuar , siempre que sea de fácil funcionamiento y tenga una relación calidad-precio adecuada.<br/><br/>**Tecnología y Canales:** <br/>Los dispositivos tecnológicos que más usa a diario son el celular, tablets y equipos de pago. Mostró interés en el uso de aplicaciones que reporten el estado del aire en tiempo real.<br/><br/>**Comportamiento de Decisión:** <br/>Afirma con seguridad que recomendaría a otros administradores cualquier solución que le haya entregado resultados concretos. | URL:<br />Inicio:<br />Fin: |
+| FALTA FABRIZIO                                               | FALTA FABRIZIO                                               | FALTA FABRIZIO              |
+
+| Segmento objetivo                                            | Personas preocupadas por la calidad del aire en el hogar     | Video                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | --------------------------- |
+| Guliana Nisbet Curipaco Huayllani<br /><img src="../assets/entrevistas/segmento 2 entrevista 1.png" alt="segmento 2 entrevista 1" width="500"> | **Datos Demográficos:** <br/>La entrevistada tiene 29 años de edad , vive en el distrito de Chorrillos y comparte su hogar con otra persona adulta, por lo que no convive con niños ni adultos mayores.<br/><br/>**Ocupación y Background:** <br/>Actualmente se desempeña como médico residente de psiquiatría en el Hospital San José. Lleva viviendo cuatro meses en su hogar actual en Chorrillos, habiendo residido anteriormente en Bellavista, Callao. Describe su zona como "fatal" respecto al tráfico vehicular debido a las limitadas vías de acceso y señala que existe una alta densidad urbana con mucha gente alrededor.<br/><br/>**Perfil Psicográfico:**<br/> Se considera regularmente activa en la toma de decisiones preventivas para la salud de su familia. En su hogar utiliza diversos dispositivos como televisor inteligente, laptops, tablets, celulares y una lavadora con conexión Wi-Fi. Debido a su profesión médica, busca información de bienestar exclusivamente en páginas con evidencia científica , aunque también consulta redes sociales y a colegas de otras especialidades para mantenerse actualizada.<br/><br/>**Calidad del Aire:** <br/>Desde que se mudó a Chorrillos, percibe que el aire es más seco, caliente y con mayor presencia de polvo que en su vivienda anterior. Ha experimentado una activación de su rinitis alérgica , la cual asocia directamente al ambiente actual de su casa , y menciona que la persona con la que vive padece de asma. Aunque no ha revisado datos objetivos sobre la contaminación exterior, sospecha que esta afecta el interior de su hogar. Por temor a los insectos (mosquitos y polillas), mantiene las ventanas cerradas con cortinas, lo que la lleva a imaginar que los contaminantes se concentran más en el interior. Para mitigar estas molestias, emplea ventiladores y un enfriador portátil, aunque admite no saber si son realmente efectivos.<br/><br/>**Objetivos y Frustraciones:** <br/>Su mayor preocupación es la concentración de polvo y de $CO_2$ en el ambiente debido a la falta de ventilación. Reconoce que actúa por intuición y no tiene un control real sobre la calidad del aire. Tomaría una acción concreta si sus episodios de rinitis se incrementaran o si su acompañante sufriera una crisis de asma. Considera que sería muy útil ver la calidad del aire en tiempo real , siempre que el dispositivo sea portátil, duradero y fácil de entender, ya sea mediante dígitos o letras.<br/><br/>**Tecnología y Canales:** <br/>Los dispositivos que más utiliza durante el día son el celular y el televisor inteligente , aunque no usa aplicaciones relacionadas con la salud o el hogar. Preferiría visualizar la información del aire en su celular mediante notificaciones y el uso de colorimetría para facilitar la interpretación visual. Valora que la aplicación utilice un lenguaje coloquial y comprensible para todos , y le resultaría cómodo recibir sugerencias automáticas sobre qué acciones realizar.<br/><br/>**Comportamiento de Decisión:** <br/>Estaría dispuesta a adquirir el dispositivo si tiene un precio adecuado, un tamaño portátil y ofrece opciones de acción simples. Aunque no ha comprado antes productos similares (más allá de equipos para ejercicio) , recomendaría esta solución en el Perú, notando que en países como Corea o Japón el uso de sensores de polución es una práctica rutinaria debido a la evidencia de su impacto en la salud. | URL:<br />Inicio:<br />Fin: |
+| Geraldine Curipaco<br /><img src="../assets/entrevistas/segmento 2 entrevista 2.png" alt="segmento 2 entrevista 2" width="500"> | **Datos Demográficos:** <br/>La entrevistada tiene 26 años de edad, reside en el distrito de Jesús María y vive en un hogar conformado por tres personas, donde no hay presencia de niños ni adultos mayores.<br/><br/>**Ocupación y Background:** <br/>Se desempeña como ingeniera de software en una entidad bancaria. Reside en su vivienda actual desde hace aproximadamente 6 años. Describe su zona con presencia de tráfico vehicular, especialmente en horas punta, y menciona que vive en un edificio grande rodeado de muchas personas.<br/><br/>**Perfil Psicográfico:**<br/>No se considera una persona muy activa en la toma de decisiones preventivas de salud, indicando que no se alarma rápidamente ante situaciones médicas. Utiliza cotidianamente celular, laptop y televisión inteligente. Para resolver dudas de salud o bienestar, recurre a búsquedas generales en Internet o consulta a la inteligencia artificial Perplexity.<br/><br/>**Calidad del Aire:** <br/>Si bien no siente el aire "cargado" de forma constante, nota que en ciertos días la ciudad amanece con olores extraños. Padece de alergias que se activan principalmente por las mañanas. Asocia estos síntomas con la humedad y los cambios de estación. Es consciente de que la contaminación exterior afecta el interior de su hogar y ha percibido el ambiente cargado en momentos de alta polución. Aunque no conocía específicamente el impacto del $CO_2$, sí estaba al tanto de la contaminación general en interiores. Actualmente no utiliza ningún dispositivo como purificadores o humedecedores para mejorar el ambiente de su casa.<br/><br/>**Objetivos y Frustraciones:** <br/>No manifiesta una preocupación profunda respecto al aire, ya que ha tratado de controlar sus alergias mediante medicamentos. Admite no tener un control real sobre la calidad del aire. Tomaría una acción concreta si sus alergias persistieran durante todo el día y le impidieran respirar con normalidad, lo que la obligaría a acudir al médico. Considera útil visualizar el nivel de contaminación en tiempo real para saber qué actividades realizar, dado su limitado conocimiento previo sobre el tema.<br/><br/>**Tecnología y Canales:** <br/>Utiliza principalmente el celular y la laptop durante el día, pero no emplea aplicaciones de salud o bienestar. Preferiría recibir la información del aire a través de notificaciones en su celular. Asimismo, le resultaría muy cómodo que el dispositivo le sugiriera pasos a seguir de forma automática, como abrir ventanas o encender la ventilación.<br/><br/>**Comportamiento de Decisión:** <br/>La decisión de compra dependería de que el dispositivo sea accesible económicamente y ofrezca instrucciones detalladas "paso a paso". Compraría el monitor de aire si llegara a enfermarse por un periodo prolongado. Ella sería la única encargada de tomar la decisión de compra en su familia. Finalmente, si el producto le resultara efectivo, lo recomendaría a familiares y amigos que también padezcan de alergias. | URL:<br />Inicio:<br />Fin: |
+| Dana Sofía Cabrera Sosa<br /><img src="../assets/entrevistas/segmento 2 entrevista 3.png" alt="segmento 2 entrevista 3" width="500"> | **Datos Demográficos:** <br/>La entrevistada tiene 27 años de edad, reside en la provincia de Ayacucho y vive en un hogar conformado por dos personas, donde no hay presencia de niños pequeños ni adultos mayores.<br/><br/>**Ocupación y Background:** <br/>Dana se desempeña actualmente como médico y trabaja en un hospital. Reside en su vivienda actual desde hace aproximadamente un año y medio. Describe su zona con niveles regulares tanto de tráfico vehicular como de densidad urbana.<br/><br/>**Perfil Psicográfico:**<br/>Se considera una persona bastante activa en la toma de decisiones preventivas sobre la salud de su familia. Los dispositivos tecnológicos que utiliza en casa incluyen celulares, laptops y parlantes. Debido a su formación y labor en el sector salud, busca información confiable sobre bienestar en guías de práctica médica y artículos científicos (*papers*)<br/>**Calidad del Aire:** <br/>La entrevistada manifiesta no haber sentido el aire de su hogar cargado o incómodo, y señala que nadie en su casa ha presentado síntomas como dolores de cabeza o problemas respiratorios recurrentes. Aunque desconoce si la contaminación exterior afecta el interior de su vivienda, es consciente de que el aire en espacios cerrados puede concentrar contaminantes como $CO_2$ o partículas finas. Actualmente, sus únicas acciones para cuidar el ambiente son la limpieza general y abrir las ventanas, admitiendo que no cuenta con ninguna medida de control técnica.<br/><br/>**Objetivos y Frustraciones:** <br/>Su mayor preocupación ambiental actual es la contaminación sonora, debido a la cercanía de un centro de convenciones que genera ruido excesivo durante sus eventos. Respecto al aire, admite no tener un control real sobre su calidad, por lo que considera que sería bastante útil contar con un sistema que le permita visualizar el estado del aire en tiempo real y recibir recomendaciones. Para justificar la compra de un dispositivo, este debería ofrecer un conteo de $CO_2$ en tiempo real y ser útil al brindar sugerencias de acción.<br/><br/>**Tecnología y Canales:** <br/>Los dispositivos que más utiliza durante el día son la laptop y el celular. En cuanto a la visualización de datos, preferiría recibir la información a través de una combinación de colores y notificaciones en su teléfono móvil. Además, afirma que le resultaría cómodo que el dispositivo sugiriera automáticamente acciones preventivas, como ventilar los ambientes.<br/>**Comportamiento de Decisión:** <br/>Su principal motivación para adquirir un dispositivo de monitoreo sería la prevención de la salud. Aunque no ha comprado productos similares anteriormente por falta de conocimiento sobre su existencia en el mercado, se muestra dispuesta a recomendar este tipo de solución a personas cercanas tras conocer la propuesta del proyecto. | URL:<br />Inicio:<br />Fin: |
 
-**Entrevista 1: Santiago Temoche**
 
-<img src="../assets/entrevistas/segmento 1 entrevista 1.png" alt="segmento 1 entrevista 1" width="500">
-
-- **URL:** 
-
-- **Inicio:**
-
-- **Fin:** 
-
-**Resumen:** 
-
-**Datos Demográficos:** 
-El entrevistado tiene 18 años de edad. Su establecimiento se ubica en el Centro Comercial Arenales, específicamente en el sótano
-
-**Ocupación y Background:** 
-Se encarga de la atención, ventas y entrega de productos en una tienda de coleccionables. El local es frecuentado por 20 a 30 personas en un día normal y él trabaja de forma fija desde hace 2 a 3 años, con apoyo ocasional de compañeros.
-
-**Perfil Psicográfico:**
-Ante problemas que afectan la experiencia del cliente, busca soluciones inmediatas que estén a su alcance para asegurar la satisfacción. Se considera abierto a adoptar nueva tecnología "de vez en cuando" si ayuda a mejorar el local, específicamente en temas de ventilación.
-
-**Calidad del Aire:** 
-Utiliza ventiladores cuando hay mucha afluencia de gente o calor excesivo. Confía en que la ventilación existente es suficiente y solo ha recibido observaciones sobre el calor en tono de broma, no como quejas formales. No sabía que el $CO_2$ puede superar los límites recomendados sin ser notado y admite no saber cómo determinar si el aire está en rangos seguros.
-
-**Objetivos y Frustraciones:** 
-Considera importante el bienestar de los clientes, ofreciéndoles sillas para descansar y prendiendo el ventilador para que se sientan frescos. Estaría dispuesto a usar una solución de monitoreo en tiempo real siempre que tenga un bajo precio o una buena relación calidad-precio.
-
-**Tecnología y Canales:** 
-Usa diariamente computadoras y dispositivos POS para la gestión de la tienda. Afirma que le serviría una aplicación con alertas en tiempo real para saber qué arreglar al momento y le resultaría útil generar reportes históricos de seguridad.
-
-**Comportamiento de Decisión:** 
-El entrevistado muestra disposición a recomendar soluciones que den resultados concretos a otros administradores.
-
-
-
-**Entrevista 2: **
-
-<img src="../assets/entrevistas/segmento 1 entrevista 2.png" alt="segmento 1 entrevista 2" width="500">
-
-- **URL:** 
-
-- **Inicio:**
-
-- **Fin:** 
-
-**Resumen:** 
-
-**Datos Demográficos:** 
-El entrevistado tiene 39 años de edad. Su establecimiento también se encuentra en el Centro Comercial Arenales, en el distrito de Lince. Su cargo es el de dueño de la tienda.
-
-**Ocupación y Background:** 
-Administra un local dedicado a la venta de juguetería (peluches, llaveros, *blindboxes*). Recibe entre 30 y 40 personas los días bajos, y hasta 120 personas por día los fines de semana. Lleva administrando este espacio un año y medio.
-
-**Perfil Psicográfico:**
-Utiliza sistemas POS del BCP para la gestión de pagos, tables y teléfonos celulares y se muestra dispuesto a recibir sugerencias tecnológicas para mejorar la experiencia en su local.
-
-**Calidad del Aire:** 
-No cuenta con un sistema o práctica específica para controlar la ventilación y no confía en que la ventilación actual sea suficiente para mantener un ambiente saludable. A diferencia de otros casos, sí ha notado que sus empleados experimentan fatiga o malestar físico durante la jornada laboral.
-
-**Objetivos y Frustraciones:** 
-Siente que actualmente hay aspectos del ambiente que no puede controlar ni medir. Sin embargo, afirma que cumpliría con estándares de salubridad si existiera una forma sencilla de demostrarlo. Estaría dispuesto a usar una solución de monitoreo en tiempo real que le indique cuándo actuar , siempre que sea de fácil funcionamiento y tenga una relación calidad-precio adecuada.
-
-**Tecnología y Canales:** 
-Los dispositivos tecnológicos que más usa a diario son el celular, tablets y equipos de pago. Mostró interés en el uso de aplicaciones que reporten el estado del aire en tiempo real.
-
-**Comportamiento de Decisión:** 
-Afirma con seguridad que recomendaría a otros administradores cualquier solución que le haya entregado resultados concretos.
-
-**Segmento objetivo 2: Personas preocupadas por la calidad del aire en el hogar**
-
-**Entrevista 1: Guliana Nisbet Curipaco Huayllani**
-
-<img src="../assets/entrevistas/segmento 2 entrevista 1.png" alt="segmento 2 entrevista 1" width="500">
-
-- **URL:** 
-
-- **Inicio:**
-
-- **Fin:** 
-
-**Resumen:** 
-
-**Datos Demográficos:** 
-La entrevistada tiene 29 años de edad , vive en el distrito de Chorrillos y comparte su hogar con otra persona adulta, por lo que no convive con niños ni adultos mayores.
-
-**Ocupación y Background:** 
-Actualmente se desempeña como médico residente de psiquiatría en el Hospital San José. Lleva viviendo cuatro meses en su hogar actual en Chorrillos, habiendo residido anteriormente en Bellavista, Callao. Describe su zona como "fatal" respecto al tráfico vehicular debido a las limitadas vías de acceso y señala que existe una alta densidad urbana con mucha gente alrededor.
-
-**Perfil Psicográfico:**
- Se considera regularmente activa en la toma de decisiones preventivas para la salud de su familia. En su hogar utiliza diversos dispositivos como televisor inteligente, laptops, tablets, celulares y una lavadora con conexión Wi-Fi. Debido a su profesión médica, busca información de bienestar exclusivamente en páginas con evidencia científica , aunque también consulta redes sociales y a colegas de otras especialidades para mantenerse actualizada.
-
-**Calidad del Aire:** 
-Desde que se mudó a Chorrillos, percibe que el aire es más seco, caliente y con mayor presencia de polvo que en su vivienda anterior. Ha experimentado una activación de su rinitis alérgica , la cual asocia directamente al ambiente actual de su casa , y menciona que la persona con la que vive padece de asma. Aunque no ha revisado datos objetivos sobre la contaminación exterior, sospecha que esta afecta el interior de su hogar. Por temor a los insectos (mosquitos y polillas), mantiene las ventanas cerradas con cortinas, lo que la lleva a imaginar que los contaminantes se concentran más en el interior. Para mitigar estas molestias, emplea ventiladores y un enfriador portátil, aunque admite no saber si son realmente efectivos.
-
-**Objetivos y Frustraciones:** 
-Su mayor preocupación es la concentración de polvo y de $CO_2$ en el ambiente debido a la falta de ventilación. Reconoce que actúa por intuición y no tiene un control real sobre la calidad del aire. Tomaría una acción concreta si sus episodios de rinitis se incrementaran o si su acompañante sufriera una crisis de asma. Considera que sería muy útil ver la calidad del aire en tiempo real , siempre que el dispositivo sea portátil, duradero y fácil de entender, ya sea mediante dígitos o letras.
-
-**Tecnología y Canales:** 
-Los dispositivos que más utiliza durante el día son el celular y el televisor inteligente , aunque no usa aplicaciones relacionadas con la salud o el hogar. Preferiría visualizar la información del aire en su celular mediante notificaciones y el uso de colorimetría para facilitar la interpretación visual. Valora que la aplicación utilice un lenguaje coloquial y comprensible para todos , y le resultaría cómodo recibir sugerencias automáticas sobre qué acciones realizar.
-
-**Comportamiento de Decisión:** 
-Estaría dispuesta a adquirir el dispositivo si tiene un precio adecuado, un tamaño portátil y ofrece opciones de acción simples. Aunque no ha comprado antes productos similares (más allá de equipos para ejercicio) , recomendaría esta solución en el Perú, notando que en países como Corea o Japón el uso de sensores de polución es una práctica rutinaria debido a la evidencia de su impacto en la salud.
-
-
-
-**Entrevista 2: Geraldine Curipaco**
-
-<img src="../assets/entrevistas/segmento 2 entrevista 2.png" alt="segmento 2 entrevista 2" width="500">
-
-- **URL:** 
-
-- **Inicio:**
-
-- **Fin:** 
-
-**Datos Demográficos:** 
-La entrevistada tiene 26 años de edad, reside en el distrito de Jesús María y vive en un hogar conformado por tres personas, donde no hay presencia de niños ni adultos mayores.
-
-**Ocupación y Background:** 
-Se desempeña como ingeniera de software en una entidad bancaria. Reside en su vivienda actual desde hace aproximadamente 6 años. Describe su zona con presencia de tráfico vehicular, especialmente en horas punta, y menciona que vive en un edificio grande rodeado de muchas personas.
-
-**Perfil Psicográfico:**
-No se considera una persona muy activa en la toma de decisiones preventivas de salud, indicando que no se alarma rápidamente ante situaciones médicas. Utiliza cotidianamente celular, laptop y televisión inteligente. Para resolver dudas de salud o bienestar, recurre a búsquedas generales en Internet o consulta a la inteligencia artificial Perplexity.
-
-**Calidad del Aire:** 
-Si bien no siente el aire "cargado" de forma constante, nota que en ciertos días la ciudad amanece con olores extraños. Padece de alergias que se activan principalmente por las mañanas. Asocia estos síntomas con la humedad y los cambios de estación. Es consciente de que la contaminación exterior afecta el interior de su hogar y ha percibido el ambiente cargado en momentos de alta polución. Aunque no conocía específicamente el impacto del $CO_2$, sí estaba al tanto de la contaminación general en interiores. Actualmente no utiliza ningún dispositivo como purificadores o humedecedores para mejorar el ambiente de su casa.
-
-**Objetivos y Frustraciones:** 
-No manifiesta una preocupación profunda respecto al aire, ya que ha tratado de controlar sus alergias mediante medicamentos. Admite no tener un control real sobre la calidad del aire. Tomaría una acción concreta si sus alergias persistieran durante todo el día y le impidieran respirar con normalidad, lo que la obligaría a acudir al médico. Considera útil visualizar el nivel de contaminación en tiempo real para saber qué actividades realizar, dado su limitado conocimiento previo sobre el tema.
-
-**Tecnología y Canales:** 
-Utiliza principalmente el celular y la laptop durante el día, pero no emplea aplicaciones de salud o bienestar. Preferiría recibir la información del aire a través de notificaciones en su celular. Asimismo, le resultaría muy cómodo que el dispositivo le sugiriera pasos a seguir de forma automática, como abrir ventanas o encender la ventilación.
-
-**Comportamiento de Decisión:** 
-La decisión de compra dependería de que el dispositivo sea accesible económicamente y ofrezca instrucciones detalladas "paso a paso". Compraría el monitor de aire si llegara a enfermarse por un periodo prolongado. Ella sería la única encargada de tomar la decisión de compra en su familia. Finalmente, si el producto le resultara efectivo, lo recomendaría a familiares y amigos que también padezcan de alergias.
-
-
-
-**Entrevista 2: Dana Sofía Cabrera Sosa**
-
-<img src="../assets/entrevistas/segmento 2 entrevista 3.png" alt="segmento 2 entrevista 3" width="500">
-
-- **URL:** 
-
-- **Inicio:**
-
-- **Fin:** 
-
-**Datos Demográficos:** 
-La entrevistada tiene 27 años de edad, reside en la provincia de Ayacucho y vive en un hogar conformado por dos personas, donde no hay presencia de niños pequeños ni adultos mayores.
-
-**Ocupación y Background:** 
-Dana se desempeña actualmente como médico y trabaja en un hospital. Reside en su vivienda actual desde hace aproximadamente un año y medio. Describe su zona con niveles regulares tanto de tráfico vehicular como de densidad urbana.
-
-**Perfil Psicográfico:**
-Se considera una persona bastante activa en la toma de decisiones preventivas sobre la salud de su familia. Los dispositivos tecnológicos que utiliza en casa incluyen celulares, laptops y parlantes. Debido a su formación y labor en el sector salud, busca información confiable sobre bienestar en guías de práctica médica y artículos científicos (*papers*)
-
-**Calidad del Aire:** 
-La entrevistada manifiesta no haber sentido el aire de su hogar cargado o incómodo, y señala que nadie en su casa ha presentado síntomas como dolores de cabeza o problemas respiratorios recurrentes. Aunque desconoce si la contaminación exterior afecta el interior de su vivienda, es consciente de que el aire en espacios cerrados puede concentrar contaminantes como $CO_2$ o partículas finas. Actualmente, sus únicas acciones para cuidar el ambiente son la limpieza general y abrir las ventanas, admitiendo que no cuenta con ninguna medida de control técnica.
-
-**Objetivos y Frustraciones:** 
-Su mayor preocupación ambiental actual es la contaminación sonora, debido a la cercanía de un centro de convenciones que genera ruido excesivo durante sus eventos. Respecto al aire, admite no tener un control real sobre su calidad, por lo que considera que sería bastante útil contar con un sistema que le permita visualizar el estado del aire en tiempo real y recibir recomendaciones. Para justificar la compra de un dispositivo, este debería ofrecer un conteo de $CO_2$ en tiempo real y ser útil al brindar sugerencias de acción.
-
-**Tecnología y Canales:** 
-Los dispositivos que más utiliza durante el día son la laptop y el celular. En cuanto a la visualización de datos, preferiría recibir la información a través de una combinación de colores y notificaciones en su teléfono móvil. Además, afirma que le resultaría cómodo que el dispositivo sugiriera automáticamente acciones preventivas, como ventilar los ambientes.
-
-**Comportamiento de Decisión:** 
-Su principal motivación para adquirir un dispositivo de monitoreo sería la prevención de la salud. Aunque no ha comprado productos similares anteriormente por falta de conocimiento sobre su existencia en el mercado, se muestra dispuesta a recomendar este tipo de solución a personas cercanas tras conocer la propuesta del proyecto.
 
 ### 2.2.3. Análisis de entrevistas.
 
-
+En esta sección se debe realizar un análisis por cada segmento objetivo, identificando con sustento estadístico (porcentajes) todas las características objetivas y subjetivas que representan los aspectos más comunes de cada segmento y que son necesarios para la construcción de los arquetipos. La fuente de información para este análisis proviene de las entrevistas registradas. Debe evidenciarse que cada característica tiene relación con las entrevistas registradas y los resúmenes realizados para las mismas.
 
 ## 2.3. Needfinding.
 
