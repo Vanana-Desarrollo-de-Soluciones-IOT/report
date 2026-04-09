@@ -18,7 +18,7 @@
 | 0.1.4   | 05/04/2026 | Josue Paiva                           | Añadí y mejoré la sección de estrategias y tácticas frente a competidores |
 | 0.1.5   | 06/04/2026 | Fabrizio Alessandro Contreras Peralta | Corrección de preguntas de la entrevista.                    |
 | 0.1.6   | 06/04/2026 | Neil Curipaco Huayllani               | Agregue las descripciones de cada competidor                 |
-| 0.1.7   | 08/04/2026 | Neil Curipaco Huayllani               | Realice la grabación las entrevistas del segmento objetivo 2 y redacte su descripción |
+| 0.1.7   | 08/04/2026 | Neil Curipaco Huayllani               | Realice la grabación de las entrevistas del segmento objetivo 2 y redacte su descripción y registro de 2 entrevistas del segmento 1 |
 
 # Project Report Collaboration Insights
 

@@ -138,6 +138,74 @@ En esta sección se aborda la investigación tomando como base la recolección d
 
 **Segmento objetivo 1: Administradores de Establecimientos Públicos y Privados**
 
+**Entrevista 1: Santiago Temoche**
+
+<img src="../assets/entrevistas/segmento 1 entrevista 1.png" alt="segmento 1 entrevista 1" width="500">
+
+- **URL:** 
+
+- **Inicio:**
+
+- **Fin:** 
+
+**Resumen:** 
+
+**Datos Demográficos:** 
+El entrevistado tiene 18 años de edad. Su establecimiento se ubica en el Centro Comercial Arenales, específicamente en el sótano
+
+**Ocupación y Background:** 
+Se encarga de la atención, ventas y entrega de productos en una tienda de coleccionables. El local es frecuentado por 20 a 30 personas en un día normal y él trabaja de forma fija desde hace 2 a 3 años, con apoyo ocasional de compañeros.
+
+**Perfil Psicográfico:**
+Ante problemas que afectan la experiencia del cliente, busca soluciones inmediatas que estén a su alcance para asegurar la satisfacción. Se considera abierto a adoptar nueva tecnología "de vez en cuando" si ayuda a mejorar el local, específicamente en temas de ventilación.
+
+**Calidad del Aire:** 
+Utiliza ventiladores cuando hay mucha afluencia de gente o calor excesivo. Confía en que la ventilación existente es suficiente y solo ha recibido observaciones sobre el calor en tono de broma, no como quejas formales. No sabía que el $CO_2$ puede superar los límites recomendados sin ser notado y admite no saber cómo determinar si el aire está en rangos seguros.
+
+**Objetivos y Frustraciones:** 
+Considera importante el bienestar de los clientes, ofreciéndoles sillas para descansar y prendiendo el ventilador para que se sientan frescos. Estaría dispuesto a usar una solución de monitoreo en tiempo real siempre que tenga un bajo precio o una buena relación calidad-precio.
+
+**Tecnología y Canales:** 
+Usa diariamente computadoras y dispositivos POS para la gestión de la tienda. Afirma que le serviría una aplicación con alertas en tiempo real para saber qué arreglar al momento y le resultaría útil generar reportes históricos de seguridad.
+
+**Comportamiento de Decisión:** 
+El entrevistado muestra disposición a recomendar soluciones que den resultados concretos a otros administradores.
+
+
+
+**Entrevista 2: **
+
+<img src="../assets/entrevistas/segmento 1 entrevista 2.png" alt="segmento 1 entrevista 2" width="500">
+
+- **URL:** 
+
+- **Inicio:**
+
+- **Fin:** 
+
+**Resumen:** 
+
+**Datos Demográficos:** 
+El entrevistado tiene 39 años de edad. Su establecimiento también se encuentra en el Centro Comercial Arenales, en el distrito de Lince. Su cargo es el de dueño de la tienda.
+
+**Ocupación y Background:** 
+Administra un local dedicado a la venta de juguetería (peluches, llaveros, *blindboxes*). Recibe entre 30 y 40 personas los días bajos, y hasta 120 personas por día los fines de semana. Lleva administrando este espacio un año y medio.
+
+**Perfil Psicográfico:**
+Utiliza sistemas POS del BCP para la gestión de pagos, tables y teléfonos celulares y se muestra dispuesto a recibir sugerencias tecnológicas para mejorar la experiencia en su local.
+
+**Calidad del Aire:** 
+No cuenta con un sistema o práctica específica para controlar la ventilación y no confía en que la ventilación actual sea suficiente para mantener un ambiente saludable. A diferencia de otros casos, sí ha notado que sus empleados experimentan fatiga o malestar físico durante la jornada laboral.
+
+**Objetivos y Frustraciones:** 
+Siente que actualmente hay aspectos del ambiente que no puede controlar ni medir. Sin embargo, afirma que cumpliría con estándares de salubridad si existiera una forma sencilla de demostrarlo. Estaría dispuesto a usar una solución de monitoreo en tiempo real que le indique cuándo actuar , siempre que sea de fácil funcionamiento y tenga una relación calidad-precio adecuada.
+
+**Tecnología y Canales:** 
+Los dispositivos tecnológicos que más usa a diario son el celular, tablets y equipos de pago. Mostró interés en el uso de aplicaciones que reporten el estado del aire en tiempo real.
+
+**Comportamiento de Decisión:** 
+Afirma con seguridad que recomendaría a otros administradores cualquier solución que le haya entregado resultados concretos.
+
 **Segmento objetivo 2: Personas preocupadas por la calidad del aire en el hogar**
 
 **Entrevista 1: Guliana Nisbet Curipaco Huayllani**
