@@ -21,6 +21,7 @@
 | 0.1.7   | 08/04/2026 | Neil Curipaco Huayllani               | Realice la grabación de las entrevistas del segmento objetivo 2 y redacte su descripción y registro de 2 entrevistas del segmento 1 |
 | 0.1.8   | 09/04/2026 | Fabrizio Alessandro Contreras Peralta | Realice la grabación de la tercera entrevista del segmento 1, asimismo redacte la descripción. |
 | 0.1.9   | 09/04/2026 | Dante Mateo Aleman Romano             | Realicé el análisis de las entrevistas de ambos segmentos objetivo, elaborando las tablas de características objetivas y subjetivas en el Capítulo II, identificando patrones clave sobre comportamiento y conocimiento respecto a la calidad del aire interior. |
+| 0.2.0   | 10/04/2026 | Neil Curipaco Huayllani               | Realice la el esquema de user persona para los segmentos 1 y 2 identificando sus metas, motivaciones y frustraciones, así mismo realice el cuadro de User Task Matrix |
 
 # Project Report Collaboration Insights
 
