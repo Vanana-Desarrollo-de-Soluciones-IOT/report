@@ -236,8 +236,73 @@ En esta sección, el equipo resume el proceso de elaboración y presenta captura
 
 ## 2.4. Big Picture EventStorming.
 
-En esta sección el equipo introduce, resume el proceso realizado por el equipo y presenta capturas y explicaciones de las etapas del Big Picture Event Storming. En una sesión colaborativa, el equipo se enfoca en entender el dominio del negocio en general, plasmando los eventos significativos y sus relaciones. Es una primera aproximación visual de alto nivel que explora el landscape del negocio, identificando procesos clave, exponiendo potenciales problemas u oportunidades. En https://bit.ly/bpes-guide encontrará un Step-by-Step Guide para realizar el proceso.
+Después, el equipo agregó los actores y sistemas externos que intervienen en el proceso. Se identificó al Home User y al Facility Admin como los usuarios principales del sistema. También se añadieron los sistemas externos necesarios para que Clair funcione, como el sensor de calidad de aire, el proveedor de autenticación, la pasarela de pagos, el servicio de correo, el controlador HVAC y el actuador de ventanas inteligentes. Con esto, el tablero permitió entender quién participa en cada etapa y qué herramientas o servicios apoyan el funcionamiento del producto.
+
+<img src="../assets/event-storming/big-picture-phase1.png" alt="segmento 2 Empathy map" width="1000">
+
+Después, el equipo agregó los actores y sistemas externos que intervienen en el proceso. Se identificó al Home User y al Facility Admin como los usuarios principales del sistema. También se añadieron los sistemas externos necesarios para que Clair funcione, como el sensor de calidad de aire, el proveedor de autenticación, la pasarela de pagos, el servicio de correo, el controlador HVAC y el actuador de ventanas inteligentes. Con esto, el tablero permitió entender quién participa en cada etapa y qué herramientas o servicios apoyan el funcionamiento del producto.
+
+Finalmente, el equipo añadió los hotspots y opportunities para señalar los puntos que necesitaban mayor análisis y las posibles mejoras del producto. Los hotspots representaron dudas importantes, como la frecuencia con la que el dispositivo debía tomar lecturas, cómo se calcularía el índice de calidad del aire, cuántas alertas se enviarían antes de generar fatiga en el usuario y cómo funcionaría la acción correctiva automática. Las opportunities mostraron mejoras posibles, como una prueba gratuita de 30 días, un modelo freemium, alarmas inteligentes, umbrales personalizados y acceso limitado al historial para usuarios gratuitos. De esta manera, el Big Picture permitió explicar de forma clara el recorrido completo de Clair, desde la creación de la cuenta hasta el uso continuo del sistema.
+
+<img src="../assets/event-storming/big-picture-eventStorming.png" alt="segmento 2 Empathy map" width="1000">
+
+El tablero completo del Big Picture Event Storming puede visualizarse en el siguiente enlace: https://bit.ly/3QwYkAS
 
 ## 2.5. Ubiquitous Language.
 
-En esta sección el equipo redacta un glosario de términos y conceptos con definiciones utilizadas en el business domain, sin ambigüedad, relacionados al área de especialidad o sector en el que se establecen el problema y la solución. Mantener un glosario de este tipo completo y actualizado, permite que se comuniquen claramente todos los miembros y stakeholders en el equipo. Solo debe incluirse términos del dominio, no términos técnicos del área de ingeniería de software. Los términos deben estar en inglés (puede incluirse adicionalmente el término equivalente en español entre paréntesis). La definición correspondiente al término puede estar en español. Eric Evans habla sobre Ubiquitous Language en su libro Domain-Driven Design: Tackling Complexity in the Heart of Software2 .
+| Term                                                         | Definition                                                   |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Clair                                                        | Producto IoT de Vanana orientado al monitoreo de calidad del aire interior. Incluye un dispositivo físico, mediciones ambientales, alertas, reportes y funciones asociadas a suscripción. |
+| Indoor Air Quality (calidad del aire interior)               | Condición del aire dentro de un ambiente cerrado, evaluada mediante variables como CO2, material particulado, temperatura y humedad. |
+| Air Quality Sensor (sensor de calidad de aire)               | Dispositivo físico Clair que captura mediciones ambientales dentro de un espacio. |
+| Home User (usuario del hogar)                                | Persona que utiliza Clair en un entorno residencial para monitorear y mejorar la calidad del aire de su vivienda. |
+| Facility Admin (administrador de establecimiento)            | Persona responsable de supervisar un espacio comercial, institucional o compartido donde se utiliza Clair. |
+| Payment (pago)                                               | Transacción realizada por el usuario para comprar Clair o mantener activa una suscripción. |
+| HVAC System (sistema HVAC)                                   | Sistema de ventilación, calefacción o aire acondicionado que puede mejorar las condiciones del aire interior. |
+| Smart Window Actuator (actuador de ventana inteligente)      | Dispositivo que permite abrir ventanas de forma automática como acción correctiva ante mala calidad del aire. |
+| Device (dispositivo)                                         | Unidad física de Clair instalada en un espacio para capturar datos ambientales. |
+| Device Registration (registro de dispositivo)                | Proceso mediante el cual un dispositivo Clair queda asociado a una cuenta de usuario. |
+| Device Location (ubicación del dispositivo)                  | Espacio físico donde se instala Clair, como sala, dormitorio, oficina o local comercial. |
+| Threshold (umbral)                                           | Valor límite definido para determinar cuándo una variable ambiental se considera riesgosa o incómoda. |
+| Default Threshold (umbral por defecto)                       | Valor inicial sugerido por Clair para evaluar una variable ambiental sin configuración personalizada. |
+| Facility Dependent Threshold (umbral dependiente del establecimiento) | Umbral ajustado según las condiciones o necesidades del tipo de espacio donde se instala Clair. |
+| Telemetry (telemetría)                                       | Conjunto de mediciones ambientales capturadas por Clair durante su funcionamiento. |
+| Reading (lectura)                                            | Medición individual capturada por el sensor, como CO2, PM, temperatura o humedad. |
+| CO2 Reading (lectura de CO2)                                 | Medición del nivel de dióxido de carbono presente en el ambiente interior. |
+| PM Reading (lectura de material particulado)                 | Medición de partículas suspendidas en el aire, especialmente asociadas a contaminación interior o exterior. |
+| Temperature (temperatura)                                    | Variable ambiental utilizada para evaluar confort térmico dentro del espacio monitoreado. |
+| Humidity (humedad)                                           | Variable ambiental utilizada para evaluar comodidad y posibles condiciones desfavorables del aire interior. |
+| Device Offline (dispositivo desconectado)                    | Estado en el que Clair deja de enviar mediciones por pérdida de conexión o interrupción del servicio. |
+| Device Reconnected (dispositivo reconectado)                 | Evento en el que Clair vuelve a enviar mediciones después de haber estado desconectado. |
+| Sensor Anomaly (anomalía del sensor)                         | Situación en la que las mediciones del dispositivo parecen incorrectas, inconsistentes o fuera del comportamiento esperado. |
+| Air Quality Index (índice de calidad del aire)               | Valor calculado por Clair para resumir el estado general del aire interior en una forma más comprensible para el usuario. |
+| CO2 Threshold Surpassed (umbral de CO2 superado)             | Situación en la que la lectura de CO2 excede el valor considerado aceptable para el ambiente. |
+| PM Threshold Surpassed (umbral de PM superado)               | Situación en la que la lectura de material particulado excede el valor considerado aceptable para el ambiente. |
+| Humidity Discomfort (incomodidad por humedad)                | Condición en la que la humedad del ambiente se encuentra fuera de un rango cómodo o recomendable. |
+| Thermic Discomfort (incomodidad térmica)                     | Condición en la que la temperatura del ambiente genera incomodidad o posible afectación al bienestar. |
+| Critical Alert (alerta crítica)                              | Aviso generado cuando Clair detecta una condición relevante o riesgosa de calidad del aire. |
+| Alert Notification (notificación de alerta)                  | Mensaje enviado al usuario para informar una alerta o evento relevante sobre la calidad del aire. |
+| Email Report (reporte por correo)                            | Comunicación enviada por correo electrónico con información, alerta o resumen relacionado con Clair. |
+| Alert Cooldown (enfriamiento de alerta)                      | Tiempo mínimo que debe pasar antes de volver a enviar una alerta similar al usuario. |
+| Alert Fatigue (fatiga por alertas)                           | Situación en la que el usuario deja de prestar atención a las alertas por recibir demasiadas notificaciones. |
+| Alert Reminder (recordatorio de alerta)                      | Notificación adicional que recuerda una condición pendiente o no resuelta. |
+| Smart Alarm (alarma inteligente)                             | Mejora propuesta para alertar de forma más útil, evitando exceso de notificaciones y considerando el contexto del usuario. |
+| Corrective Action (acción correctiva)                        | Medida sugerida o ejecutada por Clair para mejorar las condiciones del aire interior. |
+| Action Type (tipo de acción)                                 | Clasificación de la acción correctiva seleccionada, como encender HVAC o abrir ventanas. |
+| Auto Corrective Action Mode (modo de acción correctiva automática) | Función que permite a Clair ejecutar acciones correctivas sin intervención manual del usuario. |
+| HVAC Turned On (HVAC encendido)                              | Acción correctiva en la que el sistema de ventilación, calefacción o aire acondicionado se activa para mejorar el ambiente. |
+| Windows Opened (ventanas abiertas)                           | Acción correctiva en la que se abren ventanas mediante un actuador inteligente para mejorar la ventilación. |
+| Real Time Consultation (consulta en tiempo real)             | Revisión del estado actual de la calidad del aire por parte del usuario. |
+| Daily Digest (resumen diario)                                | Vista o reporte que resume el comportamiento del aire durante un día. |
+| Weekly Digest (resumen semanal)                              | Vista o reporte que resume el comportamiento del aire durante una semana. |
+| Monthly Digest (resumen mensual)                             | Vista o reporte que resume el comportamiento del aire durante un mes. |
+| Best Ventilation Hour (mejor hora de ventilación)            | Momento recomendado por Clair para ventilar el espacio con mejores resultados esperados. |
+| Historical Data (datos históricos)                           | Información acumulada de lecturas y eventos pasados del dispositivo. |
+| Historic Data Preview (vista previa de datos históricos)     | Acceso limitado a datos pasados que puede mostrarse a usuarios freemium para incentivar mejora de plan. |
+| Freemium                                                     | Modelo en el que el usuario puede utilizar una versión gratuita limitada de Clair. |
+| Free Trial (prueba gratuita)                                 | Periodo gratuito, por ejemplo 30 días, en el que el usuario puede acceder a funciones antes de pagar. |
+| Subscription (suscripción)                                   | Relación comercial que habilita funciones continuas de Clair, como reportes, historial y automatizaciones. |
+| Subscription Activation (activación de suscripción)          | Evento en el que la suscripción queda habilitada para el usuario. |
+| Subscription Deactivation (desactivación de suscripción)     | Evento en el que la suscripción deja de estar activa.        |
+| Premium User (usuario premium)                               | Usuario que cuenta con una suscripción activa o un plan con funciones avanzadas. |
+| Freemium User (usuario freemium)                             | Usuario que utiliza Clair con acceso gratuito y funciones limitadas. |
