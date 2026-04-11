@@ -22,8 +22,9 @@
 | 0.1.8   | 09/04/2026 | Fabrizio Alessandro Contreras Peralta | Realice la grabación de la tercera entrevista del segmento 1, asimismo redacte la descripción. |
 | 0.1.9   | 09/04/2026 | Dante Mateo Aleman Romano             | Realicé el análisis de las entrevistas de ambos segmentos objetivo, elaborando las tablas de características objetivas y subjetivas en el Capítulo II, identificando patrones clave sobre comportamiento y conocimiento respecto a la calidad del aire interior. |
 | 0.2.0   | 10/04/2026 | Neil Curipaco Huayllani               | Realice la el esquema de user persona para los segmentos 1 y 2 identificando sus metas, motivaciones y frustraciones, así mismo realice el cuadro de User Task Matrix |
-| 0.2.1   | 10/04/2026 | Josue Paiva                           | Elaboré los dos journey maps de cada segmneto objetivo, empleando la informacion obtenida de las entrevistas y usando UXPressia |
+| 0.2.1   | 10/04/2026 | Josue Paiva                           | Elaboré los dos journey maps de cada segmento objetivo, empleando la informacion obtenida de las entrevistas y usando UXPressia |
 | 0.2.2   | 10/04/2026 | Ian Macavilca                         | Realicé los dos Empathy maps de cada segmneto objetivo, empleando la informacion obtenida, las User Personas y usando UXPressia |
+| 0.2.3   | 11/04/2026 | Dante Mateo Aleman Romano             | Desarrollé el Big Picture EventStorming del proyecto y redacté el Ubiquitous Language con los términos técnicos del producto. |
 
 # Project Report Collaboration Insights
 
