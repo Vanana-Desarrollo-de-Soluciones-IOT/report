@@ -19,3 +19,5 @@
 # Anexo
 
 Link de la entrevista: https://goo.su/KKwEhz4
+
+Big Picture Event Storming: https://bit.ly/3QwYkAS

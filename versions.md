@@ -28,6 +28,3 @@
 
 # Project Report Collaboration Insights
 
-# Contenido
-
-Tabla de contenidos
