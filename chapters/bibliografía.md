@@ -13,3 +13,9 @@
 - Kaiterra. (s. f.). Soluciones de monitoreo de la calidad del aire para edificios saludables y sostenibles. Recuperado el 6 de abril de 2026, de https://www.kaiterra.com/es/
 
 - IQAir. (s. f.). Información sobre la calidad del aire en todo el mundo. Recuperado el 6 de abril de 2026, de https://www.iqair.com/es/
+
+
+
+# Anexo
+
+Link de la entrevista: https://goo.su/KKwEhz4
