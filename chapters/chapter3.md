@@ -6,9 +6,9 @@ Requisitos definidos junto con el conjunto de User Stories y Epics para los requ
 
 Requisitos definidos junto con el conjunto de User Stories y Epics para los requisitos identificados. Los User Stories incluyen Acceptance Criteria. En esta sección el equipo redacta una introducción y presenta un cuadro con la estructura especificada a continuación. Solo se elabora un cuadro para todo el conjunto de Epics/Stories. Debe dedicar una línea del cuadro a cada Epic / User Story.
 
-| Epic / Story ID | Título | Título | Criterios de Aceptación | Relacionado con (Epic ID) |
-| --------------- | ------ | ------ | ----------------------- | ------------------------- |
-|                 |        |        |                         |                           |
+| Epic / Story ID | Título | Descripción | Criterios de Aceptación | Relacionado con (Epic ID) |
+| --------------- | ------ | ----------- | ----------------------- | ------------------------- |
+|                 |        |             |                         |                           |
 
 ## 3.2. Impact Mapping.
 
