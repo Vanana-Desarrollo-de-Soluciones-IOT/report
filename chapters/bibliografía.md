@@ -21,3 +21,5 @@
 Link de la entrevista: https://goo.su/KKwEhz4
 
 Big Picture Event Storming: https://bit.ly/3QwYkAS
+
+Candidate Context Discovery: https://imgur.com/a/OX5FnV6
