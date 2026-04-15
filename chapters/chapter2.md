@@ -246,28 +246,32 @@ El tablero completo del Big Picture Event Storming puede visualizarse en el sigu
 
 ## 2.5. Ubiquitous Language.
 
-| Term                                                                  | Definition                                                                                                                  |
-| --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Clair                                                                 | Producto IoT orientado al monitoreo de calidad del aire interior.                                                           |
-| Air Quality Sensor (sensir de calidad del aire)                       | Dispositivo físico Clair que captura mediciones ambientales dentro de un espacio.                                           |
-| Home User (usuario del hogar)                                         | Persona que utiliza Clair en un entorno residencial para monitorear y mejorar la calidad del aire.                          |
-| Facility Admin (administrador de establecimiento)                     | Persona responsable de supervisar un espacio comercial, institucional o compartido donde se utiliza Clair.                  |
-| HVAC System (sistema HVAC)                                            | Sistema de ventilación, calefacción o aire acondicionado.                                                                   |
-| Smart Window Actuator (actuador de ventana inteligente)               | Dispositivo que permite abrir ventanas de forma automática.                                                                 |
-| Device (dispositivo)                                                  | Unidad física de Clair instalada en un espacio.                                                                             |
-| Threshold (umbral)                                                    | Valor límite definido para determinar cuándo una variable ambiental se considera riesgosa o incómoda.                       |
-| Default Threshold (umbral por defecto)                                | Valor inicial sugerido por Clair para evaluar una variable ambiental sin configuración personalizada.                       |
-| Facility Dependent Threshold (umbral dependiente del establecimiento) | Umbral ajustado según las condiciones o necesidades del tipo de espacio donde se instala Clair.                             |
-| Telemetry (telemetría)                                                | Conjunto de mediciones ambientales capturadas por Clair durante su funcionamiento.                                          |
-| Reading (lectura)                                                     | Medición individual capturada por el sensor, como CO2, PM, temperatura o humedad.                                           |
-| Sensor Anomaly (anomalía del sensor)                                  | Situación en la que las mediciones del dispositivo parecen incorrectas, inconsistentes o fuera del comportamiento esperado. |
-| Air Quality Index (índice de calidad del aire)                        | Valor calculado por Clair para resumir el estado general del aire interior en una forma más comprensible para el usuario.   |
-| Critical Alert (alerta crítica)                                       | Aviso generado cuando Clair detecta una condición relevante o riesgosa de calidad del aire.                                 |
-| Alert Cooldown (enfriamiento de alerta)                               | Tiempo mínimo que debe pasar antes de volver a enviar una alerta similar al usuario.                                        |
-| Alert Fatigue (fatiga por alertas)                                    | Situación en la que el sistema deja de enviar notificaciones.                                                               |
-| Alert Reminder (recordatorio de alerta)                               | Notificación adicional que recuerda una condición pendiente o no resuelta.                                                  |
-| Corrective Action (acción correctiva)                                 | Medida sugerida o ejecutada por Clair para mejorar las condiciones del aire interior.                                       |
-| Real Time Consultation (consulta en tiempo real)                      | Revisión del estado actual de la calidad del aire por parte del usuario.                                                    |
-| Digest (resumen diario)                                               | Vista o reporte que resume el comportamiento del aire.                                                                      |
-| Premium User (usuario premium)                                        | Usuario que cuenta con una suscripción activa o un plan con funciones avanzadas.                                            |
-| Freemium User (usuario freemium)                                      | Usuario que utiliza Clair con acceso gratuito y funciones limitadas.                                                        |
+| Terms                                                      | Definition                                                   |
+| ---------------------------------------------------------- | ------------------------------------------------------------ |
+| Clair                                                      | Producto IoT orientado al monitoreo y mejora de la calidad del aire interior. |
+| Home User (usuario del hogar)                              | Persona que usa Clair en una vivienda para monitorear el ambiente y recibir alertas. |
+| Facility Admin (administrador de establecimiento)          | Persona responsable de supervisar uno o varios espacios donde opera Clair. |
+| Facility (establecimiento)                                 | Entorno administrado donde se despliegan dispositivos Clair (hogar, oficina o local). |
+| Space (espacio)                                            | Area especifica dentro de una facility donde se instala y opera un dispositivo. |
+| Air Quality Sensor (sensor de calidad del aire)            | Dispositivo fisico que captura mediciones ambientales en el espacio monitoreado. |
+| Device Pairing (emparejamiento de dispositivo)             | Proceso de vinculacion inicial entre el dispositivo Clair y la cuenta del usuario. |
+| Device Registration (registro de dispositivo)              | Alta formal del dispositivo dentro del sistema para habilitar su operacion. |
+| Telemetry (telemetria)                                     | Conjunto de datos ambientales enviados periodicamente por el dispositivo. |
+| Reading (lectura)                                          | Medicion individual de una variable ambiental, por ejemplo CO2, PM, temperatura o humedad. |
+| Time Series History (historial temporal)                   | Registro cronologico de lecturas para analizar el comportamiento del aire. |
+| Air Quality Index (indice de calidad del aire)             | Valor compuesto que resume el estado general del aire interior. |
+| Air Quality State (estado de calidad del aire)             | Clasificacion del ambiente segun el indice y los umbrales definidos. |
+| Threshold (umbral)                                         | Valor limite usado para decidir cuando una condicion requiere atencion. |
+| Default Threshold (umbral por defecto)                     | Valor inicial propuesto por Clair cuando el usuario aun no personaliza reglas. |
+| Custom Threshold (umbral personalizado)                    | Valor configurado por el usuario segun necesidades del espacio. |
+| Critical Alert (alerta critica)                            | Aviso generado cuando se detecta una condicion ambiental de riesgo o incomodidad alta. |
+| Alert Reminder (recordatorio de alerta)                    | Reaviso enviado cuando una condicion critica continua sin resolverse. |
+| Alert Fatigue Prevention (prevencion de fatiga de alertas) | Reglas para limitar la frecuencia de notificaciones y evitar saturacion del usuario. |
+| Corrective Action (accion correctiva)                      | Medida sugerida o ejecutada para mejorar la calidad del aire. |
+| Automatic Corrective Action (accion correctiva automatica) | Ejecucion automatica de una accion correctiva cuando se cumplen condiciones predefinidas. |
+| HVAC Controller (controlador HVAC)                         | Sistema externo utilizado para activar ventilacion, calefaccion o aire acondicionado. |
+| Smart Window Actuator (actuador de ventana inteligente)    | Sistema externo que permite abrir ventanas automaticamente para ventilar. |
+| Notification Preferences (preferencias de notificacion)    | Configuracion de canales y frecuencia con la que el usuario desea recibir alertas. |
+| Trial Subscription (suscripcion de prueba)                 | Periodo inicial de acceso sin costo para evaluar funcionalidades premium. |
+| Freemium Plan (plan freemium)                              | Modalidad gratuita con funcionalidades limitadas de monitoreo e historial. |
+| Premium Plan (plan premium)                                | Modalidad de pago con funcionalidades avanzadas, reportes completos y mayor capacidad de analisis. |
