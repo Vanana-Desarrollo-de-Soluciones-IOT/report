@@ -12,7 +12,7 @@ Requisitos definidos junto con el conjunto de User Stories y Epics para los requ
 
 ## 3.2. Impact Mapping.
 
-En esta sección el equipo explica y presenta capturas del Impact Mapping para el modelo de negocio digital, elaborado en la herramienta indicada. Para esto debe haber elaborado previamente en la herramienta las fichas para cada User Persona. La elaboración incluye la identificación de los Business Goals (los business goals deben cumplir con los criterios SMART3 . Por ejemplo “Alcanzar los 600 usuarios suscritos al plan A en el lapso de 8 meses.”). Debe considerar varios Business Goals. Debe incluir como Actors/Personas a los User Personas previamente identificados, según relaciones con los Business Goals, buscando responder la pregunta ¿Quiénes me ayudarán a lograr la meta? La columna Impact debe incluir los enunciados de cómo desea que los User Persona cambien o se comporten ¿Qué tendría él/ella que hacer para ayudar a que se logre la meta? La columna Deliverables debe incluir los elementos que respondan la pregunta ¿Qué puedo hacer como negocio digital para provocar esos Impacts? La columna User Stories debe incluir la descripción de los User Stories (en el formato “Como... deseo... para...”) que permitirán obtener los features que ayudarán a producir los Deliverables identificados
+<img src="../assets/impact-map/IM.png" alt="Impact Map" width="1000">
 
 ## 3.3. Product Backlog.
 
