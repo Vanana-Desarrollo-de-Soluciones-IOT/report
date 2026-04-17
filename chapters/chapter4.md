@@ -146,20 +146,192 @@ El tablero completo del  Candidate Context Discovery puede visualizarse en el si
 
 #### 4.1.3.2. Software Architecture Context Level Diagrams.
 
+<img src="../assets/c4-diagrams/VananaContext-dark.png" alt="c4-context">
+
 #### 4.1.3.2. Software Architecture Container Level Diagrams.
+
+<img src="../assets/c4-diagrams/VananaContainers-dark.png" alt="c4-container">
 
 #### 4.1.3.3. Software Architecture Deployment Diagrams.
 
 ## 4.2. Tactical-Level Domain-Driven Design
 
------------------
+### 4.2.3. Bounded Context: Identity & Access
 
-4.2.3. Bounded Context: <Bounded Context Name>
-4.2.3.1. Domain Layer.
-4.2.3.2. Interface Layer.
-4.2.3.3. Application Layer.
-4.2.3.4. Infrastructure Layer.
-4.2.3.5. Bounded Context Software Architecture Component Level Diagrams.
-4.2.3.6. Bounded Context Software Architecture Code Level Diagrams.
-4.2.3.6.1. Bounded Context Domain Layer Class Diagrams.
-4.2.3.6.2. Bounded Context Database Design Diagram.
+<img src="../assets/c4-diagrams/IamLayers-dark.png" alt="IAM">
+
+#### 4.2.3.1. Domain Layer
+
+#### 4.2.3.2. Interface Layer
+
+#### 4.2.3.3. Application Layer
+
+#### 4.2.3.4. Infrastructure Layer
+
+#### 4.2.3.5. Bounded Context Software Architecture Component Level Diagrams
+
+#### 4.2.3.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.3.6.1. Bounded Context Domain Layer Class Diagrams
+
+##### 4.2.3.6.2. Bounded Context Database Design Diagram
+
+### 4.2.4. Bounded Context: Billing
+
+<img src="../assets/c4-diagrams/BillingLayers-dark.png" alt="Billing">
+
+#### 4.2.4.1. Domain Layer
+
+#### 4.2.4.2. Interface Layer
+
+#### 4.2.4.3. Application Layer
+
+#### 4.2.4.4. Infrastructure Layer
+
+#### 4.2.4.5. Bounded Context Software Architecture Component Level Diagrams
+
+#### 4.2.4.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.4.6.1. Bounded Context Domain Layer Class Diagrams
+
+##### 4.2.4.6.2. Bounded Context Database Design Diagram
+
+### 4.2.5. Bounded Context: Device & Space Management
+
+<img src="../assets/c4-diagrams/DeviceSpaceLayers-dark.png" alt="DeviceSpace">
+
+#### 4.2.5.1. Domain Layer
+
+#### 4.2.5.2. Interface Layer
+
+#### 4.2.5.3. Application Layer
+
+#### 4.2.5.4. Infrastructure Layer
+
+#### 4.2.5.5. Bounded Context Software Architecture Component Level Diagrams
+
+#### 4.2.5.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.5.6.1. Bounded Context Domain Layer Class Diagrams
+
+##### 4.2.5.6.2. Bounded Context Database Design Diagram
+
+### 4.2.6. Bounded Context: Air Quality Evaluation
+
+<img src="../assets/c4-diagrams/AirQualityLayers-dark.png" alt="AirQuality">
+
+#### 4.2.6.1. Domain Layer
+
+#### 4.2.6.2. Interface Layer
+
+#### 4.2.6.3. Application Layer
+
+#### 4.2.6.4. Infrastructure Layer
+
+#### 4.2.6.5. Bounded Context Software Architecture Component Level Diagrams
+
+#### 4.2.6.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.6.6.1. Bounded Context Domain Layer Class Diagrams
+
+##### 4.2.6.6.2. Bounded Context Database Design Diagram
+
+### 4.2.7. Bounded Context: Alerting & Response
+
+<img src="../assets/c4-diagrams/AlertingLayers-dark.png" alt="Alerting">
+
+#### 4.2.7.1. Domain Layer
+
+#### 4.2.7.2. Interface Layer
+
+#### 4.2.7.3. Application Layer
+
+#### 4.2.7.4. Infrastructure Layer
+
+#### 4.2.7.5. Bounded Context Software Architecture Component Level Diagrams
+
+#### 4.2.7.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.7.6.1. Bounded Context Domain Layer Class Diagrams
+
+##### 4.2.7.6.2. Bounded Context Database Design Diagram
+
+### 4.2.8. Bounded Context: Analytics & Reporting
+
+<img src="../assets/c4-diagrams/AnalyticsLayers-dark.png" alt="Analytics">
+
+#### 4.2.8.1. Domain Layer
+
+#### 4.2.8.2. Interface Layer
+
+#### 4.2.8.3. Application Layer
+
+#### 4.2.8.4. Infrastructure Layer
+
+#### 4.2.8.5. Bounded Context Software Architecture Component Level Diagrams
+
+#### 4.2.8.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.8.6.1. Bounded Context Domain Layer Class Diagrams
+
+##### 4.2.8.6.2. Bounded Context Database Design Diagram
+
+### 4.2.9. Bounded Context: Notifications
+
+<img src="../assets/c4-diagrams/NotificationsLayers-dark.png" alt="Notifications">
+
+#### 4.2.9.1. Domain Layer
+
+#### 4.2.9.2. Interface Layer
+
+#### 4.2.9.3. Application Layer
+
+#### 4.2.9.4. Infrastructure Layer
+
+#### 4.2.9.5. Bounded Context Software Architecture Component Level Diagrams
+
+#### 4.2.9.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.9.6.1. Bounded Context Domain Layer Class Diagrams
+
+##### 4.2.9.6.2. Bounded Context Database Design Diagram
+
+### 4.2.10. Bounded Context: Embedded App
+
+<img src="../assets/c4-diagrams/EmbeddedAppComponents-dark.png" alt="EmbeddedApp">
+
+#### 4.2.10.1. Domain Layer
+
+#### 4.2.10.2. Interface Layer
+
+#### 4.2.10.3. Application Layer
+
+#### 4.2.10.4. Infrastructure Layer
+
+#### 4.2.10.5. Bounded Context Software Architecture Component Level Diagrams
+
+#### 4.2.10.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.10.6.1. Bounded Context Domain Layer Class Diagrams
+
+##### 4.2.10.6.2. Bounded Context Database Design Diagram
+
+### 4.2.11. Bounded Context: Edge Station
+
+<img src="../assets/c4-diagrams/EdgeStationComponents-dark.png" alt="EdgeStation">
+
+#### 4.2.11.1. Domain Layer
+
+#### 4.2.11.2. Interface Layer
+
+#### 4.2.11.3. Application Layer
+
+#### 4.2.11.4. Infrastructure Layer
+
+#### 4.2.11.5. Bounded Context Software Architecture Component Level Diagrams
+
+#### 4.2.11.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.11.6.1. Bounded Context Domain Layer Class Diagrams
+
+##### 4.2.11.6.2. Bounded Context Database Design Diagram
