@@ -29,6 +29,7 @@
 | 0.2.5   | 13/04/2026 | Dante Mateo Aleman Romano             | Agregué las plantillas de los Capítulos III y IV del informe, siguiendo la estructura establecida en el Project Statement con el objetivo de que el equipo pueda avanzar de manera organizada en el desarrollo de ambos capítulos. |
 | 0.2.6   | 15/04/2026 | Ian Macavilca Quispe             | Realicé el Impact Mapping considerando segmneto objetivo, empleando la informacion obtenida, las User Personas y usando UXPressia |
 | 0.2.7 | 15/04/2026 | Neil Curipaco Huayllani | Agregue al documento la tabla de las user stories que realizamos en grupo junto con el backlog. |
+| 0.2.8 | 16/04/2026 | Dante Mateo Aleman Romano | Realicé cambios en el Capítulo II sobre Big Picture EventStorming y Ubiquitous Language, mejorando el storytelling y la consistencia del lenguaje de dominio. Luego, desarrollé el Strategic-Level Domain-Driven Design, definiendo los candidatos para bounded contexts  y sus límites para preparar el Context Mapping y el diseño táctico. |
 
 # Project Report Collaboration Insights
 
