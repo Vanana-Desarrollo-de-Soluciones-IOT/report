@@ -30,6 +30,7 @@
 | 0.2.6   | 15/04/2026 | Ian Macavilca Quispe             | Realicé el Impact Mapping considerando segmneto objetivo, empleando la informacion obtenida, las User Personas y usando UXPressia |
 | 0.2.7 | 15/04/2026 | Neil Curipaco Huayllani | Agregue al documento la tabla de las user stories que realizamos en grupo junto con el backlog. |
 | 0.2.8 | 16/04/2026 | Dante Mateo Aleman Romano | Realicé cambios en el Capítulo II sobre Big Picture EventStorming y Ubiquitous Language, mejorando el storytelling y la consistencia del lenguaje de dominio. Luego, desarrollé el Strategic-Level Domain-Driven Design, definiendo los candidatos para bounded contexts  y sus límites para preparar el Context Mapping y el diseño táctico. |
+| 0.2.9 | 17/04/2026 | Neil Curipaco Huayllani | He actualizo las nuevas user stories elaboradas por el equipo así mismo he actualizado el product backlog |
 
 # Project Report Collaboration Insights
 
