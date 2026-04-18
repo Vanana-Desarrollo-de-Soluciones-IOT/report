@@ -146,19 +146,27 @@ El tablero completo del  Candidate Context Discovery puede visualizarse en el si
 
 #### 4.1.3.2. Software Architecture Context Level Diagrams.
 
+El diagrama de contexto presenta una vista de alto nivel del ecosistema de Clair dentro de la plataforma Vanana, identificando a los actores principales y a los sistemas externos que interactuan con la solucion. En esta representacion se observa como **Home User** y **Facility Admin** se relacionan con la plataforma para monitorear la calidad del aire, administrar dispositivos y consultar informacion operativa, mientras que servicios externos como **Google OAuth2**, **Stripe** y **Resend** complementan funciones de autenticacion, facturacion y comunicacion transaccional. Asimismo, el diagrama evidencia que Vanana actua como el nucleo de coordinacion entre usuarios, hardware fisico y proveedores externos, delimitando claramente la frontera del sistema y sus dependencias estrategicas.
+
 <img src="../assets/c4-diagrams/VananaContext-dark.png" alt="c4-context">
 
 #### 4.1.3.2. Software Architecture Container Level Diagrams.
 
+El diagrama de contenedores descompone la plataforma Vanana en sus principales unidades de ejecucion y responsabilidades tecnicas, permitiendo comprender como se distribuyen las funciones entre interfaces de usuario, servicios backend, almacenamiento de datos y componentes IoT. En esta vista se identifican la **Landing Page**, la **Web App**, la **Mobile App**, el **API Gateway**, la **Platform API**, las bases de datos **PostgreSQL** y **Redis**, asi como los componentes de borde conformados por la **Embedded Application** y la **Edge Station Application**. Esta representacion permite evidenciar la separacion entre experiencia de usuario, logica de negocio, persistencia y procesamiento distribuido, mostrando ademas las principales relaciones de comunicacion entre nube, edge y hardware.
+
 <img src="../assets/c4-diagrams/VananaContainers-dark.png" alt="c4-container">
 
 #### 4.1.3.3. Software Architecture Deployment Diagrams.
+
+El diagrama de despliegue muestra la distribucion fisica y tecnologica de los principales contenedores del sistema en su entorno operativo. A traves de esta vista se observa como las aplicaciones frontend se alojan en servicios especializados de publicacion web, como la plataforma backend se apoya en servicios gestionados para API, persistencia y cache, y como la capa IoT se distribuye entre el dispositivo embebido y el edge station local. Esta perspectiva resulta especialmente importante porque evidencia que Clair no funciona como un sistema puramente centralizado, sino como una arquitectura distribuida donde cloud, edge y hardware cooperan para sostener monitoreo en tiempo real, resiliencia operativa y sincronizacion de datos.
 
 <img src="../assets/c4-diagrams/deploy/deploy.svg" alt="deploy-diagram">
 
 ## 4.2. Tactical-Level Domain-Driven Design
 
 ### 4.2.3. Bounded Context: Identity & Access
+
+El Bounded Context Identity \& Access concentra las capacidades relacionadas con autenticacion, autorizacion y administracion del acceso a la plataforma. Su objetivo es asegurar que cada usuario sea identificado correctamente, que sus sesiones sean gestionadas de manera segura y que los permisos asignados permitan controlar el acceso a funcionalidades de acuerdo con su rol dentro del sistema.
 
 <img src="../assets/c4-diagrams/IamLayers-dark.png" alt="IAM">
 
@@ -278,6 +286,8 @@ Por ello, la Infrastructure Layer no solo sostiene tecnicamente el funcionamient
 
 ### 4.2.4. Bounded Context: Billing
 
+El Bounded Context Billing agrupa la logica de negocio vinculada a planes, suscripciones, checkout, pagos e invoices. Su responsabilidad es gobernar el ciclo comercial de los usuarios dentro de Clair, permitiendo distinguir entre capacidades freemium y premium, asi como mantener trazabilidad sobre la activacion, cambio o desactivacion de beneficios asociados a la suscripcion.
+
 <img src="../assets/c4-diagrams/BillingLayers-dark.png" alt="Billing">
 
 #### 4.2.4.1. Domain Layer
@@ -395,6 +405,8 @@ Por ello, la Infrastructure Layer de Billing constituye el soporte tecnico que v
 
 ### 4.2.5. Bounded Context: Device & Space Management
 
+El Bounded Context Device \& Space Management modela la estructura fisica sobre la cual opera Clair, representando facilities, spaces, dispositivos y configuraciones de thresholds. Este contexto permite traducir el entorno real del usuario al sistema digital, estableciendo la base organizacional necesaria para interpretar telemetria, generar alertas y construir analitica contextualizada.
+
 <img src="../assets/c4-diagrams/DeviceSpaceLayers-dark.png" alt="DeviceSpace">
 
 #### 4.2.5.1. Domain Layer
@@ -494,6 +506,8 @@ Por ello, la Infrastructure Layer de Device \& Space Management convierte el mod
 
 ### 4.2.6. Bounded Context: Air Quality Evaluation
 
+El Bounded Context Air Quality Evaluation concentra la logica encargada de recibir, validar y procesar la telemetria ambiental proveniente de los dispositivos Clair. Su finalidad es convertir lecturas crudas en estados significativos del aire interior, calculando el indice de calidad del aire, detectando superaciones de thresholds e identificando condiciones anomalias que requieran atencion o exclusion del proceso normal de evaluacion.
+
 <img src="../assets/c4-diagrams/AirQualityLayers-dark.png" alt="AirQuality">
 
 #### 4.2.6.1. Domain Layer
@@ -586,6 +600,8 @@ Por ello, la Infrastructure Layer de Air Quality Evaluation constituye la base t
 ##### 4.2.6.6.2. Bounded Context Database Design Diagram
 
 ### 4.2.7. Bounded Context: Alerting & Response
+
+El Bounded Context Alerting \& Response se encarga de transformar condiciones ambientales criticas en mecanismos de reaccion operativa dentro del sistema. Su alcance comprende la generacion de alertas, la prevencion de fatiga de notificaciones, el seguimiento de acciones correctivas y la eventual activacion automatica de respuestas sobre dispositivos o sistemas auxiliares cuando la configuracion lo permite.
 
 <img src="../assets/c4-diagrams/AlertingLayers-dark.png" alt="Alerting">
 
@@ -680,6 +696,8 @@ Por ello, la Infrastructure Layer de Alerting \& Response constituye el soporte 
 
 ### 4.2.8. Bounded Context: Analytics & Reporting
 
+El Bounded Context Analytics \& Reporting agrupa las capacidades orientadas al analisis historico del comportamiento ambiental, la generacion de digests periodicos y la construccion de insights accionables para usuarios y administradores. Este contexto extiende el valor del sistema mas alla del monitoreo en tiempo real, permitiendo comprender tendencias, comparar periodos y respaldar decisiones operativas con evidencia acumulada.
+
 <img src="../assets/c4-diagrams/AnalyticsLayers-dark.png" alt="Analytics">
 
 #### 4.2.8.1. Domain Layer
@@ -764,6 +782,8 @@ Por ello, la Infrastructure Layer de Analytics \& Reporting constituye la base t
 
 ### 4.2.9. Bounded Context: Notifications
 
+El Bounded Context Notifications centraliza la gestion de templates, solicitudes de entrega, preferencias de canal e historial de mensajes emitidos por la plataforma. Su finalidad es proporcionar una capacidad transversal de comunicacion que permita a otros bounded contexts informar eventos relevantes, como verificaciones de cuenta, alertas criticas o reportes periodicos, manteniendo consistencia y trazabilidad sobre cada envio.
+
 <img src="../assets/c4-diagrams/NotificationsLayers-dark.png" alt="Notifications">
 
 #### 4.2.9.1. Domain Layer
@@ -840,6 +860,8 @@ En consecuencia, la Infrastructure Layer de Notifications hace operativa la capa
 
 ### 4.2.10. Bounded Context: Embedded App
 
+El Bounded Context Embedded App representa la logica de software que se ejecuta directamente sobre el dispositivo Clair. Su responsabilidad es controlar la captura local de lecturas, aplicar validaciones basicas de seguridad y consistencia, y publicar telemetria hacia la capa edge o local, garantizando que el sensor opere de manera estable y confiable desde el origen.
+
 <img src="../assets/c4-diagrams/EmbeddedAppComponents-dark.png" alt="EmbeddedApp">
 
 #### 4.2.10.1. Domain Layer
@@ -904,6 +926,8 @@ La infraestructura de este contexto debe priorizar robustez, bajo consumo de rec
 ##### 4.2.10.6.2. Bounded Context Database Design Diagram
 
 ### 4.2.11. Bounded Context: Edge Station
+
+El Bounded Context Edge Station modela la aplicacion intermedia que opera localmente entre los dispositivos embebidos y la plataforma cloud. Su proposito es recibir telemetria, almacenarla temporalmente, sincronizarla con la nube y despachar comandos remotos hacia los sensores, aportando resiliencia operativa y soporte para escenarios offline-first dentro de la arquitectura distribuida de Clair.
 
 <img src="../assets/c4-diagrams/EdgeStationComponents-dark.png" alt="EdgeStation">
 
