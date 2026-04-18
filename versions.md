@@ -34,6 +34,7 @@
 | 0.3.1 | 17/04/2026 | Dante Mateo Aleman Romano | Actualicé la carátula del informe en cover.md, corrigiendo los textos para alinearlos con el formato solicitado de la referencia. |
 | 0.3.2 | 18/04/2026 | Fabrizio Alessandro Contreras Peralta | He revisado y correguido las user stories |
 | 0.3.3 | 18/04/2026 | Neil Curipaco Huayllani | He actualizo las nuevas user stories elaboradas por el equipo así mismo he actualizado el product backlog y agrado las imagens del Jira |
+| 0.3.4 | 18/04/2026 | Ian Macavilca Quispe | He desarrollado los Domain Message Flows Modeling |
 
 # Project Report Collaboration Insights
 

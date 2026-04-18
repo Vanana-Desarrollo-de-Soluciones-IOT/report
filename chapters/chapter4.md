@@ -136,6 +136,102 @@ El tablero completo del  Candidate Context Discovery puede visualizarse en el si
 
 #### 4.1.1.2 Domain Message Flows Modeling.
 
+El Domain Message Flows Modeling mapea cómo los mensajes (eventos, comandos) fluyen entre los diferentes bounded contexts identificados. Este modelado es crucial para entender las dependencias y patrones de comunicación del sistema.
+
+Message Flows
+<p align="center">
+<img src="../assets/domain-message-flows/DMF1.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF2.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF3.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF4.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF5.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF1.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF6.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF7.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF8.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF9.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF10.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF11.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF12.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF13.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF14.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF15.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF16.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF17.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF18.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF19.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF20.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF21.jpg" alt="c4-container" width="700">
+</p>
+
+<p align="center">
+<img src="../assets/domain-message-flows/DMF22.jpg" alt="c4-container" width="700">
+</p>
+
+
 #### 4.1.1.3 Bounded Context Canvases.
 
 ### 4.1.2. Context Mapping.
