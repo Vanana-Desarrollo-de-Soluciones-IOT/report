@@ -168,8 +168,6 @@ El diagrama de despliegue muestra la distribucion fisica y tecnologica de los pr
 
 El Bounded Context Identity \& Access concentra las capacidades relacionadas con autenticacion, autorizacion y administracion del acceso a la plataforma. Su objetivo es asegurar que cada usuario sea identificado correctamente, que sus sesiones sean gestionadas de manera segura y que los permisos asignados permitan controlar el acceso a funcionalidades de acuerdo con su rol dentro del sistema.
 
-<img src="../assets/c4-diagrams/IamLayers-dark.png" alt="IAM">
-
 #### 4.2.3.1. Domain Layer
 
 La capa de dominio del Bounded Context Identity \& Access concentra las reglas de negocio vinculadas a la identidad digital de los usuarios, la autenticacion, la autorizacion y el ciclo de vida de las sesiones. Su proposito es preservar la coherencia del modelo mediante conceptos del dominio que no dependan de decisiones tecnicas de almacenamiento, frameworks o mecanismos de integracion externos.
@@ -278,6 +276,12 @@ Por ello, la Infrastructure Layer no solo sostiene tecnicamente el funcionamient
 
 #### 4.2.3.5. Bounded Context Software Architecture Component Level Diagrams
 
+En esta seccion se presenta el Component Diagram del Bounded Context Identity \& Access. Aunque la Platform API se despliega como un unico container backend, internamente este bounded context se organiza en componentes con responsabilidades bien definidas, siguiendo una separacion por capas que facilita mantenibilidad, trazabilidad y claridad del dominio.
+
+<img src="../assets/c4-diagrams/IamLayers-dark.png" alt="IAM Component Diagram">
+
+El diagrama muestra la descomposicion interna del bounded context IAM en los componentes **Interfaces**, **Application**, **Domain** e **Infrastructure**, asi como sus relaciones con los recursos externos necesarios para su operacion, como PostgreSQL, Redis y Google OAuth2. Esta vista permite identificar como las solicitudes ingresan por la capa de interfaz, son orquestadas por la capa de aplicacion, resueltas por las reglas del dominio y finalmente soportadas por adaptadores e integraciones de infraestructura.
+
 #### 4.2.3.6. Bounded Context Software Architecture Code Level Diagrams
 
 ##### 4.2.3.6.1. Bounded Context Domain Layer Class Diagrams
@@ -287,8 +291,6 @@ Por ello, la Infrastructure Layer no solo sostiene tecnicamente el funcionamient
 ### 4.2.4. Bounded Context: Billing
 
 El Bounded Context Billing agrupa la logica de negocio vinculada a planes, suscripciones, checkout, pagos e invoices. Su responsabilidad es gobernar el ciclo comercial de los usuarios dentro de Clair, permitiendo distinguir entre capacidades freemium y premium, asi como mantener trazabilidad sobre la activacion, cambio o desactivacion de beneficios asociados a la suscripcion.
-
-<img src="../assets/c4-diagrams/BillingLayers-dark.png" alt="Billing">
 
 #### 4.2.4.1. Domain Layer
 
@@ -397,6 +399,12 @@ Por ello, la Infrastructure Layer de Billing constituye el soporte tecnico que v
 
 #### 4.2.4.5. Bounded Context Software Architecture Component Level Diagrams
 
+En esta seccion se presenta el Component Diagram del Bounded Context Billing. El objetivo de esta vista es evidenciar como las responsabilidades comerciales del sistema se distribuyen en componentes internos, manteniendo separadas las decisiones del dominio de las preocupaciones de integracion con el proveedor de pagos y la persistencia del estado de facturacion.
+
+<img src="../assets/c4-diagrams/BillingLayers-dark.png" alt="Billing Component Diagram">
+
+El diagrama representa la organizacion del bounded context Billing en componentes **Interfaces**, **Application**, **Domain** e **Infrastructure**, junto con sus dependencias hacia PostgreSQL y Stripe. A traves de esta descomposicion se observa como la capa de interfaz recibe solicitudes de planes y checkout, la capa de aplicacion coordina casos de uso comerciales, el dominio define las reglas de suscripcion y facturacion, y la infraestructura implementa la persistencia e integracion con el proveedor de pagos.
+
 #### 4.2.4.6. Bounded Context Software Architecture Code Level Diagrams
 
 ##### 4.2.4.6.1. Bounded Context Domain Layer Class Diagrams
@@ -406,8 +414,6 @@ Por ello, la Infrastructure Layer de Billing constituye el soporte tecnico que v
 ### 4.2.5. Bounded Context: Device & Space Management
 
 El Bounded Context Device \& Space Management modela la estructura fisica sobre la cual opera Clair, representando facilities, spaces, dispositivos y configuraciones de thresholds. Este contexto permite traducir el entorno real del usuario al sistema digital, estableciendo la base organizacional necesaria para interpretar telemetria, generar alertas y construir analitica contextualizada.
-
-<img src="../assets/c4-diagrams/DeviceSpaceLayers-dark.png" alt="DeviceSpace">
 
 #### 4.2.5.1. Domain Layer
 
@@ -498,6 +504,12 @@ Por ello, la Infrastructure Layer de Device \& Space Management convierte el mod
 
 #### 4.2.5.5. Bounded Context Software Architecture Component Level Diagrams
 
+En esta seccion se presenta el Component Diagram del Bounded Context Device \& Space Management. Esta vista permite comprender como el sistema organiza internamente la gestion de facilities, spaces, dispositivos y thresholds, separando responsabilidades funcionales y tecnicas dentro del mismo container backend.
+
+<img src="../assets/c4-diagrams/DeviceSpaceLayers-dark.png" alt="Device and Space Management Component Diagram">
+
+El diagrama muestra la descomposicion del bounded context en los componentes **Interfaces**, **Application**, **Domain** e **Infrastructure**, asi como su relacion con la base de datos principal de la plataforma. A partir de esta estructura se aprecia como las operaciones de registro de dispositivos, asignacion a espacios y configuracion de umbrales recorren una secuencia ordenada desde la recepcion de solicitudes hasta la persistencia de su estado operativo.
+
 #### 4.2.5.6. Bounded Context Software Architecture Code Level Diagrams
 
 ##### 4.2.5.6.1. Bounded Context Domain Layer Class Diagrams
@@ -507,8 +519,6 @@ Por ello, la Infrastructure Layer de Device \& Space Management convierte el mod
 ### 4.2.6. Bounded Context: Air Quality Evaluation
 
 El Bounded Context Air Quality Evaluation concentra la logica encargada de recibir, validar y procesar la telemetria ambiental proveniente de los dispositivos Clair. Su finalidad es convertir lecturas crudas en estados significativos del aire interior, calculando el indice de calidad del aire, detectando superaciones de thresholds e identificando condiciones anomalias que requieran atencion o exclusion del proceso normal de evaluacion.
-
-<img src="../assets/c4-diagrams/AirQualityLayers-dark.png" alt="AirQuality">
 
 #### 4.2.6.1. Domain Layer
 
@@ -593,6 +603,12 @@ Por ello, la Infrastructure Layer de Air Quality Evaluation constituye la base t
 
 #### 4.2.6.5. Bounded Context Software Architecture Component Level Diagrams
 
+En esta seccion se presenta el Component Diagram del Bounded Context Air Quality Evaluation. El proposito del diagrama es mostrar como se organiza internamente la logica responsable de recibir telemetria, calcular el indice de calidad del aire, evaluar thresholds y generar estados ambientales significativos para el resto de la plataforma.
+
+<img src="../assets/c4-diagrams/AirQualityLayers-dark.png" alt="Air Quality Evaluation Component Diagram">
+
+El diagrama evidencia la separacion del bounded context en los componentes **Interfaces**, **Application**, **Domain** e **Infrastructure**, asi como su vinculacion con la persistencia de datos operativos. Esta representacion permite entender como las lecturas ingresan al sistema, son procesadas por la capa de aplicacion, evaluadas mediante reglas del dominio y almacenadas para su posterior explotacion por alertas, dashboards y reportes historicos.
+
 #### 4.2.6.6. Bounded Context Software Architecture Code Level Diagrams
 
 ##### 4.2.6.6.1. Bounded Context Domain Layer Class Diagrams
@@ -602,8 +618,6 @@ Por ello, la Infrastructure Layer de Air Quality Evaluation constituye la base t
 ### 4.2.7. Bounded Context: Alerting & Response
 
 El Bounded Context Alerting \& Response se encarga de transformar condiciones ambientales criticas en mecanismos de reaccion operativa dentro del sistema. Su alcance comprende la generacion de alertas, la prevencion de fatiga de notificaciones, el seguimiento de acciones correctivas y la eventual activacion automatica de respuestas sobre dispositivos o sistemas auxiliares cuando la configuracion lo permite.
-
-<img src="../assets/c4-diagrams/AlertingLayers-dark.png" alt="Alerting">
 
 #### 4.2.7.1. Domain Layer
 
@@ -688,6 +702,12 @@ Por ello, la Infrastructure Layer de Alerting \& Response constituye el soporte 
 
 #### 4.2.7.5. Bounded Context Software Architecture Component Level Diagrams
 
+En esta seccion se presenta el Component Diagram del Bounded Context Alerting \& Response. Esta vista describe la descomposicion interna de la logica de alertas y respuestas correctivas, mostrando como se articulan los componentes encargados de generar incidentes, coordinar acciones y sostener la reaccion operativa del sistema frente a condiciones de riesgo.
+
+<img src="../assets/c4-diagrams/AlertingLayers-dark.png" alt="Alerting and Response Component Diagram">
+
+El diagrama organiza el bounded context en componentes **Interfaces**, **Application**, **Domain** e **Infrastructure**, vinculados a la persistencia de alertas y a la coordinacion de acciones y entregas asociadas. Gracias a esta vista es posible identificar como un evento critico proveniente de la evaluacion ambiental se transforma en una alerta formal, una recomendacion correctiva o una respuesta automatica segun las reglas y configuraciones vigentes.
+
 #### 4.2.7.6. Bounded Context Software Architecture Code Level Diagrams
 
 ##### 4.2.7.6.1. Bounded Context Domain Layer Class Diagrams
@@ -697,8 +717,6 @@ Por ello, la Infrastructure Layer de Alerting \& Response constituye el soporte 
 ### 4.2.8. Bounded Context: Analytics & Reporting
 
 El Bounded Context Analytics \& Reporting agrupa las capacidades orientadas al analisis historico del comportamiento ambiental, la generacion de digests periodicos y la construccion de insights accionables para usuarios y administradores. Este contexto extiende el valor del sistema mas alla del monitoreo en tiempo real, permitiendo comprender tendencias, comparar periodos y respaldar decisiones operativas con evidencia acumulada.
-
-<img src="../assets/c4-diagrams/AnalyticsLayers-dark.png" alt="Analytics">
 
 #### 4.2.8.1. Domain Layer
 
@@ -774,6 +792,12 @@ Por ello, la Infrastructure Layer de Analytics \& Reporting constituye la base t
 
 #### 4.2.8.5. Bounded Context Software Architecture Component Level Diagrams
 
+En esta seccion se presenta el Component Diagram del Bounded Context Analytics \& Reporting. El objetivo es exponer la estructura interna que soporta la agregacion historica, la generacion de digests periodicos y la construccion de insights para usuarios y administradores.
+
+<img src="../assets/c4-diagrams/AnalyticsLayers-dark.png" alt="Analytics and Reporting Component Diagram">
+
+El diagrama muestra la descomposicion del bounded context en los componentes **Interfaces**, **Application**, **Domain** e **Infrastructure**, articulados con los mecanismos de almacenamiento de agregados y reportes. Esta vista permite comprender como el sistema transforma informacion historica en resumentes, tendencias y recomendaciones accionables alineadas con el plan comercial y las necesidades del usuario.
+
 #### 4.2.8.6. Bounded Context Software Architecture Code Level Diagrams
 
 ##### 4.2.8.6.1. Bounded Context Domain Layer Class Diagrams
@@ -783,8 +807,6 @@ Por ello, la Infrastructure Layer de Analytics \& Reporting constituye la base t
 ### 4.2.9. Bounded Context: Notifications
 
 El Bounded Context Notifications centraliza la gestion de templates, solicitudes de entrega, preferencias de canal e historial de mensajes emitidos por la plataforma. Su finalidad es proporcionar una capacidad transversal de comunicacion que permita a otros bounded contexts informar eventos relevantes, como verificaciones de cuenta, alertas criticas o reportes periodicos, manteniendo consistencia y trazabilidad sobre cada envio.
-
-<img src="../assets/c4-diagrams/NotificationsLayers-dark.png" alt="Notifications">
 
 #### 4.2.9.1. Domain Layer
 
@@ -852,6 +874,12 @@ En consecuencia, la Infrastructure Layer de Notifications hace operativa la capa
 
 #### 4.2.9.5. Bounded Context Software Architecture Component Level Diagrams
 
+En esta seccion se presenta el Component Diagram del Bounded Context Notifications. Esta representacion permite identificar como la capacidad transversal de comunicacion del sistema se estructura internamente para gestionar templates, solicitudes de entrega, preferencias de canal e historial de mensajes enviados.
+
+<img src="../assets/c4-diagrams/NotificationsLayers-dark.png" alt="Notifications Component Diagram">
+
+El diagrama organiza el bounded context en componentes **Interfaces**, **Application**, **Domain** e **Infrastructure**, junto con sus dependencias de persistencia y entrega externa. A traves de esta vista se observa como una solicitud de notificacion originada por otro contexto es recibida, procesada, renderizada y despachada mediante los canales configurados, conservando ademas la trazabilidad del resultado de cada envio.
+
 #### 4.2.9.6. Bounded Context Software Architecture Code Level Diagrams
 
 ##### 4.2.9.6.1. Bounded Context Domain Layer Class Diagrams
@@ -861,8 +889,6 @@ En consecuencia, la Infrastructure Layer de Notifications hace operativa la capa
 ### 4.2.10. Bounded Context: Embedded App
 
 El Bounded Context Embedded App representa la logica de software que se ejecuta directamente sobre el dispositivo Clair. Su responsabilidad es controlar la captura local de lecturas, aplicar validaciones basicas de seguridad y consistencia, y publicar telemetria hacia la capa edge o local, garantizando que el sensor opere de manera estable y confiable desde el origen.
-
-<img src="../assets/c4-diagrams/EmbeddedAppComponents-dark.png" alt="EmbeddedApp">
 
 #### 4.2.10.1. Domain Layer
 
@@ -919,6 +945,12 @@ La infraestructura de este contexto debe priorizar robustez, bajo consumo de rec
 
 #### 4.2.10.5. Bounded Context Software Architecture Component Level Diagrams
 
+En esta seccion se presenta el Component Diagram del Bounded Context Embedded App. A diferencia de los bounded contexts cloud, esta vista describe la descomposicion interna del software embebido que corre directamente sobre el dispositivo Clair, enfatizando el flujo local entre captura de lecturas, validacion y publicacion de telemetria.
+
+<img src="../assets/c4-diagrams/EmbeddedAppComponents-dark.png" alt="Embedded App Component Diagram">
+
+El diagrama muestra componentes como **Embedded Controller**, **Embedded Telemetry Service**, **Embedded Domain Model** y **Embedded IO Adapter**, permitiendo distinguir claramente el ingreso de comandos, la orquestacion de lecturas, la aplicacion de reglas locales y la interaccion directa con el hardware y los mecanismos de comunicacion. Esta vista justifica la separacion interna del firmware a pesar de ejecutarse sobre una plataforma de recursos limitados.
+
 #### 4.2.10.6. Bounded Context Software Architecture Code Level Diagrams
 
 ##### 4.2.10.6.1. Bounded Context Domain Layer Class Diagrams
@@ -928,8 +960,6 @@ La infraestructura de este contexto debe priorizar robustez, bajo consumo de rec
 ### 4.2.11. Bounded Context: Edge Station
 
 El Bounded Context Edge Station modela la aplicacion intermedia que opera localmente entre los dispositivos embebidos y la plataforma cloud. Su proposito es recibir telemetria, almacenarla temporalmente, sincronizarla con la nube y despachar comandos remotos hacia los sensores, aportando resiliencia operativa y soporte para escenarios offline-first dentro de la arquitectura distribuida de Clair.
-
-<img src="../assets/c4-diagrams/EdgeStationComponents-dark.png" alt="EdgeStation">
 
 #### 4.2.11.1. Domain Layer
 
@@ -988,6 +1018,12 @@ Las estructuras persistentes de este contexto pueden incluir `local_telemetry`, 
 Por ello, la Infrastructure Layer del Edge Station constituye el soporte tecnico que hace viable la operacion distribuida y offline-first de Clair, actuando como el puente estable entre sensores de campo y la plataforma cloud.
 
 #### 4.2.11.5. Bounded Context Software Architecture Component Level Diagrams
+
+En esta seccion se presenta el Component Diagram del Bounded Context Edge Station. Su finalidad es mostrar la descomposicion interna de la aplicacion edge que opera como intermediaria entre los dispositivos embebidos y la plataforma cloud, soportando ingestion local, sincronizacion offline-first y despacho de comandos.
+
+<img src="../assets/c4-diagrams/EdgeStationComponents-dark.png" alt="Edge Station Component Diagram">
+
+El diagrama describe componentes como **Edge Controller**, **Edge Processing Service**, **Edge Sync Service**, **Edge Domain Model** y **Edge IO Adapter**, junto con su relacion con SQLite, MQTT y HTTPS. Esta vista permite entender como el edge recibe telemetria local, la valida, la almacena temporalmente y posteriormente la sincroniza con la nube, manteniendo resiliencia ante fallos de conectividad.
 
 #### 4.2.11.6. Bounded Context Software Architecture Code Level Diagrams
 
