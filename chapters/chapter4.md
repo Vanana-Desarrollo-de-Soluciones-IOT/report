@@ -284,9 +284,23 @@ El diagrama muestra la descomposicion interna del bounded context IAM en los com
 
 #### 4.2.3.6. Bounded Context Software Architecture Code Level Diagrams
 
+En esta seccion se presentan los diagramas de mayor detalle del Bounded Context Identity \& Access, enfocados en la representacion del modelo de clases del dominio y del esquema de persistencia asociado. Estas vistas permiten observar con mayor precision como se estructuran los conceptos principales del contexto y como se traducen a una base de datos que soporte autenticacion, autorizacion y gestion de sesiones.
+
 ##### 4.2.3.6.1. Bounded Context Domain Layer Class Diagrams
 
+El siguiente diagrama de clases describe los principales objetos del dominio del contexto IAM, incluyendo usuarios, roles, permisos, sesiones y objetos de valor relacionados con identidad y credenciales.
+
+<img src="../assets/c4-diagrams/code/iam-domain-class.svg" alt="IAM Domain Class Diagram">
+
+Esta vista permite comprender como el modelo de dominio organiza la identidad del usuario, la asignacion de privilegios y la administracion del ciclo de vida de las sesiones, manteniendo separadas las responsabilidades entre entidades y objetos de valor.
+
 ##### 4.2.3.6.2. Bounded Context Database Design Diagram
+
+El siguiente diagrama presenta el diseño de base de datos que soporta el Bounded Context Identity \& Access, incluyendo las estructuras necesarias para usuarios, roles, permisos, sesiones y tokens de verificacion.
+
+<img src="../assets/c4-diagrams/code/iam-db.svg" alt="IAM Database Diagram">
+
+Este esquema refleja como las decisiones del dominio se materializan en una estructura persistente capaz de sostener autenticacion segura, control de acceso por roles y trazabilidad sobre el estado de las sesiones.
 
 ### 4.2.4. Bounded Context: Billing
 
@@ -407,9 +421,23 @@ El diagrama representa la organizacion del bounded context Billing en componente
 
 #### 4.2.4.6. Bounded Context Software Architecture Code Level Diagrams
 
+En esta seccion se presentan los diagramas de nivel codigo del Bounded Context Billing. Estas vistas complementan el componente arquitectonico mostrando, por un lado, las clases principales del dominio comercial y, por otro, el diseño de persistencia requerido para planes, suscripciones, checkout sessions e invoices.
+
 ##### 4.2.4.6.1. Bounded Context Domain Layer Class Diagrams
 
+El siguiente diagrama de clases representa los conceptos centrales del dominio de Billing, tales como plan, suscripcion, sesion de checkout e invoice.
+
+<img src="../assets/c4-diagrams/code/billing-domain-class.svg" alt="Billing Domain Class Diagram">
+
+Esta representacion permite observar como se estructura el modelo comercial del sistema y como se relacionan los objetos que gobiernan el ciclo de vida de la suscripcion del usuario.
+
 ##### 4.2.4.6.2. Bounded Context Database Design Diagram
+
+El siguiente diagrama presenta el diseño de base de datos del Bounded Context Billing, incluyendo las tablas necesarias para planes, suscripciones, eventos de facturacion, sesiones de checkout e invoices.
+
+<img src="../assets/c4-diagrams/code/billing-db.svg" alt="Billing Database Diagram">
+
+Gracias a esta vista se aprecia como la logica comercial del dominio se traduce a una estructura persistente trazable, capaz de registrar activaciones, cambios de plan, pagos y cancelaciones.
 
 ### 4.2.5. Bounded Context: Device & Space Management
 
@@ -512,9 +540,23 @@ El diagrama muestra la descomposicion del bounded context en los componentes **I
 
 #### 4.2.5.6. Bounded Context Software Architecture Code Level Diagrams
 
+En esta seccion se presentan los diagramas de detalle del Bounded Context Device \& Space Management, mostrando tanto la estructura de clases del dominio como el diseño de base de datos que soporta facilities, spaces, devices y thresholds.
+
 ##### 4.2.5.6.1. Bounded Context Domain Layer Class Diagrams
 
+El siguiente diagrama de clases representa los objetos principales del dominio vinculados a establecimientos, espacios, dispositivos y perfiles de umbrales.
+
+<img src="../assets/c4-diagrams/code/device-space-domain-class.svg" alt="Device and Space Domain Class Diagram">
+
+Esta vista permite identificar las relaciones estructurales entre facility, space y device, asi como la forma en que se modelan la asignacion operativa y la configuracion inicial del monitoreo.
+
 ##### 4.2.5.6.2. Bounded Context Database Design Diagram
+
+El siguiente diagrama muestra el diseño de base de datos asociado al Bounded Context Device \& Space Management.
+
+<img src="../assets/c4-diagrams/code/device-space-db.svg" alt="Device and Space Database Diagram">
+
+El esquema refleja como la estructura fisica del entorno monitoreado se representa en persistencia, manteniendo trazabilidad sobre establecimientos, espacios, dispositivos, thresholds y cambios de estado.
 
 ### 4.2.6. Bounded Context: Air Quality Evaluation
 
@@ -611,9 +653,23 @@ El diagrama evidencia la separacion del bounded context en los componentes **Int
 
 #### 4.2.6.6. Bounded Context Software Architecture Code Level Diagrams
 
+En esta seccion se presentan los diagramas de nivel codigo del Bounded Context Air Quality Evaluation. Estas vistas profundizan en el modelo encargado de procesar telemetria ambiental y en la estructura persistente que respalda lecturas, estados de calidad del aire y deteccion de anomalias.
+
 ##### 4.2.6.6.1. Bounded Context Domain Layer Class Diagrams
 
+El siguiente diagrama de clases representa los principales conceptos del dominio relacionados con lecturas, lotes de telemetria, indice de calidad del aire, evaluacion de thresholds y anomalias del sensor.
+
+<img src="../assets/c4-diagrams/code/airquality-domain-class.svg" alt="Air Quality Domain Class Diagram">
+
+Esta vista permite entender como el bounded context organiza la informacion ambiental y como articula el paso desde lecturas crudas hasta estados significativos del aire interior.
+
 ##### 4.2.6.6.2. Bounded Context Database Design Diagram
+
+El siguiente diagrama presenta el diseño de base de datos del Bounded Context Air Quality Evaluation.
+
+<img src="../assets/c4-diagrams/code/airquality-db.svg" alt="Air Quality Database Diagram">
+
+El esquema muestra las estructuras requeridas para almacenar telemetria, snapshots de AQI, superaciones de thresholds y anomalias, preservando trazabilidad sobre el procesamiento ambiental del sistema.
 
 ### 4.2.7. Bounded Context: Alerting & Response
 
@@ -710,9 +766,23 @@ El diagrama organiza el bounded context en componentes **Interfaces**, **Applica
 
 #### 4.2.7.6. Bounded Context Software Architecture Code Level Diagrams
 
+En esta seccion se presentan los diagramas de nivel codigo del Bounded Context Alerting \& Response. El objetivo es mostrar con mayor detalle los objetos que intervienen en el ciclo de vida de una alerta y el diseño de persistencia que soporta recordatorios, acciones correctivas y configuraciones de respuesta automatica.
+
 ##### 4.2.7.6.1. Bounded Context Domain Layer Class Diagrams
 
+El siguiente diagrama de clases representa los principales elementos del dominio de alertas, tales como critical alert, reminder, corrective action y cooldown policy.
+
+<img src="../assets/c4-diagrams/code/alertingresponse-domain-class.svg" alt="Alerting and Response Domain Class Diagram">
+
+Esta representacion permite observar como se modelan las relaciones entre la alerta principal, sus recordatorios, las acciones correctivas asociadas y las politicas que regulan la frecuencia de reaccion del sistema.
+
 ##### 4.2.7.6.2. Bounded Context Database Design Diagram
+
+El siguiente diagrama muestra el diseño de base de datos del Bounded Context Alerting \& Response.
+
+<img src="../assets/c4-diagrams/code/alertingresponse-db.svg" alt="Alerting and Response Database Diagram">
+
+El esquema refleja las estructuras necesarias para almacenar incidentes, recordatorios, acciones correctivas y configuraciones de respuesta, asegurando trazabilidad completa sobre el proceso de reaccion ante eventos criticos.
 
 ### 4.2.8. Bounded Context: Analytics & Reporting
 
@@ -800,9 +870,23 @@ El diagrama muestra la descomposicion del bounded context en los componentes **I
 
 #### 4.2.8.6. Bounded Context Software Architecture Code Level Diagrams
 
+En esta seccion se presentan los diagramas de detalle del Bounded Context Analytics \& Reporting. Estas vistas muestran como se modelan los agregados historicos, digests e insights, y como estos conceptos se proyectan sobre una estructura persistente orientada al analisis longitudinal del comportamiento ambiental.
+
 ##### 4.2.8.6.1. Bounded Context Domain Layer Class Diagrams
 
+El siguiente diagrama de clases representa los conceptos centrales del dominio analitico, incluyendo agregados historicos, digests, insights y recomendaciones de ventilacion.
+
+<img src="../assets/c4-diagrams/code/analytics-domain-class.svg" alt="Analytics Domain Class Diagram">
+
+Esta vista permite comprender como el sistema organiza el conocimiento historico para convertir datos acumulados en resumentes periodicos y recomendaciones accionables.
+
 ##### 4.2.8.6.2. Bounded Context Database Design Diagram
+
+El siguiente diagrama muestra el diseño de base de datos del Bounded Context Analytics \& Reporting.
+
+<img src="../assets/c4-diagrams/code/analytics-db.svg" alt="Analytics Database Diagram">
+
+La estructura presentada respalda la generacion de agregados, digests y reportes, facilitando consultas historicas eficientes y una explotacion analitica consistente.
 
 ### 4.2.9. Bounded Context: Notifications
 
@@ -882,9 +966,23 @@ El diagrama organiza el bounded context en componentes **Interfaces**, **Applica
 
 #### 4.2.9.6. Bounded Context Software Architecture Code Level Diagrams
 
+En esta seccion se presentan los diagramas de mayor detalle del Bounded Context Notifications. Estas vistas permiten comprender la estructura de clases encargada de templates, delivery requests, historial y preferencias, asi como su correspondiente diseño de persistencia.
+
 ##### 4.2.9.6.1. Bounded Context Domain Layer Class Diagrams
 
+El siguiente diagrama de clases representa los principales objetos del dominio de notificaciones, como templates, solicitudes de envio, historial de entregas y preferencias del usuario.
+
+<img src="../assets/c4-diagrams/code/notifications-domain-class.svg" alt="Notifications Domain Class Diagram">
+
+Esta vista describe como el sistema organiza la capacidad comunicacional de forma reutilizable, trazable y alineada con distintos canales de entrega.
+
 ##### 4.2.9.6.2. Bounded Context Database Design Diagram
+
+El siguiente diagrama presenta el diseño de base de datos del Bounded Context Notifications.
+
+<img src="../assets/c4-diagrams/code/notifications-db.svg" alt="Notifications Database Diagram">
+
+El esquema soporta templates, solicitudes de entrega, historial de mensajes y preferencias de canal, permitiendo trazabilidad completa sobre la comunicacion emitida por la plataforma.
 
 ### 4.2.10. Bounded Context: Embedded App
 
@@ -953,9 +1051,23 @@ El diagrama muestra componentes como **Embedded Controller**, **Embedded Telemet
 
 #### 4.2.10.6. Bounded Context Software Architecture Code Level Diagrams
 
+En esta seccion se presentan los diagramas de nivel codigo del Bounded Context Embedded App. Estas vistas detallan la estructura del modelo local del dispositivo y la forma en que este puede apoyarse en persistencia ligera para sostener estado runtime, buffer de lecturas y registro de comandos.
+
 ##### 4.2.10.6.1. Bounded Context Domain Layer Class Diagrams
 
+El siguiente diagrama de clases representa los principales conceptos del dominio embebido, como sensor reading, device state, telemetry payload, safety rule y local command.
+
+<img src="../assets/c4-diagrams/code/embedded-domain-class.svg" alt="Embedded App Domain Class Diagram">
+
+Esta vista permite comprender como el firmware estructura internamente la captura de lecturas, la aplicacion de reglas de seguridad y la preparacion de la telemetria antes de su publicacion hacia el edge.
+
 ##### 4.2.10.6.2. Bounded Context Database Design Diagram
+
+El siguiente diagrama muestra una propuesta de persistencia ligera para el Bounded Context Embedded App.
+
+<img src="../assets/c4-diagrams/code/embedded-db.svg" alt="Embedded App Database Diagram">
+
+Aunque el componente embebido opera con recursos limitados, esta estructura permite conservar estado local, buffer temporal de lecturas y trazabilidad minima sobre comandos ejecutados en el dispositivo.
 
 ### 4.2.11. Bounded Context: Edge Station
 
@@ -1027,6 +1139,20 @@ El diagrama describe componentes como **Edge Controller**, **Edge Processing Ser
 
 #### 4.2.11.6. Bounded Context Software Architecture Code Level Diagrams
 
+En esta seccion se presentan los diagramas de nivel codigo del Bounded Context Edge Station. Estas vistas profundizan en la estructura del modelo local de sincronizacion y en el diseño de persistencia que soporta colas, checkpoints y despacho de comandos en escenarios offline-first.
+
 ##### 4.2.11.6.1. Bounded Context Domain Layer Class Diagrams
 
+El siguiente diagrama de clases representa los principales conceptos del dominio edge, como local telemetry record, sync queue, retry window, sync checkpoint y command dispatch.
+
+<img src="../assets/c4-diagrams/code/edge-domain-class.svg" alt="Edge Station Domain Class Diagram">
+
+Esta vista permite entender como el nodo edge organiza la recepcion de telemetria, la deduplicacion local, la sincronizacion diferida con la nube y el enrutamiento de comandos hacia los dispositivos embebidos.
+
 ##### 4.2.11.6.2. Bounded Context Database Design Diagram
+
+El siguiente diagrama presenta el diseño de base de datos local del Bounded Context Edge Station.
+
+<img src="../assets/c4-diagrams/code/edge-db.svg" alt="Edge Station Database Diagram">
+
+El esquema refleja una persistencia orientada a telemetria temporal, colas de sincronizacion, despacho de comandos y checkpoints de avance, reforzando la resiliencia operativa del sistema ante conectividad intermitente.
