@@ -30,9 +30,10 @@
 | 0.2.6   | 15/04/2026 | Ian Macavilca Quispe             | Realicé el Impact Mapping considerando segmneto objetivo, empleando la informacion obtenida, las User Personas y usando UXPressia |
 | 0.2.7 | 15/04/2026 | Neil Curipaco Huayllani | Agregue al documento la tabla de las user stories que realizamos en grupo junto con el backlog. |
 | 0.2.8 | 16/04/2026 | Dante Mateo Aleman Romano | Realicé cambios en el Capítulo II sobre Big Picture EventStorming y Ubiquitous Language, mejorando el storytelling y la consistencia del lenguaje de dominio. Luego, desarrollé el Strategic-Level Domain-Driven Design, definiendo los candidatos para bounded contexts  y sus límites para preparar el Context Mapping y el diseño táctico. |
-| 0.2.9 | 17/04/2026 | Neil Curipaco Huayllani | He actualizo las nuevas user stories elaboradas por el equipo así mismo he actualizado el product backlog |
 | 0.3.0 | 17/04/2026 | Dante Mateo Aleman Romano | Completé Solution Software Design, redactando la documentación de los bounded contexts Identity & Access, Billing, Device & Space Management, Air Quality Evaluation, Alerting & Response, Analytics & Reporting, Notifications, Embedded App y Edge Station en sus capas Domain, Interface, Application e Infrastructure; además, agregué descripciones para los diagramas de Context Level, Container Level y Deployment, incorporé la explicación e imagen correspondiente en las secciones de Component Level Diagrams, eliminé imágenes repetidas para mejorar la estructura del capítulo y finalmente integré los diagramas code-level de clases de dominio y base de datos para todos los bounded contexts, referenciando sus archivos SVG dentro del informe. |
 | 0.3.1 | 17/04/2026 | Dante Mateo Aleman Romano | Actualicé la carátula del informe en cover.md, corrigiendo los textos para alinearlos con el formato solicitado de la referencia. |
+| 0.3.2 | 18/04/2026 | Fabrizio Alessandro Contreras Peralta | He revisado y correguido las user stories |
+| 0.3.3 | 18/04/2026 | Neil Curipaco Huayllani | He actualizo las nuevas user stories elaboradas por el equipo así mismo he actualizado el product backlog y agrado las imagens del Jira |
 
 # Project Report Collaboration Insights
 
