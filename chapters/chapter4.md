@@ -234,6 +234,46 @@ Message Flows
 
 #### 4.1.1.3 Bounded Context Canvases.
 
+A continuación se presentan los Context Canvases de los contextos de Clair, donde se describen sus responsabilidades, relaciones, eventos clave, reglas de negocio, etc.
+
+**IAM (Identity \& Access Management)**
+
+<img src="../assets/context-canvases/cc-iam.jpg" alt="cc-iam" width="800">
+
+**Billing**
+
+<img src="../assets/context-canvases/cc-billing.jpg" alt="cc-billing" width="800">
+
+**Device \& Space Management**
+
+<img src="../assets/context-canvases/cc-device.jpg" alt="cc-device-space" width="800">
+
+**Air Quality Evaluation**
+
+<img src="../assets/context-canvases/cc-quality.jpg" alt="cc-aq" width="800">
+
+**Alerting \& Response**
+
+<img src="../assets/context-canvases/cc-alerting.jpg" alt="cc-alerting" width="800">
+
+**Analytics \& Reporting**
+
+<img src="../assets/context-canvases/cc-analytics.jpg" alt="cc-analytics" width="800">
+
+**Notifications**
+
+<img src="../assets/context-canvases/cc-notifications.jpg" alt="cc-notifications" width="800">
+
+**Embedded App**
+
+<img src="../assets/context-canvases/cc-embedded.jpg" alt="cc-embedded" width="800">
+
+**Edge Station**
+
+<img src="../assets/context-canvases/cc-edge.jpg" alt="cc-edge" width="800">
+
+
+
 ### 4.1.2. Context Mapping.
 
 ### 4.1.3. Software Architecture.
