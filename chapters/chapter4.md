@@ -432,6 +432,17 @@ Este canvas describe el componente de infraestructura local que actúa como conc
 
 ### 4.1.2. Context Mapping.
 
+Con el Context Mapping se presentan las relaciones entre los bounded contexts identificados de manera gráfica y estructurada.
+
+<img src="../assets/context-mapping/contextMap.png" alt="context-map" width="700">
+
+Las relaciones Published Language (PL) se utilizan entre Edge Station y Air Quality Evaluation, y desde este último hacia Alerting & Response y Analytics & Reporting, porque en estos puntos del sistema se intercambia información ya estructurada del dominio, 
+como telemetría procesada, estados del aire o eventos de umbrales
+
+Las relaciones Customer–Supplier (CUS → SUP) se presentan entre Embedded App y Edge Station, así como entre Alerting & Response y Notifications y Analytics & Reporting y Notifications, 
+porque existe una dependencia directa donde un contexto necesita que otro ejecute una función específica.
+
+
 ### 4.1.3. Software Architecture.
 
 #### 4.1.3.1. Software Architecture System Landscape Diagram.
