@@ -24,5 +24,5 @@ Big Picture Event Storming: https://bit.ly/3QwYkAS
 
 Candidate Context Discovery: https://imgur.com/a/OX5FnV6
 
-URL del backlog en Jira: https://goo.su/LZ0fuUs
+URL del backlog en Trello: https://sl1nk.com/r2diehi
 
