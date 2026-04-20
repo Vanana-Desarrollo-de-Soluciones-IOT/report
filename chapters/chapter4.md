@@ -447,6 +447,12 @@ porque existe una dependencia directa donde un contexto necesita que otro ejecut
 
 #### 4.1.3.1. Software Architecture System Landscape Diagram.
 
+El System Landscape Diagram presenta la vista más amplia de la solución Vanana, ubicando a Clair dentro de su ecosistema tecnológico y mostrando cómo se relaciona con actores externos, plataformas de soporte y componentes operativos del dominio. Esta perspectiva permite identificar claramente los límites del sistema, las integraciones críticas y el flujo de valor entre usuarios, servicios cloud, capa edge y dispositivos IoT.
+
+<img src="../assets/c4-diagrams/landscape/VananaSystemLandscape-dark.svg" alt="system-landscape" width="900">
+
+En esta vista se evidencia que Vanana opera como una arquitectura distribuida: la experiencia de usuario se articula en interfaces web y móviles, la lógica de negocio se concentra en servicios backend desacoplados por bounded contexts, y la operación en campo se sostiene mediante Embedded App y Edge Station. Además, el landscape deja explícita la dependencia de servicios externos como autenticación, pagos y notificaciones, lo cual facilita analizar riesgos de integración, puntos de escalabilidad y decisiones de evolución arquitectónica.
+
 #### 4.1.3.2. Software Architecture Context Level Diagrams.
 
 El diagrama de contexto presenta una vista de alto nivel del ecosistema de Clair dentro de la plataforma Vanana, identificando a los actores principales y a los sistemas externos que interactuan con la solucion. En esta representacion se observa como **Home User** y **Facility Admin** se relacionan con la plataforma para monitorear la calidad del aire, administrar dispositivos y consultar informacion operativa, mientras que servicios externos como **Google OAuth2**, **Stripe** y **Resend** complementan funciones de autenticacion, facturacion y comunicacion transaccional. Asimismo, el diagrama evidencia que Vanana actua como el nucleo de coordinacion entre usuarios, hardware fisico y proveedores externos, delimitando claramente la frontera del sistema y sus dependencias estrategicas.
