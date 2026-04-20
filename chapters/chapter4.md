@@ -325,6 +325,8 @@ Esta vista describe el proceso de Identificación de Insights Estratégicos, ilu
 </p>
 Esta vista describe el proceso de Reportes Históricos bajo Demanda y Control de Acceso, detallando cómo el sistema restringe o permite la visualización de tendencias según el plan del usuario. El flujo inicia cuando el usuario solicita una vista de tendencias mensuales al módulo de Analytics & Reporting, el cual coordina con la Internal Logic para verificar los permisos de visibilidad y límites del plan actual. Si el acceso es autorizado, se genera el reporte y se notifica al usuario a través del Notifications Center; de lo contrario, la previsualización se bloquea indicando que se ha alcanzado el límite del plan gratuito, garantizando así la integridad del modelo de suscripción mientras se recuperan los datos del Internal Storage.
 
+El tablero completo del  Domain Message Flows Modeling. puede visualizarse en el siguiente enlace: https://bit.ly/3QwYkAS
+
 #### 4.1.1.3 Bounded Context Canvases.
 
 A continuación se presentan los Context Canvases de los contextos de Clair, donde se describen sus responsabilidades, relaciones, eventos clave, reglas de negocio, etc.
@@ -428,7 +430,7 @@ Este canvas describe el componente de infraestructura local que actúa como conc
 
 <img src="../assets/context-canvases/cc-edge.jpg" alt="cc-edge" width="800">
 
-
+El tablero completo del Bounded Context Canvases. puede visualizarse en el siguiente enlace: https://bit.ly/3QwYkAS
 
 ### 4.1.2. Context Mapping.
 
@@ -446,6 +448,12 @@ porque existe una dependencia directa donde un contexto necesita que otro ejecut
 ### 4.1.3. Software Architecture.
 
 #### 4.1.3.1. Software Architecture System Landscape Diagram.
+
+El System Landscape Diagram presenta la vista más amplia de la solución Vanana, ubicando a Clair dentro de su ecosistema tecnológico y mostrando cómo se relaciona con actores externos, plataformas de soporte y componentes operativos del dominio. Esta perspectiva permite identificar claramente los límites del sistema, las integraciones críticas y el flujo de valor entre usuarios, servicios cloud, capa edge y dispositivos IoT.
+
+<img src="../assets/c4-diagrams/landscape/VananaSystemLandscape-dark.svg" alt="system-landscape" width="900">
+
+En esta vista se evidencia que Vanana opera como una arquitectura distribuida: la experiencia de usuario se articula en interfaces web y móviles, la lógica de negocio se concentra en servicios backend desacoplados por bounded contexts, y la operación en campo se sostiene mediante Embedded App y Edge Station. Además, el landscape deja explícita la dependencia de servicios externos como autenticación, pagos y notificaciones, lo cual facilita analizar riesgos de integración, puntos de escalabilidad y decisiones de evolución arquitectónica.
 
 #### 4.1.3.2. Software Architecture Context Level Diagrams.
 

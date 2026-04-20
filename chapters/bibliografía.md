@@ -26,3 +26,5 @@ Candidate Context Discovery: https://imgur.com/a/OX5FnV6
 
 URL del backlog en Trello: https://sl1nk.com/r2diehi
 
+
+Diagramas C4: https://bit.ly/48eogr9
