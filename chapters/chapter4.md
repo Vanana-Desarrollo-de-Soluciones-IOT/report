@@ -58,78 +58,105 @@ En paralelo, se definieron doce flujos principales *end-to-end*, representando l
 <p align="center">
   <img src="https://i.imgur.com/nqINlqg.png" width="500">
 </p>
-
 **1. User Registration and Access Activation**
+
+Este flujo gestiona la creación de nuevas identidades en la plataforma. El sistema captura los datos del aspirante, valida los requisitos de seguridad y activa el acceso tras confirmar la identidad.
 
 <p align="center">
   <img src="https://i.imgur.com/3MbRs9Z.png" width="700">
 </p>
-
 **2. Login and Session Start**
+
+Describe el proceso de validación de credenciales para usuarios existentes. Una vez autenticado, el sistema inicia una sesión segura y otorga los permisos necesarios según el rol asignado (**Home User** o **Facility Admin**).
+
+
 
 <p align="center">
   <img src="https://i.imgur.com/jvEigtT.png" width="700">
 </p>
-
 **3. Trial and Subscription Lifecycle**
+
+Gestiona el estado de la cuenta del usuario, desde la activación del periodo de prueba de 30 días hasta la transición a planes suscritos, controlando el acceso a las funciones premium del ecosistema.
+
+
 
 <p align="center">
   <img src="https://i.imgur.com/7wSa5xs.png" width="700">
 </p>
-
 **4. Checkout and Payment Outcome**
+
+Representa el flujo financiero donde se procesan las transacciones de suscripción. El sistema valida el método de pago y confirma el resultado de la operación para actualizar el nivel de servicio del cliente.
+
+
 
 <p align="center">
   <img src="https://i.imgur.com/1dgJLHX.png" width="700">
 </p>
-
 **5. Facility and Space Setup**
+
+Flujo orientado principalmente al Facility Admin para la estructuración lógica de sus establecimientos. Permite segmentar el local en zonas específicas para una monitorización más precisa y organizada.
+
+
 
 <p align="center">
   <img src="https://i.imgur.com/PopJW9Q.png" width="700">
 </p>
-
 **6. Device Onboarding**
+
+Es el proceso técnico de vinculación de hardware. Incluye la lectura del código único del sensor Clair y su registro en la base de datos de la plataforma para comenzar la transmisión de datos.
+
+
 
 <p align="center">
   <img src="https://i.imgur.com/FDUiEL9.png" width="700">
 </p>
-
 **7. Threshold Management**
+
+Permite a los usuarios definir los parámetros de seguridad para $CO_2$ y partículas. Este flujo establece los límites que el motor de reglas utilizará para evaluar la calidad del aire de forma personalizada.
+
+
 
 <p align="center">
   <img src="https://i.imgur.com/dEGlvX9.png" width="700">
 </p>
-
 **8. Telemetry Ingestion and Validation**
+
+Gestiona la recepción de datos y valida su integridad. Incluye almacenamiento local (Offline) cuando se pierde la conexión, permitiendo la sincronización automática por lotes al restablecerse el internet para evitar brechas en el historial de calidad del aire.
+
+
 
 <p align="center">
   <img src="https://i.imgur.com/R7wW3kx.png" width="700">
 </p>
-
 **9. Air Quality Evaluation**
+
+Es el motor de procesamiento donde la telemetría se compara contra los umbrales configurados. Este flujo determina el estado ambiental en tiempo real (Seguro, Advertencia o Crítico).
 
 <p align="center">
   <img src="https://i.imgur.com/qkJ8oVo.png" width="700">
 </p>
-
 **10. Critical Alert Management**
+
+Flujo de respuesta inmediata ante picos de contaminación. Se encarga de la generación y envío de notificaciones *push* y alertas visuales cuando el aire representa un riesgo para la salud.
 
 <p align="center">
   <img src="https://i.imgur.com/TTe7xX5.png" width="700">
 </p>
-
 **11. Corrective Action Orchestration**
+
+Gestiona la ejecución de comandos hacia los actuadores. Este flujo coordina la apertura de ventanas o el encendido de extractores de forma autónoma según las reglas de automatización configuradas.
 
 <p align="center">
   <img src="https://i.imgur.com/ffAxj7b.png" width="700">
 </p>
-
 **12. Reporting and Insights**
+
+ Proceso de síntesis de datos históricos. Transforma la telemetría acumulada en reportes semanales de salud y visualizaciones de tendencias para la toma de decisiones informadas.
 
 <p align="center">
   <img src="https://i.imgur.com/RzEd1me.png" width="700">
 </p>
+
 Cada flujo fue modelado de manera independiente y detallada, utilizando *post-its* atómicos (sin combinación de elementos), lo que asegura que cada evento, comando, regla y reacción se mantenga explícito y alineado con el *Ubiquitous Language* del dominio.
 
 El tablero completo del  Candidate Context Discovery puede visualizarse en el siguiente enlace: https://bit.ly/3QwYkAS
@@ -304,37 +331,100 @@ A continuación se presentan los Context Canvases de los contextos de Clair, don
 
 **IAM (Identity \& Access Management)**
 
+El **Bounded Context Canvas** del módulo **Air Quality Monitoring** define el núcleo operativo de Clair, estableciendo los límites de responsabilidad para el procesamiento de datos ambientales.
+
+- **Propósito:** Monitorear y evaluar la calidad del aire en tiempo real para generar alertas y ejecutar respuestas automáticas.
+- **Capacidades:** Incluye la ingesta de telemetría, el monitoreo del estado de los sensores y la evaluación de niveles de contaminantes basados en umbrales de seguridad.
+- **Interacciones (Inbound/Outbound):** Recibe datos de los dispositivos y configuraciones del contexto de *Space Management*, mientras envía eventos críticos al contexto de *Alerting & Response* para la mitigación de riesgos.
+- **Eventos de Dominio:** Los eventos clave incluyen `Air Quality Measured`, `Safety Threshold Exceeded` y `Sensor Connection Lost`, los cuales disparan la lógica de automatización del sistema.
+
 <img src="../assets/context-canvases/cc-iam.jpg" alt="cc-iam" width="800">
 
 **Billing**
+
+Este canvas gestiona el flujo financiero y el modelo de monetización de la plataforma, asegurando la sostenibilidad del servicio.
+
+- **Propósito:** Administrar el ciclo de vida de los pagos, planes de suscripción y la facturación de los servicios premium de Clair.
+- **Capacidades:** Procesamiento de pagos (Checkout), gestión de niveles de suscripción (Freemium/Paid) y emisión de comprobantes fiscales electrónicos.
+- **Interacciones clave:** Informa al contexto de *Identity & Access Management* sobre el estado de pago del usuario para habilitar o restringir el acceso a funcionalidades avanzadas.
+- **Eventos de Dominio:** Los hitos críticos incluyen `Payment Processed`, `Subscription Tier Upgraded` e `Invoice Issued`, los cuales garantizan la transparencia financiera y la continuidad del servicio para los clientes.
 
 <img src="../assets/context-canvases/cc-billing.jpg" alt="cc-billing" width="800">
 
 **Device \& Space Management**
 
+Este canvas define la estructura organizativa de la solución, encargándose de la gestión del hardware y la jerarquización de los entornos físicos monitoreados.
+
+- **Propósito:** Administrar el inventario de dispositivos y la configuración de los espacios (establecimientos y zonas) para contextualizar los datos ambientales.
+- **Capacidades:** Incluye el registro de dispositivos (**Device Onboarding**), la gestión de estados del sensor y la creación de una jerarquía de espacios que permite asignar sensores a áreas específicas (ej. "Área de Cocina" o "Sala de Espera").
+- **Interacciones Clave:** Actúa como proveedor de estructura para el contexto de *Air Quality Monitoring* y recibe directrices de permisos desde el contexto de *Identity & Access Management*.
+- **Eventos de Dominio:** Los hitos fundamentales son `Device Registered`, `Space Configured` y `Device Status Updated`, los cuales aseguran que cada lectura de aire esté correctamente vinculada a un punto geográfico y a un responsable administrativo.
+
 <img src="../assets/context-canvases/cc-device.jpg" alt="cc-device-space" width="800">
 
 **Air Quality Evaluation**
+
+Este canvas representa el motor de inteligencia del sistema, encargado de procesar la telemetría bruta para determinar el estado de salubridad del entorno.
+
+- **Propósito:** Analizar y validar los datos provenientes de los sensores para identificar desviaciones en la calidad del aire respecto a los estándares de salud.
+- **Capacidades:** Incluye la ingesta de telemetría, la validación de la integridad de los datos y el motor de evaluación que compara las lecturas con los umbrales de $CO_2$ y material particulado (PM2.5).
+- **Interacciones Clave:** Recibe el flujo de datos constante de los dispositivos y, al detectar niveles críticos, notifica al contexto de *Alerting & Response* para iniciar acciones de mitigación.
+- **Eventos de Dominio:** Los hitos clave son `Telemetry Validated`, `Air Quality Evaluated` y `Health Threshold Breached`, los cuales activan la lógica reactiva y preventiva de la plataforma.
 
 <img src="../assets/context-canvases/cc-quality.jpg" alt="cc-aq" width="800">
 
 **Alerting \& Response**
 
+Este canvas define la capacidad reactiva y de mitigación del sistema, transformando los eventos de riesgo en acciones correctivas inmediatas.
+
+- **Propósito:** Orquestar la comunicación de alertas críticas y ejecutar de forma autónoma las acciones necesarias para restaurar la calidad del aire.
+- **Capacidades:** Gestión de notificaciones automáticas (push/email) y control de actuadores inteligentes, permitiendo la activación de sistemas de ventilación o purificación sin intervención manual.
+- **Interacciones Clave:** Depende de los eventos de "umbral excedido" provenientes de *Air Quality Evaluation* y consulta los canales de comunicación preferidos del usuario en el contexto de *Identity & Access Management*.
+- **Eventos de Dominio:** Los hitos fundamentales incluyen `Alert Triggered`, `Corrective Action Initiated` y `Notification Delivered`, garantizando una respuesta inmediata ante cualquier anomalía ambiental detectada.
+
 <img src="../assets/context-canvases/cc-alerting.jpg" alt="cc-alerting" width="800">
 
 **Analytics \& Reporting**
+
+Este canvas se enfoca en la síntesis y transformación de datos históricos para facilitar la toma de decisiones basada en evidencia.
+
+- **Propósito:** Proporcionar una visión retrospectiva y estratégica de la calidad del aire mediante el análisis de tendencias y la generación de informes detallados.
+- **Capacidades:** Incluye la visualización de datos históricos, la generación de reportes semanales de salud y la creación de resúmenes analíticos que permiten identificar patrones de contaminación recurrentes.
+- **Interacciones Clave:** Consume la telemetría validada del contexto de *Air Quality Evaluation* y utiliza la estructura de zonas definida en *Device & Space Management* para organizar la información.
+- **Eventos de Dominio:** Los hitos principales incluyen `Historical Data Summarized`, `Weekly Insight Generated` y `Report Exported`, permitiendo a los usuarios evaluar la efectividad de sus medidas de ventilación a lo largo del tiempo.
 
 <img src="../assets/context-canvases/cc-analytics.jpg" alt="cc-analytics" width="800">
 
 **Notifications**
 
+Este canvas define la capacidad reactiva del sistema, encargándose de transformar los eventos críticos en acciones de mitigación tangibles.
+
+- **Propósito:** Gestionar la comunicación de alertas a los usuarios y coordinar la respuesta automática de los actuadores ante riesgos ambientales.
+- **Capacidades:** Orquestación de notificaciones (push/email) y ejecución de comandos hacia hardware inteligente (extractores, purificadores y ventanas).
+- **Interacciones clave:** Depende de los eventos de "umbral excedido" provenientes de *Air Quality Monitoring* y consulta las preferencias de contacto del contexto de *Identity & Access Management*.
+- **Eventos de Dominio:** Los hitos principales son `Notification Sent`, `Corrective Action Executed` y `Action Outcome Logged`, asegurando la trazabilidad de cada intervención del sistema.
+
 <img src="../assets/context-canvases/cc-notifications.jpg" alt="cc-notifications" width="800">
 
 **Embedded App**
 
+Este canvas define la lógica del software que reside directamente en el hardware, actuando como el puente físico entre el entorno y la nube de Clair.
+
+- **Propósito:** Gestionar la operación local del sensor, garantizando la captura precisa de datos y la comunicación estable con el ecosistema digital.
+- **Capacidades:** Controla la lectura de los sensores de $CO_2$ y PM2.5, la gestión de la conectividad Wi-Fi, el almacenamiento local (*Offline Logging*) durante fallos de red y la señalización visual mediante indicadores LED.
+- **Interacciones Clave:** Envía el flujo de telemetría bruta al contexto de *Air Quality Evaluation* y recibe señales de configuración o comandos de actualización desde la plataforma central.
+- **Eventos de Dominio:** Los hitos críticos incluyen `Physical Reading Captured`, `Connectivity Status Changed` y `Local Buffer Synced`, los cuales aseguran que ninguna medición se pierda a pesar de las fluctuaciones en la infraestructura de red.
+
 <img src="../assets/context-canvases/cc-embedded.jpg" alt="cc-embedded" width="800">
 
 **Edge Station**
+
+Este canvas describe el componente de infraestructura local que actúa como concentrador y gestor de datos en el sitio donde se encuentran los sensores.
+
+- **Propósito:** Optimizar el flujo de información entre los dispositivos periféricos y la nube, garantizando la resiliencia operativa y el procesamiento ligero en el borde (*Edge Computing*).
+- **Capacidades:** Gestión de la red local de sensores, orquestación de la transmisión de datos hacia la plataforma central y mantenimiento de la persistencia temporal de lecturas ante cortes de energía o internet.
+- **Interacciones Clave:** Se comunica directamente con la **Embedded App** de los sensores para recolectar telemetría y sirve como enlace para el contexto de **Air Quality Evaluation** en la nube.
+- **Eventos de Dominio:** Los hitos principales incluyen `Gateway Connection Established`, `Data Batch Forwarded` y `Node Status Heartbeat`, asegurando que la infraestructura física del establecimiento se mantenga estable y supervisada.
 
 <img src="../assets/context-canvases/cc-edge.jpg" alt="cc-edge" width="800">
 

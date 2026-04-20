@@ -89,13 +89,11 @@ Este mapeo asegura que cada historia de usuario tenga un propósito claro y medi
 
 El Product Backlog constituye el inventario centralizado y priorizado de todos los requisitos, funcionalidades y mejoras necesarias para la materialización de la solución Clair. Este artefacto sirve como el único origen de trabajo para el equipo de desarrollo de Vanana, permitiendo una gestión ágil del ciclo de vida del producto. En esta sección, las Historias de Usuario previamente identificadas se desglosan y organizan estratégicamente, relacionándolas con sus respectivas Épicas y estableciendo criterios de aceptación técnicos que garantizan la calidad del software.
 
-URL del backlog en Jira: https://goo.su/LZ0fuUs
+URL del backlog en Trello: https://sl1nk.com/r2diehi
 
 
 
-<img src="https://i.imgur.com/55UW2mj.png" alt="backlog1" width="1000">
-
-<img src="https://i.imgur.com/xBY6JZI.png" alt="backlog1" width="1000">
+<img src="https://i.imgur.com/14qGRPq.png" alt="backlog1" width="1000">
 
 | N    | Epic / Story ID | Título                                        | Descripción                                                  | Story Points |
 | ---- | --------------- | --------------------------------------------- | ------------------------------------------------------------ | ------------ |
