@@ -13,13 +13,13 @@
   <h2 style="margin: 5px 0;">Universidad Peruana de Ciencias Aplicadas</h2>
   <h3 style="margin: 5px 0;">Facultad de Ingeniería</h3>
 
-<p style="margin: 5px 0;"><strong>Curso:</strong> 1ASI0725 - Arquitectura de Computadoras</p>
+<p style="margin: 5px 0;"><strong>Curso:</strong> 1ASI0572 - Desarrollo de Soluciones IOT</p>
 <p style="margin: 5px 0;">NRC: <strong>6785</strong></p>
 <p style="margin: 5px 0;"><strong>Nombre del profesor:</strong> Marco Antonio Leon Baca</p>
 
   <hr style="width: 50%; margin: 25px auto; border: 1px solid #999;"/>
 
-<h2 style="margin-bottom: 10px;"><strong>"Informe del Trabajo Final"</strong></h2>
+<h2 style="margin-bottom: 10px;"><strong>"Informe del AV1"</strong></h2>
 <p style="margin: 5px 0;"><strong>Nombre del grupo:</strong> Vanana</p>
 <p style="margin: 5px 0;"><strong>Nombre del producto:</strong> Clair</p>
 

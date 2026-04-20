@@ -325,6 +325,8 @@ Esta vista describe el proceso de Identificación de Insights Estratégicos, ilu
 </p>
 Esta vista describe el proceso de Reportes Históricos bajo Demanda y Control de Acceso, detallando cómo el sistema restringe o permite la visualización de tendencias según el plan del usuario. El flujo inicia cuando el usuario solicita una vista de tendencias mensuales al módulo de Analytics & Reporting, el cual coordina con la Internal Logic para verificar los permisos de visibilidad y límites del plan actual. Si el acceso es autorizado, se genera el reporte y se notifica al usuario a través del Notifications Center; de lo contrario, la previsualización se bloquea indicando que se ha alcanzado el límite del plan gratuito, garantizando así la integridad del modelo de suscripción mientras se recuperan los datos del Internal Storage.
 
+El tablero completo del  Domain Message Flows Modeling. puede visualizarse en el siguiente enlace: https://bit.ly/3QwYkAS
+
 #### 4.1.1.3 Bounded Context Canvases.
 
 A continuación se presentan los Context Canvases de los contextos de Clair, donde se describen sus responsabilidades, relaciones, eventos clave, reglas de negocio, etc.
@@ -428,7 +430,7 @@ Este canvas describe el componente de infraestructura local que actúa como conc
 
 <img src="../assets/context-canvases/cc-edge.jpg" alt="cc-edge" width="800">
 
-
+El tablero completo del Bounded Context Canvases. puede visualizarse en el siguiente enlace: https://bit.ly/3QwYkAS
 
 ### 4.1.2. Context Mapping.
 
