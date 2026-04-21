@@ -39,6 +39,7 @@
 | 0.3.6   | 19/04/2026 | Neil Curipaco Huayllani               | He agregado las descripciones de los context canvase y a los fujos de Candidate Context Discovery |
 | 0.3.7   | 20/04/2026 | Josue Paiva                           | Realicé y agregue el context mapping junto a su explicación respectiva |
 | 0.3.8   | 20/04/2026 | Dante Mateo Aleman Romano             | Agregue el diagram landscape                                 |
+| 0.3.9   | 21/04/2026 | Neil Curipaco Huayllani               | He actualizado el backlog pasándolo de Jira a Trello; además, he documentado mi aporte al equipo en el Student Outcome según los criterios evaluados. |
 
 # Project Report Collaboration Insights
 
