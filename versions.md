@@ -43,5 +43,3 @@
 
 # Project Report Collaboration Insights
 
-He actualizado el backlog pasandolo de Jira a Trello, ademas he documentado mi aporte al equipo en el Student Outcome segun los criterios evaluados.
-
