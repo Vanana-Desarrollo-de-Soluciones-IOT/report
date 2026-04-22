@@ -246,32 +246,33 @@ El tablero completo del Big Picture Event Storming puede visualizarse en el sigu
 
 ## 2.5. Ubiquitous Language.
 
-| Terms                                                      | Definition                                                   |
-| ---------------------------------------------------------- | ------------------------------------------------------------ |
-| Clair                                                      | Producto IoT orientado al monitoreo y mejora de la calidad del aire interior. |
-| Home User (usuario del hogar)                              | Persona que usa Clair en una vivienda para monitorear el ambiente y recibir alertas. |
-| Facility Admin (administrador de establecimiento)          | Persona responsable de supervisar uno o varios espacios donde opera Clair. |
-| Facility (establecimiento)                                 | Entorno administrado donde se despliegan dispositivos Clair (hogar, oficina o local). |
-| Space (espacio)                                            | Area especifica dentro de una facility donde se instala y opera un dispositivo. |
-| Air Quality Sensor (sensor de calidad del aire)            | Dispositivo fisico que captura mediciones ambientales en el espacio monitoreado. |
-| Device Pairing (emparejamiento de dispositivo)             | Proceso de vinculacion inicial entre el dispositivo Clair y la cuenta del usuario. |
-| Device Registration (registro de dispositivo)              | Alta formal del dispositivo dentro del sistema para habilitar su operacion. |
-| Telemetry (telemetria)                                     | Conjunto de datos ambientales enviados periodicamente por el dispositivo. |
-| Reading (lectura)                                          | Medicion individual de una variable ambiental, por ejemplo CO2, PM, temperatura o humedad. |
-| Time Series History (historial temporal)                   | Registro cronologico de lecturas para analizar el comportamiento del aire. |
-| Air Quality Index (indice de calidad del aire)             | Valor compuesto que resume el estado general del aire interior. |
-| Air Quality State (estado de calidad del aire)             | Clasificacion del ambiente segun el indice y los umbrales definidos. |
-| Threshold (umbral)                                         | Valor limite usado para decidir cuando una condicion requiere atencion. |
-| Default Threshold (umbral por defecto)                     | Valor inicial propuesto por Clair cuando el usuario aun no personaliza reglas. |
-| Custom Threshold (umbral personalizado)                    | Valor configurado por el usuario segun necesidades del espacio. |
-| Critical Alert (alerta critica)                            | Aviso generado cuando se detecta una condicion ambiental de riesgo o incomodidad alta. |
-| Alert Reminder (recordatorio de alerta)                    | Reaviso enviado cuando una condicion critica continua sin resolverse. |
-| Alert Fatigue Prevention (prevencion de fatiga de alertas) | Reglas para limitar la frecuencia de notificaciones y evitar saturacion del usuario. |
-| Corrective Action (accion correctiva)                      | Medida sugerida o ejecutada para mejorar la calidad del aire. |
-| Automatic Corrective Action (accion correctiva automatica) | Ejecucion automatica de una accion correctiva cuando se cumplen condiciones predefinidas. |
-| HVAC Controller (controlador HVAC)                         | Sistema externo utilizado para activar ventilacion, calefaccion o aire acondicionado. |
-| Smart Window Actuator (actuador de ventana inteligente)    | Sistema externo que permite abrir ventanas automaticamente para ventilar. |
-| Notification Preferences (preferencias de notificacion)    | Configuracion de canales y frecuencia con la que el usuario desea recibir alertas. |
-| Trial Subscription (suscripcion de prueba)                 | Periodo inicial de acceso sin costo para evaluar funcionalidades premium. |
-| Freemium Plan (plan freemium)                              | Modalidad gratuita con funcionalidades limitadas de monitoreo e historial. |
-| Premium Plan (plan premium)                                | Modalidad de pago con funcionalidades avanzadas, reportes completos y mayor capacidad de analisis. |
+| Terms                                                      | Definition                                                                                                                                                   |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Clair                                                      | Producto IoT orientado al monitoreo y mejora de la calidad del aire interior.                                                                                |
+| Home User (usuario del hogar)                              | Persona que usa Clair en una vivienda para monitorear el ambiente y recibir alertas.                                                                         |
+| Facility Admin (administrador de establecimiento)          | Persona responsable de supervisar uno o varios espacios donde opera Clair.                                                                                   |
+| Customer                                                   | Persona ya sea Home User o Facility Admin. Termino para referenciarse a ambos usuarios, ya que el producto provee características compartidas en escenarios. |
+| Facility (establecimiento)                                 | Entorno administrado donde se despliegan dispositivos Clair (hogar, oficina o local).                                                                        |
+| Space (espacio)                                            | Area especifica dentro de una facility donde se instala y opera un dispositivo.                                                                              |
+| Air Quality Sensor (sensor de calidad del aire)            | Dispositivo fisico que captura mediciones ambientales en el espacio monitoreado.                                                                             |
+| Device Pairing (emparejamiento de dispositivo)             | Proceso de vinculacion inicial entre el dispositivo Clair y la cuenta del usuario.                                                                           |
+| Device Registration (registro de dispositivo)              | Alta formal del dispositivo dentro del sistema para habilitar su operacion.                                                                                  |
+| Telemetry (telemetria)                                     | Conjunto de datos ambientales enviados periodicamente por el dispositivo.                                                                                    |
+| Reading (lectura)                                          | Medicion individual de una variable ambiental, por ejemplo CO2, PM, temperatura o humedad.                                                                   |
+| Time Series History (historial temporal)                   | Registro cronologico de lecturas para analizar el comportamiento del aire.                                                                                   |
+| Air Quality Index (indice de calidad del aire)             | Valor compuesto que resume el estado general del aire interior.                                                                                              |
+| Air Quality State (estado de calidad del aire)             | Clasificacion del ambiente segun el indice y los umbrales definidos.                                                                                         |
+| Threshold (umbral)                                         | Valor limite usado para decidir cuando una condicion requiere atencion.                                                                                      |
+| Default Threshold (umbral por defecto)                     | Valor inicial propuesto por Clair cuando el usuario aun no personaliza reglas.                                                                               |
+| Custom Threshold (umbral personalizado)                    | Valor configurado por el usuario segun necesidades del espacio.                                                                                              |
+| Critical Alert (alerta critica)                            | Aviso generado cuando se detecta una condicion ambiental de riesgo o incomodidad alta.                                                                       |
+| Alert Reminder (recordatorio de alerta)                    | Reaviso enviado cuando una condicion critica continua sin resolverse.                                                                                        |
+| Alert Fatigue Prevention (prevencion de fatiga de alertas) | Reglas para limitar la frecuencia de notificaciones y evitar saturacion del usuario.                                                                         |
+| Corrective Action (accion correctiva)                      | Medida sugerida o ejecutada para mejorar la calidad del aire.                                                                                                |
+| Automatic Corrective Action (accion correctiva automatica) | Ejecucion automatica de una accion correctiva cuando se cumplen condiciones predefinidas.                                                                    |
+| HVAC Controller (controlador HVAC)                         | Sistema externo utilizado para activar ventilacion, calefaccion o aire acondicionado.                                                                        |
+| Smart Window Actuator (actuador de ventana inteligente)    | Sistema externo que permite abrir ventanas automaticamente para ventilar.                                                                                    |
+| Notification Preferences (preferencias de notificacion)    | Configuracion de canales y frecuencia con la que el usuario desea recibir alertas.                                                                           |
+| Trial Subscription (suscripcion de prueba)                 | Periodo inicial de acceso sin costo para evaluar funcionalidades premium.                                                                                    |
+| Freemium Plan (plan freemium)                              | Modalidad gratuita con funcionalidades limitadas de monitoreo e historial.                                                                                   |
+| Premium Plan (plan premium)                                | Modalidad de pago con funcionalidades avanzadas, reportes completos y mayor capacidad de analisis.                                                           |
