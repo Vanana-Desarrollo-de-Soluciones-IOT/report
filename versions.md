@@ -44,3 +44,16 @@
 
 # Project Report Collaboration Insights
 
+El enlace a github del reporte del proyecto es el siguiente: https://github.com/Vanana-Desarrollo-de-Soluciones-IOT/report
+
+1. **AV1**
+
+Para la elaboración del informe del proyecto **Clair**, el equipo organizó las actividades de manera colaborativa mediante el repositorio de GitHub, distribuyendo las tareas entre los integrantes según las secciones del documento. Cada miembro asumió la responsabilidad de desarrollar contenidos específicos, manteniendo una comunicación constante para asegurar la coherencia en el estilo, la estructura y la calidad del informe. Dante Mateo Aleman Romano creó la carátula del informe y el registro de versiones, estableciendo la estructura base del documento. Fabrizio Alessandro Contreras Peralta desarrolló la problemática, antecedentes y perfil de integrantes del equipo. Neil Curipaco Huayllani definió los segmentos objetivo bajo criterios demográficos, geográficos, psicográficos y conductuales.
+
+Dante Mateo Aleman Romano redactó las Lean UX Assumptions del proyecto e integró métricas basadas en estándares OMS y ASHRAE en el Lean UX Problem Statement elaborado por Ian Macavilca Quispe. Josue Paiva redactó la descripción de la startup y los hypothesis statements, complementando además las estrategias y tácticas frente a competidores junto con Neil Curipaco Huayllani, quien agregó las descripciones detalladas de cada competidor. Dante Mateo Aleman Romano diseñó la estructura de entrevistas para ambos segmentos objetivo, mientras que Neil Curipaco Huayllani ejecutó y registró las entrevistas del segmento 2, y Fabrizio Alessandro Contreras Peralta grabó la tercera entrevista del segmento 1. Dante Mateo Aleman Romano realizó el análisis de entrevistas identificando patrones clave sobre comportamiento y conocimiento respecto a la calidad del aire interior.
+
+Neil Curipaco Huayllani desarrolló los User Personas y la User Task Matrix para ambos segmentos, Josue Paiva elaboró los Journey Maps e Ian Macavilca Quispe creó los Empathy Maps. Posteriormente, Dante Mateo Aleman Romano desarrolló el Big Picture EventStorming, redactó el Ubiquitous Language con términos técnicos del producto, definió el Strategic-Level Domain-Driven Design estableciendo bounded contexts, y completó la documentación del Solution Software Design incluyendo diagramas de Context Level, Container Level, Deployment, Component Level y code-level. Ian Macavilca Quispe desarrolló los Domain Message Flows Modeling, Josue Paiva realizó los Context Canvases de todos los contextos y el Context Mapping, y Neil Curipaco Huayllani elaboró las User Stories grupales y el Product Backlog, además de actualizarlo pasándolo de Jira a Trello. Fabrizio Alessandro Contreras Peralta revisó y corrigió las User Stories y actualizó el Ubiquitous Language.
+
+<p align="center">
+  <img src="https://imgur.com/W8xJ3YY.png" width="500">
+</p>
