@@ -70,7 +70,7 @@ Este sistema de etiquetado asegura que la plataforma **Clair** hable el mismo le
 
 La estrategia de visibilidad de **Clair** se centra en el posicionamiento de la marca como líder en soluciones IoT para la salud ambiental. Para el sitio web y la aplicación web, se han definido etiquetas SEO y Meta Tags que priorizan la relevancia semántica y la autoridad técnica. En el caso de las aplicaciones móviles, se aplican técnicas de ASO (App Store Optimization) diseñadas para mejorar la tasa de conversión y el descubrimiento orgánico en plataformas como Google Play Store y Apple App Store.
 
-#### **SEO & Meta Tags (Landing Page y Web Application)**
+**SEO & Meta Tags (Landing Page y Web Application)**
 
 Para las plataformas web, se han asignado valores específicos que buscan capturar el tráfico interesado en monitoreo de aire y automatización inteligente:
 
@@ -80,7 +80,7 @@ Para las plataformas web, se han asignado valores específicos que buscan captur
 - **Author:** `& Team Clair`
 - **Robots Tag:** `index, follow`
 
-#### **ASO Elements (Mobile Applications)**
+**ASO Elements (Mobile Applications)**
 
 Para garantizar que la aplicación móvil sea fácilmente localizable por los segmentos objetivo —administradores de establecimientos y personas preocupadas por la salud en el hogar— se han definido los siguientes elementos:
 

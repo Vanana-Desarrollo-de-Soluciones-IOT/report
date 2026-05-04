@@ -42,6 +42,7 @@
 | 0.3.9   | 21/04/2026 | Neil Curipaco Huayllani               | He actualizado el backlog pasándolo de Jira a Trello; además, he documentado mi aporte al equipo en el Student Outcome según los criterios evaluados. |
 | 0.4.0   | 22/04/2026 | Fabrizio Alessandro Contreras Peralta | Actualizar el ubiquitous language.                           |
 | 0.4.1   | 22/04/2026 | Dante Mateo Aleman Romano             | Realicé la corrección de la bibliografía aplicándola completamente al formato APA 7, ajustando el formato de títulos y cursivas, eliminando abreviaciones como ASHRAE y OMS, y completando la sección de anexos con las referencias a los recursos externos del proyecto. |
+| 1.0.1   | 03/05/2026 | Neil Curipaco Huayllani               | Se definieron los General Style Guidelines y la Information Architecture; se realizó la Software Development Environment Configuration y se estableció la Source Code Style Guide & Conventions. |
 
 # Project Report Collaboration Insights
 
