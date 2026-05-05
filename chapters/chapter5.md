@@ -9,7 +9,7 @@ La identidad visual y la experiencia de usuario de Clair han sido diseñadas baj
 
 
 <p align="center">
-  <img src="https://i.imgur.com/6zjoyOt.png" width="500">
+ <img src="https://i.imgur.com/6zjoyOt.png" width="500">
 </p>
 
 
