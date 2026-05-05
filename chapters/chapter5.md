@@ -39,6 +39,229 @@ El tono de comunicación adoptado para Clair se define como **Sereno, Formal y R
 
 ### 5.1.2. Web, Mobile and IoT Style Guidelines.
 
+- **Web Style Guidelines**
+
+- **Mobile Style Guidelines**
+
+- **IoT Style Guidelines**
+
+Para establecer las guidelines de diseño IoT de Clair, es fundamental comprender la metodología de los 12 pasos de diseño de sistemas IoT, un marco de trabajo estructurado propuesto por investigadores de la Universidad de Sannio, Italia (Balestrieri et al., 2018). Esta metodología, presentada en el paper "Research challenges in Measurement for Internet of Things systems" publicado en Acta IMEKO, proporciona un enfoque sistemático y disciplinado para el desarrollo de soluciones IoT, abarcando desde la definición de requisitos del sistema hasta la implementación de interfaces de usuario. Basada en principios de arquitectura en capas (physical, exchange, information y application service layers), esta metodología garantiza la coherencia entre componentes físicos, de comunicación y aplicativos. El equipo de Vanana adopta estos 12 pasos como fundamento metodológico para asegurar que el diseño del hardware de Clair, incluyendo la selección de sensores PM2.5 y CO2, microcontroladores y radio transceivers, así como la experiencia de usuario de la plataforma, respondan a estándares internacionales de calidad, facilitando la escalabilidad, interoperabilidad y mantenibilidad del sistema de monitoreo de calidad del aire. 
+
+<p align="center">
+ <img src="https://imgur.com/SgRnp13.png" width="500">
+</p>
+
+
+A continuación, se presenta la aplicación detallada de los 12 pasos de diseño IoT para el prototipo de Clair, estructurada de forma clara y organizada:
+
+**1. Definition of the System Requirements**
+
+| Categoría | Especificación |
+|-----------|----------------|
+| **Objetivo Principal** | Monitorear calidad del aire interior en espacios comerciales de Lima Metropolitana |
+| **Parámetros a Medir** | CO2, NH3, NOx, benzeno, compuestos orgánicos volátiles |
+| **Requisitos Funcionales** | • Medición en tiempo real<br>• Visualización local (OLED)<br>• Transmisión WiFi a la nube<br>• Alimentación estable 5V<br>• Capacidad de expansión |
+| **Requisitos No Funcionales** | • Tiempo de respuesta < 10 segundos<br>• Consumo optimizado<br>• Rango temperatura: 15-35°C |
+
+**2. Selection of the IoT System Typology**
+
+| Aspecto | Descripción |
+|---------|-------------|
+| **Tipo de Sistema** | WSN (Wireless Sensor Network) con arquitectura Edge-Cloud híbrida |
+| **Topología** | Estrella extendida - múltiples nodos conectados a un punto de acceso WiFi |
+| **Procesamiento** | Edge computing básico en ESP32 + Cloud para análisis avanzado |
+| **Modo Offline** | Buffer local limitado con sincronización posterior |
+
+**3. Definition of Physical Layer Requirements**
+
+| Componente | Especificaciones Técnicas |
+|------------|---------------------------|
+| **Sensor MQ-135** | • Detección: CO2, NH3, NOx, alcohol, benzeno, humo<br>• Rango: 10-1000 ppm (CO2)<br>• Voltaje: 5V DC<br>• Calentamiento: 20-30s para estabilización |
+| **Display OLED 0.96"** | • Resolución: 128×64 píxeles<br>• Interfaz: I2C (SDA/SCL)<br>• Voltaje: 3.3V-5V<br>• Ángulo visión: 160° |
+| **Prototipado** | • 2× Protoboard MB-102 (830 puntos)<br>• 2× Protoboard 400 puntos<br>• Cables macho-macho/hembra-hembra |
+| **Condiciones Ambientales** | • Temperatura: 0-50°C<br>• Humedad: <85% sin condensación |
+
+**4. Definition of Exchange Layer Requirements**
+
+| Capa | Protocolo | Descripción |
+|-----------|-----------|-------------|
+| **Embedded → Edge** | HTTP/REST sobre red local | Comunicación directa entre ESP32 y Edge Station vía WiFi local |
+| **Edge → Cloud** | HTTPS/REST (JSON) | Edge Station sincroniza con API Gateway vía Internet |
+| **Conectividad** | WiFi 802.11 b/g/n | Integrado en ESP32, conexión al Edge Station local |
+| **Formato Datos** | JSON | `device_id`, `timestamp`, `co2_ppm`, `aqi_index`, `status` |
+| **Seguridad** | TLS 1.2 | Encriptación en tránsito Edge-Cloud |
+| **Frecuencia Transmisión** | • Local HTTP: cada 5 segundos<br>• Edge-Cloud: cada 60 segundos<br>• Modo alerta: inmediato |
+
+**5. Definition of Information Layer Requirements**
+
+| Proceso | Detalle |
+|---------|---------|
+| **Adquisición Datos** | ADC 12 bits ESP32 (resolución 0.8mV) |
+| **Filtrado** | Promedio móvil de 5 muestras |
+| **Conversión** | Ecuación de calibración: `ppm = 116.6020682 × (Rs/Ro)^(-2.769034857)` |
+| **Detección Umbrales** | CO2 > 1000 ppm = alerta crítica |
+| **Estructura JSON** | `device_id`, `timestamp`, `co2_ppm`, `aqi_index`, `status` |
+| **Buffer Local** | 100 lecturas en caso de desconexión WiFi |
+| **Sincronización** | NTP (Network Time Protocol) |
+
+**6. Definition of Application Service Layer Requirements**
+
+| Interfaz | Funcionalidades |
+|----------|----------------|
+| **Display OLED Local** | • Valores CO2 ppm en tiempo real<br>• Air Quality Index (AQI) con Air Quality State (OPTIMAL/MODERATE/CRITICAL)<br>• Indicador estado WiFi |
+| **Aplicación Web** | • Dashboard con gráficos históricos<br>• Gestión umbrales de alerta<br>• Exportación reportes PDF/Excel |
+| **API REST** | • Recepción telemetría<br>• Consulta datos históricos<br>• Configuración remota dispositivo |
+| **Roles Usuario** | Administrador de local / Usuario residencial |
+
+**7. Selection of the Architectures of Data Exchange and Information Integration Layers**
+
+| Componente | Tecnología | Función |
+|------------|------------|---------|
+| **API Gateway** | Spring Cloud Gateway | Enrutamiento, autenticación JWT, rate limiting, entry point único |
+| **Platform API** | Spring Boot | Microservicios: IAM, Billing, Device & Space, Air Quality, Alerting, Analytics, Notifications |
+| **Edge Station** | Flask (Python) | Gateway local: recepción HTTP de dispositivos, deduplicación, sincronización offline-first HTTPS |
+| **Edge Database** | SQLite | Almacenamiento local telemetría, estados, cola de sincronización |
+| **Cloud Database** | PostgreSQL | Datos persistentes: usuarios, dispositivos, telemetría, configuraciones |
+| **Cache** | Redis | Sesiones, tokens, rate limits, datos temporales |
+| **External Services** | Stripe, Resend, Google OAuth | Pagos, notificaciones email, autenticación social |
+
+**8. Selection of the Sensors and the Actuators**
+
+| Componente | Modelo | Especificaciones |
+|------------|--------|------------------|
+| **Sensor de Aire** | MQ-135 | • Detección: CO2, NH3, NOx, alcohol, benzeno, humo<br>• Voltaje: 5V<br>• Salida: Analógica (0-5V) + Digital (TTL)<br>• Tiempo respuesta: < 10 segundos<br>• Rango: 10-1000 ppm (CO2)<br>• Calentamiento: 20-30s para estabilización |
+| **Display Local** | OLED 0.96" I2C SSD1306 | • Resolución: 128×64 píxeles<br>• Dirección I2C: 0x3C o 0x3D<br>• Pines: SDA, SCL<br>• Voltaje: 3.3V-5V tolerante |
+| **Prototipado** | Protoboards + Cables | • 2× Protoboard MB-102 (830 puntos)<br>• 2× Protoboard 400 puntos<br>• Cables macho-macho, hembra-hembra, macho-hembra |
+| **Actuadores Futuros** | Relés / HVAC Controller | Control ventiladores, actuadores de ventanas (no incluidos en prototipo inicial) |
+
+**9. Selection of the Microcontroller and Radio Transceivers**
+
+| Componente | Especificaciones Técnicas |
+|------------|---------------------------|
+| **Microcontrolador** | ESP32-WROOM-32 |
+| **Procesador** | Dual-core Xtensa LX6 @ 240MHz |
+| **Memoria** | 520KB SRAM / 4MB Flash |
+| **Conectividad** | WiFi 802.11 b/g/n + Bluetooth 4.2/BLE |
+| **GPIOs** | 34 programables |
+| **ADC** | 12 bits, 18 canales |
+| **Interfaces** | I2C, SPI, UART |
+| **Alimentación** | USB Tipo C (5V) o VIN (7-12V) |
+| **Radio Transceiver** | WiFi integrado (antena PCB 2dBi, rango 50m interiores) |
+
+**10. Definition of the Data Processing for Each Node and in Cloud**
+
+**A. Procesamiento en Embedded (C++ / ESP32):**
+
+| Paso | Componente | Acción | Frecuencia |
+|------|------------|--------|------------|
+| 1 | embeddedIoAdapter | Lectura ADC del MQ-135 vía GPIO/I2C | 1 Hz |
+| 2 | embeddedTelemetryService | Filtro promedio móvil (5 muestras) + validación rangos | Continuo |
+| 3 | embeddedDomainModel | Conversión a ppm (ecuación calibración) | Cada lectura |
+| 4 | embeddedDomainModel | Air Quality State Classification (OPTIMAL/MODERATE/CRITICAL) | Cada lectura |
+| 5 | embeddedController | Actualización display OLED vía I2C | Cada 2 segundos |
+| 6 | embeddedIoAdapter | Envío HTTP POST a Edge Station vía WiFi local | Cada 5 segundos / Inmediato en alerta |
+
+**B. Procesamiento en Edge (Python / Flask):**
+
+| Componente | Función | Almacenamiento |
+|------------|---------|----------------|
+| edgeIoAdapter | Recepción HTTP POST de Embedded, ingesta telemetría | - |
+| edgeProcessingService | Ingesta, deduplicación, normalización de lecturas | SQLite (telemetría snapshots) |
+| edgeDomainModel | Reglas de ingesta, validación, batching | SQLite (checkpoints) |
+| edgeSyncService | Sincronización offline-first con Cloud vía HTTPS | SQLite (cola sincronización) |
+| edgeController | Exposición HTTP endpoints para configuración local | - |
+
+**C. Procesamiento en Cloud (Spring Boot):**
+
+| Bounded Context | Función Principal | Persistencia |
+|-----------------|-------------------|--------------|
+| **IAM** | Autenticación, autorización, sesiones, OAuth2 | PostgreSQL + Redis |
+| **Device & Space Management** | Gestión facilities, espacios, devices, ownership | PostgreSQL |
+| **Air Quality Evaluation** | Evaluación telemetría, thresholds, métricas | PostgreSQL |
+| **Alerting & Response** | Generación alertas, escalations, acciones correctivas | PostgreSQL |
+| **Analytics** | Agregaciones, tendencias, reportes históricos | PostgreSQL |
+| **Notifications** | Plantillas, enrutamiento, delivery email vía Resend | PostgreSQL |
+| **Billing** | Suscripciones, pagos Stripe, facturas | PostgreSQL + Stripe API |
+
+**Air Quality State Classification (Usado en todos los niveles):**
+
+| CO2 Range (ppm) | Air Quality State | Threshold Level |
+|-----------------|-------------------|-----------------|
+| < 400 | Optimal | Normal |
+| 400 - 1000 | Moderate | Warning |
+| > 1000 | Critical | Critical Threshold Exceeded |
+
+**11. Analysis of the Processing Time**
+
+| Operación | Capa | Tiempo Estimado |
+|-----------|------|----------------|
+| Boot del ESP32 | Embedded | < 500 ms |
+| Conexión WiFi (Embedded → Edge) | Embedded | 2-3 segundos |
+| Lectura ADC MQ-135 | Embedded | < 10 ms |
+| Conversión y validación | Embedded | < 5 ms |
+| Actualización display OLED (I2C @400kHz) | Embedded | < 50 ms |
+| Envío HTTP POST local (payload ~200 bytes) | Embedded → Edge | < 100 ms |
+| Ingesta y procesamiento Edge | Edge | < 200 ms |
+| Persistencia SQLite Edge | Edge | < 50 ms |
+| Sincronización HTTPS Edge → Cloud | Edge → API Gateway | 1-3 segundos (depende red) |
+| Procesamiento API Gateway + Bounded Context | Cloud | < 500 ms |
+| Persistencia PostgreSQL | Cloud | < 100 ms |
+| **Latencia total Embedded → Cloud** | End-to-end | 3-8 segundos |
+| **Latencia Embedded → Edge (local)** | Local network | < 200 ms |
+| **Respuesta ante alertas críticas** | End-to-end | < 10 segundos |
+| Estabilización sensor MQ-135 | Hardware | 20-30 segundos |
+| Frecuencia muestreo efectiva | Embedded | 1 lectura/segundo |
+| Frecuencia sincronización Edge-Cloud | Edge | Cada 60 segundos / Inmediato alertas |
+
+**12. Definition of the Graphical User Interface**
+
+**A. Interfaz Embedded Local (Display OLED 0.96"):**
+
+| Sección | Contenido |
+|---------|-----------|
+| **Área Superior** | Icono WiFi (estado conexión al Edge Station) |
+| **Área Central** | Valor CO2 ppm grande (fuente 16px) + Air Quality State |
+| **Área Inferior** | "Status: OPTIMAL/MODERATE/CRITICAL" + Timestamp |
+
+**Navegación Display (futuro):**
+- Current Reading (valores tiempo real)
+- Time Series History (promedio última hora)
+- Device Configuration
+
+**B. Interfaz Edge Station (Configuración Local HTTP):**
+
+| Endpoint | Funcionalidad |
+|----------|--------------|
+| `GET /health` | Estado del Edge Station y dispositivos conectados |
+| `GET /telemetry/latest` | Últimas lecturas de todos los sensores |
+| `POST /device/configure` | Configuración WiFi, umbrales, frecuencia muestreo |
+| `GET /sync/status` | Estado de sincronización con Cloud |
+
+**C. Interfaz Web Application (Angular):**
+
+| Módulo | Funcionalidad |
+|--------|--------------|
+| **Dashboard** | Time Series History (gráficos líneas), métricas actuales, Facilities overview |
+| **Heat Map** | Visualización espacial calidad del aire por Space |
+| **Alerting & Response** | Historial Critical Alert, Alert Reminder, Corrective Action |
+| **Configuration** | Custom Threshold, Default Threshold, Notification Preferences |
+| **Device & Space Management** | Facility setup, Space creation, Device Registration, Device Pairing |
+| **Analytics & Reporting** | Time Series History export, tendencias, reportes PDF |
+| **Billing** | Trial Subscription, Premium Plan, Freemium Plan |
+
+**D. Interfaz Mobile Application (Flutter):**
+
+| Módulo | Funcionalidad |
+|--------|--------------|
+| **Home** | Current Reading, Air Quality State, alertas recientes |
+| **History** | Time Series History simplificado (24h, 7 días) |
+| **Devices** | Lista dispositivos, Device Pairing, Device Registration |
+| **Settings** | Custom Threshold, Notification Preferences, perfil usuario |
+| **Offline Support** | Lecturas cacheadas en SQLite local |
+
+---
+
+
 ## 5.2. Information Architecture.
 
 ### 5.2.1. Organization Systems.
@@ -136,3 +359,7 @@ Este enfoque de búsqueda simplificada refuerza el compromiso de **Clair** con u
 ## 5.5. Applications Prototyping.
 
 ## 5.6. IoT Device Design
+
+
+
+https://imgur.com/z3BEd0f
