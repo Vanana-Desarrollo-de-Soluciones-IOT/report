@@ -3,10 +3,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 99h;
   text-align: center;
   font-family: Arial, sans-serif;
 ">
+
 
   <img src="assets/cover/upc.svg" alt="UPC-LOGO" width="150" style="margin-bottom: 30px;"/>
 
@@ -33,7 +34,7 @@
   <p style="margin: 4px 0;"><code>U202121325</code> - Macavilca Quispe, Ian</p>
   <p style="margin: 4px 0;"><code>u202119095</code> - Paiva Quispe, Josue Gonzalo</p>
 
-  <p style="margin-top: 25px;"><strong>Lima - abril 2026</strong></p>
+  <p style="margin-top: 25px;"><strong>Lima - Mayo 2026</strong></p>
 
 </div>
 
