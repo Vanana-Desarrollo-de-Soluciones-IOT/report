@@ -6,24 +6,24 @@
 
 Esta sección establece el ecosistema de herramientas y servicios seleccionados para garantizar un flujo de trabajo estandarizado, facilitando la colaboración entre los miembros del equipo y la integración de los componentes IoT.
 
-| **Nombre del Producto** | **Propósito de Uso**   | **Descripción de Uso en el Proyecto**                        | **Ruta de Referencia / Descarga**                            |
+| **Nombre del Producto** | **Propósito de Uso** | **Descripción de Uso en el Proyecto** | **Ruta de Referencia / Descarga** |
 | ----------------------- | ---------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **Trello**              | Project Management     | Gestión de tareas mediante tableros Kanban y seguimiento de Sprints. | https://trello.com/                                          |
-| **Figma**               | Product UX/UI Design   | Diseño de interfaces de usuario, wireframes y prototipos de alta fidelidad. | https://figma.com/                                           |
-| **Git / GitHub**        | Software Development   | Control de versiones y alojamiento del repositorio de código fuente. | https://github.com/                                          |
-| **Spring Boot (Java)**  | Backend Development    | Framework principal para el desarrollo de la API y lógica del negocio. | https://spring.io/projects/spring-boot                       |
-| **OpenAPI / Swagger**   | Software Documentation | Generación de documentación interactiva y técnica de los endpoints del backend. | https://swagger.io/                                          |
-| **C++ (Arduino IDE)**   | Embedded App           | Programación de la lógica de sensores y conectividad en hardware físico. | https://www.arduino.cc/en/software                           |
-| **Python**              | Automation & Analytics | Scripts para análisis de datos ambientales y automatización de tareas. | https://www.python.org/downloads/                            |
-| **Google OAuth2**       | Identity & Access      | Servicio para la autenticación segura de usuarios mediante cuentas de Google. | https://console.cloud.google.com/                            |
-| **Stripe**              | Billing & Subscription | Pasarela de pagos para la gestión de suscripciones y transacciones. | https://stripe.com/                                          |
-| **Resend**              | Notifications          | Plataforma para el envío de correos electrónicos y alertas críticas a usuarios. | https://resend.com/                                          |
-| **Postman**             | Software Testing       | Validación de endpoints y pruebas de integración de la API REST. | https://www.postman.com/downloads/                           |
-| **Docker**              | Deployment             | Contenedorización de microservicios para asegurar la portabilidad del sistema. | https://www.docker.com/products/docker-desktop               |
-| **Flutter SDK**         | Mobile Development     | Framework multiplataforma para el desarrollo de la aplicación móvil de Clair. | [docs.flutter.dev](https://docs.flutter.dev/get-started/install) |
-| **Angular CLI**         | Web Development        | Herramienta de línea de comandos para la creación y gestión de la aplicación web. | https://angular.io/cli                                       |
-| **Material Design 3**   | UI Framework           | Librería de componentes y tokens de diseño para la interfaz de la web app. | https://m3.material.io/                                      |
-| **Dart DevTools**       | Debugging              | Conjunto de herramientas para el perfilado y depuración de la app en Flutter. | https://dart.dev/tools/dart-devtools                         |
+| **Trello** | Project Management | Gestión de tareas mediante tableros Kanban y seguimiento de Sprints. | https://trello.com/ |
+| **Figma** | Product UX/UI Design | Diseño de interfaces de usuario, wireframes y prototipos de alta fidelidad. | https://figma.com/ |
+| **Git / GitHub** | Software Development | Control de versiones y alojamiento del repositorio de código fuente. | https://github.com/ |
+| **Spring Boot (Java)** | Backend Development | Framework principal para el desarrollo de la API y lógica del negocio. | https://spring.io/projects/spring-boot |
+| **OpenAPI / Swagger** | Software Documentation | Generación de documentación interactiva y técnica de los endpoints del backend. | https://swagger.io/ |
+| **C++ (Arduino IDE)** | Embedded App | Programación de la lógica de sensores y conectividad en hardware físico. | https://www.arduino.cc/en/software |
+| **Python** | Automation & Analytics | Scripts para análisis de datos ambientales y automatización de tareas. | https://www.python.org/downloads/ |
+| **Google OAuth2** | Identity & Access | Servicio para la autenticación segura de usuarios mediante cuentas de Google. | https://console.cloud.google.com/ |
+| **Stripe** | Billing & Subscription | Pasarela de pagos para la gestión de suscripciones y transacciones. | https://stripe.com/ |
+| **Resend** | Notifications | Plataforma para el envío de correos electrónicos y alertas críticas a usuarios. | https://resend.com/ |
+| **Postman** | Software Testing | Validación de endpoints y pruebas de integración de la API REST. | https://www.postman.com/downloads/ |
+| **Docker** | Deployment | Contenedorización de microservicios para asegurar la portabilidad del sistema. | https://www.docker.com/products/docker-desktop |
+| **Flutter SDK** | Mobile Development | Framework multiplataforma para el desarrollo de la aplicación móvil de Clair. | [docs.flutter.dev](https://docs.flutter.dev/get-started/install) |
+| **Angular CLI** | Web Development | Herramienta de línea de comandos para la creación y gestión de la aplicación web. | https://angular.io/cli |
+| **Material Design 3** | UI Framework | Librería de componentes y tokens de diseño para la interfaz de la web app. | https://m3.material.io/ |
+| **Dart DevTools** | Debugging | Conjunto de herramientas para el perfilado y depuración de la app en Flutter. | https://dart.dev/tools/dart-devtools |
 
 ### 6.1.2. Source Code Management.
 
