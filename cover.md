@@ -3,10 +3,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 99h;
+  height: 90h;
   text-align: center;
   font-family: Arial, sans-serif;
 ">
+
 
 
   <img src="assets/cover/upc.svg" alt="UPC-LOGO" width="150" style="margin-bottom: 30px;"/>
@@ -37,6 +38,3 @@
   <p style="margin-top: 25px;"><strong>Lima - Mayo 2026</strong></p>
 
 </div>
-
-
-
