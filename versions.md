@@ -46,6 +46,7 @@
 | 1.0.2 | 04/05/2026 | Dante Mateo Aleman Romano | Se realizaron ajustes de estética en el documento, incluyendo saltos de página para una mejor distribución del contenido, se agregaron los perfiles de los autores indicando a qué carrera pertenecen, y se corrigieron errores de ortografía. También se arregló la portada del documento. |
 | 1.0.3 | 05/05/2026 | Dante Mateo Aleman Romano | Desarrollé los 12 pasos de diseño IoT en los Style Guidelines siguiendo la metodología de Balestrieri et al. (2018), aplicando el lenguaje ubicuo del proyecto (Air Quality State: OPTIMAL/MODERATE/CRITICAL) y la arquitectura de 3 capas (Embedded C++, Edge Python Flask, Cloud Spring Boot) siguiendo el modelo C4. Amplié el entorno de desarrollo agregando herramientas como Git/GitHub separados, HTML/CSS/JS para landing, Wokwi y Cirkit Designer para simulación, Flask para Edge IoT, Bruno para API testing, Vercel para deploy, Cloudflare Tunnel para API Gateway, Tailscale para VPN IoT y Azure IoT Hub para gestión cloud. |
 | 1.0.4 | 05/05/2026 | Ian Macavilca Quispe | Desarrollé el diseño del prototipo Clair en Cirkit Designer, incluyendo el esquema del circuito con sus conexiones, tabla de componentes físicos (ESP32, MQ-135, OLED, protoboards, cables Dupont) y documentación de las limitaciones del sensor MQ-135 como placeholder según la documentación oficial del fabricante. |
+| 1.0.5 | 05/05/2026 | Neil Curipaco Huayllani | Se han completado Sprint Planning 1 y Sprint Backlog 1. |
 
 # Project Report Collaboration Insights
 
