@@ -44,6 +44,7 @@
 | 0.4.1 | 22/04/2026 | Dante Mateo Aleman Romano | Realicé la corrección de la bibliografía aplicándola completamente al formato APA 7, ajustando el formato de títulos y cursivas, eliminando abreviaciones como ASHRAE y OMS, y completando la sección de anexos con las referencias a los recursos externos del proyecto. |
 | 1.0.1 | 03/05/2026 | Neil Curipaco Huayllani | Se definieron los General Style Guidelines y la Information Architecture; se realizó la Software Development Environment Configuration y se estableció la Source Code Style Guide & Conventions. |
 | 1.0.2 | 04/05/2026 | Dante Mateo Aleman Romano | Se realizaron ajustes de estética en el documento, incluyendo saltos de página para una mejor distribución del contenido, se agregaron los perfiles de los autores indicando a qué carrera pertenecen, y se corrigieron errores de ortografía. También se arregló la portada del documento. |
+| 1.0.3 | 05/05/2026 | Neil Curipaco Huayllani | Se han completado Sprint Planning 1 y Sprint Backlog 1. |
 
 # Project Report Collaboration Insights
 

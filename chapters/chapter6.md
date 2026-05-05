@@ -51,9 +51,96 @@ Esta uniformidad en todos los niveles del stack tecnológico permite que cualqui
 
 #### 6.2.1.1. Sprint Planning 1.
 
+El Sprint Planning 1 marca el inicio del desarrollo formal de Clair. Durante esta sesión, el equipo se reunió para definir los objetivos y el alcance del primer sprint, priorizando la presentación pública del producto, la seguridad de acceso y la base visual de la plataforma. Las tareas se centraron en completar el 100% de la Landing Page para la captación de usuarios, desarrollar el módulo de Identity and Access Management (IAM) tanto en el backend como en el frontend web, y finalizar los mockups de alta fidelidad de la Web App. El desarrollo de la aplicación móvil se ha programado para iteraciones posteriores.
+
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sprint #</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">Sprint 1</td>
+  </tr>
+  <tr>
+    <td colspan="2" style="border: 1px solid #ddd; padding: 8px; font-weight: bold; text-align: center;">Sprint Planning Background</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Date</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">06/04/2026</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Time</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">10:00 AM</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Location</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">Google Meet</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Prepared By</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">Aleman Romano, Dante Mateo</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Attendees (to planning meeting)</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">Contreras Peralta Fabrizio Alessandro; Macavilca Quispe Ian; Paiva Quispe Josue Gonzalo; Curipaco Huayllani Neil</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sprint n - 1 Review Summary</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">No hay resumen del sprint anterior debido a que este es el primer sprint.</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sprint n - 1 Retrospective Summary</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">No hay resumen del sprint anterior debido a que este es el primer sprint.</td>
+  </tr>
+  <tr>
+    <td colspan="2" style="border: 1px solid #ddd; padding: 8px; font-weight: bold; text-align: center;">Sprint Goal & User Stories</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sprint 1 Goal</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">
+      Our focus is on deploying the complete landing page, implementing the core authentication system (IAM), and defining the visual structure of the web application.<br><br>
+      We believe it delivers a clear value proposition to potential customers, a secure access gateway for registered users, and a solid design foundation for the development team.<br><br>
+      This will be confirmed when visitors can successfully access and read the landing page online, users can securely register and log in to the web platform, and the team officially approves the Web App mockups.
+    </td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sprint 1 Velocity</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">45</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sum of Story Points</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">45</td>
+  </tr>
+</table>
+
 #### 6.2.1.2. Aspect Leaders and Collaborators.
 
 #### 6.2.1.3. Sprint Backlog 1.
+
+El **Sprint Backlog** representa la selección de historias de usuario y tareas técnicas que el equipo de desarrollo se ha comprometido a completar durante la presente iteración. Para el **Sprint 1**, el esfuerzo se ha concentrado en establecer la infraestructura crítica de **Clair**, priorizando la visibilidad comercial del producto a través de la Landing Page y la seguridad de la información mediante el sistema de gestión de identidades y accesos (**IAM**). Esta fase inicial es fundamental para garantizar que las bases tecnológicas y visuales de la solución sean sólidas antes de proceder con el desarrollo de funcionalidades de monitoreo avanzado.
+
+La gestión y el seguimiento del progreso se realizan de manera centralizada en la plataforma **Trello**, la cual permite una visibilidad en tiempo real del estado de cada unidad de trabajo. Este sistema de control facilita la descomposición de las historias de usuario en tareas técnicas específicas (*Work-items*), así como la gestión de actividades transversales relacionadas con la configuración del entorno y el cumplimiento de los estándares de diseño de **Material Design 3**. A continuación, se detalla el desglose de los elementos de trabajo seleccionados para este periodo.
+
+<p align="center">
+ <img src="https://i.imgur.com/IKoNdzg.png" width="700">
+</p>
+
+
+| **StoryID** | **Title**                        | **ID task** | **Título**                       | **Descripción**                                              | **Estimation (Hours)** | **Assigned To** | **Status** |
+| :---------: | :------------------------------- | :---------- | :------------------------------- | :----------------------------------------------------------- | :--------------------- | :-------------- | :--------- |
+|    US55     | Clair Value Proposition          | TA1         | Clair Value Proposition          | As a Visitor, I want to learn about the benefits of CO2 and PM2.5 monitoring, to understand how Clair improves health in indoor spaces. | 3                      | Mateo           | done       |
+|    US56     | Development Team Background      | TA2         | Development Team Background      | As a Visitor, I want to know the technical background of the development team, to validate the scientific accuracy and technological reliability of the sensor. | 3                      | Ian             | done       |
+|    US57     | FAQ & Help Center                | TA3         | FAQ & Help Center                | As a Visitor, I want to resolve doubts about Device installation and data privacy, to feel secure implementing the system in my home. | 3                      | Fabrizio        | done       |
+|    US58     | Multi-language Support           | TA4         | Multi-language Support           | As a Visitor, I want the Landing Page to be available in English and Spanish, to understand the technical specifications in my preferred language. | 4                      | Josue           | done       |
+|    US59     | Privacy Policies & Terms         | TA5         | Privacy Policies & Terms         | As a Visitor, I want to access the terms of service, to know the legal handling of my data and Clair's responsibilities regarding the hardware. | 2                      | Neil            | done       |
+|    US01     | Register a new account           | TA7         | Register a new account           | As a Visitor, I want to create an account with my email and a password, so that I can access Clair as a registered Customer. | 3                      | Mateo           | done       |
+|    US03     | Log in                           | TA9         | Log in                           | As a Customer, I want to authenticate with my credentials, so that I can access my personalized Clair workspace. | 3                      | Ian             | done       |
+|    US61     | Arduino Core Setup               | TA10        | Arduino Core Setup               | As a Developer, I want to set up the Arduino/ESP32 framework and basic library dependencies, so that I can begin hardware-level programming. | 4                      | Fabrizio        | done       |
+|    US62     | CO2 Sensor Integration           | TA11        | CO2 Sensor Integration           | As a Developer, I want to interface the CO2 sensor (e.g., SCD4x) via I2C, so that I can read atmospheric concentration levels. | 5                      | Josue           | done       |
+|    US63     | Particulate Matter Integration   | TA12        | Particulate Matter Integration   | As a Developer, I want to interface the PM sensor (e.g., PMS7003) via UART, so that I can monitor air quality particles (PM2.5/PM10). | 4                      | Neil            | done       |
+|    US64     | Local Data Persistence (SD Card) | TA13        | Local Data Persistence (SD Card) | As a Developer, I want to write readings to an SD card module, so that data is not lost if connectivity fails during early field tests. | 5                      | Mateo           | done       |
+|    US65     | WiFi Connectivity & NTP Sync     | TA14        | WiFi Connectivity & NTP Sync     | As a Developer, I want to connect the device to WiFi and sync time via NTP, so that readings are correctly timestamped at the source. | 5                      | Ian             | done       |
+|    US66     | Serial Debugging Interface       | TA15        | Serial Debugging Interface       | As a Developer, I want to output formatted sensor data to the Serial Monitor, so that I can verify sensor accuracy during laboratory testing. | 5                      | Fabrizio        | done       |
+|    US67     | Deep Sleep Implementation        | TA16        | Deep Sleep Implementation        | As a Developer, I want to implement deep sleep cycles between readings, so that the device can operate on battery power for extended periods. | 4                      | Josue           | done       |
+
+
 
 #### 6.2.1.4. Development Evidence for Sprint Review.
 
