@@ -16,6 +16,8 @@ IQAir. (s. f.). *Información sobre la calidad del aire en todo el mundo*. https
 
 Balestrieri, E., De Vito, L., Lamonaca, F., Picariello, F., Rapuano, S., & Tudosa, I. (2018). Research challenges in Measurement for Internet of Things systems. *Acta IMEKO*, *7*(4), 14-23. https://doi.org/10.21014/acta_imeko.v7i4.675
 
+Cirkit Designer. (s. f.). *Online circuit design and prototyping platform for IoT projects*. https://app.cirkitdesigner.com
+
 
 # Anexo
 

@@ -150,7 +150,7 @@ A continuación, se presenta la aplicación detallada de los 12 pasos de diseño
 
 **10. Definition of the Data Processing for Each Node and in Cloud**
 
-**A. Procesamiento en Embedded (C++ / ESP32):**
+**Procesamiento en Embedded (C++ / ESP32):**
 
 | Paso | Componente | Acción | Frecuencia |
 |------|------------|--------|------------|
@@ -161,7 +161,7 @@ A continuación, se presenta la aplicación detallada de los 12 pasos de diseño
 | 5 | embeddedController | Actualización display OLED vía I2C | Cada 2 segundos |
 | 6 | embeddedIoAdapter | Envío HTTP POST a Edge Station vía WiFi local | Cada 5 segundos / Inmediato en alerta |
 
-**B. Procesamiento en Edge (Python / Flask):**
+**Procesamiento en Edge (Python / Flask):**
 
 | Componente | Función | Almacenamiento |
 |------------|---------|----------------|
@@ -171,7 +171,7 @@ A continuación, se presenta la aplicación detallada de los 12 pasos de diseño
 | edgeSyncService | Sincronización offline-first con Cloud vía HTTPS | SQLite (cola sincronización) |
 | edgeController | Exposición HTTP endpoints para configuración local | - |
 
-**C. Procesamiento en Cloud (Spring Boot):**
+**Procesamiento en Cloud (Spring Boot):**
 
 | Bounded Context | Función Principal | Persistencia |
 |-----------------|-------------------|--------------|
@@ -191,7 +191,7 @@ A continuación, se presenta la aplicación detallada de los 12 pasos de diseño
 | 400 - 1000 | Moderate | Warning |
 | > 1000 | Critical | Critical Threshold Exceeded |
 
-**11. Analysis of the Processing Time**
+**Analysis of the Processing Time**
 
 | Operación | Capa | Tiempo Estimado |
 |-----------|------|----------------|
@@ -215,7 +215,7 @@ A continuación, se presenta la aplicación detallada de los 12 pasos de diseño
 
 **12. Definition of the Graphical User Interface**
 
-**A. Interfaz Embedded Local (Display OLED 0.96"):**
+**Interfaz Embedded Local (Display OLED 0.96"):**
 
 | Sección | Contenido |
 |---------|-----------|
@@ -228,7 +228,7 @@ A continuación, se presenta la aplicación detallada de los 12 pasos de diseño
 - Time Series History (promedio última hora)
 - Device Configuration
 
-**B. Interfaz Edge Station (Configuración Local HTTP):**
+**Interfaz Edge Station (Configuración Local HTTP):**
 
 | Endpoint | Funcionalidad |
 |----------|--------------|
@@ -237,7 +237,7 @@ A continuación, se presenta la aplicación detallada de los 12 pasos de diseño
 | `POST /device/configure` | Configuración WiFi, umbrales, frecuencia muestreo |
 | `GET /sync/status` | Estado de sincronización con Cloud |
 
-**C. Interfaz Web Application (Angular):**
+**Interfaz Web Application (Angular):**
 
 | Módulo | Funcionalidad |
 |--------|--------------|
@@ -249,7 +249,7 @@ A continuación, se presenta la aplicación detallada de los 12 pasos de diseño
 | **Analytics & Reporting** | Time Series History export, tendencias, reportes PDF |
 | **Billing** | Trial Subscription, Premium Plan, Freemium Plan |
 
-**D. Interfaz Mobile Application (Flutter):**
+**Interfaz Mobile Application (Flutter):**
 
 | Módulo | Funcionalidad |
 |--------|--------------|
@@ -258,9 +258,6 @@ A continuación, se presenta la aplicación detallada de los 12 pasos de diseño
 | **Devices** | Lista dispositivos, Device Pairing, Device Registration |
 | **Settings** | Custom Threshold, Notification Preferences, perfil usuario |
 | **Offline Support** | Lecturas cacheadas en SQLite local |
-
----
-
 
 ## 5.2. Information Architecture.
 
@@ -360,6 +357,32 @@ Este enfoque de búsqueda simplificada refuerza el compromiso de **Clair** con u
 
 ## 5.6. IoT Device Design
 
+El siguiente diagrama presenta el diseño inicial del dispositivo IoT Clair, representando la configuración física y las conexiones entre los componentes de hardware seleccionados para el prototipo.
+
+<p align="center">
+  <img src="https://imgur.com/z3BEd0f.png" alt="Diseño inicial del prototipo Clair - Cirkit Designer" width="800">
+</p>
+
+El esquema fue desarrollado en **Cirkit Designer** (https://app.cirkitdesigner.com/), una plataforma web para diseño de circuitos electrónicos que permitió visualizar las conexiones entre componentes antes de la implementación física.
+
+**Componentes del Diseño:**
+
+| Componente | Descripción | Especificaciones Técnicas |
+|------------|-------------|---------------------------|
+| **ESP32 DevKit** | Microcontrolador principal con WiFi/Bluetooth integrado | Dual-core 240MHz, 520KB SRAM, USB Tipo C |
+| **Sensor MQ-135** | Sensor de calidad de aire para detección de CO2 y gases | 5V, salida analógica/digital, rango 10-1000ppm |
+| **Display OLED 0.96"** | Pantalla local para visualización de métricas | I2C (SDA/SCL), 128x64 píxeles, 3.3V-5V |
+| **LED Panel** | Panel de LEDs para indicadores visuales de estado | Requiere definición de bits/resolución específica |
+| **Protoboards** | Placas de prototipado para conexiones | MB-102 (830 puntos) y 400 puntos |
+| **Cables Dupont** | Conexiones hembra-hembra, macho-hembra, macho-macho | 20cm, 40 piezas cada tipo |
+
+Es importante destacar que durante la fase de diseño y validación técnica, se identificaron las siguientes limitaciones críticas:
+
+1. **Sensor MQ-135 - Limitaciones Funcionales:** Según la documentación oficial del fabricante y las especificaciones técnicas revisadas, el sensor MQ-135 presenta limitaciones significativas para la detección precisa de CO2 en aplicaciones de monitoreo ambiental profesional. El sensor está diseñado principalmente para detectar una mezcla de gases (NH3, NOx, alcohol, benzeno, humo) pero carece de la selectividad y precisión requeridas para mediciones fiables de CO2 en tiempo real.
+
+2. **Uso como Placeholder:** A pesar de estas limitaciones documentadas, el equipo decidió utilizar el MQ-135 como componente placeholder en el prototipo inicial debido a que el hardware físico ya había sido adquirido por el equipo para el desarrollo del proyecto. Esto permitió avanzar con la integración del sistema, el desarrollo del firmware del ESP32, y la validación de la arquitectura de comunicación (Embedded→Edge→Cloud), mientras se evalúa la incorporación de sensores más precisos (como el Sensirion SCD30 o MHZ-19B) en iteraciones futuras.
+
+3. **LED Panel - Especificaciones Pendientes:** El diseño incluye un panel de LEDs para indicadores visuales del estado del sistema (conexión WiFi, umbrales de calidad de aire). Sin embargo, las especificaciones exactas del panel (número de bits, resolución, protocolo de comunicación) requieren definición adicional para la implementación final.
 
 
-https://imgur.com/z3BEd0f
+El diseño representa la versión inicial de prototipado enfocada en validar la arquitectura de hardware y las conexiones básicas. Las pruebas preliminares confirman el funcionamiento de la comunicación I2C con el display OLED, la lectura analógica del ADC del ESP32, y la conectividad WiFi para transmisión de datos al Edge Station.
