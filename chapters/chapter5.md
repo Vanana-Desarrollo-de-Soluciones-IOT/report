@@ -339,9 +339,61 @@ Este enfoque de búsqueda simplificada refuerza el compromiso de **Clair** con u
 
 ## 5.3. Landing Page UI Design.
 
+A continuación, se presentan los wireframes y mock-ups para la Landing Page de Clair, enfocada en comunicar de manera efectiva la propuesta de valor del producto y guiar al visitante hacia la conversión.
+
 ### 5.3.1. Landing Page Wireframe.
 
+**Home**
+
+<img src="../assets/landing-page-wireframes/WF-Home.png" alt="WF-Home" width="1000">
+
+Presentación principal de Clair Alpha. Incluye el hero section con llamados a la acción, una sección de "Sensory Intelligence" para métricas de aire (PM2.5, CO2) y bloques informativos sobre las capacidades de filtrado y protección del dispositivo.
+
+**Product**
+
+<img src="../assets/landing-page-wireframes/WF-Product.png" alt="WF-Home" width="1000">
+
+Detalle técnico y funcional del dispositivo. Clair Specs incluye el procesamiento central, sensores atmosféricos y detección láser de partículas, utilizando una estructura de cuadrícula para facilitar la lectura de características.
+
+**Pricing**
+
+<img src="../assets/landing-page-wireframes/WF-Pricing.png" alt="WF-Pricing" width="1000">
+
+Estructura de costos de los servicios de Clair Alpha. Presenta una comparativa entre el plan "Free" y el plan "Mesh Network" mediante tarjetas de precios claras.
+
+**About**
+
+<img src="../assets/landing-page-wireframes/WF-About.png" alt="WF-About" width="1000">
+
+Sección dedicada a la visión de la empresa y el equipo. Incluye una presentación del equipo y un bloque de "Nuestra Misión"
+
+
 ### 5.3.2. Landing Page Mock-up.
+
+**Home**
+
+<img src="../assets/landing-page-mockups/Home.png" alt="MP-Home" width="1000">
+
+Implementación visual final con un estilo minimalista y tecnológico. Se observa el uso de un fondo oscuro para resaltar el dispositivo y tipografía técnica.
+
+**Product**
+
+<img src="../assets/landing-page-mockups/Product.png" alt="MP-Product" width="1000">
+
+Diseño detallado que muestra los componentes internos del ecosistema. Se destacan el uso de arquitectura ESP32, sensores SCD41 para CO₂ y sensores láser PMS5003.
+
+**Pricing**
+
+<img src="../assets/landing-page-mockups/Pricing.png" alt="MP-Pricing" width="1000">
+
+Interfaz de suscripción con un enfoque limpio y directo. Se utilizan tarjetas con bordes definidos y botones de acción claros.
+
+**About**
+
+<img src="../assets/landing-page-mockups/About.jpg" alt="MP-About" width="1000">
+
+La sección presenta al equipo multidisciplinario con un diseño elegante que equilibra el espacio en blanco y el contenido textual.
+
 
 ## 5.4. Applications UX/UI Design.
 
