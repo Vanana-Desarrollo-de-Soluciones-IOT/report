@@ -396,16 +396,124 @@ La sección presenta al equipo multidisciplinario con un diseño elegante que eq
 
 
 ## 5.4. Applications UX/UI Design.
+Esta sección está dedicada al diseño de la experiencia de usuario (UX) y la interfaz de usuario (UI) de las aplicaciones que conforman la solución. El objetivo es crear interfaces funcionales, accesibles y visualmente coherentes que respondan a las necesidades y expectativas de los usuarios finales.
 
 ### 5.4.1. Applications Wireframes.
 
+En esta sección se presentan los wireframes de las aplicaciones, que muestran el diseño estructural y la disposición de los elementos clave para la experiencia de usuario. 
+
+**Web Application:**
+
+**Login**
+
+<img src="../assets/webapp-wf/wf-login.png" alt="MP-About" width="1000">
+
+La interfaz de autenticación presenta un diseño centralizado y minimalista que prioriza la claridad funcional. El wireframe utiliza un contenedor de bordes definidos sobre un fondo neutro, integrando campos de entrada directos para credenciales y un botón de acción de alto contraste, lo que refuerza una estética tecnológica y ordenada coherente con el ecosistema de Clair.
+
+**Register**
+
+<img src="../assets/webapp-wf/wf-register.png" alt="MP-About" width="1000">
+
+El diseño de registro mantiene la coherencia visual mediante una estructura vertical limpia que facilita el flujo de usuario. Este wireframe integra campos de entrada estándar, un selector para términos legales y una opción de autenticación social con Google, logrando un equilibrio entre simplicidad y funcionalidad bajo una estética técnica y minimalista.
+
+**Overview**
+
+<img src="../assets/webapp-wf/wf-overview.png" alt="MP-About" width="1000">
+
+La interfaz principal despliega un tablero de control avanzado con un estilo "dark mode" que resalta métricas críticas de calidad de aire mediante una jerarquía visual clara. El diseño utiliza tarjetas modulares para organizar contaminantes como PM2.5 y CO₂, integrando gráficos de barras de estado y paneles laterales de alertas en tiempo real, lo que ofrece una experiencia analítica, técnica y altamente funcional para la gestión de múltiples organizaciones.
+
+**Space & Devices**
+
+<img src="../assets/webapp-wf/wf-space1.png" alt="MP-About" width="1000">
+
+<img src="../assets/webapp-wf/wf-space2.png" alt="MP-About" width="1000">
+
+La interfaz de gestión de dispositivos presenta una estructura organizada mediante un panel de navegación jerárquico que facilita la administración de organizaciones y espacios. El diseño utiliza tarjetas de inventario detalladas y una vista individual para monitorear el estado técnico de cada sensor, integrando indicadores de conectividad, salud del dispositivo y umbrales personalizados bajo una estética limpia y profesional.
+
+**Air Quality**
+
+<img src="../assets/webapp-wf/wf-airquality.png" alt="MP-About" width="1000">
+
+La interfaz de análisis ambiental presenta un tablero detallado que permite la visualización de métricas en tiempo real y periodos históricos mediante selectores de tiempo y ubicación. El diseño integra tarjetas de diagnóstico para múltiples contaminantes, un panel de análisis de causa raíz y una comparativa entre espacios, culminando en una sección de generación de reportes técnicos en formatos PDF y CSV que refuerza el enfoque profesional y orientado a datos del ecosistema Clair.
+
+**Alerts & Actions**
+
+<img src="../assets/webapp-wf/wf-alerts.png" alt="MP-About" width="1000">
+
+La interfaz de gestión de alertas ofrece un centro de control operativo que combina el monitoreo crítico con la capacidad de respuesta inmediata. El diseño destaca un gráfico de distribución semanal de incidencias y una tabla detallada de alertas activas, integrando paneles laterales para la configuración de notificaciones, visualización de tendencias específicas por evento y un registro de auditoría, lo que permite una administración proactiva y técnica de las contingencias ambientales en el ecosistema Clair.
+
+**Reports**
+
+<img src="../assets/webapp-wf/wf-reports.png" alt="MP-About" width="1000">
+
+La interfaz de reportes presenta un panel analítico robusto diseñado para la interpretación de datos estratégicos y el cumplimiento normativo. El wireframe organiza la información mediante tarjetas de resumen diario, semanal y mensual, integrando visualizaciones de correlación de partículas y un gestor de exportaciones automatizado que detalla la frecuencia y el estado de los registros. Este diseño facilita una supervisión integral del ecosistema Clair, permitiendo desde el análisis técnico profundo hasta la generación de resúmenes ejecutivos con una estética limpia y profesional.
+
+
 ### 5.4.2. Applications Wireflow Diagrams.
 
-### 5.4.2. Applications Mock-ups.
+### 5.4.3. Applications Mock-ups.
 
-### 5.4.3. Applications User Flow Diagrams.
+**Web Application:**
+
+**Login**
+
+<img src="../assets/webapp-mockup/LOGIN.png" alt="MP-About" width="1000">
+
+La interfaz de inicio de sesión presenta una implementación visual final con un estilo sofisticado, minimalista y tecnológico. El mockup utiliza un fondo oscuro profundo que resalta un contenedor de bordes sutiles y el logotipo central de Clair, integrando campos de entrada oscuros con íconos descriptivos y un botón de acción principal de contraste moderado, logrando una estética sobria y profesional coherente con la identidad de la marca.
+
+**Register**
+
+<img src="../assets/webapp-mockup/CREATE-ACCOUNT.png" alt="MP-About" width="1000">
+
+La interfaz de creación de cuenta presenta una implementación visual final sofisticada, minimalista y tecnológica, en coherencia con el diseño de login. El mockup utiliza un fondo oscuro profundo que resalta un contenedor de bordes sutiles y el logotipo de Clair, integrando campos de entrada oscuros con íconos descriptivos y un botón de acción principal de contraste moderado. El diseño incorpora además selectores de términos legales y una opción de autenticación social con Google, logrando una estética sobria y profesional.
+
+**Overview**
+
+<img src="../assets/webapp-mockup/OVERVIEW.png" alt="MP-About" width="1000">
+
+El tablero principal presenta una implementación visual final con un estilo minimalista y tecnológico, utilizando un fondo oscuro para resaltar los indicadores de calidad de aire. El diseño organiza métricas críticas como el índice de calidad de aire (AQI) y contaminantes específicos ($CO_2$, $PM2.5$) mediante tarjetas modulares de alto contraste, integrando paneles de alertas y acciones en tiempo real que refuerzan una estética técnica y funcional para el ecosistema Clair.
+
+**Space & Devices**
+
+<img src="../assets/webapp-mockup/SPACE&DEVICES1.png" alt="MP-About" width="1000">
+
+<img src="../assets/webapp-mockup/SPACE&DEVICES2.png" alt="MP-About" width="1000">
+
+<img src="../assets/webapp-mockup/SPACE&DEVICES3.png" alt="MP-About" width="1000">
+
+La interfaz de gestión de dispositivos se presenta con un estilo "dark mode" de alta fidelidad que optimiza la supervisión técnica de los activos. El diseño emplea una arquitectura modular mediante tarjetas interactivas que permiten alternar entre vistas de cuadrícula y lista, integrando un panel de detalle profundo para cada sensor donde se visualizan métricas de conectividad y umbrales operativos. Esta implementación logra una estética tecnológica sofisticada que facilita la administración jerárquica de espacios y organizaciones en el ecosistema Clair.
+
+**Air Quality**
+
+<img src="../assets/webapp-mockup/AIR-QUALITY.png" alt="MP-About" width="1000">
+
+La interfaz de análisis ambiental presenta una implementación visual final sofisticada con un estilo "dark mode" que jerarquiza los datos mediante acentos de color y tipografía técnica. El mockup integra un gráfico circular progresivo para el índice de calidad de aire, tarjetas detalladas para parámetros específicos como $PM2.5$ y $CO_2$, y una sección de comparativa entre espacios, culminando en un centro de reportes especializado que refuerza la capacidad analítica y profesional del sistema Clair.
+
+**Alerts & Actions**
+
+<img src="../assets/webapp-mockup/ALERTS&ACTION.png" alt="MP-About" width="1000">
+
+La interfaz de alertas presenta una implementación visual final sofisticada en "dark mode" que centraliza el monitoreo crítico y las respuestas automatizadas del sistema. El diseño destaca un gráfico de barras apiladas para la distribución de incidencias por severidad y una tabla de alertas activas con estados en tiempo real. La sección integra un constructor de reglas lógicas ("Rules Builder") y paneles laterales para la gestión de preferencias, detalles de eventos específicos con sugerencias de acciones automatizadas y un registro detallada de auditoría, consolidando una estética técnica y profesional para la gestión proactiva de Clair.
+
+**Reports**
+
+<img src="../assets/webapp-mockup/REPORTS.png" alt="MP-About" width="1000">
+
+La sección presenta una implementación visual final sofisticada que transforma datos complejos en resúmenes estratégicos de cumplimiento. El diseño utiliza tarjetas de resumen temporal (diario, semanal y mensual) con tipografía técnica y acentos cromáticos para destacar tendencias de contaminantes como $CO_2$ y $PM2.5$. El mockup integra visualizaciones de correlación viento-partículas y un panel de gestión de exportaciones programadas, manteniendo una estética de "dark mode" profesional que refuerza el valor analítico del ecosistema Clair.
+
+### 5.4.4. Applications User Flow Diagrams.
 
 ## 5.5. Applications Prototyping.
+
+En esta sección se presentan los prototipos interactivos de las aplicaciones, que permiten visualizar y probar la experiencia de usuario antes del desarrollo final. Incluye enlaces a prototipos navegables para las versiones web y móvil.
+
+**Web Application :**
+
+El prototipo de la aplicación web muestra la estructura general de navegación, el diseño de las principales vistas y las funcionalidades clave que tendrá la plataforma. Permite simular el flujo de navegación de los usuarios y visualizar cómo interactúan con los distintos módulos del sistema.
+
+<img src="../assets/prototypes/webapp-proto.jpg" alt="MP-About" width="1000">
+
+https://www.figma.com/proto/gcvrMwP0vh0zl1qC6EvO70/IOT?node-id=336-807&p=f&t=AbBhAlxWgDEKtucK-1&scaling=scale-down&content-scaling=fixed&page-id=336%3A806&starting-point-node-id=336%3A1792&show-proto-sidebar=1 
 
 ## 5.6. IoT Device Design
 
