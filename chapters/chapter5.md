@@ -412,7 +412,7 @@ La sección presenta al equipo multidisciplinario con un diseño elegante que eq
 El siguiente diagrama presenta el diseño inicial del dispositivo IoT Clair, representando la configuración física y las conexiones entre los componentes de hardware seleccionados para el prototipo.
 
 <p align="center">
-  <img src="https://imgur.com/z3BEd0f.png" alt="Diseño inicial del prototipo Clair - Cirkit Designer" width="800">
+  <img src="https://i.imgur.com/TCbXtAq.png" alt="Diseño inicial del prototipo Clair - Cirkit Designer" width="800">
 </p>
 
 El esquema fue desarrollado en **Cirkit Designer** (https://app.cirkitdesigner.com/), una plataforma web para diseño de circuitos electrónicos que permitió visualizar las conexiones entre componentes antes de la implementación física.
