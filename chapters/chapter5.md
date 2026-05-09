@@ -432,19 +432,19 @@ La interfaz de gestión de dispositivos presenta una estructura organizada media
 
 **Air Quality**
 
-<img src="../assets/webapp-wf/wf-airquality.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-wf/wf-airquality.png" alt="wf-airquality" width="1000">
 
 La interfaz de análisis ambiental presenta un tablero detallado que permite la visualización de métricas en tiempo real y periodos históricos mediante selectores de tiempo y ubicación. El diseño integra tarjetas de diagnóstico para múltiples contaminantes, un panel de análisis de causa raíz y una comparativa entre espacios, culminando en una sección de generación de reportes técnicos en formatos PDF y CSV que refuerza el enfoque profesional y orientado a datos del ecosistema Clair.
 
 **Alerts & Actions**
 
-<img src="../assets/webapp-wf/wf-alerts.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-wf/wf-alerts.png" alt="wf-alerts" width="1000">
 
 La interfaz de gestión de alertas ofrece un centro de control operativo que combina el monitoreo crítico con la capacidad de respuesta inmediata. El diseño destaca un gráfico de distribución semanal de incidencias y una tabla detallada de alertas activas, integrando paneles laterales para la configuración de notificaciones, visualización de tendencias específicas por evento y un registro de auditoría, lo que permite una administración proactiva y técnica de las contingencias ambientales en el ecosistema Clair.
 
 **Reports**
 
-<img src="../assets/webapp-wf/wf-reports.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-wf/wf-reports.png" alt="wf-reports" width="1000">
 
 La interfaz de reportes presenta un panel analítico robusto diseñado para la interpretación de datos estratégicos y el cumplimiento normativo. El wireframe organiza la información mediante tarjetas de resumen diario, semanal y mensual, integrando visualizaciones de correlación de partículas y un gestor de exportaciones automatizado que detalla la frecuencia y el estado de los registros. Este diseño facilita una supervisión integral del ecosistema Clair, permitiendo desde el análisis técnico profundo hasta la generación de resúmenes ejecutivos con una estética limpia y profesional.
 
@@ -456,37 +456,37 @@ Esta sección presenta los diagramas de flujo (wireflows) de las aplicaciones, q
 
 **User Acquisition & Authentication Flow**
 
-<img src="../assets/webapp-wireflows/webapp-wflow0.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-wireflows/webapp-wflow0.png" alt="webapp-wflow0" width="1000">
 
 Este flujo representa la transición desde la propuesta de valor externa en la Landing Page hacia el acceso al ecosistema digital de Clair. El proceso se activa mediante un Call to Action (CTA) estratégico que redirige al usuario hacia la interfaz de Login, donde se validan las credenciales de seguridad bajo una estética minimalista y profesional. Es el punto de enlace crítico que transforma el interés comercial en una sesión activa, permitiendo al usuario ingresar al tablero de control centralizado para iniciar el monitoreo ambiental.
 
 **Registration & Onboarding Flow**
 
-<img src="../assets/webapp-wireflows/webapp-wflow1.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-wireflows/webapp-wflow1.png" alt="webapp-wflow1" width="1000">
 
 Este recorrido modela la experiencia de los nuevos usuarios que se integran al ecosistema a través de la interfaz Register. El flujo se centra en la simplicidad funcional, guiando al usuario por la creación de cuenta, la validación de datos y la aceptación de términos legales antes de su primer acceso. Al completarse, el sistema facilita una transición fluida hacia el Overview, asegurando que el despliegue inicial de la red de monitoreo comience con una configuración de usuario clara y estructurada.
 
 **Asset & Infrastructure Management Flow**
 
-<img src="../assets/webapp-wireflows/webapp-wflow2.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-wireflows/webapp-wflow2.png" alt="webapp-wflow2" width="1000">
 
 Este flujo describe la administración jerárquica de la infraestructura IoT de la organización a través de las vistas de Space & Devices. El usuario navega desde una visión macro de los edificios hacia el control detallado de cada espacio, permitiendo la supervisión técnica individual de dispositivos como los sensores SCD41 y PMS5003. La interfaz facilita el monitoreo de la conectividad y la salud del hardware, garantizando que el despliegue en áreas comerciales o residenciales mantenga una operatividad constante y profesional.
 
 **Detailed Environmental Analysis Flow**
 
-<img src="../assets/webapp-wireflows/webapp-wflow3.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-wireflows/webapp-wflow3.png" alt="webapp-wflow3" width="1000">
 
 Este proceso conecta el tablero principal de Overview con el análisis profundo en la interfaz de Air Quality para diagnosticar la salud ambiental de un espacio específico. El usuario puede profundizar en métricas críticas como $CO_2$, $PM2.5$ y compuestos orgánicos volátiles ($VOCs$), utilizando selectores de tiempo para identificar tendencias históricas y causas raíz. El diseño permite comparar la calidad de aire entre distintos sectores de la organización, proporcionando una base científica para la toma de decisiones basada en datos precisos de sensores de alta fidelidad.
 
 **Contingency Response & Alert Flow**
 
-<img src="../assets/webapp-wireflows/webapp-wflow4.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-wireflows/webapp-wflow4.png" alt="webapp-wflow4" width="1000">
 
 Este flujo operativo modela la detección y mitigación de anomalías ambientales a través de la interfaz de Alerts & Actions. Se activa ante un disparo de umbral crítico (como niveles altos de material particulado), dirigiendo al usuario a revisar la distribución de incidencias y la severidad del evento en tiempo real. El flujo culmina en la ejecución de acciones sugeridas o el uso del Rules Builder para automatizar respuestas, como la activación de purificadores, asegurando una gestión proactiva ante riesgos en la calidad del aire.
 
 **Data Intelligence & Audit Flow**
 
-<img src="../assets/webapp-wireflows/webapp-wflow5.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-wireflows/webapp-wflow5.png" alt="webapp-wflow5" width="1000">
 
 Este flujo se especializa en la interpretación estratégica de datos y la generación de documentación técnica mediante la interfaz de Reports. El usuario interactúa con resúmenes de cumplimiento normativo y mapas de correlación de partículas para evaluar el impacto a largo plazo en la organización. El proceso incluye la configuración de exportaciones automatizadas en formatos PDF y CSV, proporcionando una herramienta de auditoría esencial para certificar que los espacios cumplen con las directrices de salud y seguridad ambiental vigentes.
 
@@ -496,47 +496,47 @@ Este flujo se especializa en la interpretación estratégica de datos y la gener
 
 **Login**
 
-<img src="../assets/webapp-mockup/LOGIN.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-mockup/LOGIN.png" alt="LOGIN" width="1000">
 
 La interfaz de inicio de sesión presenta una implementación visual final con un estilo sofisticado, minimalista y tecnológico. El mockup utiliza un fondo oscuro profundo que resalta un contenedor de bordes sutiles y el logotipo central de Clair, integrando campos de entrada oscuros con íconos descriptivos y un botón de acción principal de contraste moderado, logrando una estética sobria y profesional coherente con la identidad de la marca.
 
 **Register**
 
-<img src="../assets/webapp-mockup/CREATE-ACCOUNT.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-mockup/CREATE-ACCOUNT.png" alt="CREATE-ACCOUNT" width="1000">
 
 La interfaz de creación de cuenta presenta una implementación visual final sofisticada, minimalista y tecnológica, en coherencia con el diseño de login. El mockup utiliza un fondo oscuro profundo que resalta un contenedor de bordes sutiles y el logotipo de Clair, integrando campos de entrada oscuros con íconos descriptivos y un botón de acción principal de contraste moderado. El diseño incorpora además selectores de términos legales y una opción de autenticación social con Google, logrando una estética sobria y profesional.
 
 **Overview**
 
-<img src="../assets/webapp-mockup/OVERVIEW.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-mockup/OVERVIEW.png" alt="OVERVIEW" width="1000">
 
 El tablero principal presenta una implementación visual final con un estilo minimalista y tecnológico, utilizando un fondo oscuro para resaltar los indicadores de calidad de aire. El diseño organiza métricas críticas como el índice de calidad de aire (AQI) y contaminantes específicos ($CO_2$, $PM2.5$) mediante tarjetas modulares de alto contraste, integrando paneles de alertas y acciones en tiempo real que refuerzan una estética técnica y funcional para el ecosistema Clair.
 
 **Space & Devices**
 
-<img src="../assets/webapp-mockup/SPACE&DEVICES1.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-mockup/SPACE&DEVICES1.png" alt="SPACE&DEVICES1" width="1000">
 
-<img src="../assets/webapp-mockup/SPACE&DEVICES2.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-mockup/SPACE&DEVICES2.png" alt="SPACE&DEVICES2" width="1000">
 
-<img src="../assets/webapp-mockup/SPACE&DEVICES3.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-mockup/SPACE&DEVICES3.png" alt="SPACE&DEVICES3" width="1000">
 
 La interfaz de gestión de dispositivos se presenta con un estilo "dark mode" de alta fidelidad que optimiza la supervisión técnica de los activos. El diseño emplea una arquitectura modular mediante tarjetas interactivas que permiten alternar entre vistas de cuadrícula y lista, integrando un panel de detalle profundo para cada sensor donde se visualizan métricas de conectividad y umbrales operativos. Esta implementación logra una estética tecnológica sofisticada que facilita la administración jerárquica de espacios y organizaciones en el ecosistema Clair.
 
 **Air Quality**
 
-<img src="../assets/webapp-mockup/AIR-QUALITY.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-mockup/AIR-QUALITY.png" alt="AIR-QUALITY" width="1000">
 
 La interfaz de análisis ambiental presenta una implementación visual final sofisticada con un estilo "dark mode" que jerarquiza los datos mediante acentos de color y tipografía técnica. El mockup integra un gráfico circular progresivo para el índice de calidad de aire, tarjetas detalladas para parámetros específicos como $PM2.5$ y $CO_2$, y una sección de comparativa entre espacios, culminando en un centro de reportes especializado que refuerza la capacidad analítica y profesional del sistema Clair.
 
 **Alerts & Actions**
 
-<img src="../assets/webapp-mockup/ALERTS&ACTION.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-mockup/ALERTS&ACTION.png" alt="ALERTS&ACTION" width="1000">
 
 La interfaz de alertas presenta una implementación visual final sofisticada en "dark mode" que centraliza el monitoreo crítico y las respuestas automatizadas del sistema. El diseño destaca un gráfico de barras apiladas para la distribución de incidencias por severidad y una tabla de alertas activas con estados en tiempo real. La sección integra un constructor de reglas lógicas ("Rules Builder") y paneles laterales para la gestión de preferencias, detalles de eventos específicos con sugerencias de acciones automatizadas y un registro detallada de auditoría, consolidando una estética técnica y profesional para la gestión proactiva de Clair.
 
 **Reports**
 
-<img src="../assets/webapp-mockup/REPORTS.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-mockup/REPORTS.png" alt="REPORTS" width="1000">
 
 La sección presenta una implementación visual final sofisticada que transforma datos complejos en resúmenes estratégicos de cumplimiento. El diseño utiliza tarjetas de resumen temporal (diario, semanal y mensual) con tipografía técnica y acentos cromáticos para destacar tendencias de contaminantes como $CO_2$ y $PM2.5$. El mockup integra visualizaciones de correlación viento-partículas y un panel de gestión de exportaciones programadas, manteniendo una estética de "dark mode" profesional que refuerza el valor analítico del ecosistema Clair.
 
@@ -602,7 +602,7 @@ En esta sección se presentan los prototipos interactivos de las aplicaciones, q
 
 El prototipo de la aplicación web muestra la estructura general de navegación, el diseño de las principales vistas y las funcionalidades clave que tendrá la plataforma. Permite simular el flujo de navegación de los usuarios y visualizar cómo interactúan con los distintos módulos del sistema.
 
-<img src="../assets/prototypes/webapp-proto.jpg" alt="MP-About" width="1000">
+<img src="../assets/prototypes/webapp-proto.jpg" alt="webapp-proto" width="1000">
 
 https://www.figma.com/proto/gcvrMwP0vh0zl1qC6EvO70/IOT?node-id=336-807&p=f&t=AbBhAlxWgDEKtucK-1&scaling=scale-down&content-scaling=fixed&page-id=336%3A806&starting-point-node-id=336%3A1792&show-proto-sidebar=1 
 
