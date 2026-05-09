@@ -406,27 +406,27 @@ En esta sección se presentan los wireframes de las aplicaciones, que muestran e
 
 **Login**
 
-<img src="../assets/webapp-wf/wf-login.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-wf/wf-login.png" alt="wf-login" width="1000">
 
 La interfaz de autenticación presenta un diseño centralizado y minimalista que prioriza la claridad funcional. El wireframe utiliza un contenedor de bordes definidos sobre un fondo neutro, integrando campos de entrada directos para credenciales y un botón de acción de alto contraste, lo que refuerza una estética tecnológica y ordenada coherente con el ecosistema de Clair.
 
 **Register**
 
-<img src="../assets/webapp-wf/wf-register.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-wf/wf-register.png" alt="wf-register" width="1000">
 
 El diseño de registro mantiene la coherencia visual mediante una estructura vertical limpia que facilita el flujo de usuario. Este wireframe integra campos de entrada estándar, un selector para términos legales y una opción de autenticación social con Google, logrando un equilibrio entre simplicidad y funcionalidad bajo una estética técnica y minimalista.
 
 **Overview**
 
-<img src="../assets/webapp-wf/wf-overview.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-wf/wf-overview.png" alt="wf-overview" width="1000">
 
 La interfaz principal despliega un tablero de control avanzado con un estilo "dark mode" que resalta métricas críticas de calidad de aire mediante una jerarquía visual clara. El diseño utiliza tarjetas modulares para organizar contaminantes como PM2.5 y CO₂, integrando gráficos de barras de estado y paneles laterales de alertas en tiempo real, lo que ofrece una experiencia analítica, técnica y altamente funcional para la gestión de múltiples organizaciones.
 
 **Space & Devices**
 
-<img src="../assets/webapp-wf/wf-space1.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-wf/wf-space1.png" alt="wf-space1" width="1000">
 
-<img src="../assets/webapp-wf/wf-space2.png" alt="MP-About" width="1000">
+<img src="../assets/webapp-wf/wf-space2.png" alt="wf-space2" width="1000">
 
 La interfaz de gestión de dispositivos presenta una estructura organizada mediante un panel de navegación jerárquico que facilita la administración de organizaciones y espacios. El diseño utiliza tarjetas de inventario detalladas y una vista individual para monitorear el estado técnico de cada sensor, integrando indicadores de conectividad, salud del dispositivo y umbrales personalizados bajo una estética limpia y profesional.
 
@@ -450,6 +450,45 @@ La interfaz de reportes presenta un panel analítico robusto diseñado para la i
 
 
 ### 5.4.2. Applications Wireflow Diagrams.
+Esta sección presenta los diagramas de flujo (wireflows) de las aplicaciones, que ilustran la navegación y las interacciones del usuario entre las diferentes pantallas, facilitando la comprensión del recorrido dentro del sistema.
+
+**Web Application:**
+
+**User Acquisition & Authentication Flow**
+
+<img src="../assets/webapp-wireflows/webapp-wflow0.png" alt="MP-About" width="1000">
+
+Este flujo representa la transición desde la propuesta de valor externa en la Landing Page hacia el acceso al ecosistema digital de Clair. El proceso se activa mediante un Call to Action (CTA) estratégico que redirige al usuario hacia la interfaz de Login, donde se validan las credenciales de seguridad bajo una estética minimalista y profesional. Es el punto de enlace crítico que transforma el interés comercial en una sesión activa, permitiendo al usuario ingresar al tablero de control centralizado para iniciar el monitoreo ambiental.
+
+**Registration & Onboarding Flow**
+
+<img src="../assets/webapp-wireflows/webapp-wflow1.png" alt="MP-About" width="1000">
+
+Este recorrido modela la experiencia de los nuevos usuarios que se integran al ecosistema a través de la interfaz Register. El flujo se centra en la simplicidad funcional, guiando al usuario por la creación de cuenta, la validación de datos y la aceptación de términos legales antes de su primer acceso. Al completarse, el sistema facilita una transición fluida hacia el Overview, asegurando que el despliegue inicial de la red de monitoreo comience con una configuración de usuario clara y estructurada.
+
+**Asset & Infrastructure Management Flow**
+
+<img src="../assets/webapp-wireflows/webapp-wflow2.png" alt="MP-About" width="1000">
+
+Este flujo describe la administración jerárquica de la infraestructura IoT de la organización a través de las vistas de Space & Devices. El usuario navega desde una visión macro de los edificios hacia el control detallado de cada espacio, permitiendo la supervisión técnica individual de dispositivos como los sensores SCD41 y PMS5003. La interfaz facilita el monitoreo de la conectividad y la salud del hardware, garantizando que el despliegue en áreas comerciales o residenciales mantenga una operatividad constante y profesional.
+
+**Detailed Environmental Analysis Flow**
+
+<img src="../assets/webapp-wireflows/webapp-wflow3.png" alt="MP-About" width="1000">
+
+Este proceso conecta el tablero principal de Overview con el análisis profundo en la interfaz de Air Quality para diagnosticar la salud ambiental de un espacio específico. El usuario puede profundizar en métricas críticas como $CO_2$, $PM2.5$ y compuestos orgánicos volátiles ($VOCs$), utilizando selectores de tiempo para identificar tendencias históricas y causas raíz. El diseño permite comparar la calidad de aire entre distintos sectores de la organización, proporcionando una base científica para la toma de decisiones basada en datos precisos de sensores de alta fidelidad.
+
+**Contingency Response & Alert Flow**
+
+<img src="../assets/webapp-wireflows/webapp-wflow4.png" alt="MP-About" width="1000">
+
+Este flujo operativo modela la detección y mitigación de anomalías ambientales a través de la interfaz de Alerts & Actions. Se activa ante un disparo de umbral crítico (como niveles altos de material particulado), dirigiendo al usuario a revisar la distribución de incidencias y la severidad del evento en tiempo real. El flujo culmina en la ejecución de acciones sugeridas o el uso del Rules Builder para automatizar respuestas, como la activación de purificadores, asegurando una gestión proactiva ante riesgos en la calidad del aire.
+
+**Data Intelligence & Audit Flow**
+
+<img src="../assets/webapp-wireflows/webapp-wflow5.png" alt="MP-About" width="1000">
+
+Este flujo se especializa en la interpretación estratégica de datos y la generación de documentación técnica mediante la interfaz de Reports. El usuario interactúa con resúmenes de cumplimiento normativo y mapas de correlación de partículas para evaluar el impacto a largo plazo en la organización. El proceso incluye la configuración de exportaciones automatizadas en formatos PDF y CSV, proporcionando una herramienta de auditoría esencial para certificar que los espacios cumplen con las directrices de salud y seguridad ambiental vigentes.
 
 ### 5.4.3. Applications Mock-ups.
 
@@ -502,6 +541,58 @@ La interfaz de alertas presenta una implementación visual final sofisticada en 
 La sección presenta una implementación visual final sofisticada que transforma datos complejos en resúmenes estratégicos de cumplimiento. El diseño utiliza tarjetas de resumen temporal (diario, semanal y mensual) con tipografía técnica y acentos cromáticos para destacar tendencias de contaminantes como $CO_2$ y $PM2.5$. El mockup integra visualizaciones de correlación viento-partículas y un panel de gestión de exportaciones programadas, manteniendo una estética de "dark mode" profesional que refuerza el valor analítico del ecosistema Clair.
 
 ### 5.4.4. Applications User Flow Diagrams.
+
+Esta sección presenta los diagramas de flujo de usuario, que ilustran las rutas y procesos que siguen los usuarios dentro de las aplicaciones, facilitando la comprensión de la navegación y las interacciones clave
+
+**Web Application UserFlow :**
+
+**Acquisition & Authentication**
+
+UG01: Acceder al ecosistema digital desde la plataforma pública
+
+<img src="../assets/webapp-userflows/webapp-uflow0.png" alt="webapp-uflow0" width="1000">
+
+El usuario accede a la Landing Page de Clair, donde visualiza la propuesta de valor y la arquitectura del sistema. Tras interactuar con el botón principal de "Get Started", es redirigido a la interfaz de Login. Una vez allí, ingresa sus credenciales de acceso para validar su identidad y acceder al panel de control centralizado de la organización.
+
+**Registration & Onboarding**
+
+UG02: Crear una cuenta y configurar el perfil inicial
+
+<img src="../assets/webapp-userflows/webapp-uflow1.png" alt="webapp-uflow1" width="1000">
+
+El usuario nuevo selecciona la opción de registro desde la Landing Page y visualiza el formulario en CREATE-ACCOUNT. Completa los campos de correo y contraseña, acepta los términos y condiciones de Clair y opta por la autenticación social si lo prefiere. Tras confirmar sus datos, el sistema lo redirige al flujo de bienvenida para iniciar la configuración de su red de monitoreo.
+
+**Asset & Infrastructure Management**
+
+UG03: Administrar jerárquicamente edificios, espacios y dispositivos
+
+<img src="../assets/webapp-userflows/webapp-uflow2.png" alt="webapp-uflow2" width="1000">
+
+El administrador accede a la sección "Space & Devices" desde el menú lateral para visualizar la lista de organizaciones. Selecciona un edificio específico (ej. Building A) y navega por los niveles hasta encontrar un espacio determinado, como se observa en wf-space1.png. Desde allí, elige un sensor individual (ej. Clair-01) para revisar su estado de conexión, salud técnica y configurar los umbrales operativos detallados en Space&Devices.
+
+**Web Application UserFlow Detailed Environmental Analysis**
+
+UG04: Consultar métricas detalladas y diagnóstico de calidad de aire
+
+<img src="../assets/webapp-userflows/webapp-uflow3.png" alt="webapp-uflow3" width="1000">
+
+Desde el panel principal, el usuario selecciona la opción "Air Quality" para profundizar en el estado de un área específica. Utiliza los selectores para filtrar por local, espacio y dispositivo, visualizando el índice de calidad de aire en tiempo real y el impacto de contaminantes como $PM2.5$ y $CO_2$. Finalmente, revisa el análisis de causa raíz para comprender qué factores externos, como el tráfico o el sistema HVAC, están afectando el entorno.
+
+**Web Application UserFlow Contingency Response & Alerts**
+
+UG05: Gestionar alertas críticas y ejecutar respuestas automatizadas
+
+<img src="../assets/webapp-userflows/webapp-uflow4.png" alt="webapp-uflow4" width="1000">
+
+El usuario ingresa a la sección de "Alerts & Response" para monitorear las anomalías detectadas en las últimas 24 horas. En la vista Alerts&Actions, revisa la severidad de las alertas activas y consulta el historial de eventos. Utiliza el "Rules Builder" para definir acciones automáticas (ej. activar purificadores ante exceso de $CO_2$) o ejecuta respuestas rápidas sugeridas por el sistema para mitigar riesgos ambientales de forma inmediata.
+
+**Web Application UserFlow Data Intelligence & Audit**
+
+UG06: Generar reportes de cumplimiento y exportar datos históricos
+
+<img src="../assets/webapp-userflows/webapp-uflow5.png" alt="webapp-uflow5" width="1000">
+
+El usuario accede al módulo de "Reports" para evaluar el rendimiento histórico de la red de sensores. En la interfaz de Reports, analiza los resúmenes de cumplimiento diario, semanal y mensual, comparando los datos obtenidos con las directrices internacionales de salud. Posteriormente, configura la generación automática de archivos PDF o CSV para ser enviados a destinatarios específicos, asegurando la trazabilidad de los datos para auditorías legales.
 
 ## 5.5. Applications Prototyping.
 
