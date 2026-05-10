@@ -52,6 +52,7 @@
 | 1.0.8   | 09/05/2026 | Fabrizio Alessandro Contreras Peralta | Realizó los mockups de la landing page, web app y móvil      |
 | 1.0.9   | 09/05/2026 | Ian Macavilca Quispe                  | Realizó las secciones: Web Style Guidelines, Applications UX/UI Design y Applications Prototyping |
 | 1.1.0   | 10/05/2026 | Dante Mateo Aleman Romano             | Documenté la estrategia de GitFlow, las convenciones de commits y la arquitectura de despliegue en Vercel, NixOS y Azure IoT. Además, consolidé todas las evidencias técnicas del Sprint 1, incluyendo el historial de commits, la matriz de colaboración y los reportes de lanzamiento de la Landing Page. |
+| 1.1.1   | 10/05/2026 | Dante Mateo Aleman Romano             | Realice el deploy diagram siguiendo c4                       |
 
 # Project Report Collaboration Insights
 
