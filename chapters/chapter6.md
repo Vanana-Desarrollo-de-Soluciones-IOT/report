@@ -163,18 +163,33 @@ El Sprint Planning 1 marca el inicio del desarrollo formal de Clair. Durante est
 </table>
 #### 6.2.1.2. Aspect Leaders and Collaborators.
 
-**En esta sección el equipo que incluye la elaboración de un artefacto Leadership-and-Collaboration Matrix (LACX), que indique por cada aspecto dentro del alcance del Sprint, quién es el líder y quién o quiénes son colaboradores en dicho aspecto, con el fin de brindar mayor claridad y efectividad en la comunicación al interior del equipo. La sección incluye una introducción donde se explica cuáles son los principales aspectos que se toman en cuenta en el Sprint. Dependiendo del Sprint un aspecto puede ser un subconjunto del alcance funcional de la solución (por ejemplo feature, bounded context, etc.). A continuación se incluye un cuadro con la siguiente estructura.**
+En esta sección se detalla la **Leadership-and-Collaboration Matrix (LACX)** para el Sprint 1. El objetivo de esta matriz es delegar responsabilidades claras sobre los diferentes componentes de la solución, asegurando que cada aspecto técnico y funcional cuente con un referente directo (*Leader*) y el apoyo necesario de los demás integrantes (*Collaborator*). Para este sprint, los aspectos se han dividido en tres frentes críticos: la presencia pública y legal (Landing Page), la seguridad de acceso (IAM) y la integración fundamental del hardware (Embedded Core).
 
-| Team Member (Last Name, First Name) | GitHub Username | Aspect Name 1 Leader (L) / Collaborator (C) | Aspect Name 2 Leader (L) / Collaborator (C) | ...  | Aspect Name n Leader (L) / Collaborator (C) |
-| ----------------------------------- | --------------- | ------------------------------------------- | ------------------------------------------- | ---- | ------------------------------------------- |
-| Jiménez Rosas, Arturo Eduardo       | ajimenezrosas   | L                                           | C                                           | ...  |                                             |
-| Rodríguez Peña, Jorge Andrés        | japr91          | C                                           | C                                           | ...  | L                                           |
+| **Team Member (Last Name, First Name)** | **GitHub Username** | **CVP (L/C)** | **DTB (L/C)** | **FAQ (L/C)** | **MLS (L/C)** | **PPT (L/C)** | **REG (L/C)** | **LOG (L/C)** | **PMI (L/C)** | **LDP (L/C)** |
+| --------------------------------------- | ------------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| **Aleman Romano, Dante Mateo**          | zGIKS               | **L**         | C             | C             | C             | C             | **L**         | C             | C             | **L**         |
+| **Contreras Peralta, Fabrizio**         | fabriziocpa         | C             | C             | **L**         | C             | C             | C             | C             | C             | C             |
+| **Curipaco Huayllani, Neil A.**         | Neilcur7            | C             | C             | C             | C             | **L**         | C             | C             | **L**         | C             |
+| **Macavilca Quispe, Ian**               | IanMQ               | C             | **L**         | C             | C             | C             | C             | **L**         | C             | C             |
+| **Paiva Quispe, Josue Gonzalo**         | JosuePaiva02        | C             | C             | C             | **L**         | C             | C             | C             | C             | C             |
 
+**Leyenda de Aspectos (Key):**
 
+Para facilitar la lectura de la matriz, se han utilizado los siguientes acrónimos basados en las tareas del Sprint:
 
+- **CVP:** Clair Value Proposition (Landing Page Content)
+- **DTB:** Development Team Background (Landing Page Content)
+- **FAQ:** FAQ & Help Center (Support & Documentation)
+- **MLS:** Multi-language Support (Internationalization)
+- **PPT:** Privacy Policies & Terms (Legal Compliance)
+- **REG:** Register a New Account (Frontend/Backend Auth)
+- **LOG:** Log in (Authentication Services)
+- **PMI:** Particulate Matter Integration (UART Implementation)
+- **LDP:** Local Data Persistence (SD Card Module)
 
-
-
+> **L:** Leader (Responsable principal de la entrega y calidad del aspecto).
+>
+> **C:** Collaborator (Apoyo técnico, revisión de código y soporte en la implementación).
 
 
 
