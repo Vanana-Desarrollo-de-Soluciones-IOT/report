@@ -39,11 +39,243 @@ El tono de comunicación adoptado para Clair se define como **Sereno, Formal y R
 
 ### 5.1.2. Web, Mobile and IoT Style Guidelines.
 
-- **Web Style Guidelines**
+#### 5.1.2.1. Web Style Guidelines
 
-- **Mobile Style Guidelines**
+##### 5.1.2.1.1. Comportamiento Responsivo y Sistema de Layout
 
-- **IoT Style Guidelines**
+**Breakpoints oficiales:**
+
+| Categoría | Breakpoint | Ancho mínimo | Comportamiento principal |
+|-----------|------------|--------------|--------------------------|
+| Móvil | `sm` | < 600px | Layout de 1 columna, menú hamburguesa, navegación vertical |
+| Tablet | `md` | 600px – 1024px | Layout de 2 columnas, sidebar colapsable |
+| Escritorio | `lg` | 1024px – 1440px | Layout de 3 columnas, sidebar fija |
+| Escritorio amplio | `xl` | > 1440px | Layout de 3-4 columnas, espaciado generoso |
+
+**Referencia visual:**  
+Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (1920px de ancho). En este punto de quiebre, la interfaz utiliza:
+- Sidebar izquierdo expandido con navegación jerárquica (Organizations → Building A → Floor 1/2 → Devices)
+- Área principal con grid fluido de tarjetas
+- Márgenes laterales de `24px` (3 unidades de 8px)
+
+---
+
+##### 5.1.2.1.2. Componentes UI Especificados
+
+**A. Panel de Navegación Jerárquica (Espacios y Dispositivos)**
+
+| Propiedad | Especificación |
+|-----------|----------------|
+| **Estructura** | Árbol colapsable: Organization → Building → Floor → Device |
+| **Indicador de cantidad** | Badge con número de dispositivos (ej. "3 DEVICES") en color neutro |
+| **Actualización** | Texto secundario: "Updates every minute" / "Updated 12 seconds ago" |
+| **Vistas alternas** | Toggle Grid / List (íconos alineados a la derecha) |
+| **Footer de acciones** | Botón "Add Organization" (estilo outline) |
+
+**Especificaciones técnicas:**
+
+```css
+.nav-tree {
+  padding: 16px 0;
+  border-right: 1px solid rgba(10,10,10,0.08);
+}
+
+.nav-item {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.nav-item.active {
+  background: rgba(77,132,255,0.08);
+  color: #4D84FF;
+  font-weight: 500;
+}
+
+.device-count-badge {
+  background: #F0F0F0;
+  border-radius: 16px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-family: 'Space Grotesk', monospace;
+}
+```
+
+**B. Tarjeta de Sensor / Dispositivo**
+
+| Elemento | Especificación |
+|----------|----------------|
+| **Contenedor** | Fondo #FFFFFF, border-radius 16px, sombra sutil `0 2px 8px rgba(0,0,0,0.04)` |
+| **Padding interno** | 20px (2.5 unidades de 8px) |
+| **Nombre del espacio** | Space Grotesk, 16px, peso semibold (ej. "A101") |
+| **Nombre del dispositivo** | Inter, 14px, color secundario (ej. "Clair-01") |
+| **Timestamp** | Inter, 12px, color #666, con ícono de reloj |
+| **Borde semántico** | Borde izquierdo de 4px según estado: normal (transparente), advertencia (#FFB74D), crítico (#FF4444) |
+
+**Estados de la tarjeta:**
+
+| Estado | Borde izquierdo | Sombra | Comportamiento adicional |
+|--------|----------------|--------|--------------------------|
+| Normal | `transparent` | `0 2px 8px rgba(0,0,0,0.04)` | - |
+| Hover (desktop) | `#4D84FF` | `0 8px 24px rgba(0,0,0,0.08)` | Cursor pointer, transición 0.2s |
+| Focus (teclado) | `#4D84FF` | `0 0 0 2px #4D84FF` | Outline offset 2px |
+| Crítico | `#FF4444` | `0 2px 12px rgba(255,68,68,0.15)` | - |
+
+---
+
+**C. Panel de Calidad del Aire (AQI)**
+
+| Componente | Especificación |
+|------------|----------------|
+| **AQI principal** | Número central: Space Grotesk, 72px, peso bold. Etiqueta debajo (ej. "MODERADO") con color semántico |
+| **Métricas individuales** | Grid 2 columnas (en desktop 3 columnas). Cada métrica incluye: nombre, valor, umbral (ej. "Above threshold") |
+| **Descripción contextual** | Inter, 14px, color secundario. Texto accionable que indica causa y recomendación |
+| **Peer Space Comparison** | Tabla compacta con: nombre del espacio, AQI actual, tendencia (flecha), status badge |
+| **Botón de acción principal** | "VIEW ROOT CAUSE ANALYSIS" – estilo link con ícono de flecha |
+
+**Especificaciones de colores semánticos para AQI:**
+
+| Calificación | Rango AQI (ejemplo) | Color | Badge |
+|--------------|---------------------|-------|-------|
+| Óptimo / Good | 0–50 | #5CFFB1 | Fondo verde claro, texto verde oscuro |
+| Aceptable / Moderate | 51–100 | #FFB74D | Fondo ámbar claro, texto ámbar oscuro |
+| Riesgo / Unhealthy | 101–150 | #FF8A65 | Fondo naranja claro |
+| Crítico / Hazardous | >150 | #FF4444 | Fondo rojo claro, texto blanco (invertido) |
+
+---
+
+**D. Tabla de Alertas**
+
+| Propiedad | Especificación |
+|-----------|----------------|
+| **Estructura** | Cabecera fija, filas alternas con separador sutil |
+| **Columnas** | ID, Severidad, Espacio, Contaminante, Valor/Límite, Disparo, Estado |
+| **Badge de severidad** | "CRITICO" fondo #FF4444 10% + texto #FF4444; "ADVERTENCIA" fondo #FFB74D 10% + texto #B45F1B |
+| **Badge de estado** | "ACTIVA" con punto verde pulsante; "PENDIENTE" con punto gris |
+| **Acción en fila** | Click en cualquier lugar → abre panel lateral con detalle (ver columna derecha del mockup) |
+| **Responsive (móvil)** | La tabla se convierte en lista de tarjetas verticales (cada alerta es una tarjeta colapsable) |
+
+---
+
+**E. Formularios (Login / Registro)**
+
+| Campo | Especificación |
+|-------|----------------|
+| **Inputs** | Altura 48px, border-radius 8px, border 1px solid rgba(10,10,10,0.12), padding 0 16px |
+| **Label** | Inter, 14px, peso medium, margin-bottom 8px |
+| **Placeholder** | Inter, 14px, color #999 |
+| **Focus** | Border #4D84FF + outline 2px rgba(77,132,255,0.2) |
+| **Error** | Border #FF4444 + mensaje debajo (Inter, 12px, #FF4444) |
+| **Checkbox (Términos)** | Custom checkbox 20px, border-radius 4px, checked background #4D84FF |
+| **Botón Register/Login** | Fondo #4D84FF, texto blanco, padding 12px 24px, border-radius 8px, ancho 100% |
+
+---
+
+**F. Reportes y Exportaciones**
+
+| Componente | Especificación |
+|------------|----------------|
+| **Tarjetas de resumen** | Diario/Semanal/Mensual – fondo #F8F9FA, border-radius 16px, padding 20px |
+| **Métrica con tendencia** | Valor grande + ícono de flecha (↑ color #FF4444 si empeora, ↓ color #5CFFB1 si mejora) |
+| **Tabla de exportaciones** | Misma especificación que tabla de alertas, con columna "Próximo Envío" |
+| **Plan Premium** | Card destacada con borde gradiente (#4D84FF → #5CFFB1), botón CTA primario |
+| **Botón de exportación** | Dos variantes: PDF (ícono documento) y CSV/XLSX (ícono hoja de cálculo) |
+
+---
+
+##### 5.1.2.1.3. Estados de Interacción y Micro-interacciones
+
+| Interacción | Comportamiento | Animación |
+|-------------|----------------|-----------|
+| **Hover en tarjeta de dispositivo** | Sombra elevada, borde izquierdo azul | `0.2s ease` |
+| **Hover en botón primario** | Fondo #3A6BCC | `0.15s ease` |
+| **Click en fila de tabla** | Fondo de fila #F5F7FA | Instantáneo + 0.1s de feedback |
+| **Apertura de panel lateral (detalle alerta)** | Slide-in desde derecha, overlay semitransparente | `0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1)` |
+| **Toggle Grid/List** | Ícono activo con fondo #4D84FF 10% | Transición de ícono |
+| **Actualización de datos** | Skeleton loader en tarjetas (solo primera carga) | Pulso de opacidad `1.5s infinite` |
+| **Notificación push (alerta crítica)** | Toast en esquina inferior derecha, auto-cierre a los 8s | Slide-up + fade |
+
+---
+
+##### 5.1.2.1.4. Accesibilidad (WCAG 2.1 Nivel AA)
+
+| Requisito | Implementación en Clair Web App |
+|-----------|--------------------------------|
+| **Contraste de color** | Texto sobre #4D84FF (blanco): ratio 4.8:1. Texto sobre #FFFFFF (gris oscuro): ratio 14:1 |
+| **Navegación por teclado** | `:focus-visible` visible en todos los botones, inputs, y tarjetas (outline #4D84FF, offset 2px) |
+| **Skip to main content** | Enlace oculto que aparece al hacer Tab: "Saltar al contenido principal" |
+| **ARIA labels** | En íconos sin texto: `aria-label="Vista de grilla"`. En gráficas AQI: `aria-describedby="aqi-description"` |
+| **Texto alternativo** | En gráficas históricas: descripción textual de la tendencia (ej. "PM2.5 aumentó 15% en los últimos 30 minutos") |
+| **Manejo de zoom (200%)** | No pérdida de funcionalidad en 200% zoom. Menús colapsan a hamburguesa antes de romperse |
+
+---
+
+##### 5.1.2.1.5. Integración con IoT (desde navegador web)
+
+| Funcionalidad | Estándar técnico | Representación en UI |
+|---------------|------------------|----------------------|
+| **Datos en tiempo real** | WebSocket (conexión persistente) o HTTP POST cada 5 segundos (Embedded → Edge) | Indicador "Updates every minute" + timestamp "Updated X seconds ago" |
+| **Estado de conexión** | Heartbeat cada 30s | Círculo verde (#5CFFB1) en esquina superior derecha. Rojo si desconectado |
+| **Comandos a dispositivos** | REST API (POST a endpoint) | Botón "Activar sistema HEPA" en detalle de alerta (sección Alerts & Actions). Feedback de éxito/error con toast |
+| **Histórico offline** | IndexedDB para caché local | Mensaje: "Usando datos cacheados. Reconectando..." |
+| **Permisos** | Notificaciones push (navegador) | Solicitud al primer inicio. Usuario puede modificar en Preferencias (sección Alerts & Actions) |
+
+---
+
+##### 5.1.2.1.6. Adaptación Responsiva por Pantalla
+
+| Pantalla | Desktop (1920px) | Tablet (768px) | Móvil (375px) |
+|----------|------------------|----------------|----------------|
+| **Space & Devices** | Sidebar + grid de 3 columnas | Sidebar colapsado + grid 2 columnas | Menú hamburguesa + grid 1 columna |
+| **Air Quality (AQI)** | AQI central + 2 columnas de métricas | AQI reducido (48px) + 1 columna | AQI (40px) + stack vertical |
+| **Alertas** | Tabla completa | Tabla con scroll horizontal | Lista de tarjetas |
+| **Reports** | 3 tarjetas horizontales | stack vertical | stack vertical |
+| **Login/Register** | Card centrado (400px ancho) | Card centrado (400px) | Card 90% ancho (márgenes 5%) |
+
+---
+
+##### 5.1.2.1.7. Consideraciones de Rendimiento (Web App)
+
+| Aspecto | Estándar |
+|---------|----------|
+| **Imágenes** | WebP con fallback PNG. `srcset` para DPR 2x y 3x |
+| **Fuentes** | `font-display: swap` para evitar bloqueo de renderizado |
+| **Carga de gráficas** | Lazy loading para gráficas históricas (solo al hacer scroll a la vista) |
+| **WebSocket** | Reconexión automática con backoff exponencial (1s, 2s, 4s, max 30s) |
+| **Bundle size** | Code splitting por ruta (dashboard, alerts, reports, login) |
+
+---
+
+##### 5.1.2.1.8. Resumen de Especificaciones para Desarrolladores
+
+```scss
+// Variables globales (CSS custom properties)
+:root {
+  --primary: #4D84FF;
+  --secondary: #5CFFB1;
+  --neutral-bg: #FFFFFF;
+  --neutral-dark: #0A0A0A;
+  --critical: #FF4444;
+  --warning: #FFB74D;
+  --spacing-unit: 8px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --font-heading: 'Space Grotesk', monospace;
+  --font-body: 'Inter', sans-serif;
+}
+
+// Breakpoints (SCSS mixins)
+@mixin mobile { @media (max-width: 599px) { @content; } }
+@mixin tablet { @media (min-width: 600px) and (max-width: 1024px) { @content; } }
+@mixin desktop { @media (min-width: 1025px) { @content; } }
+```
+---
+
+#### 5.1.2.2. Mobile Style Guidelines
+
+#### 5.1.2.3. IoT Style Guidelines
 
 Para establecer las guidelines de diseño IoT de Clair, es fundamental comprender la metodología de los 12 pasos de diseño de sistemas IoT, un marco de trabajo estructurado propuesto por investigadores de la Universidad de Sannio, Italia (Balestrieri et al., 2018). Esta metodología, presentada en el paper "Research challenges in Measurement for Internet of Things systems" publicado en Acta IMEKO, proporciona un enfoque sistemático y disciplinado para el desarrollo de soluciones IoT, abarcando desde la definición de requisitos del sistema hasta la implementación de interfaces de usuario. Basada en principios de arquitectura en capas (physical, exchange, information y application service layers), esta metodología garantiza la coherencia entre componentes físicos, de comunicación y aplicativos. El equipo de Vanana adopta estos 12 pasos como fundamento metodológico para asegurar que el diseño del hardware de Clair, incluyendo la selección de sensores PM2.5 y CO2, microcontroladores y radio transceivers, así como la experiencia de usuario de la plataforma, respondan a estándares internacionales de calidad, facilitando la escalabilidad, interoperabilidad y mantenibilidad del sistema de monitoreo de calidad del aire. 
 
@@ -258,6 +490,9 @@ A continuación, se presenta la aplicación detallada de los 12 pasos de diseño
 | **Devices** | Lista dispositivos, Device Pairing, Device Registration |
 | **Settings** | Custom Threshold, Notification Preferences, perfil usuario |
 | **Offline Support** | Lecturas cacheadas en SQLite local |
+
+
+
 
 ## 5.2. Information Architecture.
 
