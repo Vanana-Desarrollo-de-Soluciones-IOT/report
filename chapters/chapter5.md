@@ -1233,7 +1233,7 @@ https://www.figma.com/proto/gcvrMwP0vh0zl1qC6EvO70/IOT?node-id=336-807&p=f&t=AbB
 
 El prototipo de la aplicación móvil representa la materialización interactiva de los wireframes y mockups diseñados para dispositivos móviles. Este prototipo simula la experiencia táctil del usuario final, permitiendo validar la ergonomía y la coherencia entre las diferentes secciones operativas del sistema Clair en formato móvil.
 
-<img src="../assets/prototypes/mobileapp-proto.png" alt="webapp-proto" width="1000">
+<img src="../assets/prototypes/mobileapp-proto.png" alt="webapp-proto" width="300">
 
 https://www.figma.com/proto/gcvrMwP0vh0zl1qC6EvO70/IOT?node-id=500-2405&p=f&t=dJ0Y1pxOrsBXTxfW-1&scaling=scale-down&content-scaling=fixed&page-id=500%3A2361&starting-point-node-id=500%3A2362
 
