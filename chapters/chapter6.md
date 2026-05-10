@@ -163,18 +163,33 @@ El Sprint Planning 1 marca el inicio del desarrollo formal de Clair. Durante est
 </table>
 #### 6.2.1.2. Aspect Leaders and Collaborators.
 
-**En esta sección el equipo que incluye la elaboración de un artefacto Leadership-and-Collaboration Matrix (LACX), que indique por cada aspecto dentro del alcance del Sprint, quién es el líder y quién o quiénes son colaboradores en dicho aspecto, con el fin de brindar mayor claridad y efectividad en la comunicación al interior del equipo. La sección incluye una introducción donde se explica cuáles son los principales aspectos que se toman en cuenta en el Sprint. Dependiendo del Sprint un aspecto puede ser un subconjunto del alcance funcional de la solución (por ejemplo feature, bounded context, etc.). A continuación se incluye un cuadro con la siguiente estructura.**
+En esta sección se detalla la **Leadership-and-Collaboration Matrix (LACX)** para el Sprint 1. El objetivo de esta matriz es delegar responsabilidades claras sobre los diferentes componentes de la solución, asegurando que cada aspecto técnico y funcional cuente con un referente directo (*Leader*) y el apoyo necesario de los demás integrantes (*Collaborator*). Para este sprint, los aspectos se han dividido en tres frentes críticos: la presencia pública y legal (Landing Page), la seguridad de acceso (IAM) y la integración fundamental del hardware (Embedded Core).
 
-| Team Member (Last Name, First Name) | GitHub Username | Aspect Name 1 Leader (L) / Collaborator (C) | Aspect Name 2 Leader (L) / Collaborator (C) | ...  | Aspect Name n Leader (L) / Collaborator (C) |
-| ----------------------------------- | --------------- | ------------------------------------------- | ------------------------------------------- | ---- | ------------------------------------------- |
-| Jiménez Rosas, Arturo Eduardo       | ajimenezrosas   | L                                           | C                                           | ...  |                                             |
-| Rodríguez Peña, Jorge Andrés        | japr91          | C                                           | C                                           | ...  | L                                           |
+| **Team Member (Last Name, First Name)** | **GitHub Username** | **CVP (L/C)** | **DTB (L/C)** | **FAQ (L/C)** | **MLS (L/C)** | **PPT (L/C)** | **REG (L/C)** | **LOG (L/C)** | **PMI (L/C)** | **LDP (L/C)** |
+| --------------------------------------- | ------------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| **Aleman Romano, Dante Mateo**          | zGIKS               | **L**         | C             | C             | C             | C             | **L**         | C             | C             | **L**         |
+| **Contreras Peralta, Fabrizio**         | fabriziocpa         | C             | C             | **L**         | C             | C             | C             | C             | C             | C             |
+| **Curipaco Huayllani, Neil A.**         | Neilcur7            | C             | C             | C             | C             | **L**         | C             | C             | **L**         | C             |
+| **Macavilca Quispe, Ian**               | IanMQ               | C             | **L**         | C             | C             | C             | C             | **L**         | C             | C             |
+| **Paiva Quispe, Josue Gonzalo**         | JosuePaiva02        | C             | C             | C             | **L**         | C             | C             | C             | C             | C             |
 
+**Leyenda de Aspectos (Key):**
 
+Para facilitar la lectura de la matriz, se han utilizado los siguientes acrónimos basados en las tareas del Sprint:
 
+- **CVP:** Clair Value Proposition (Landing Page Content)
+- **DTB:** Development Team Background (Landing Page Content)
+- **FAQ:** FAQ & Help Center (Support & Documentation)
+- **MLS:** Multi-language Support (Internationalization)
+- **PPT:** Privacy Policies & Terms (Legal Compliance)
+- **REG:** Register a New Account (Frontend/Backend Auth)
+- **LOG:** Log in (Authentication Services)
+- **PMI:** Particulate Matter Integration (UART Implementation)
+- **LDP:** Local Data Persistence (SD Card Module)
 
-
-
+> **L:** Leader (Responsable principal de la entrega y calidad del aspecto).
+>
+> **C:** Collaborator (Apoyo técnico, revisión de código y soporte en la implementación).
 
 
 
@@ -276,7 +291,54 @@ En conjunto, esta versión establece la primera base funcional y visual de la pl
 | develop                | b78f35a1d72736e222d1fb3e9cedba03abf59677 | feat: added i18n consistency                                 | -                                                            | 2026-05-09          | fabriziocpa          |
 
 2. **Web application**
+
+| Branch                           | Commit Id                                | Commit Message                                               | Commit Message Body                                          | Committed on (Date) | User/RepositoryName |
+| -------------------------------- | ---------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------- | ------------------- |
+| develop                          | 762a15b9a7660e21d908d84240615a18440dd860 | Merge pull request #6 from Vanana-Desarrollo-de-Soluciones-IOT/feature/add-google-oauth2 | Feature/add google oauth2                                    | 2026-05-09          | m.                  |
+| feature/add-google-oauth2        | d924683d6fe5465280aca16babd07001880eccbd | feat: remove Google sign-in button and related styles; update registration form with terms acceptance and Google sign-in integration | -                                                            | 2026-05-09          | zGIKS               |
+| feature/add-google-oauth2        | 4bfb7ef8e7d35a0278e1e716730a246d818b4515 | feat: implement Google OAuth2 sign-in flow with callback handling and UI integration | -                                                            | 2026-05-09          | zGIKS               |
+| develop                          | 1b4030eede9d3fb94d3ede3588f8a1c822012b6e | Merge pull request #5 from Vanana-Desarrollo-de-Soluciones-IOT/feature/add-home-page-components | Feature/add home page components                             | 2026-05-09          | m.                  |
+| feature/add-home-page-components | 6739a69518ad933dfe0f655d49f0dafa4ced16ff | feat: add new icon components for air quality, alerts actions, overview, reports, and space devices; update sidebar to use component-based icons | -                                                            | 2026-05-09          | zGIKS               |
+| feature/add-home-page-components | cb05d5d33609fa323a48cb45d78eda53b375f756 | feat: add text-decoration property to nav-item for consistency | -                                                            | 2026-05-09          | zGIKS               |
+| feature/add-home-page-components | cd0f55906a9ef5139a1688f316323a2ead78370b | feat: implement overview and settings pages with responsive layout and sidebar integration | -                                                            | 2026-05-09          | zGIKS               |
+| feature/add-home-page-components | fe3bc41d24b6269c66b5c39dc20facb9b07ffeb2 | feat: enhance sidebar component with mobile responsiveness and navigation item click handling | -                                                            | 2026-05-09          | zGIKS               |
+| feature/add-home-page-components | 118f2875341d33bf5043fcfa6ab28421d27d6c7d | feat: add sidebar component                                  | -                                                            | 2026-05-07          | zGIKS               |
+| develop                          | 4a50bbcffa042f9be19e922704a84af873c8ccba | Merge pull request #4 from Vanana-Desarrollo-de-Soluciones-IOT/feature/add-remove-page-scroll | feat: Update page container styles to ensure consistent height and ov… | 2026-05-07          | m.                  |
+| feature/add-remove-page-scroll   | 804a86a6dc0162f89824e94577026266b16f4f5a | feat: Update page container styles to ensure consistent height and overflow behavior across confirm, login, and register pages | -                                                            | 2026-05-07          | zGIKS               |
+| develop                          | 9d9f20eaa9f0c4a169e8f7caf54120d03d4717f0 | Merge pull request #3 from Vanana-Desarrollo-de-Soluciones-IOT/feature/add-bearer-token | feat: Implement bearer token management with local storage integratio… | 2026-05-07          | m.                  |
+| feature/add-bearer-token         | 02657c9421c2d154f27fb3812b35ae050dd29efb | feat: Implement bearer token management with local storage integration and update authentication services | -                                                            | 2026-05-07          | zGIKS               |
+| develop                          | 00cb91c7e05eb62c236d12dcba883bb24cc648c7 | Merge pull request #2 from Vanana-Desarrollo-de-Soluciones-IOT/feature/add-logout-services | feat: Add sign-out functionality with command and service integration | 2026-05-05          | m.                  |
+| feature/add-logout-services      | 5bc9837eceae2d1b6d25416ea79cbdc22d1bccd8 | feat: Add sign-out functionality with command and service integration | -                                                            | 2026-05-05          | zGIKS               |
+| develop                          | 5e78b44a3f9fcfec3ee0dea123c5f4e2d4c3e5b2 | Merge pull request #1 from Vanana-Desarrollo-de-Soluciones-IOT/feature/add-iam-page | Feature/add iam page                                         | 2026-05-05          | m.                  |
+| feature/add-iam-page             | 9e387309a66f2b0c48e04d1c2a53bd857150d6b1 | feat: Update styles and fonts for improved UI consistency and aesthetics | -                                                            | 2026-05-05          | zGIKS               |
+| feature/add-iam-page             | 688d1f422f0921c7b15c0e199bfe4c773dc56710 | feat: Add Clair logo component and update login/register pages with logo integration | -                                                            | 2026-05-05          | zGIKS               |
+
 3. **Web services**
+
+| Branch                          | Commit Id                                | Commit Message                                               | Commit Message Body                                          | Committed on (Date) | User/RepositoryName |
+| ------------------------------- | ---------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------- | ------------------- |
+| develop                         | ea498353adcd3f5428b958d9f29f1760ef676104 | Merge pull request #6 from Vanana-Desarrollo-de-Soluciones-IOT/feature/add-roles | feat: Add user plan retrieval and enhance Stripe webhook handling wit… | 2026-05-10          | Neilcuri7           |
+| feature/add-roles               | d8e0ffe626664b13905d417ae0752be0df58cb22 | feat: Add user plan retrieval and enhance Stripe webhook handling with logging | -                                                            | 2026-05-10          | Neilcuri7           |
+| develop                         | 556f75acabc64e51cff61cc03f6b59513d53e748 | Merge pull request #5 from Vanana-Desarrollo-de-Soluciones-IOT/feature/add-google-oauth2 | feat: Implement Google OAuth 2.0 authentication flow with user regist… | 2026-05-09          | zGIKS               |
+| feature/add-google-oauth2       | 826a386ff76647dc098f4f0e414aaaeba46be322 | feat: Implement Google OAuth 2.0 authentication flow with user registration and sign-in | -                                                            | 2026-05-09          | zGIKS               |
+| develop                         | bbcec1e5c2542a4217a189db1dad35202440a7b8 | Merge pull request #4 from Vanana-Desarrollo-de-Soluciones-IOT/feature/add-billing-context | Feature/add billing context                                  | 2026-05-07          | Neilcuri7           |
+| feature/add-billing-context     | dc3dca52d28935c862df056b5b32551572ca80ea | feat: Enhance payment processing with user validation and result handling in CreatePaymentIntentCommand | -                                                            | 2026-05-07          | Neilcuri7           |
+| feature/add-billing-context     | adb46cea5834124cf99dc180a4f15bd342a38579 | feat: Add CreatePaymentIntentCommand for payment processing with user validation | -                                                            | 2026-05-07          | Neilcuri7           |
+| feature/add-billing-context     | 3ddd12405c8eb4040c2afbafd5cc1a1c1f87ddc1 | feat: Add subscription management with Stripe integration, including checkout session and payment intent creation | -                                                            | 2026-05-07          | Neilcuri7           |
+| develop                         | c7a8fccee284c921602e0ed2650a98f399136f3b | Merge pull request #3 from Vanana-Desarrollo-de-Soluciones-IOT/feature/add-remove-rate-limiter | remove: rate limiter                                         | 2026-05-07          | zGIKS               |
+| feature/add-remove-rate-limiter | f48b18640ebd1f4b9a407db8c6920dce5854265c | remove: rate limiter                                         | -                                                            | 2026-05-07          | zGIKS               |
+| develop                         | 2572ca596f3922fbb85fc5df713bc015dc5285b8 | Merge pull request #2 from Vanana-Desarrollo-de-Soluciones-IOT/feature/add-spring-security | feat: add open api configuration and bearer config           | 2026-05-07          | zGIKS               |
+| feature/add-spring-security     | 1dd0e01575917f6fae21ccbc6697d2db185e8880 | feat: add open api configuration and bearer config           | -                                                            | 2026-05-07          | zGIKS               |
+| develop                         | 3ecbafef4eb07737672773d02b51dd4efe106784 | Merge pull request #1 from Vanana-Desarrollo-de-Soluciones-IOT/feature/add-iam | Feature/add iam                                              | 2026-05-05zGIKS     | zGIKS               |
+| feature/add-iam                 | 195f03b16e2e55f81a3f1de116bc3ff984f75924 | feat: Add sign-out functionality to revoke all active tokens for a user | -                                                            | 2026-05-05          | zGIKS               |
+| feature/add-iam                 | 17b63b4232053682ca8fbd797283b06322c3f887 | feat: Implement token management system with JWT support, including access and refresh token creation, validation, and rotation | -                                                            | 2026-05-05          | zGIKS               |
+| feature/add-iam                 | 1ede23d2dcc820c8f903797d7bd506d7a0bc4c1b | feat: Update environment configuration, enhance JWT and CORS settings, and add Redis caching support | -                                                            | 2026-05-05          | zGIKS               |
+| feature/add-iam                 | 35720f902dd3aedbbc6873b4dbb8d70fee0bd398 | feat: Refactor IAM commands, enhance JWT handling, and improve email logging | -                                                            | 2026-05-05          | zGIKS               |
+| feature/add-iam                 | 3f633ef18414d93b252f9ab91cf7590de079ea3b | feat: Implement JWT authentication with refresh token support and enhance email notification logging | -                                                            | 2026-05-05          | zGIKS               |
+| feature/add-iam                 | 476c622f357324866702c022ba5bddf10b576f77 | refactor: Remove deprecated IAM classes and configuration files | -                                                            | 2026-05-05          | zGIKS               |
+| feature/add-iam                 | 9af7a6c91f61f41154e248cdd7fb95689dc3211c | feat: Add Redis configuration and implement registration flow with new command and resource classes | -                                                            | 2026-05-05          | zGIKS               |
+| feature/add-iam                 | 8326f2f92e9e5174bbac51973a9a4a4565170348 | feat: add bc notifications and iam first flows               | -                                                            | 2026-04-27          | zGIKS               |
+| main                            | 0341f90b31b35d8f30a64f4eadcf0e3025d48b5d | first commit                                                 | -                                                            | 2026-04-23          | zGIKS               |
 
 #### 6.2.1.5. Testing Suite Evidence for Sprint Review.
 
