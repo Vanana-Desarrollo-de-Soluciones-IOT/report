@@ -58,7 +58,6 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 - Área principal con grid fluido de tarjetas
 - Márgenes laterales de `24px` (3 unidades de 8px)
 
----
 
 **Componentes UI Especificados**
 
@@ -123,7 +122,6 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 | Focus (teclado) | `#4D84FF` | `0 0 0 2px #4D84FF` | Outline offset 2px |
 | Crítico | `#FF4444` | `0 2px 12px rgba(255,68,68,0.15)` | - |
 
----
 
 **C. Panel de Calidad del Aire (AQI)**
 
@@ -144,7 +142,7 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 | Riesgo / Unhealthy | 101–150 | #FF8A65 | Fondo naranja claro |
 | Crítico / Hazardous | >150 | #FF4444 | Fondo rojo claro, texto blanco (invertido) |
 
----
+
 
 **D. Tabla de Alertas**
 
@@ -157,7 +155,6 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 | **Acción en fila** | Click en cualquier lugar → abre panel lateral con detalle (ver columna derecha del mockup) |
 | **Responsive (móvil)** | La tabla se convierte en lista de tarjetas verticales (cada alerta es una tarjeta colapsable) |
 
----
 
 **E. Formularios (Login / Registro)**
 
@@ -171,7 +168,6 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 | **Checkbox (Términos)** | Custom checkbox 20px, border-radius 4px, checked background #4D84FF |
 | **Botón Register/Login** | Fondo #4D84FF, texto blanco, padding 12px 24px, border-radius 8px, ancho 100% |
 
----
 
 **F. Reportes y Exportaciones**
 
@@ -183,7 +179,7 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 | **Plan Premium** | Card destacada con borde gradiente (#4D84FF → #5CFFB1), botón CTA primario |
 | **Botón de exportación** | Dos variantes: PDF (ícono documento) y CSV/XLSX (ícono hoja de cálculo) |
 
----
+
 
 **Estados de Interacción y Micro-interacciones**
 
@@ -197,7 +193,7 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 | **Actualización de datos** | Skeleton loader en tarjetas (solo primera carga) | Pulso de opacidad `1.5s infinite` |
 | **Notificación push (alerta crítica)** | Toast en esquina inferior derecha, auto-cierre a los 8s | Slide-up + fade |
 
----
+
 
 **Accesibilidad (WCAG 2.1 Nivel AA)**
 
@@ -210,7 +206,7 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 | **Texto alternativo** | En gráficas históricas: descripción textual de la tendencia (ej. "PM2.5 aumentó 15% en los últimos 30 minutos") |
 | **Manejo de zoom (200%)** | No pérdida de funcionalidad en 200% zoom. Menús colapsan a hamburguesa antes de romperse |
 
----
+
 
 **Integración con IoT (desde navegador web)**
 
@@ -222,7 +218,7 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 | **Histórico offline** | IndexedDB para caché local | Mensaje: "Usando datos cacheados. Reconectando..." |
 | **Permisos** | Notificaciones push (navegador) | Solicitud al primer inicio. Usuario puede modificar en Preferencias (sección Alerts & Actions) |
 
----
+
 
 **Adaptación Responsiva por Pantalla**
 
@@ -234,7 +230,7 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 | **Reports** | 3 tarjetas horizontales | stack vertical | stack vertical |
 | **Login/Register** | Card centrado (400px ancho) | Card centrado (400px) | Card 90% ancho (márgenes 5%) |
 
----
+
 
 **Consideraciones de Rendimiento (Web App)**
 
@@ -246,7 +242,7 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 | **WebSocket** | Reconexión automática con backoff exponencial (1s, 2s, 4s, max 30s) |
 | **Bundle size** | Code splitting por ruta (dashboard, alerts, reports, login) |
 
----
+
 
 **Resumen de Especificaciones para Desarrolladores**
 
@@ -271,7 +267,7 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 @mixin tablet { @media (min-width: 600px) and (max-width: 1024px) { @content; } }
 @mixin desktop { @media (min-width: 1025px) { @content; } }
 ```
----
+
 
 **Mobile Style Guidelines**
 
@@ -313,7 +309,7 @@ Todas las pantallas utilizan el widget `SafeArea` de Flutter para evitar que el 
 
 Las pantallas principales (Dashboard, Sensors, Settings) **no implementan scroll vertical** en condiciones normales, ya que todo el contenido cabe dentro del área visible de la pantalla en orientación portrait. En dispositivos de pantalla pequeña (menos de 380px de altura), se permite el scroll únicamente como mecanismo de contingencia.
 
----
+
 
 **Componentes UI Especificados**
 
@@ -422,7 +418,6 @@ Bajo el grid de umbrales, se muestra un texto de advertencia: "May affect device
 | Botón Google | Ícono Google + texto "Google". Fondo #FFFFFF (o #2C2C2C), texto negro (o blanco), border-radius 8px, altura 48px. |
 | Enlace de navegación | "Do not have an account? Register" / "Already have an account? Login" – Inter, 14px, color #4D84FF. |
 
----
 
 **Estados de Interacción y Micro-interacciones Táctiles**
 
@@ -440,7 +435,6 @@ Bajo el grid de umbrales, se muestra un texto de advertencia: "May affect device
 
 **Nota:** No se implementan long press, swipe lateral, ni haptic feedback en la versión actual.
 
----
 **Accesibilidad (WCAG 2.1 Nivel AA y Material Design)**
 
 | Requisito | Implementación en Clair Mobile |
@@ -452,7 +446,6 @@ Bajo el grid de umbrales, se muestra un texto de advertencia: "May affect device
 | Manejo de zoom (200%) | Layout fluido con Flexible y Expanded. En 200% zoom, bottom sheet y diálogos escalan correctamente. |
 | Texto alternativo en íconos | Semantics con label descriptivo en bottom navigation items sin texto visible (aunque tienen label textual). |
 
----
 
 **Permisos de Notificaciones Push**
 
@@ -463,7 +456,6 @@ Bajo el grid de umbrales, se muestra un texto de advertencia: "May affect device
 | Settings dentro de la app | El toggle "Notifications" refleja el estado del permiso. Si el usuario intenta activarlo sin permiso, se muestra un diálogo informativo: "Habilita las notificaciones desde Configuración de tu dispositivo". |
 | Comportamiento de las notificaciones | Todas las notificaciones (críticas y normales) tienen el mismo comportamiento: suena alerta, aparece en centro de notificaciones, badge en ícono de la app. Sin diferenciación especial. |
 
----
 
 **Conectividad IoT y Datos en Tiempo Real**
 
@@ -476,7 +468,6 @@ Bajo el grid de umbrales, se muestra un texto de advertencia: "May affect device
 | Refresh manual | Pull-to-Refresh en Dashboard | Fuerza una consulta inmediata a la API/WebSocket. |
 | Cache offline | No implementado (diseño simple) | Sin mensajes de datos cacheados. Si no hay conexión, se muestran valores estáticos o "--". |
 
----
 
 **Consideraciones de Rendimiento para Flutter**
 
@@ -490,7 +481,6 @@ Bajo el grid de umbrales, se muestra un texto de advertencia: "May affect device
 | Build context | Evitar contextos largos. Usar BuildContext en widgets estatales (StatefulWidget o Riverpod/Bloc según arquitectura). |
 | Tamaño de bundle | Flutter build con optimizaciones para producción. Remove debug painting. |
 
----
 
 **Resumen de Especificaciones para Desarrolladores Flutter**
 
@@ -1227,7 +1217,7 @@ El prototipo de la aplicación web muestra la estructura general de navegación,
 
 <img src="../assets/prototypes/webapp-proto.jpg" alt="webapp-proto" width="1000">
 
-https://www.figma.com/proto/gcvrMwP0vh0zl1qC6EvO70/IOT?node-id=336-807&p=f&t=AbBhAlxWgDEKtucK-1&scaling=scale-down&content-scaling=fixed&page-id=336%3A806&starting-point-node-id=336%3A1792&show-proto-sidebar=1 
+Web Application Prototype: https://sl1nk.com/1a68tor
 
 **Mobile Application Prototype**
 
@@ -1235,7 +1225,7 @@ El prototipo de la aplicación móvil representa la materialización interactiva
 
 <img src="../assets/prototypes/mobileapp-proto.png" alt="webapp-proto" width="300">
 
-https://www.figma.com/proto/gcvrMwP0vh0zl1qC6EvO70/IOT?node-id=500-2405&p=f&t=dJ0Y1pxOrsBXTxfW-1&scaling=scale-down&content-scaling=fixed&page-id=500%3A2361&starting-point-node-id=500%3A2362
+Mobile Application Prototype:  https://sl1nk.com/s0e7d73
 
 ## 5.6. IoT Device Design
 
