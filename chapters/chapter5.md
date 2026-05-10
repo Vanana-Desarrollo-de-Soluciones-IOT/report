@@ -933,37 +933,37 @@ La interfaz de reportes presenta un panel analítico robusto diseñado para la i
 
 **Login**
 
-<img src="../assets/mobileapp-wf/WF-LOGIN.png" alt="wf-Login" width="1000">
+<img src="../assets/mobileapp-wf/WF-LOGIN.png" alt="wf-Login" width="300">
 
 La interfaz de autenticación móvil adopta un diseño vertical y centrado, adaptado a la ergonomía del pulgar. El wireframe simplifica los elementos a un campo de correo electrónico, un botón de acción primario ("Login") de alto contraste y un enlace textual para el registro de nuevos usuarios. Este enfoque minimalista reduce la carga cognitiva y acelera el acceso a la plataforma, manteniendo la estética limpia y tecnológica característica de Clair en un entorno mobile-first.
 
 **Register**
 
-<img src="../assets/mobileapp-wf/WF-REGISTER.png" alt="wf-Register" width="1000">
+<img src="../assets/mobileapp-wf/WF-REGISTER.png" alt="wf-Register" width="300">
 
 El flujo de registro en dispositivos móviles prioriza la eficiencia y la seguridad mediante una estructura de pasos clara. El wireframe incorpora campos de entrada para correo electrónico y contraseña, acompañados de un componente de verificación (checkbox) para la aceptación de términos legales. Adicionalmente, se integran botones de autenticación (Google) para facilitar el proceso, culminando con un enlace de navegación para usuarios ya registrados, todo ello dentro de un contenedor de bordes redondeados que sugiere una interfaz amigable y moderna.
 
 **Dashboard**
 
-<img src="../assets/mobileapp-wf/WF-DASHBOARD.png" alt="wf-Dashboard" width="1000">
+<img src="../assets/mobileapp-wf/WF-DASHBOARD.png" alt="wf-Dashboard" width="300">
 
 La pantalla principal de la aplicación presenta un panel de control resumido pero altamente informativo, ideal para la supervisión rápida. 
 
 **Sensor Selection**
 
-<img src="../assets/mobileapp-wf/WF-SENSOR-SELECTION.png" alt="wf-Sensor-Selection" width="1000">
+<img src="../assets/mobileapp-wf/WF-SENSOR-SELECTION.png" alt="wf-Sensor-Selection" width="300">
 
 La interfaz de selección de ubicación o dispositivo utiliza un patrón de navegación jerárquica común en móviles: una lista de selección que ocupa la mayor parte de la pantalla. Este patrón modal o de pantalla dedicada guía al usuario a través de la estructura física de la organización (Edificio → Piso) antes de visualizar datos específicos, reduciendo la complejidad y enfocando la atención en la decisión actual.
 
 **Sensor Detail**
 
-<img src="../assets/mobileapp-wf/WF-SENSOR.png" alt="wf-Sensor" width="1000">
+<img src="../assets/mobileapp-wf/WF-SENSOR.png" alt="wf-Sensor" width="300">
 
 La vista de detalle de un sensor específico concentra la información técnica más relevante en una sola pantalla optimizada para consultas rápidas. Este diseño de alta densidad de información pero visualmente ordenado permite a los técnicos y administradores evaluar el estado operativo de un sensor de forma inmediata desde su dispositivo móvil. 
 
 **Settings**
 
-<img src="../assets/mobileapp-wf/WF-SETTINGS.png" alt="wf-Settings" width="1000">
+<img src="../assets/mobileapp-wf/WF-SETTINGS.png" alt="wf-Settings" width="300">
 
 La pantalla de configuración sigue el estándar de plataformas móviles (iOS/Android) mediante una vista de lista desplazable (table view) agrupada por categorías funcionales. La presencia de un botón de "LOGOUT" claramente diferenciado al final de la lista refuerza las normas de usabilidad y seguridad en aplicaciones móviles, ofreciendo un control total sobre la sesión del usuario.
 
@@ -1083,37 +1083,37 @@ La sección presenta una implementación visual final sofisticada que transforma
 
 **Login**
 
-<img src="../assets/mobileapp-mockup/LOGIN.png" alt="LOGIN" width="1000">
+<img src="../assets/mobileapp-mockup/LOGIN.png" alt="LOGIN" width="300">
 
 La pantalla de autenticación presenta una implementación visual final de estilo sobrio y corporativo, con fondo oscuro uniforme y el logotipo de Clair centrado en la parte superior. El mockup dispone campos de entrada de bordes redondeados con etiquetas flotantes o internas, acompañados de un botón de acción primaria ("Login") de color de contraste moderado que ocupa el ancho completo. Un enlace textual secundario ("Register") permite la navegación al flujo de creación de cuenta, manteniendo una estética limpia, profesional y alineada con la identidad tecnológica de la marca en el ecosistema móvil.
 
 **Register**
 
-<img src="../assets/mobileapp-mockup/REGISTER.png" alt="mobile-register" width="1000">
+<img src="../assets/mobileapp-mockup/REGISTER.png" alt="mobile-register" width="300">
 
 La interfaz de registro mantiene la coherencia visual con la pantalla de login, utilizando un fondo oscuro y una tarjeta central que organiza el contenido de forma vertical. El mockup integra campos de entrada para correo electrónico y contraseña, este último con un indicador visual de caracteres enmascarados ("●●●●●●●"), acompañados de un componente de verificación para la aceptación de términos y condiciones. El botón de registro principal se complementa con una opción de autenticación ("Google")mediante un contenedor secundario. Finalmente, un enlace "Login" dirige a los usuarios ya registrados, completando un flujo de alta eficiente y visualmente consistente.
 
 **Dashboard**
 
-<img src="../assets/mobileapp-mockup/DASHBOARD.png" alt="mobile-dashboard" width="1000">
+<img src="../assets/mobileapp-mockup/DASHBOARD.png" alt="mobile-dashboard" width="300">
 
 La pantalla principal de la aplicación presenta un tablero de control resumido que prioriza los indicadores críticos de calidad del aire y el estado de la red. Este diseño permite una supervisión inmediata de la salud ambiental y de red desde el primer vistazo.
 
 **Sensor Selection**
 
-<img src="../assets/mobileapp-mockup/SENSOR-SELECTION.png" alt="mobile-sensor-selection" width="1000">
+<img src="../assets/mobileapp-mockup/SENSOR-SELECTION.png" alt="mobile-sensor-selection" width="300">
 
 La interfaz de selección de piso o ubicación adopta un patrón de lista modal que cubre la mayor parte de la pantalla, facilitando la elección en contextos de navegación jerárquica. El mockup muestra un título superior "Select Floor" seguido de una serie de opciones textuales presentadas como botones o celdas de alto contraste y fácil pulsación. Un botón de acción primaria anclado en la parte inferior, "CONFIRM SELECTION", permite validar la elección y avanzar en el flujo. Este diseño es ideal para espacios con múltiples niveles o edificios, reduciendo pasos y errores en la selección.
 
 **Sensor Detail**
 
-<img src="../assets/mobileapp-mockup/SENSOR.png" alt="mobile-sensor-detail" width="1000">
+<img src="../assets/mobileapp-mockup/SENSOR.png" alt="mobile-sensor-detail" width="300">
 
 La vista de detalle de un sensor específico concentra información técnica operativa en una pantalla optimizada para diagnóstico rápido. Este diseño ofrece una experiencia de monitoreo técnico completa pero accesible en formato móvil.
 
 **Settings**
 
-<img src="../assets/mobileapp-mockup/SETTINGS.png" alt="mobile-settings" width="1000">
+<img src="../assets/mobileapp-mockup/SETTINGS.png" alt="mobile-settings" width="300">
 
 La pantalla de configuración sigue el estándar de plataformas móviles mediante una vista de lista desplazable (table view) agrupada por categorías funcionales. El mockup organiza las opciones en secciones claramente diferenciadas: "ACCOUNT", "PREFERENCES", "DEVICE SETTINGS" y "SUPPORT & LEGAL". Finalmente, un botón "LOGOUT" claramente diferenciado para el cierre la sesión. 
 
