@@ -275,6 +275,246 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 
 #### 5.1.2.2. Mobile Style Guidelines
 
+#### 5.1.2.2.1. Comportamiento Responsivo y Sistema de Layout
+
+**Orientación soportada:**
+
+| Orientación | Soporte | Comportamiento |
+|-------------|---------|----------------|
+| Portrait (vertical) | **Principal** | Todas las pantallas optimizadas para 375px - 428px de ancho |
+| Landscape (horizontal) | Opcional | Rotación bloqueada o redimensionamiento básico (no crítico) |
+
+**Unidad de espaciado base: 4px (4dp en Flutter)**
+
+Siguiendo la grilla de Material Design 3, todos los márgenes, paddings y separaciones son múltiplos de 4px:
+
+| Tamaño | Valor | Uso típico |
+|--------|-------|-------------|
+| `xs` | 4px | Espaciado mínimo entre elementos inline (ícono y texto) |
+| `sm` | 8px | Entre elementos relacionados dentro de una tarjeta |
+| `md` | 12px | Entre secciones pequeñas del mismo componente |
+| `lg` | 16px | Padding estándar de tarjetas y contenedores |
+| `xl` | 24px | Márgenes laterales de pantalla, entre secciones grandes |
+
+**Safe Area (Status Bar integrada):**
+
+Todas las pantallas utilizan el widget `SafeArea` de Flutter para evitar que el contenido se superponga con la status bar (iOS notch, Android barra de estado). El fondo oscuro se extiende detrás de la status bar para mantener la integración visual, mientras que el contenido (logo, títulos, botones) respeta el área segura.
+
+**Alturas táctiles mínimas (Material Design):**
+
+| Elemento | Altura mínima |
+|----------|---------------|
+| Botones principales (Login, Register, Confirm Selection) | 48px |
+| Bottom Navigation Bar (cada ítem) | 56px |
+| Items de lista (Select Floor, Settings) | 48px |
+| Toggle switch, Slider (área de toque) | 40px |
+
+**Scroll:**
+
+Las pantallas principales (Dashboard, Sensors, Settings) **no implementan scroll vertical** en condiciones normales, ya que todo el contenido cabe dentro del área visible de la pantalla en orientación portrait. En dispositivos de pantalla pequeña (menos de 380px de altura), se permite el scroll únicamente como mecanismo de contingencia.
+
+---
+
+#### 5.1.2.2.2. Componentes UI Especificados
+
+**A. Bottom Navigation Bar (Navegación principal)**
+
+| Propiedad | Especificación |
+|-----------|----------------|
+| Estructura | 3 ítems fijos: Dashboard, Sensors, Settings |
+| Íconos | Material Icons (dashboard, sensors, settings) |
+| Comportamiento | type: BottomNavigationBarType.fixed |
+| Color seleccionado | #4D84FF (azul Clair primario) |
+| Color no seleccionado | #9E9E9E (gris medio) |
+| Fondo | #1E1E1E (oscuro, ligeramente más claro que el fondo general) |
+| Altura total | 56px |
+| Elevación | 8px (sombra superior) |
+
+**Nota:** No se implementa comportamiento adaptativo para tablets (migración a sidebar) por tratarse de una app exclusivamente móvil.
+
+**B. Tarjeta de Umbrales (Dashboard)**
+
+| Elemento | Especificación |
+|----------|----------------|
+| Contenedor | Fondo #2C2C2C, border-radius 16px, padding interno 16px |
+| Grid interno | 2 columnas (PM2.5 y CO₂ en fila 1; TEMP y HUMIDITY en fila 2) |
+| Nombre del parámetro | Inter, 14px, color #B0B0B0 |
+| Valor | Space Grotesk (o Roboto Mono en Flutter), 24px, peso bold, color #FFFFFF |
+| Unidad | Inter, 12px, color #808080 (junto al valor o debajo) |
+
+**Estado de advertencia contextual:**
+
+Bajo el grid de umbrales, se muestra un texto de advertencia: "May affect device health" en Inter, 12px, color #FFB74D (ámbar), solo si algún umbral supera el rango óptimo.
+
+**C. Gráfico de Network Stability (Dashboard)**
+
+| Componente | Especificación |
+|------------|----------------|
+| Título | "NETWORK STABILITY" – Inter, 12px, tracking (letter-spacing) 1px, color #B0B0B0 |
+| Gráfico | Línea o área simple (sin interacción táctil), altura 80px |
+| Eje X temporal | "00:00" a "24:00" – Inter, 10px, color #808080 |
+| Estado general | Badge "EXCELLENT" – fondo #4D84FF 20% de opacidad, texto #4D84FF, Inter 14px, border-radius 16px, padding horizontal 12px, vertical 4px |
+
+**D. Bottom Sheet de Selección de Piso (reemplaza pantalla completa)**
+
+| Propiedad | Especificación |
+|-----------|----------------|
+| Disparador | Tap en "Sensors" en bottom navigation |
+| Forma | Esquinas superiores redondeadas (16px), fondo #1E1E1E |
+| Altura | wrap_content (se adapta al contenido, típicamente 40-60% de la pantalla) |
+| Título | "Select Floor" – Inter, 16px, peso semibold, padding vertical 16px |
+| Lista de opciones | Items de 48px de altura, padding horizontal 16px, separador sutil de 0.5px entre items |
+| Opción seleccionable | Texto "Floor A101", "Floor A102", "Floor B101", "Floor B202" – Inter, 16px, color #FFFFFF |
+| Botón de confirmación | "CONFIRM SELECTION" – fondo #4D84FF, texto blanco, border-radius 8px, altura 48px, margen 16px |
+| Cierre | Tap fuera del bottom sheet o arrastre hacia abajo |
+
+**E. Pantalla de Detalle de Sensor (Sensor Detail)**
+
+| Elemento | Especificación |
+|----------|----------------|
+| Header de ubicación | "BUILDING: A101", "FLOOR: A101" – Inter, 12px, color #B0B0B0, mayúsculas sostenidas |
+| Nombre del dispositivo | "Clair-01" – Space Grotesk, 24px, peso bold |
+| Indicador de estado | Ícono 🔋 estático (no representa nivel de batería, solo indica que el dispositivo está encendido). Color #4CAF50 si activo, #FF4444 si inactivo. |
+| Tarjetas de métricas | Grid 2x2. Cada tarjeta: fondo #2C2C2C, border-radius 12px, padding 12px |
+| Métrica - CONNECTIVITY | Valor "60 DBM" – Space Grotesk, 20px, color #FFFFFF. Subtítulo "CONNECTIVITY" – Inter, 10px, color #B0B0B0 |
+| Métrica - UPTIME | Valor "~101 HOURS" – mismo estilo. Subtítulo "UPTIME" |
+| Métrica - DEVICE HEALTH | Valor "92 %" – mismo estilo. Subtítulo "DEVICE HEALTH" |
+| Métrica - LAST UPDATE | Valor "$ 2 M" – mismo estilo (interpretable como "2 minutes"). Subtítulo "LAST UPDATE" |
+
+**Conectividad IoT:** El estado de conexión en tiempo real se refleja únicamente en la métrica "CONNECTIVITY". No hay indicadores persistentes adicionales en la barra superior.
+
+**Mensaje de reconexión:** Si el dispositivo pierde conectividad, se muestra un SnackBar en la parte inferior con el texto "Dispositivo desconectado. Reconectando..." de duración indefinida hasta recuperar conexión, acompañado de un botón "Reintentar" como acción opcional.
+
+**F. Pantalla de Configuración (Settings)**
+
+| Categoría | Componente | Especificación |
+|-----------|------------|----------------|
+| ACCOUNT | Texto simple | "Neil Curipaco" – Inter, 16px, color #FFFFFF. Padding vertical 16px. No es interactivo. |
+| PREFERENCES | Notificaciones (toggle) | Switch nativo de Flutter. Valor por defecto: true. Color activo: #4D84FF. |
+| PREFERENCES | Idioma (dropdown) | DropdownButton nativo. Opciones: "ESPAÑOL", "ENGLISH". Valor por defecto: "ESPAÑOL". |
+| DEVICE SETTINGS | Unit System (dropdown) | DropdownButton nativo. Opciones: "METRIC", "IMPERIAL". Valor por defecto: "METRIC". |
+| DEVICE SETTINGS | Data Refresh Rate (slider) | Slider nativo con divisiones discretas. Valores: 1, 5, 15, 30, 60 minutos. Valor por defecto: 15. Etiqueta de valor actual visible. |
+| SUPPORT & LEGAL | Help Center | Item de lista con texto "Help Center" y flecha. Tap → abre URL o navega a webview. |
+| Acción final | LOGOUT | Botón o item de lista con texto "LOGOUT" en color #FF4444. Tap → muestra AlertDialog de confirmación. |
+
+**AlertDialog de Logout:**
+
+| Propiedad | Especificación |
+|-----------|----------------|
+| Título | "Cerrar sesión" – Inter, 18px, peso medium |
+| Mensaje | "¿Estás seguro de que quieres cerrar sesión?" – Inter, 14px |
+| Fondo | #2C2C2C |
+| Botón Cancelar | Texto "Cancelar", color #B0B0B0, sin acción adicional |
+| Botón Confirmar | Texto "Cerrar sesión", color #FF4444. Tap → limpia estado de autenticación y navega a Login |
+
+**G. Pantallas de Autenticación (Login / Register)**
+
+| Campo | Especificación |
+|-------|----------------|
+| Contenedor principal | Centrado vertical y horizontal. Ancho: 90% de la pantalla (márgenes laterales 5%). |
+| Logo | "CLAIR" – Space Grotesk, 32px, peso bold, color #FFFFFF, margin-bottom 24px |
+| Subtítulo | "Login to Clair" / "Create an account" – Inter, 14px, color #B0B0B0, margin-bottom 32px |
+| Campo Email | TextFormField con keyboardType: email. Label "Email" o placeholder. Altura 48px. |
+| Campo Password | TextFormField con texto enmascarado (obscureText) + ícono de visibilidad (ojo) para toggle. |
+| Términos y condiciones (Register) | Checkbox nativo + texto enlazado "Acepto los Términos y Condiciones y la Política de Privacidad de Clair". Checkbox color #4D84FF. |
+| Botón principal | "Login" / "Register" – fondo #4D84FF, texto blanco, altura 48px, border-radius 8px, ancho 100%. |
+| Separador "OR REGISTER WITH" | Texto Inter, 12px, color #808080. Líneas horizontales a los lados. |
+| Botón Google | Ícono Google + texto "Google". Fondo #FFFFFF (o #2C2C2C), texto negro (o blanco), border-radius 8px, altura 48px. |
+| Enlace de navegación | "Do not have an account? Register" / "Already have an account? Login" – Inter, 14px, color #4D84FF. |
+
+---
+
+#### 5.1.2.2.3. Estados de Interacción y Micro-interacciones Táctiles
+
+| Interacción | Comportamiento | Retroalimentación |
+|-------------|----------------|--------------------|
+| Tap en botón primario | Ejecuta acción inmediata | Ripple effect (Material Design). Cambio de opacidad al 0.8 durante 50ms. |
+| Tap en item de lista (Settings, Floor Selection) | Navega o selecciona | Ripple effect, sin cambio de color permanente. |
+| Toggle switch | Cambia estado ON/OFF | Animación nativa de Flutter (deslizamiento). Sin haptic feedback. |
+| Dropdown | Despliega opciones | Menú nativo desde abajo (Android) o rueda (iOS). |
+| Slider (discreto) | Ajusta valor | Thumb se mueve a los puntos de división definidos. Valor actual mostrado en etiqueta. |
+| Pull-to-Refresh (Dashboard) | Recarga datos | Indicador circular con animación de carga. |
+| Tap fuera de Bottom Sheet | Cierra el modal | Animación de contracción hacia abajo (0.2s). |
+| AlertDialog | Confirmación destructiva (Logout) | Diálogo modal. Tap fuera → cierra sin acción. |
+| SnackBar (reconexión IoT) | Informa pérdida de conectividad | Aparece desde borde inferior. Permanece visible hasta reconexión. |
+
+**Nota:** No se implementan long press, swipe lateral, ni haptic feedback en la versión actual.
+
+---
+#### 5.1.2.2.4. Accesibilidad (WCAG 2.1 Nivel AA y Material Design)
+
+| Requisito | Implementación en Clair Mobile |
+|-----------|-------------------------------|
+| Contraste de color | Texto blanco (#FFFFFF) sobre fondo oscuro (#1E1E1E) → ratio 14:1. Texto gris (#B0B0B0) sobre fondo oscuro → ratio 7:1. |
+| Tamaño táctil mínimo | Todos los elementos interactivos (botones, items de lista, toggles) ≥ 48px de altura. |
+| TalkBack / VoiceOver | Semantics en Flutter. Etiquetas descriptivas: "Botón de inicio de sesión", "Seleccionar piso A101". |
+| Navegación por teclado externo | No aplica (app puramente táctil). |
+| Manejo de zoom (200%) | Layout fluido con Flexible y Expanded. En 200% zoom, bottom sheet y diálogos escalan correctamente. |
+| Texto alternativo en íconos | Semantics con label descriptivo en bottom navigation items sin texto visible (aunque tienen label textual). |
+
+---
+
+#### 5.1.2.2.5. Permisos de Notificaciones Push
+
+| Flujo | Comportamiento |
+|-------|----------------|
+| Primer inicio | Al instalar y abrir la app por primera vez (post-login), se solicita permiso de notificaciones mediante diálogo nativo del sistema operativo. |
+| Rechazo inicial | Si el usuario rechaza, puede habilitarlas más tarde desde Settings del dispositivo (fuera de la app). |
+| Settings dentro de la app | El toggle "Notifications" refleja el estado del permiso. Si el usuario intenta activarlo sin permiso, se muestra un diálogo informativo: "Habilita las notificaciones desde Configuración de tu dispositivo". |
+| Comportamiento de las notificaciones | Todas las notificaciones (críticas y normales) tienen el mismo comportamiento: suena alerta, aparece en centro de notificaciones, badge en ícono de la app. Sin diferenciación especial. |
+
+---
+
+#### 5.1.2.2.6. Conectividad IoT y Datos en Tiempo Real
+
+| Funcionalidad | Estándar técnico | Representación en UI |
+|---------------|------------------|----------------------|
+| Datos en tiempo real | WebSocket o HTTP polling según refresh rate configurado | Dashboard actualiza valores sin recarga visual. Indicador visual de "última actualización" opcional. |
+| Estado de conexión del dispositivo | Heartbeat periódico | Visible solo en Sensor Detail, métrica "CONNECTIVITY" (60 DBM = buena). Si es "0 DBM" o "OFFLINE", se considera desconectado. |
+| Pérdida de conectividad | Timeout tras heartbeats consecutivos sin respuesta | SnackBar inferior: "Dispositivo desconectado. Reconectando..." + botón "Reintentar". |
+| Recuperación de conexión | Reconexión automática con backoff exponencial (1s, 2s, 4s, max 30s) | SnackBar desaparece automáticamente. Los datos se refrescan en el siguiente ciclo. |
+| Refresh manual | Pull-to-Refresh en Dashboard | Fuerza una consulta inmediata a la API/WebSocket. |
+| Cache offline | No implementado (diseño simple) | Sin mensajes de datos cacheados. Si no hay conexión, se muestran valores estáticos o "--". |
+
+---
+
+#### 5.1.2.2.7. Consideraciones de Rendimiento para Flutter
+
+| Aspecto | Estándar / Recomendación |
+|---------|--------------------------|
+| Imágenes | Assets locales (formato PNG o WebP). Sin imágenes externas pesadas. |
+| Tipografía | Fuentes empaquetadas en assets (Inter.ttf, SpaceGrotesk.ttf). font-weight correctamente mapeado. |
+| Animaciones | Evitar repaints innecesarios. Usar AnimatedContainer y AnimatedCrossFade sobre setState extensivo. |
+| Bottom Navigation | IndexedStack para mantener estado de cada pestaña (no reconstruir al cambiar de tab). |
+| Slider | divisions definido para evitar valores no deseados. onChangeEnd para persistencia, no onChanged en tiempo real. |
+| Build context | Evitar contextos largos. Usar BuildContext en widgets estatales (StatefulWidget o Riverpod/Bloc según arquitectura). |
+| Tamaño de bundle | Flutter build con optimizaciones para producción. Remove debug painting. |
+
+---
+
+#### 5.1.2.2.8. Resumen de Especificaciones para Desarrolladores Flutter
+
+**Tema global (Material 3 oscuro):**
+
+| Propiedad | Valor |
+|-----------|-------|
+| scaffoldBackgroundColor | #121212 (fondo general) |
+| cardColor | #1E1E1E (tarjetas, bottom sheet) |
+| primaryColor | #4D84FF (botones, switches, links) |
+| colorScheme.secondary | #5CFFB1 (opcional, para estados positivos) |
+| colorScheme.error | #FF4444 (logout, desconexión crítica) |
+| textTheme.bodyLarge | Inter, 16px, #FFFFFF |
+| textTheme.bodyMedium | Inter, 14px, #B0B0B0 |
+
+**Dependencias clave (pubspec.yaml):**
+
+- flutter (SDK)
+- material_design_icons_flutter (íconos adicionales)
+- shared_preferences (persistir settings: refresh rate, unidades)
+- http (API calls)
+- web_socket_channel (conexión en tiempo real con IoT)
+- flutter_local_notifications (notificaciones push)
+
 #### 5.1.2.3. IoT Style Guidelines
 
 Para establecer las guidelines de diseño IoT de Clair, es fundamental comprender la metodología de los 12 pasos de diseño de sistemas IoT, un marco de trabajo estructurado propuesto por investigadores de la Universidad de Sannio, Italia (Balestrieri et al., 2018). Esta metodología, presentada en el paper "Research challenges in Measurement for Internet of Things systems" publicado en Acta IMEKO, proporciona un enfoque sistemático y disciplinado para el desarrollo de soluciones IoT, abarcando desde la definición de requisitos del sistema hasta la implementación de interfaces de usuario. Basada en principios de arquitectura en capas (physical, exchange, information y application service layers), esta metodología garantiza la coherencia entre componentes físicos, de comunicación y aplicativos. El equipo de Vanana adopta estos 12 pasos como fundamento metodológico para asegurar que el diseño del hardware de Clair, incluyendo la selección de sensores PM2.5 y CO2, microcontroladores y radio transceivers, así como la experiencia de usuario de la plataforma, respondan a estándares internacionales de calidad, facilitando la escalabilidad, interoperabilidad y mantenibilidad del sistema de monitoreo de calidad del aire. 
@@ -643,7 +883,7 @@ Esta sección está dedicada al diseño de la experiencia de usuario (UX) y la i
 
 En esta sección se presentan los wireframes de las aplicaciones, que muestran el diseño estructural y la disposición de los elementos clave para la experiencia de usuario. 
 
-**Web Application:**
+#### 5.4.1.1 Web Application.
 
 **Login**
 
@@ -689,11 +929,48 @@ La interfaz de gestión de alertas ofrece un centro de control operativo que com
 
 La interfaz de reportes presenta un panel analítico robusto diseñado para la interpretación de datos estratégicos y el cumplimiento normativo. El wireframe organiza la información mediante tarjetas de resumen diario, semanal y mensual, integrando visualizaciones de correlación de partículas y un gestor de exportaciones automatizado que detalla la frecuencia y el estado de los registros. Este diseño facilita una supervisión integral del ecosistema Clair, permitiendo desde el análisis técnico profundo hasta la generación de resúmenes ejecutivos con una estética limpia y profesional.
 
+#### 5.4.1.2 Mobile Application.
+
+**Login**
+
+<img src="../assets/mobileapp-wf/WF-LOGIN.png" alt="wf-Login" width="1000">
+
+La interfaz de autenticación móvil adopta un diseño vertical y centrado, adaptado a la ergonomía del pulgar. El wireframe simplifica los elementos a un campo de correo electrónico, un botón de acción primario ("Login") de alto contraste y un enlace textual para el registro de nuevos usuarios. Este enfoque minimalista reduce la carga cognitiva y acelera el acceso a la plataforma, manteniendo la estética limpia y tecnológica característica de Clair en un entorno mobile-first.
+
+**Register**
+
+<img src="../assets/mobileapp-wf/WF-REGISTER.png" alt="wf-Register" width="1000">
+
+El flujo de registro en dispositivos móviles prioriza la eficiencia y la seguridad mediante una estructura de pasos clara. El wireframe incorpora campos de entrada para correo electrónico y contraseña, acompañados de un componente de verificación (checkbox) para la aceptación de términos legales. Adicionalmente, se integran botones de autenticación (Google) para facilitar el proceso, culminando con un enlace de navegación para usuarios ya registrados, todo ello dentro de un contenedor de bordes redondeados que sugiere una interfaz amigable y moderna.
+
+**Dashboard**
+
+<img src="../assets/mobileapp-wf/WF-DASHBOARD.png" alt="wf-Dashboard" width="1000">
+
+La pantalla principal de la aplicación presenta un panel de control resumido pero altamente informativo, ideal para la supervisión rápida. 
+
+**Sensor Selection**
+
+<img src="../assets/mobileapp-wf/WF-SENSOR-SELECTION.png" alt="wf-Sensor-Selection" width="1000">
+
+La interfaz de selección de ubicación o dispositivo utiliza un patrón de navegación jerárquica común en móviles: una lista de selección que ocupa la mayor parte de la pantalla. Este patrón modal o de pantalla dedicada guía al usuario a través de la estructura física de la organización (Edificio → Piso) antes de visualizar datos específicos, reduciendo la complejidad y enfocando la atención en la decisión actual.
+
+**Sensor Detail**
+
+<img src="../assets/mobileapp-wf/WF-SENSOR.png" alt="wf-Sensor" width="1000">
+
+La vista de detalle de un sensor específico concentra la información técnica más relevante en una sola pantalla optimizada para consultas rápidas. Este diseño de alta densidad de información pero visualmente ordenado permite a los técnicos y administradores evaluar el estado operativo de un sensor de forma inmediata desde su dispositivo móvil. 
+
+**Settings**
+
+<img src="../assets/mobileapp-wf/WF-SETTINGS.png" alt="wf-Settings" width="1000">
+
+La pantalla de configuración sigue el estándar de plataformas móviles (iOS/Android) mediante una vista de lista desplazable (table view) agrupada por categorías funcionales. La presencia de un botón de "LOGOUT" claramente diferenciado al final de la lista refuerza las normas de usabilidad y seguridad en aplicaciones móviles, ofreciendo un control total sobre la sesión del usuario.
 
 ### 5.4.2. Applications Wireflow Diagrams.
 Esta sección presenta los diagramas de flujo (wireflows) de las aplicaciones, que ilustran la navegación y las interacciones del usuario entre las diferentes pantallas, facilitando la comprensión del recorrido dentro del sistema.
 
-**Web Application:**
+#### 5.4.2.1 Web Application.
 
 **User Acquisition & Authentication Flow**
 
@@ -731,9 +1008,30 @@ Este flujo operativo modela la detección y mitigación de anomalías ambientale
 
 Este flujo se especializa en la interpretación estratégica de datos y la generación de documentación técnica mediante la interfaz de Reports. El usuario interactúa con resúmenes de cumplimiento normativo y mapas de correlación de partículas para evaluar el impacto a largo plazo en la organización. El proceso incluye la configuración de exportaciones automatizadas en formatos PDF y CSV, proporcionando una herramienta de auditoría esencial para certificar que los espacios cumplen con las directrices de salud y seguridad ambiental vigentes.
 
+#### 5.4.2.1 Mobile Application.
+
+**Authentication & Account Creation Flow**
+
+<img src="../assets/mobileapp-wireflows/mobileapp-wflow0.png" alt="mobileapp-wflow0" width="1000">
+
+Este wireflow representa el recorrido completo de autenticación en la aplicación móvil, abarcando tanto el inicio de sesión de usuarios existentes como la creación de cuentas para nuevos miembros. El flujo inicia en la pantalla Login, donde el usuario introduce sus credenciales. Desde aquí, existen dos caminos principales: (1) pulsar el botón "Login" para acceder directamente al Dashboard si las credenciales son válidas, o (2) pulsar el enlace "Register" para navegar hacia la pantalla de creación de cuenta. En la pantalla Register, el usuario completa el correo electrónico, la contraseña, acepta los términos y condiciones mediante un checkbox o texto enlazado, y puede optar por la autenticación social con Google como alternativa de registro rápido. Al completar el formulario y pulsar "Register", el sistema redirige al usuario autenticado hacia el Dashboard, estableciendo así una experiencia de onboarding fluida, segura y optimizada para entornos táctiles.
+
+**Main Monitoring & Location Selection Flow**
+
+<img src="../assets/mobileapp-wireflows/mobileapp-wflow1.png" alt="mobileapp-wflow0" width="1000">
+
+Este wireflow ilustra el recorrido principal de monitoreo, comenzando desde el Dashboard como punto de entrada tras la autenticación. Desde esta vista, el usuario puede navegar mediante la bottom tab bar hacia la sección Sensors (Sensores). Al acceder a la vista de Sensors, el sistema presenta la pantalla de Sensor Selection, que lista jerárquicamente los espacios disponibles. El usuario selecciona una opción y confirma mediante el botón "CONFIRM SELECTION", lo que desencadena la navegación hacia la vista Sensor Detail. El wireflow demuestra cómo la navegación por pestañas inferiores y la selección jerárquica de ubicaciones se combinan para ofrecer un recorrido eficiente desde la supervisión global hasta el diagnóstico de cada sensor.
+
+**Device Management & Settings Flow**
+
+<img src="../assets/mobileapp-wireflows/mobileapp-wflow2.png" alt="mobileapp-wflow0" width="1000">
+
+Este wireflow representa el recorrido de gestión de preferencias de usuario y configuración del sistema, fundamental para la personalización de la experiencia móvil. El flujo puede iniciar desde cualquier pantalla principal (Dashboard o Sensor Detail), accediendo a la sección Settings a través de la bottom tab bar. Desde cualquier punto dentro de Settings, el usuario puede navegar hacia otras secciones principales (Dashboard, Sensors) mediante la barra inferior, o bien ejecutar la acción de cierre de sesión "LOGOUT". Al pulsar "LOGOUT", el sistema redirige al usuario hacia la pantalla Login, cerrando su sesión de forma segura. Este wireflow evidencia cómo la aplicación móvil ofrece un control completo sobre las preferencias del sistema y la gestión de cuenta, manteniendo una navegación coherente y accesible en todo momento.
+
+
 ### 5.4.3. Applications Mock-ups.
 
-**Web Application:**
+#### 5.4.3.1 Web Application.
 
 **Login**
 
@@ -781,15 +1079,54 @@ La interfaz de alertas presenta una implementación visual final sofisticada en 
 
 La sección presenta una implementación visual final sofisticada que transforma datos complejos en resúmenes estratégicos de cumplimiento. El diseño utiliza tarjetas de resumen temporal (diario, semanal y mensual) con tipografía técnica y acentos cromáticos para destacar tendencias de contaminantes como $CO_2$ y $PM2.5$. El mockup integra visualizaciones de correlación viento-partículas y un panel de gestión de exportaciones programadas, manteniendo una estética de "dark mode" profesional que refuerza el valor analítico del ecosistema Clair.
 
+#### 5.4.3.2 Mobile Application.
+
+**Login**
+
+<img src="../assets/mobileapp-mockup/LOGIN.png" alt="LOGIN" width="1000">
+
+La pantalla de autenticación presenta una implementación visual final de estilo sobrio y corporativo, con fondo oscuro uniforme y el logotipo de Clair centrado en la parte superior. El mockup dispone campos de entrada de bordes redondeados con etiquetas flotantes o internas, acompañados de un botón de acción primaria ("Login") de color de contraste moderado que ocupa el ancho completo. Un enlace textual secundario ("Register") permite la navegación al flujo de creación de cuenta, manteniendo una estética limpia, profesional y alineada con la identidad tecnológica de la marca en el ecosistema móvil.
+
+**Register**
+
+<img src="../assets/mobileapp-mockup/REGISTER.png" alt="mobile-register" width="1000">
+
+La interfaz de registro mantiene la coherencia visual con la pantalla de login, utilizando un fondo oscuro y una tarjeta central que organiza el contenido de forma vertical. El mockup integra campos de entrada para correo electrónico y contraseña, este último con un indicador visual de caracteres enmascarados ("●●●●●●●"), acompañados de un componente de verificación para la aceptación de términos y condiciones. El botón de registro principal se complementa con una opción de autenticación ("Google")mediante un contenedor secundario. Finalmente, un enlace "Login" dirige a los usuarios ya registrados, completando un flujo de alta eficiente y visualmente consistente.
+
+**Dashboard**
+
+<img src="../assets/mobileapp-mockup/DASHBOARD.png" alt="mobile-dashboard" width="1000">
+
+La pantalla principal de la aplicación presenta un tablero de control resumido que prioriza los indicadores críticos de calidad del aire y el estado de la red. Este diseño permite una supervisión inmediata de la salud ambiental y de red desde el primer vistazo.
+
+**Sensor Selection**
+
+<img src="../assets/mobileapp-mockup/SENSOR-SELECTION.png" alt="mobile-sensor-selection" width="1000">
+
+La interfaz de selección de piso o ubicación adopta un patrón de lista modal que cubre la mayor parte de la pantalla, facilitando la elección en contextos de navegación jerárquica. El mockup muestra un título superior "Select Floor" seguido de una serie de opciones textuales presentadas como botones o celdas de alto contraste y fácil pulsación. Un botón de acción primaria anclado en la parte inferior, "CONFIRM SELECTION", permite validar la elección y avanzar en el flujo. Este diseño es ideal para espacios con múltiples niveles o edificios, reduciendo pasos y errores en la selección.
+
+**Sensor Detail**
+
+<img src="../assets/mobileapp-mockup/SENSOR.png" alt="mobile-sensor-detail" width="1000">
+
+La vista de detalle de un sensor específico concentra información técnica operativa en una pantalla optimizada para diagnóstico rápido. Este diseño ofrece una experiencia de monitoreo técnico completa pero accesible en formato móvil.
+
+**Settings**
+
+<img src="../assets/mobileapp-mockup/SETTINGS.png" alt="mobile-settings" width="1000">
+
+La pantalla de configuración sigue el estándar de plataformas móviles mediante una vista de lista desplazable (table view) agrupada por categorías funcionales. El mockup organiza las opciones en secciones claramente diferenciadas: "ACCOUNT", "PREFERENCES", "DEVICE SETTINGS" y "SUPPORT & LEGAL". Finalmente, un botón "LOGOUT" claramente diferenciado para el cierre la sesión. 
+
+
 ### 5.4.4. Applications User Flow Diagrams.
 
 Esta sección presenta los diagramas de flujo de usuario, que ilustran las rutas y procesos que siguen los usuarios dentro de las aplicaciones, facilitando la comprensión de la navegación y las interacciones clave
 
-**Web Application UserFlow :**
+#### 5.4.4.1 Web Application UserFlow.
 
 **Acquisition & Authentication**
 
-UG01: Acceder al ecosistema digital desde la plataforma pública
+UG-W01: Acceder al ecosistema digital desde la plataforma pública
 
 <img src="../assets/webapp-userflows/webapp-uflow0.png" alt="webapp-uflow0" width="1000">
 
@@ -797,7 +1134,7 @@ El usuario accede a la Landing Page de Clair, donde visualiza la propuesta de va
 
 **Registration & Onboarding**
 
-UG02: Crear una cuenta y configurar el perfil inicial
+UG-W02: Crear una cuenta y configurar el perfil inicial
 
 <img src="../assets/webapp-userflows/webapp-uflow1.png" alt="webapp-uflow1" width="1000">
 
@@ -805,7 +1142,7 @@ El usuario nuevo selecciona la opción de registro desde la Landing Page y visua
 
 **Asset & Infrastructure Management**
 
-UG03: Administrar jerárquicamente edificios, espacios y dispositivos
+UG-W03: Administrar jerárquicamente edificios, espacios y dispositivos
 
 <img src="../assets/webapp-userflows/webapp-uflow2.png" alt="webapp-uflow2" width="1000">
 
@@ -813,7 +1150,7 @@ El administrador accede a la sección "Space & Devices" desde el menú lateral p
 
 **Web Application UserFlow Detailed Environmental Analysis**
 
-UG04: Consultar métricas detalladas y diagnóstico de calidad de aire
+UG-W04: Consultar métricas detalladas y diagnóstico de calidad de aire
 
 <img src="../assets/webapp-userflows/webapp-uflow3.png" alt="webapp-uflow3" width="1000">
 
@@ -821,7 +1158,7 @@ Desde el panel principal, el usuario selecciona la opción "Air Quality" para pr
 
 **Web Application UserFlow Contingency Response & Alerts**
 
-UG05: Gestionar alertas críticas y ejecutar respuestas automatizadas
+UG-W05: Gestionar alertas críticas y ejecutar respuestas automatizadas
 
 <img src="../assets/webapp-userflows/webapp-uflow4.png" alt="webapp-uflow4" width="1000">
 
@@ -829,23 +1166,76 @@ El usuario ingresa a la sección de "Alerts & Response" para monitorear las anom
 
 **Web Application UserFlow Data Intelligence & Audit**
 
-UG06: Generar reportes de cumplimiento y exportar datos históricos
+UG-W06: Generar reportes de cumplimiento y exportar datos históricos
 
 <img src="../assets/webapp-userflows/webapp-uflow5.png" alt="webapp-uflow5" width="1000">
 
 El usuario accede al módulo de "Reports" para evaluar el rendimiento histórico de la red de sensores. En la interfaz de Reports, analiza los resúmenes de cumplimiento diario, semanal y mensual, comparando los datos obtenidos con las directrices internacionales de salud. Posteriormente, configura la generación automática de archivos PDF o CSV para ser enviados a destinatarios específicos, asegurando la trazabilidad de los datos para auditorías legales.
 
+**Resumen de User Flows - Web Application**
+
+| ID | Objetivo de Usuario | Pantallas Involucradas | Acción Principal |
+|----|---------------------|------------------------|------------------|
+| UG-W01 | Acceder al ecosistema digital desde la plataforma pública | Landing Page → Login | Autenticación de credenciales |
+| UG-W02 | Crear una cuenta y configurar el perfil inicial | Landing Page → Register → Dashboard | Registro y onboarding |
+| UG-W03 | Administrar jerárquicamente edificios, espacios y dispositivos | Space & Devices → Sensor Detail | Selección jerárquica y configuración |
+| UG-W04 | Consultar métricas detalladas y diagnóstico de calidad de aire | Air Quality → Filtros → Análisis | Visualización de contaminantes y causa raíz |
+| UG-W05 | Gestionar alertas críticas y ejecutar respuestas automatizadas | Alerts & Response → Rules Builder | Monitoreo de anomalías y acciones automáticas |
+| UG-W06 | Generar reportes de cumplimiento y exportar datos históricos | Reports → Configuración de exportación | Generación de PDF/CSV para auditorías |
+
+#### 5.4.4.2 Mobile Application UserFlow.
+
+**Acquisition & Authentication**
+
+**UG-M01:** Iniciar sesión o crear una cuenta desde la aplicación móvil
+
+<img src="../assets/mobileapp-userflows/mobileapp-uflow0.png" alt="mobile-uflow1" width="1000">
+
+El usuario accede a la pantalla de Login de la aplicación móvil de Clair, donde visualiza los campos de ingreso de credenciales y el enlace de registro. Si ya posee una cuenta, introduce su correo electrónico y contraseña, y pulsa el botón "Login" para ser redirigido directamente al Dashboard de monitoreo. Si es un usuario nuevo, pulsa el enlace "Register" y navega hacia la pantalla de creación de cuenta. En Register, completa el formulario con correo electrónico y contraseña (visualmente enmascarada), acepta los términos y condiciones de Clair mediante verificación, y puede optar por la autenticación social con Google como alternativa de registro rápido. Tras confirmar sus datos correctamente, el sistema valida la información y redirige al usuario autenticado hacia el Dashboard, permitiéndole iniciar el monitoreo de su red de sensores desde el primer acceso.
+
+**Location Selection & Sensor Monitoring**
+
+**UG-M02:** Seleccionar una ubicación y visualizar el estado detallado de un sensor
+
+<img src="../assets/mobileapp-userflows/mobileapp-uflow1.png" alt="mobile-uflow2" width="1000">
+
+El usuario, una vez autenticado en el Dashboard, puede navegar a la sección de gestión de sensores utilizando la barra inferior. Al pulsar la pestaña "Sensors", accede a la pantalla de selección de ubicación, donde se despliega una lista jerárquica de los espacios disponibles en su organización. El usuario selecciona la ubicación deseada y confirma su elección mediante el botón "CONFIRM SELECTION". El sistema entonces navega hacia la vista detallada del sensor, donde se presentan métricas técnicas críticas del dispositivo. Este flujo permite al usuario móvil realizar un monitoreo profundo y contextualizado, desde la selección jerárquica del espacio hasta el diagnóstico granular del estado operativo de cada sensor.
+
+**User Preferences & System Configuration**
+
+**UG-M03:** Configurar preferencias de usuario y ajustes del sistema
+
+<img src="../assets/mobileapp-userflows/mobileapp-uflow2.png" alt="mobile-uflow3" width="1000">
+
+El usuario accede a la pantalla de Settings mediante la barra inferior desde cualquier vista principal de la aplicación. Dentro de la interfaz de configuración, organizada en categorías funcionales, el usuario puede gestionar múltiples aspectos de su experiencia. Finalmente, si el usuario desea cerrar sesión de forma segura, pulsa el botón "LOGOUT", confirma la acción, y el sistema lo redirige automáticamente a la pantalla Login. Todos los ajustes se guardan de forma inmediata al ser modificados, ofreciendo una experiencia de configuración fluida, intuitiva y sin fricciones, adaptada a los estándares de usabilidad de plataformas móviles.
+
+**Resumen de User Flows - Mobile Application**
+
+| ID | Objetivo de Usuario | Pantallas Involucradas | Acción Principal |
+|----|---------------------|------------------------|------------------|
+| UG-M01 | Iniciar sesión o crear una cuenta desde la aplicación móvil | Login → Register → Dashboard | Autenticación de credenciales o registro con verificación de términos |
+| UG-M02 | Seleccionar una ubicación y visualizar el estado detallado de un sensor | Dashboard → Sensors → Sensor-Selection → Sensor Detail | Navegación por bottom tab, selección jerárquica y diagnóstico técnico |
+| UG-M03 | Configurar preferencias de usuario y ajustes del sistema | Settings → (Preferences / Device Settings / Support) → Login | Gestión de notificaciones, idioma, unidades, frecuencia de actualización y cierre de sesión |
+
 ## 5.5. Applications Prototyping.
 
 En esta sección se presentan los prototipos interactivos de las aplicaciones, que permiten visualizar y probar la experiencia de usuario antes del desarrollo final. Incluye enlaces a prototipos navegables para las versiones web y móvil.
 
-**Web Application :**
+### 5.5.1. Web Application Prototype.
 
 El prototipo de la aplicación web muestra la estructura general de navegación, el diseño de las principales vistas y las funcionalidades clave que tendrá la plataforma. Permite simular el flujo de navegación de los usuarios y visualizar cómo interactúan con los distintos módulos del sistema.
 
 <img src="../assets/prototypes/webapp-proto.jpg" alt="webapp-proto" width="1000">
 
 https://www.figma.com/proto/gcvrMwP0vh0zl1qC6EvO70/IOT?node-id=336-807&p=f&t=AbBhAlxWgDEKtucK-1&scaling=scale-down&content-scaling=fixed&page-id=336%3A806&starting-point-node-id=336%3A1792&show-proto-sidebar=1 
+
+### 5.5.2. Mobile Application Prototype.
+
+El prototipo de la aplicación móvil representa la materialización interactiva de los wireframes y mockups diseñados para dispositivos móviles. Este prototipo simula la experiencia táctil del usuario final, permitiendo validar la ergonomía y la coherencia entre las diferentes secciones operativas del sistema Clair en formato móvil.
+
+<img src="../assets/prototypes/mobileapp-proto.png" alt="webapp-proto" width="1000">
+
+https://www.figma.com/proto/gcvrMwP0vh0zl1qC6EvO70/IOT?node-id=500-2405&p=f&t=dJ0Y1pxOrsBXTxfW-1&scaling=scale-down&content-scaling=fixed&page-id=500%3A2361&starting-point-node-id=500%3A2362
 
 ## 5.6. IoT Device Design
 

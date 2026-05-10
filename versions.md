@@ -50,7 +50,8 @@
 | 1.0.6   | 06/05/2026 | Josue Paiva                           | Se realizo documentacion de los wireframes y mock-ups de la landing page                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | 1.0.7   | 06/05/2026 | Josue Paiva                           | Se expandió y detalló las explicaciones y analisis de los wireframes y mockups de la landing page                                                                                                                                            |
 | 1.0.8   | 09/05/2026 | Fabrizio Alessandro Contreras Peralta                          | Realizó los mockups de la landing page, web app y móvil                                                         |
-| 1.0.9   | 09/05/2026 | Ian Macavilca Quispe                           | Realizó las secciones: Web Style Guidelines, Applications UX/UI Design y Applications Prototyping |
+| 1.0.9   | 09/05/2026 | Ian Macavilca Quispe                           | Realizó las secciones: Style Guidelines, Applications UX/UI Design y Applications Prototyping para Web App|
+| 1.1.0   | 10/05/2026 | Ian Macavilca Quispe                           | Realizó las secciones: Style Guidelines, Applications UX/UI Design y Applications Prototyping para Mobile App |
 
 # Project Report Collaboration Insights
 
