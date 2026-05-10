@@ -39,9 +39,9 @@ El tono de comunicación adoptado para Clair se define como **Sereno, Formal y R
 
 ### 5.1.2. Web, Mobile and IoT Style Guidelines.
 
-#### 5.1.2.1. Web Style Guidelines
+**Web Style Guidelines**
 
-##### 5.1.2.1.1. Comportamiento Responsivo y Sistema de Layout
+**Comportamiento Responsivo y Sistema de Layout**
 
 **Breakpoints oficiales:**
 
@@ -60,7 +60,7 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 
 ---
 
-##### 5.1.2.1.2. Componentes UI Especificados
+**Componentes UI Especificados**
 
 **A. Panel de Navegación Jerárquica (Espacios y Dispositivos)**
 
@@ -185,7 +185,7 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 
 ---
 
-##### 5.1.2.1.3. Estados de Interacción y Micro-interacciones
+**Estados de Interacción y Micro-interacciones**
 
 | Interacción | Comportamiento | Animación |
 |-------------|----------------|-----------|
@@ -199,7 +199,7 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 
 ---
 
-##### 5.1.2.1.4. Accesibilidad (WCAG 2.1 Nivel AA)
+**Accesibilidad (WCAG 2.1 Nivel AA)**
 
 | Requisito | Implementación en Clair Web App |
 |-----------|--------------------------------|
@@ -212,7 +212,7 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 
 ---
 
-##### 5.1.2.1.5. Integración con IoT (desde navegador web)
+**Integración con IoT (desde navegador web)**
 
 | Funcionalidad | Estándar técnico | Representación en UI |
 |---------------|------------------|----------------------|
@@ -224,7 +224,7 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 
 ---
 
-##### 5.1.2.1.6. Adaptación Responsiva por Pantalla
+**Adaptación Responsiva por Pantalla**
 
 | Pantalla | Desktop (1920px) | Tablet (768px) | Móvil (375px) |
 |----------|------------------|----------------|----------------|
@@ -236,7 +236,7 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 
 ---
 
-##### 5.1.2.1.7. Consideraciones de Rendimiento (Web App)
+**Consideraciones de Rendimiento (Web App)**
 
 | Aspecto | Estándar |
 |---------|----------|
@@ -248,7 +248,7 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 
 ---
 
-##### 5.1.2.1.8. Resumen de Especificaciones para Desarrolladores
+**Resumen de Especificaciones para Desarrolladores**
 
 ```scss
 // Variables globales (CSS custom properties)
@@ -273,9 +273,9 @@ Los mockups presentados en la sección 5.4.3 corresponden a resolución `xl` (19
 ```
 ---
 
-#### 5.1.2.2. Mobile Style Guidelines
+**Mobile Style Guidelines**
 
-#### 5.1.2.2.1. Comportamiento Responsivo y Sistema de Layout
+**Comportamiento Responsivo y Sistema de Layout**
 
 **Orientación soportada:**
 
@@ -315,7 +315,7 @@ Las pantallas principales (Dashboard, Sensors, Settings) **no implementan scroll
 
 ---
 
-#### 5.1.2.2.2. Componentes UI Especificados
+**Componentes UI Especificados**
 
 **A. Bottom Navigation Bar (Navegación principal)**
 
@@ -424,7 +424,7 @@ Bajo el grid de umbrales, se muestra un texto de advertencia: "May affect device
 
 ---
 
-#### 5.1.2.2.3. Estados de Interacción y Micro-interacciones Táctiles
+**Estados de Interacción y Micro-interacciones Táctiles**
 
 | Interacción | Comportamiento | Retroalimentación |
 |-------------|----------------|--------------------|
@@ -441,7 +441,7 @@ Bajo el grid de umbrales, se muestra un texto de advertencia: "May affect device
 **Nota:** No se implementan long press, swipe lateral, ni haptic feedback en la versión actual.
 
 ---
-#### 5.1.2.2.4. Accesibilidad (WCAG 2.1 Nivel AA y Material Design)
+**Accesibilidad (WCAG 2.1 Nivel AA y Material Design)**
 
 | Requisito | Implementación en Clair Mobile |
 |-----------|-------------------------------|
@@ -454,7 +454,7 @@ Bajo el grid de umbrales, se muestra un texto de advertencia: "May affect device
 
 ---
 
-#### 5.1.2.2.5. Permisos de Notificaciones Push
+**Permisos de Notificaciones Push**
 
 | Flujo | Comportamiento |
 |-------|----------------|
@@ -465,7 +465,7 @@ Bajo el grid de umbrales, se muestra un texto de advertencia: "May affect device
 
 ---
 
-#### 5.1.2.2.6. Conectividad IoT y Datos en Tiempo Real
+**Conectividad IoT y Datos en Tiempo Real**
 
 | Funcionalidad | Estándar técnico | Representación en UI |
 |---------------|------------------|----------------------|
@@ -478,7 +478,7 @@ Bajo el grid de umbrales, se muestra un texto de advertencia: "May affect device
 
 ---
 
-#### 5.1.2.2.7. Consideraciones de Rendimiento para Flutter
+**Consideraciones de Rendimiento para Flutter**
 
 | Aspecto | Estándar / Recomendación |
 |---------|--------------------------|
@@ -492,7 +492,7 @@ Bajo el grid de umbrales, se muestra un texto de advertencia: "May affect device
 
 ---
 
-#### 5.1.2.2.8. Resumen de Especificaciones para Desarrolladores Flutter
+**Resumen de Especificaciones para Desarrolladores Flutter**
 
 **Tema global (Material 3 oscuro):**
 
@@ -515,7 +515,7 @@ Bajo el grid de umbrales, se muestra un texto de advertencia: "May affect device
 - web_socket_channel (conexión en tiempo real con IoT)
 - flutter_local_notifications (notificaciones push)
 
-#### 5.1.2.3. IoT Style Guidelines
+**IoT Style Guidelines**
 
 Para establecer las guidelines de diseño IoT de Clair, es fundamental comprender la metodología de los 12 pasos de diseño de sistemas IoT, un marco de trabajo estructurado propuesto por investigadores de la Universidad de Sannio, Italia (Balestrieri et al., 2018). Esta metodología, presentada en el paper "Research challenges in Measurement for Internet of Things systems" publicado en Acta IMEKO, proporciona un enfoque sistemático y disciplinado para el desarrollo de soluciones IoT, abarcando desde la definición de requisitos del sistema hasta la implementación de interfaces de usuario. Basada en principios de arquitectura en capas (physical, exchange, information y application service layers), esta metodología garantiza la coherencia entre componentes físicos, de comunicación y aplicativos. El equipo de Vanana adopta estos 12 pasos como fundamento metodológico para asegurar que el diseño del hardware de Clair, incluyendo la selección de sensores PM2.5 y CO2, microcontroladores y radio transceivers, así como la experiencia de usuario de la plataforma, respondan a estándares internacionales de calidad, facilitando la escalabilidad, interoperabilidad y mantenibilidad del sistema de monitoreo de calidad del aire. 
 
@@ -883,7 +883,7 @@ Esta sección está dedicada al diseño de la experiencia de usuario (UX) y la i
 
 En esta sección se presentan los wireframes de las aplicaciones, que muestran el diseño estructural y la disposición de los elementos clave para la experiencia de usuario. 
 
-#### 5.4.1.1 Web Application.
+**Web Application**
 
 **Login**
 
@@ -929,7 +929,7 @@ La interfaz de gestión de alertas ofrece un centro de control operativo que com
 
 La interfaz de reportes presenta un panel analítico robusto diseñado para la interpretación de datos estratégicos y el cumplimiento normativo. El wireframe organiza la información mediante tarjetas de resumen diario, semanal y mensual, integrando visualizaciones de correlación de partículas y un gestor de exportaciones automatizado que detalla la frecuencia y el estado de los registros. Este diseño facilita una supervisión integral del ecosistema Clair, permitiendo desde el análisis técnico profundo hasta la generación de resúmenes ejecutivos con una estética limpia y profesional.
 
-#### 5.4.1.2 Mobile Application.
+**Mobile Application**
 
 **Login**
 
@@ -970,7 +970,7 @@ La pantalla de configuración sigue el estándar de plataformas móviles (iOS/An
 ### 5.4.2. Applications Wireflow Diagrams.
 Esta sección presenta los diagramas de flujo (wireflows) de las aplicaciones, que ilustran la navegación y las interacciones del usuario entre las diferentes pantallas, facilitando la comprensión del recorrido dentro del sistema.
 
-#### 5.4.2.1 Web Application.
+**Web Application**
 
 **User Acquisition & Authentication Flow**
 
@@ -1008,7 +1008,7 @@ Este flujo operativo modela la detección y mitigación de anomalías ambientale
 
 Este flujo se especializa en la interpretación estratégica de datos y la generación de documentación técnica mediante la interfaz de Reports. El usuario interactúa con resúmenes de cumplimiento normativo y mapas de correlación de partículas para evaluar el impacto a largo plazo en la organización. El proceso incluye la configuración de exportaciones automatizadas en formatos PDF y CSV, proporcionando una herramienta de auditoría esencial para certificar que los espacios cumplen con las directrices de salud y seguridad ambiental vigentes.
 
-#### 5.4.2.1 Mobile Application.
+**Mobile Application**
 
 **Authentication & Account Creation Flow**
 
@@ -1031,7 +1031,7 @@ Este wireflow representa el recorrido de gestión de preferencias de usuario y c
 
 ### 5.4.3. Applications Mock-ups.
 
-#### 5.4.3.1 Web Application.
+**Web Application**
 
 **Login**
 
@@ -1079,7 +1079,7 @@ La interfaz de alertas presenta una implementación visual final sofisticada en 
 
 La sección presenta una implementación visual final sofisticada que transforma datos complejos en resúmenes estratégicos de cumplimiento. El diseño utiliza tarjetas de resumen temporal (diario, semanal y mensual) con tipografía técnica y acentos cromáticos para destacar tendencias de contaminantes como $CO_2$ y $PM2.5$. El mockup integra visualizaciones de correlación viento-partículas y un panel de gestión de exportaciones programadas, manteniendo una estética de "dark mode" profesional que refuerza el valor analítico del ecosistema Clair.
 
-#### 5.4.3.2 Mobile Application.
+**Mobile Application**
 
 **Login**
 
@@ -1122,7 +1122,7 @@ La pantalla de configuración sigue el estándar de plataformas móviles mediant
 
 Esta sección presenta los diagramas de flujo de usuario, que ilustran las rutas y procesos que siguen los usuarios dentro de las aplicaciones, facilitando la comprensión de la navegación y las interacciones clave
 
-#### 5.4.4.1 Web Application UserFlow.
+**Web Application UserFlow**
 
 **Acquisition & Authentication**
 
@@ -1183,7 +1183,7 @@ El usuario accede al módulo de "Reports" para evaluar el rendimiento histórico
 | UG-W05 | Gestionar alertas críticas y ejecutar respuestas automatizadas | Alerts & Response → Rules Builder | Monitoreo de anomalías y acciones automáticas |
 | UG-W06 | Generar reportes de cumplimiento y exportar datos históricos | Reports → Configuración de exportación | Generación de PDF/CSV para auditorías |
 
-#### 5.4.4.2 Mobile Application UserFlow.
+**Mobile Application UserFlow**
 
 **Acquisition & Authentication**
 
@@ -1221,7 +1221,7 @@ El usuario accede a la pantalla de Settings mediante la barra inferior desde cua
 
 En esta sección se presentan los prototipos interactivos de las aplicaciones, que permiten visualizar y probar la experiencia de usuario antes del desarrollo final. Incluye enlaces a prototipos navegables para las versiones web y móvil.
 
-### 5.5.1. Web Application Prototype.
+**Web Application Prototype**
 
 El prototipo de la aplicación web muestra la estructura general de navegación, el diseño de las principales vistas y las funcionalidades clave que tendrá la plataforma. Permite simular el flujo de navegación de los usuarios y visualizar cómo interactúan con los distintos módulos del sistema.
 
@@ -1229,7 +1229,7 @@ El prototipo de la aplicación web muestra la estructura general de navegación,
 
 https://www.figma.com/proto/gcvrMwP0vh0zl1qC6EvO70/IOT?node-id=336-807&p=f&t=AbBhAlxWgDEKtucK-1&scaling=scale-down&content-scaling=fixed&page-id=336%3A806&starting-point-node-id=336%3A1792&show-proto-sidebar=1 
 
-### 5.5.2. Mobile Application Prototype.
+**Mobile Application Prototype**
 
 El prototipo de la aplicación móvil representa la materialización interactiva de los wireframes y mockups diseñados para dispositivos móviles. Este prototipo simula la experiencia táctil del usuario final, permitiendo validar la ergonomía y la coherencia entre las diferentes secciones operativas del sistema Clair en formato móvil.
 
