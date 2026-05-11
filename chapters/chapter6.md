@@ -348,9 +348,22 @@ En conjunto, esta versión establece la primera base funcional y visual de la pl
 
 #### 6.2.1.8. Software Deployment Evidence for Sprint Review.
 
-<p align="center">
- <img src="https://imgur.com/MgnEBBK.png" width="500">
-</p>
+1. **Landing page**
+
+   <p align="center">
+    <img src="https://imgur.com/MgnEBBK.png" width="500">
+   </p>
+
+2. **Web application**
+
+3. **Web services**
+
+   <p align="center">
+    <img src="https://imgur.com/rHOetSh.png">
+   </p>
+
+
+
 
 #### 6.2.1.9. Team Collaboration Insights during Sprint.
 
@@ -368,7 +381,10 @@ En conjunto, esta versión establece la primera base funcional y visual de la pl
 
 
 3. **Web application**
+
 4. **Web services**
+
+   
 
 ### 6.2.2. Sprint 2
 
