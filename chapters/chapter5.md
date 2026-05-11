@@ -957,8 +957,105 @@ La vista de detalle de un sensor específico concentra la información técnica 
 
 La pantalla de configuración sigue el estándar de plataformas móviles (iOS/Android) mediante una vista de lista desplazable (table view) agrupada por categorías funcionales. La presencia de un botón de "LOGOUT" claramente diferenciado al final de la lista refuerza las normas de usabilidad y seguridad en aplicaciones móviles, ofreciendo un control total sobre la sesión del usuario.
 
+**Alerts**
+
+<img src="../assets/mobileapp-wf/WF-ALERTS.png" alt="wf-Settings" width="300">
+
+La pantalla de alertas consolida las notificaciones generadas por el sistema Clair, organizadas por niveles de prioridad para facilitar la atención diferenciada por parte del usuario. Cada alerta presenta un encabezado descriptivo, un mensaje contextual y un par de acciones rápidas que permiten responder de manera inmediata o ignorar la notificación. Refleja una arquitectura de notificaciones que equilibra la urgencia operativa con el mantenimiento programado, siguiendo las mejores prácticas de diseño de centros de control y monitoreo en aplicaciones móviles industriales o de seguridad.
+
 ### 5.4.2. Applications Wireflow Diagrams.
 Esta sección presenta los diagramas de flujo (wireflows) de las aplicaciones, que ilustran la navegación y las interacciones del usuario entre las diferentes pantallas, facilitando la comprensión del recorrido dentro del sistema.
+
+**User Goals**
+
+| ID | User Goal | Descripción operativa |
+|:---:|:---|:---|
+| **UG01** | Garantizar la salud ambiental | Mantener un aire fresco y libre de viciamento para que los clientes permanezcan más tiempo en el local. |
+| **UG02** | Demostrar salubridad | Contar con evidencia tangible (reportes) de que el local cumple con estándares de aire seguro para clientes y fiscalizaciones. |
+| **UG03** | Optimizar la productividad | Evitar que los empleados sufran de fatiga o pérdida de concentración por mala ventilación. |
+| **UG04** | Controlar síntomas crónicos | Reducir la frecuencia de episodios de rinitis alérgica, asma o dolores de cabeza asociados al ambiente cargado. |
+| **UG05** | Validar acciones preventivas | Saber con certeza si sus hábitos de limpieza y ventilación están funcionando realmente para mejorar la calidad del aire. |
+| **UG06** | Crear un refugio seguro | Garantizar que, a pesar de la contaminación exterior de la ciudad, el interior de su hogar sea un espacio de respiración pura. |
+
+**Task Flow para UG01: Garantizar la salud ambiental**
+
+*Mantener un aire fresco y libre de viciamento para que los clientes permanezcan más tiempo en el local.*
+
+| Paso | Acción del usuario | Respuesta del sistema |
+|:---:|:---|:---|
+| 1 | Usuario abre la aplicación | Muestra Dashboard principal con indicadores de calidad del aire (CO2, VOC, temperatura, humedad) |
+| 2 | Usuario visualiza el estado actual del ambiente | Muestra valores en tiempo real y estado general (Normal/Alerta/Crítico) |
+| 3 | Sistema detecta niveles elevados de CO2 o VOC | Genera notificación push y alerta visual en el Dashboard |
+| 4 | Usuario selecciona "Ver detalles" de la alerta | Muestra pantalla con datos del sensor afectado, historial reciente y nivel de gravedad |
+| 5 | Usuario activa una acción correctiva (ej: "Aumentar ventilación") | Sistema registra la acción, ejecuta el comando (si aplica) y confirma la operación |
+| 6 | Sistema confirma la mejora en los niveles | Actualiza el Dashboard reflejando el nuevo estado del ambiente |
+
+**Task Flow para UG02: Demostrar salubridad**
+
+*Contar con evidencia tangible (reportes) de que el local cumple con estándares de aire seguro para clientes y fiscalizaciones.*
+
+| Paso | Acción del usuario | Respuesta del sistema |
+|:---:|:---|:---|
+| 1 | Usuario abre la aplicación | Muestra Dashboard principal |
+| 2 | Usuario navega a la sección "Reportes" | Muestra lista de reportes disponibles (diario, semanal, mensual, personalizado) |
+| 3 | Usuario selecciona el tipo de reporte deseado (ej: "Semanal") | Muestra pantalla de configuración del reporte (rango de fechas, zonas a incluir) |
+| 4 | Usuario confirma la generación del reporte | Sistema recopila los datos del período seleccionado y muestra pantalla de progreso/carga |
+| 5 | Sistema completa la generación | Muestra resumen del reporte con gráficos, métricas clave (CO2, VOC, temperatura) y comparativas con estándares |
+| 6 | Usuario selecciona "Exportar PDF" o "Compartir" | Sistema genera el archivo PDF y abre opciones de compartir (correo, mensajería, almacenamiento) |
+| 7 | Sistema confirma el envío o guardado | Muestra mensaje de confirmación y registra la acción en el historial |
+
+**Task Flow para UG03: Optimizar la productividad**
+
+*Evitar que los empleados sufran de fatiga o pérdida de concentración por mala ventilación.*
+
+| Paso | Acción del usuario | Respuesta del sistema |
+|:---:|:---|:---|
+| 1 | Usuario abre la aplicación | Muestra Dashboard principal |
+| 2 | Usuario accede a la sección "Bienestar por Zona" | Muestra indicadores de calidad del aire organizados por áreas del local (salón, cocina, oficina, etc.) |
+| 3 | Usuario identifica una zona con niveles subóptimos | Sistema resalta visualmente la zona (amarillo para atención, rojo para crítica) |
+| 4 | Usuario selecciona la zona afectada | Muestra detalle de la zona: valores específicos, duración del estado anómalo y recomendaciones de acción |
+| 5 | Usuario programa una acción automática (ej: ventilación programada) | Sistema confirma la programación y muestra la hora estimada de normalización |
+| 6 | Sistema detecta que los niveles vuelven al rango óptimo | Envía notificación de mejora al usuario y actualiza el Dashboard |
+| 7 | Usuario visualiza el histórico de la zona | Muestra gráfico de evolución de la calidad del aire antes y después de la acción correctiva |
+
+**Task Flow para UG04: Controlar síntomas crónicos**
+
+*Reducir la frecuencia de episodios de rinitis alérgica, asma o dolores de cabeza asociados al ambiente cargado.*
+
+| Paso | Acción del usuario | Respuesta del sistema |
+|:---:|:---|:---|
+| 1 | Usuario abre la aplicación | Muestra Dashboard del hogar con indicadores de calidad del aire interior |
+| 2 | Usuario experimenta un síntoma (ej: estornudos, dolor de cabeza, dificultad respiratoria) | (El usuario inicia el registro de manera proactiva) |
+| 3 | Usuario navega a la sección "Registrar Síntoma" | Muestra formulario rápido con opciones de síntoma, intensidad (leve/moderado/grave) y momento de ocurrencia |
+| 4 | Usuario selecciona el síntoma y nivel de intensidad, luego guarda el registro | Sistema registra el evento con timestamp y lo vincula a los datos de calidad del aire del mismo momento |
+| 5 | Usuario consulta la sección "Correlación Síntomas vs Aire" | Muestra gráfico comparativo que relaciona los episodios de síntomas con picos de CO2, VOC o partículas |
+| 6 | Sistema identifica patrones automáticamente | Genera alerta preventiva cuando las condiciones actuales se asemejan a episodios anteriores donde el usuario registró síntomas |
+
+**Task Flow para UG05: Validar acciones preventivas**
+
+*Saber con certeza si sus hábitos de limpieza y ventilación están funcionando realmente para mejorar la calidad del aire.*
+
+| Paso | Acción del usuario | Respuesta del sistema |
+|:---:|:---|:---|
+| 1 | Usuario abre la aplicación | Muestra Dashboard del hogar |
+| 2 | Usuario realiza una acción preventiva en el mundo real (ej: abre ventanas, limpia filtros, enciende purificador) | (El usuario inicia el registro manual) |
+| 3 | Usuario navega a la sección "Registrar Acción Preventiva" | Muestra formulario para seleccionar tipo de acción, duración y zona afectada |
+| 4 | Usuario completa el formulario y guarda la acción | Sistema registra el evento con timestamp y lo marca en la línea de tiempo de calidad del aire |
+| 5 | Usuario consulta la sección "Impacto de mis acciones" (inmediatamente o días después) | Muestra gráfico comparativo que aísla el período antes y después de cada acción preventiva registrada |
+| 6 | Sistema evalúa la efectividad de la acción | Muestra indicador cualitativo (Ej: "Abrir ventanas redujo CO2 en un 35% en 20 minutos") y lo almacena en el historial de aprendizaje |
+
+**Task Flow para UG06: Crear un refugio seguro**
+
+*Garantizar que, a pesar de la contaminación exterior de la ciudad, el interior de su hogar sea un espacio de respiración pura.*
+
+| Paso | Acción del usuario | Respuesta del sistema |
+|:---:|:---|:---|
+| 1 | Usuario abre la aplicación | Muestra Dashboard del hogar con indicador comparativo "Aire Interior vs Aire Exterior" |
+| 2 | Usuario visualiza la comparación en tiempo real | Muestra dos medidores lado a lado: calidad interior (datos del sensor Clair) vs calidad exterior (API de contaminación de la ciudad) |
+| 3 | Usuario navega a "Configuración de Alertas" | Muestra opciones para definir umbrales personalizados de contaminación exterior (PM2.5, PM10, etc.) |
+| 4 | Usuario define umbral máximo deseado para recibir alertas y guarda la configuración | Sistema almacena las preferencias y activa el monitoreo continuo de la API exterior |
+| 5 | Sistema detecta que la contaminación exterior supera el umbral definido | Envía notificación push al usuario con recomendación específica (Ej: "Contaminación alta en tu zona. Se recomienda cerrar ventanas y activar purificador") |
+| 6 | Usuario consulta el histórico de protección | Muestra gráfico que evidencia cómo, a pesar de picos de contaminación exterior, el interior se mantuvo dentro del rango saludable gracias a las acciones tomadas |
 
 **Web Application**
 
