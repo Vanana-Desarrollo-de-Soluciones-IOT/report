@@ -1059,11 +1059,20 @@ Esta sección presenta los diagramas de flujo (wireflows) de las aplicaciones, q
 
 **Web Application**
 
-**User Acquisition & Authentication Flow**
+UG01: Garantizar la salud ambiental
 
-<img src="../assets/webapp-wireflows/webapp-wflow0.png" alt="webapp-wflow0" width="1000">
+| # | Paso | Acción del usuario | Respuesta del sistema |
+|:---:|:---|:---|:---|
+| 1 | Usuario accede al Overview | Usuario ingresa a la aplicación y visualiza el Dashboard principal | Muestra indicadores de calidad del aire en tiempo real  y estado general por zonas  |
+| 2 | Alerta automática (dentro de Overview) | Ninguna (evento automático del sistema) | Detecta niveles elevados de CO2 o VOC. Aparece una alerta visual dentro del Overview |
+| 3 | Ver más (dentro de Overview) | Clic en el botón "Ver más" / "View Details" asociado a la alerta dentro del Overview | Navega a la pantalla Alerts & Actions con el foco en la alerta específica que generó la notificación |
+| 4 | Visualizar Alerts & Actions | Visualiza la lista de alertas. La alerta crítica aparece destacada con información contextual | Muestra cada alerta con título, mensaje, botones de acción |
+| 5 | Activar respuesta (dentro de Alerts & Actions) | Clic en el botón "Activar respuesta" / "Apply Action" correspondiente a la alerta  | Ejecuta la acción correctiva de inmediato. Muestra toast de confirmación. La alerta se marca como "En proceso" o "Resuelta" |
 
-Este flujo representa la transición desde la propuesta de valor externa en la Landing Page hacia el acceso al ecosistema digital de Clair. El proceso se activa mediante un Call to Action (CTA) estratégico que redirige al usuario hacia la interfaz de Login, donde se validan las credenciales de seguridad bajo una estética minimalista y profesional. Es el punto de enlace crítico que transforma el interés comercial en una sesión activa, permitiendo al usuario ingresar al tablero de control centralizado para iniciar el monitoreo ambiental.
+
+<img src="../assets/webapp-wireflows/webapp-wflow1.png" alt="webapp-wflow1" width="1000">
+
+
 
 **Registration & Onboarding Flow**
 
@@ -1097,11 +1106,17 @@ Este flujo se especializa en la interpretación estratégica de datos y la gener
 
 **Mobile Application**
 
-**Authentication & Account Creation Flow**
+UG01: Garantizar la salud ambiental
 
-<img src="../assets/mobileapp-wireflows/mobileapp-wflow0.png" alt="mobileapp-wflow0" width="1000">
+| # | Paso | Acción del usuario | Respuesta del sistema |
+|:---:|:---|:---|:---|
+| 1 | Usuario accede al Dashboard | Usuario ingresa a la aplicación y visualiza el Dashboard principal | Muestra indicadores de calidad del aire en tiempo real y estado general por zonas |
+| 2 | Alerta automática (notificación/mensaje) | Ninguna (evento automático del sistema) | Detecta niveles elevados de CO2 o VOC. Aparece una notificación emergente en la parte superior de la pantalla |
+| 3 | Visualizar Alerts | Usuario ingresa a la lista de alertas. La alerta crítica aparece destacada con información contextual | Muestra cada alerta con título, mensaje, botones de acción |
+| 4 | Activar respuesta (dentro de Alerts) | Tap en el botón "Activar respuesta" / "Apply Action" correspondiente a la alerta | Ejecuta la acción correctiva de inmediato. Muestra toast o snackbar de confirmación. La alerta se marca como "En proceso" o "Resuelta" |
 
-Este wireflow representa el recorrido completo de autenticación en la aplicación móvil, abarcando tanto el inicio de sesión de usuarios existentes como la creación de cuentas para nuevos miembros. El flujo inicia en la pantalla Login, donde el usuario introduce sus credenciales. Desde aquí, existen dos caminos principales: (1) pulsar el botón "Login" para acceder directamente al Dashboard si las credenciales son válidas, o (2) pulsar el enlace "Register" para navegar hacia la pantalla de creación de cuenta. En la pantalla Register, el usuario completa el correo electrónico, la contraseña, acepta los términos y condiciones mediante un checkbox o texto enlazado, y puede optar por la autenticación social con Google como alternativa de registro rápido. Al completar el formulario y pulsar "Register", el sistema redirige al usuario autenticado hacia el Dashboard, estableciendo así una experiencia de onboarding fluida, segura y optimizada para entornos táctiles.
+<img src="../assets/mobileapp-wireflows/mobileapp-wflow1.png" alt="mobileapp-wflow1" width="600">
+
 
 **Main Monitoring & Location Selection Flow**
 
