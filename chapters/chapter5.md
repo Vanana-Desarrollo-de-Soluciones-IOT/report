@@ -1209,44 +1209,37 @@ User Goals cubiertos:
 |:---|:---|
 | UG06 | Crear un refugio seguro: Garantizar que, a pesar de la contaminación exterior de la ciudad, el interior de su hogar sea un espacio de respiración pura |
 
-El usuario accede a la pantalla Air Quality para visualizar el indicador AQI (Bueno/Moderado/Malo) y los registros de los sensores Clair (CO2, VOC, temperatura, humedad). Opcionalmente, puede navegar a la pantalla Reports para consultar el widget de cumplimiento de directrices OMS, que compara los valores actuales con los límites recomendados por la Organización Mundial de la Salud. Al verificar que el AQI es saludable y que se cumple con los estándares OMS, el usuario confirma que el interior de su hogar es un "refugio seguro" a pesar de la contaminación exterior.
+El usuario accede a la pantalla Air Quality para visualizar el indicador AQI (Bueno/Moderado/Malo) y los registros de los sensores Clair (CO2, VOC, temperatura, humedad). Opcionalmente, puede navegar a la pantalla Reports para consultar el widget de cumplimiento de directrices OMS, que compara los valores actuales con los límites recomendados por la Organización Mundial de la Salud. Al verificar que el AQI es saludable y que se cumple con los estándares OMS, el usuario confirma que el interior de su hogar es un "refugio seguro".
 
 <img src="../assets/webapp-userflows/webapp-uflow4.png" alt="webapp-uflow4" width="1000">
 
 
 **Mobile Application UserFlow**
 
-**Acquisition & Authentication**
+**User Flow: Gestión de alertas y activación de respuestas**
 
-**UG-M01:** Iniciar sesión o crear una cuenta desde la aplicación móvil
+User Goals cubiertos:
 
-<img src="../assets/mobileapp-userflows/mobileapp-uflow0.png" alt="mobile-uflow1" width="1000">
+| ID | User Goal |
+|:---|:---|
+| UG01 | Garantizar la salud ambiental: Mantener un aire fresco y libre de viciamento para que los clientes permanezcan más tiempo en el local |
+| UG04 | Controlar síntomas crónicos: Reducir la frecuencia de episodios de rinitis alérgica, asma o dolores de cabeza asociados al ambiente cargado |
 
-El usuario accede a la pantalla de Login de la aplicación móvil de Clair, donde visualiza los campos de ingreso de credenciales y el enlace de registro. Si ya posee una cuenta, introduce su correo electrónico y contraseña, y pulsa el botón "Login" para ser redirigido directamente al Dashboard de monitoreo. Si es un usuario nuevo, pulsa el enlace "Register" y navega hacia la pantalla de creación de cuenta. En Register, completa el formulario con correo electrónico y contraseña (visualmente enmascarada), acepta los términos y condiciones de Clair mediante verificación, y puede optar por la autenticación social con Google como alternativa de registro rápido. Tras confirmar sus datos correctamente, el sistema valida la información y redirige al usuario autenticado hacia el Dashboard, permitiéndole iniciar el monitoreo de su red de sensores desde el primer acceso.
+Ambos User Goals comparten el mismo flujo de interacción en Mobile Application. El usuario recibe una notificación emergente en el Dashboard cuando el sistema detecta una condición crítica (UG01) o la superación de un umbral personalizado (UG04). El usuario ingresa a la pantalla Alerts, visualiza la alerta destacada, y puede activar una respuesta preconfigurada (si está disponible desde Web App) o descartarla. La diferencia radica en el origen de la regla (UG01: reglas por defecto del sistema / UG04: reglas personalizadas configuradas desde Web App), pero la experiencia de usuario en mobile es idéntica.
 
-**Location Selection & Sensor Monitoring**
+<img src="../assets/mobileapp-userflows/mobileapp-uflow1.png" alt="webapp-uflow1" width="1000">
 
-**UG-M02:** Seleccionar una ubicación y visualizar el estado detallado de un sensor
+**User Flow: Verificación de calidad del aire (Refugio seguro)**
 
-<img src="../assets/mobileapp-userflows/mobileapp-uflow1.png" alt="mobile-uflow2" width="1000">
+User Goals cubiertos:
 
-El usuario, una vez autenticado en el Dashboard, puede navegar a la sección de gestión de sensores utilizando la barra inferior. Al pulsar la pestaña "Sensors", accede a la pantalla de selección de ubicación, donde se despliega una lista jerárquica de los espacios disponibles en su organización. El usuario selecciona la ubicación deseada y confirma su elección mediante el botón "CONFIRM SELECTION". El sistema entonces navega hacia la vista detallada del sensor, donde se presentan métricas técnicas críticas del dispositivo. Este flujo permite al usuario móvil realizar un monitoreo profundo y contextualizado, desde la selección jerárquica del espacio hasta el diagnóstico granular del estado operativo de cada sensor.
+| ID | User Goal |
+|:---|:---|
+| UG06 | Crear un refugio seguro: Garantizar que, a pesar de la contaminación exterior de la ciudad, el interior de su hogar sea un espacio de respiración pura |
 
-**User Preferences & System Configuration**
+El usuario accede al Dashboard de Mobile Application. En esta pantalla, se muestran los indicadores de calidad del aire (CO2, VOC, temperatura, humedad) y el indicador AQI (Bueno/Moderado/Malo). El usuario visualiza estos indicadores y verifica que el aire interior es saludable. Al observar que el AQI es "Bueno" o "Moderado" y que los valores están dentro de rangos saludables, el usuario confirma que su hogar es un "refugio seguro". No existe funcionalidad equivalente al widget de cumplimiento OMS en la versión mobile.
 
-**UG-M03:** Configurar preferencias de usuario y ajustes del sistema
-
-<img src="../assets/mobileapp-userflows/mobileapp-uflow2.png" alt="mobile-uflow3" width="1000">
-
-El usuario accede a la pantalla de Settings mediante la barra inferior desde cualquier vista principal de la aplicación. Dentro de la interfaz de configuración, organizada en categorías funcionales, el usuario puede gestionar múltiples aspectos de su experiencia. Finalmente, si el usuario desea cerrar sesión de forma segura, pulsa el botón "LOGOUT", confirma la acción, y el sistema lo redirige automáticamente a la pantalla Login. Todos los ajustes se guardan de forma inmediata al ser modificados, ofreciendo una experiencia de configuración fluida, intuitiva y sin fricciones, adaptada a los estándares de usabilidad de plataformas móviles.
-
-**Resumen de User Flows - Mobile Application**
-
-| ID | Objetivo de Usuario | Pantallas Involucradas | Acción Principal |
-|----|---------------------|------------------------|------------------|
-| UG-M01 | Iniciar sesión o crear una cuenta desde la aplicación móvil | Login → Register → Dashboard | Autenticación de credenciales o registro con verificación de términos |
-| UG-M02 | Seleccionar una ubicación y visualizar el estado detallado de un sensor | Dashboard → Sensors → Sensor-Selection → Sensor Detail | Navegación por bottom tab, selección jerárquica y diagnóstico técnico |
-| UG-M03 | Configurar preferencias de usuario y ajustes del sistema | Settings → (Preferences / Device Settings / Support) → Login | Gestión de notificaciones, idioma, unidades, frecuencia de actualización y cierre de sesión |
+<img src="../assets/mobileapp-userflows/mobileapp-uflow2.png" alt="webapp-uflow2" width="600">
 
 ## 5.5. Applications Prototyping.
 
