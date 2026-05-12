@@ -977,158 +977,90 @@ Esta sección presenta los diagramas de flujo (wireflows) de las aplicaciones, q
 | **UG05** | Validar acciones preventivas | Saber con certeza si sus hábitos de limpieza y ventilación están funcionando realmente para mejorar la calidad del aire. |
 | **UG06** | Crear un refugio seguro | Garantizar que, a pesar de la contaminación exterior de la ciudad, el interior de su hogar sea un espacio de respiración pura. |
 
-**Task Flow para UG01: Garantizar la salud ambiental**
-
-*Mantener un aire fresco y libre de viciamento para que los clientes permanezcan más tiempo en el local.*
-
-| Paso | Acción del usuario | Respuesta del sistema |
-|:---:|:---|:---|
-| 1 | Usuario abre la aplicación | Muestra Dashboard principal con indicadores de calidad del aire (CO2, VOC, temperatura, humedad) |
-| 2 | Usuario visualiza el estado actual del ambiente | Muestra valores en tiempo real y estado general (Normal/Alerta/Crítico) |
-| 3 | Sistema detecta niveles elevados de CO2 o VOC | Genera notificación push y alerta visual en el Dashboard |
-| 4 | Usuario selecciona "Ver detalles" de la alerta | Muestra pantalla con datos del sensor afectado, historial reciente y nivel de gravedad |
-| 5 | Usuario activa una acción correctiva (ej: "Aumentar ventilación") | Sistema registra la acción, ejecuta el comando (si aplica) y confirma la operación |
-| 6 | Sistema confirma la mejora en los niveles | Actualiza el Dashboard reflejando el nuevo estado del ambiente |
-
-**Task Flow para UG02: Demostrar salubridad**
-
-*Contar con evidencia tangible (reportes) de que el local cumple con estándares de aire seguro para clientes y fiscalizaciones.*
-
-| Paso | Acción del usuario | Respuesta del sistema |
-|:---:|:---|:---|
-| 1 | Usuario abre la aplicación | Muestra Dashboard principal |
-| 2 | Usuario navega a la sección "Reportes" | Muestra lista de reportes disponibles (diario, semanal, mensual, personalizado) |
-| 3 | Usuario selecciona el tipo de reporte deseado (ej: "Semanal") | Muestra pantalla de configuración del reporte (rango de fechas, zonas a incluir) |
-| 4 | Usuario confirma la generación del reporte | Sistema recopila los datos del período seleccionado y muestra pantalla de progreso/carga |
-| 5 | Sistema completa la generación | Muestra resumen del reporte con gráficos, métricas clave (CO2, VOC, temperatura) y comparativas con estándares |
-| 6 | Usuario selecciona "Exportar PDF" o "Compartir" | Sistema genera el archivo PDF y abre opciones de compartir (correo, mensajería, almacenamiento) |
-| 7 | Sistema confirma el envío o guardado | Muestra mensaje de confirmación y registra la acción en el historial |
-
-**Task Flow para UG03: Optimizar la productividad**
-
-*Evitar que los empleados sufran de fatiga o pérdida de concentración por mala ventilación.*
-
-| Paso | Acción del usuario | Respuesta del sistema |
-|:---:|:---|:---|
-| 1 | Usuario abre la aplicación | Muestra Dashboard principal |
-| 2 | Usuario accede a la sección "Bienestar por Zona" | Muestra indicadores de calidad del aire organizados por áreas del local (salón, cocina, oficina, etc.) |
-| 3 | Usuario identifica una zona con niveles subóptimos | Sistema resalta visualmente la zona (amarillo para atención, rojo para crítica) |
-| 4 | Usuario selecciona la zona afectada | Muestra detalle de la zona: valores específicos, duración del estado anómalo y recomendaciones de acción |
-| 5 | Usuario programa una acción automática (ej: ventilación programada) | Sistema confirma la programación y muestra la hora estimada de normalización |
-| 6 | Sistema detecta que los niveles vuelven al rango óptimo | Envía notificación de mejora al usuario y actualiza el Dashboard |
-| 7 | Usuario visualiza el histórico de la zona | Muestra gráfico de evolución de la calidad del aire antes y después de la acción correctiva |
-
-**Task Flow para UG04: Controlar síntomas crónicos**
-
-*Reducir la frecuencia de episodios de rinitis alérgica, asma o dolores de cabeza asociados al ambiente cargado.*
-
-| Paso | Acción del usuario | Respuesta del sistema |
-|:---:|:---|:---|
-| 1 | Usuario abre la aplicación | Muestra Dashboard del hogar con indicadores de calidad del aire interior |
-| 2 | Usuario experimenta un síntoma (ej: estornudos, dolor de cabeza, dificultad respiratoria) | (El usuario inicia el registro de manera proactiva) |
-| 3 | Usuario navega a la sección "Registrar Síntoma" | Muestra formulario rápido con opciones de síntoma, intensidad (leve/moderado/grave) y momento de ocurrencia |
-| 4 | Usuario selecciona el síntoma y nivel de intensidad, luego guarda el registro | Sistema registra el evento con timestamp y lo vincula a los datos de calidad del aire del mismo momento |
-| 5 | Usuario consulta la sección "Correlación Síntomas vs Aire" | Muestra gráfico comparativo que relaciona los episodios de síntomas con picos de CO2, VOC o partículas |
-| 6 | Sistema identifica patrones automáticamente | Genera alerta preventiva cuando las condiciones actuales se asemejan a episodios anteriores donde el usuario registró síntomas |
-
-**Task Flow para UG05: Validar acciones preventivas**
-
-*Saber con certeza si sus hábitos de limpieza y ventilación están funcionando realmente para mejorar la calidad del aire.*
-
-| Paso | Acción del usuario | Respuesta del sistema |
-|:---:|:---|:---|
-| 1 | Usuario abre la aplicación | Muestra Dashboard del hogar |
-| 2 | Usuario realiza una acción preventiva en el mundo real (ej: abre ventanas, limpia filtros, enciende purificador) | (El usuario inicia el registro manual) |
-| 3 | Usuario navega a la sección "Registrar Acción Preventiva" | Muestra formulario para seleccionar tipo de acción, duración y zona afectada |
-| 4 | Usuario completa el formulario y guarda la acción | Sistema registra el evento con timestamp y lo marca en la línea de tiempo de calidad del aire |
-| 5 | Usuario consulta la sección "Impacto de mis acciones" (inmediatamente o días después) | Muestra gráfico comparativo que aísla el período antes y después de cada acción preventiva registrada |
-| 6 | Sistema evalúa la efectividad de la acción | Muestra indicador cualitativo (Ej: "Abrir ventanas redujo CO2 en un 35% en 20 minutos") y lo almacena en el historial de aprendizaje |
-
-**Task Flow para UG06: Crear un refugio seguro**
-
-*Garantizar que, a pesar de la contaminación exterior de la ciudad, el interior de su hogar sea un espacio de respiración pura.*
-
-| Paso | Acción del usuario | Respuesta del sistema |
-|:---:|:---|:---|
-| 1 | Usuario abre la aplicación | Muestra Dashboard del hogar con indicador comparativo "Aire Interior vs Aire Exterior" |
-| 2 | Usuario visualiza la comparación en tiempo real | Muestra dos medidores lado a lado: calidad interior (datos del sensor Clair) vs calidad exterior (API de contaminación de la ciudad) |
-| 3 | Usuario navega a "Configuración de Alertas" | Muestra opciones para definir umbrales personalizados de contaminación exterior (PM2.5, PM10, etc.) |
-| 4 | Usuario define umbral máximo deseado para recibir alertas y guarda la configuración | Sistema almacena las preferencias y activa el monitoreo continuo de la API exterior |
-| 5 | Sistema detecta que la contaminación exterior supera el umbral definido | Envía notificación push al usuario con recomendación específica (Ej: "Contaminación alta en tu zona. Se recomienda cerrar ventanas y activar purificador") |
-| 6 | Usuario consulta el histórico de protección | Muestra gráfico que evidencia cómo, a pesar de picos de contaminación exterior, el interior se mantuvo dentro del rango saludable gracias a las acciones tomadas |
-
 **Web Application**
 
-UG01: Garantizar la salud ambiental
+UG01: Garantizar la salud ambiental / UG03: Optimizar la productividad
 
 | # | Paso | Acción del usuario | Respuesta del sistema |
 |:---:|:---|:---|:---|
-| 1 | Usuario accede al Overview | Usuario ingresa a la aplicación y visualiza el Dashboard principal | Muestra indicadores de calidad del aire en tiempo real  y estado general por zonas  |
+| 1 | Usuario accede al Overview | Usuario ingresa a la aplicación y visualiza el Dashboard principal | Muestra indicadores de calidad del aire en tiempo real y estado general por zonas |
 | 2 | Alerta automática (dentro de Overview) | Ninguna (evento automático del sistema) | Detecta niveles elevados de CO2 o VOC. Aparece una alerta visual dentro del Overview |
-| 3 | Ver más (dentro de Overview) | Clic en el botón "Ver más" / "View Details" asociado a la alerta dentro del Overview | Navega a la pantalla Alerts & Actions con el foco en la alerta específica que generó la notificación |
-| 4 | Visualizar Alerts & Actions | Visualiza la lista de alertas. La alerta crítica aparece destacada con información contextual | Muestra cada alerta con título, mensaje, botones de acción |
-| 5 | Activar respuesta (dentro de Alerts & Actions) | Clic en el botón "Activar respuesta" / "Apply Action" correspondiente a la alerta  | Ejecuta la acción correctiva de inmediato. Muestra toast de confirmación. La alerta se marca como "En proceso" o "Resuelta" |
+| 3 | Ver más (dentro de Overview) | Clic en el botón "Ver más" / "View Details" asociado a la alerta dentro del Overview | Navega a la pantalla Alerts & Actions (W-06) con el foco en la alerta específica que generó la notificación |
+| 4 | Visualizar Alerts & Actions | Visualiza la lista de alertas. La alerta crítica aparece destacada con información contextual | Muestra cada alerta con título, mensaje, botones de acción. En UG03, puede incluir opción adicional "Programar acción" |
+| 5 | Activar respuesta (dentro de Alerts & Actions) | Clic en el botón "Activar respuesta" / "Apply Action" correspondiente a la alerta (o "Programar" en UG03) | Ejecuta la acción correctiva de inmediato (o programa para más tarde). Muestra toast de confirmación. La alerta se marca como "En proceso" o "Resuelta" |
+
+UG01 y UG03 comparten el mismo wireflow para Web Application, ya que ambos flujos se detonan por una alerta automática de calidad del aire y conducen a la ejecución de una acción correctiva desde la pantalla Alerts & Actions. La única diferencia es que UG03 puede presentar una opción adicional de "Programar acción automática" junto a "Activar respuesta". Para simplificar la representación, se unifican en un solo wireflow.
 
 
 <img src="../assets/webapp-wireflows/webapp-wflow1.png" alt="webapp-wflow1" width="1000">
 
+UG02: Demostrar salubridad / UG05: Validar acciones preventivas
 
+| # | Paso | Acción del usuario | Respuesta del sistema |
+|:---:|:---|:---|:---|
+| 1 | Usuario accede al Overview | Usuario ingresa a la aplicación y visualiza el Dashboard principal | Muestra indicadores de calidad del aire en tiempo real y estado general por zonas |
+| 2 | Navegar a Reports | Clic en la sección "Reports" del menú lateral | Navega a la pantalla Reports con la lista de reportes disponibles |
+| 3 | Seleccionar tipo de reporte | Selecciona el tipo de reporte deseado (Diario AQI, Semanal Alertas, Mensual Cumplimiento) | Muestra pantalla de configuración del reporte con opciones de rango de fechas y zonas a incluir |
+| 4 | Configurar y generar reporte | Configura los parámetros y clic en "Generar reporte" | Sistema recopila los datos del período seleccionado, muestra barra de progreso y genera el reporte |
+| 5 | Confirmar envío/guardado | (Automático) | Muestra mensaje de confirmación y registra la acción en el historial |
 
-**Registration & Onboarding Flow**
+UG02 y UG05 comparten el mismo wireflow para Web Application, ya que ambos se resuelven a través de la funcionalidad de Reports. La diferencia radica en el propósito: UG02 busca evidencia para terceros (fiscalizaciones, clientes), mientras que UG05 busca validación personal (verificar si sus hábitos de limpieza/ventilación están funcionando). En ambos casos, el flujo de generación de reportes es idéntico.
 
-<img src="../assets/webapp-wireflows/webapp-wflow1.png" alt="webapp-wflow1" width="1000">
+<img src="../assets/webapp-wireflows/webapp-wflow.png" alt="webapp-wflow2" width="1000">
 
-Este recorrido modela la experiencia de los nuevos usuarios que se integran al ecosistema a través de la interfaz Register. El flujo se centra en la simplicidad funcional, guiando al usuario por la creación de cuenta, la validación de datos y la aceptación de términos legales antes de su primer acceso. Al completarse, el sistema facilita una transición fluida hacia el Overview, asegurando que el despliegue inicial de la red de monitoreo comience con una configuración de usuario clara y estructurada.
+UG04: Controlar síntomas crónicos
 
-**Asset & Infrastructure Management Flow**
+| # | Paso | Acción del usuario | Respuesta del sistema |
+|:---:|:---|:---|:---|
+| 1 | Usuario accede al Overview | Usuario ingresa a la aplicación y visualiza el Dashboard principal | Muestra indicadores de calidad del aire en tiempo real y estado general por zonas |
+| 2 | Navegar a Alerts & Actions | Clic en la sección "Alerts & Actions" del menú lateral | Navega a la pantalla Alerts & Actions (W-06) |
+| 3 | Acceder a Rules Builder | Clic en la pestaña o sección "Rules Builder" / "Configurar reglas" | Muestra interfaz para crear reglas personalizadas: selección de métrica (CO2, VOC, PM2.5, etc.), operador (mayor que, menor que), umbral, y acción asociada |
+| 4 | Configurar regla personalizada por alergia | Selecciona métrica (ej: "VOC" o "PM2.5"), define umbral (ej: "> 250 µg/m³"), asigna una acción (ej: "Enviar notificación" o "Activar ventilación") | Sistema valida la regla y la guarda en la lista de reglas activas del usuario |
+| 5 | Sistema aplica la regla (automático) | Ninguna (monitoreo continuo) | Sistema monitorea en tiempo real los sensores. Cuando la métrica supera el umbral definido, dispara la acción configurada (alerta preventiva en Dashboard y/o notificación) |
+| 6 | Recibir alerta preventiva | Usuario recibe la notificación/alerta | Muestra alerta en Dashboard y en la lista de Alerts & Actions, indicando que se ha superado el umbral configurado por el usuario para su alergia específica |
 
 <img src="../assets/webapp-wireflows/webapp-wflow2.png" alt="webapp-wflow2" width="1000">
 
-Este flujo describe la administración jerárquica de la infraestructura IoT de la organización a través de las vistas de Space & Devices. El usuario navega desde una visión macro de los edificios hacia el control detallado de cada espacio, permitiendo la supervisión técnica individual de dispositivos como los sensores SCD41 y PMS5003. La interfaz facilita el monitoreo de la conectividad y la salud del hardware, garantizando que el despliegue en áreas comerciales o residenciales mantenga una operatividad constante y profesional.
+UG06: Crear un refugio seguro
 
-**Detailed Environmental Analysis Flow**
+| # | Paso | Acción del usuario | Respuesta del sistema |
+|:---:|:---|:---|:---|
+| 1 | Usuario accede al Overview | Usuario ingresa a la aplicación y visualiza el Dashboard principal | Muestra indicadores de calidad del aire en tiempo real y estado general por zonas |
+| 2 | Navegar a Air Quality | Clic en la sección "Air Quality" del menú lateral | Navega a la pantalla Air Quality (W-05) mostrando registros de los sensores Clair (CO2, VOC, temperatura, humedad) y el indicador AQI (Bueno/Moderado/Malo) |
+| 3 | Verificar calidad del aire (AQI) | Visualiza el indicador AQI | Muestra el estado actual del aire (ej: "Bueno - El aire es saludable") y tendencias recientes |
+| 4 | (Opcional) Navegar a Reports para ver estándar OMS | Clic en la sección "Reports" del menú lateral | Navega a la pantalla Reports (W-07) |
+| 5 | Visualizar widget de cumplimiento OMS | Localiza el widget o área que indica estándares OMS | Muestra comparativa: "Cumple con estándares OMS: Sí/No" con información de métricas clave (CO2, VOC, etc.) vs límites recomendados por OMS |
 
-<img src="../assets/webapp-wireflows/webapp-wflow3.png" alt="webapp-wflow3" width="1000">
+<img src="../assets/webapp-wireflows/webapp-wflow2.png" alt="webapp-wflow2" width="1000">
 
-Este proceso conecta el tablero principal de Overview con el análisis profundo en la interfaz de Air Quality para diagnosticar la salud ambiental de un espacio específico. El usuario puede profundizar en métricas críticas como $CO_2$, $PM2.5$ y compuestos orgánicos volátiles ($VOCs$), utilizando selectores de tiempo para identificar tendencias históricas y causas raíz. El diseño permite comparar la calidad de aire entre distintos sectores de la organización, proporcionando una base científica para la toma de decisiones basada en datos precisos de sensores de alta fidelidad.
-
-**Contingency Response & Alert Flow**
-
-<img src="../assets/webapp-wireflows/webapp-wflow4.png" alt="webapp-wflow4" width="1000">
-
-Este flujo operativo modela la detección y mitigación de anomalías ambientales a través de la interfaz de Alerts & Actions. Se activa ante un disparo de umbral crítico (como niveles altos de material particulado), dirigiendo al usuario a revisar la distribución de incidencias y la severidad del evento en tiempo real. El flujo culmina en la ejecución de acciones sugeridas o el uso del Rules Builder para automatizar respuestas, como la activación de purificadores, asegurando una gestión proactiva ante riesgos en la calidad del aire.
-
-**Data Intelligence & Audit Flow**
-
-<img src="../assets/webapp-wireflows/webapp-wflow5.png" alt="webapp-wflow5" width="1000">
-
-Este flujo se especializa en la interpretación estratégica de datos y la generación de documentación técnica mediante la interfaz de Reports. El usuario interactúa con resúmenes de cumplimiento normativo y mapas de correlación de partículas para evaluar el impacto a largo plazo en la organización. El proceso incluye la configuración de exportaciones automatizadas en formatos PDF y CSV, proporcionando una herramienta de auditoría esencial para certificar que los espacios cumplen con las directrices de salud y seguridad ambiental vigentes.
 
 **Mobile Application**
 
-UG01: Garantizar la salud ambiental
+UG01: Garantizar la salud ambiental / UG04: Controlar síntomas crónicos
 
 | # | Paso | Acción del usuario | Respuesta del sistema |
 |:---:|:---|:---|:---|
 | 1 | Usuario accede al Dashboard | Usuario ingresa a la aplicación y visualiza el Dashboard principal | Muestra indicadores de calidad del aire en tiempo real y estado general por zonas |
-| 2 | Alerta automática (notificación/mensaje) | Ninguna (evento automático del sistema) | Detecta niveles elevados de CO2 o VOC. Aparece una notificación emergente en la parte superior de la pantalla |
-| 3 | Visualizar Alerts | Usuario ingresa a la lista de alertas. La alerta crítica aparece destacada con información contextual | Muestra cada alerta con título, mensaje, botones de acción |
-| 4 | Activar respuesta (dentro de Alerts) | Tap en el botón "Activar respuesta" / "Apply Action" correspondiente a la alerta | Ejecuta la acción correctiva de inmediato. Muestra toast o snackbar de confirmación. La alerta se marca como "En proceso" o "Resuelta" |
+| 2 | Alerta automática (notificación/mensaje) | Ninguna (evento automático del sistema) | Detecta condición crítica (UG01: CO2/VOC elevado) o superación de umbral personalizado (UG04: regla configurada desde Web). Aparece una notificación emergente en la parte superior de la pantalla |
+| 3 | Visualizar Alerts | Usuario ingresa a la lista de alertas (tap en campana o en la notificación). La alerta aparece destacada con información contextual | Muestra cada alerta con título, mensaje, botones de acción ("Activar respuesta" si está configurada, "Descartar", "Ver más") |
+| 4 | Activar respuesta (dentro de Alerts) | Tap en el botón "Activar respuesta" / "Apply Action" correspondiente a la alerta (si la acción fue preconfigurada desde la Web App) | Ejecuta la acción correctiva de inmediato (ej: activar ventilación, enviar notificación al administrador, etc.). Muestra toast o snackbar de confirmación. La alerta se marca como "En proceso" o "Resuelta" |
+| 5 | (Opcional) Descartar o posponer | Tap en "Descartar" o "Recordar más tarde" | La alerta se archiva o se programa para reapparecer después de un tiempo definido |
 
-<img src="../assets/mobileapp-wireflows/mobileapp-wflow1.png" alt="mobileapp-wflow1" width="600">
+UG01 y UG04 comparten el mismo wireflow para Mobile Application, ya que ambos flujos se detonan por una alerta (automática por niveles críticos o preventiva por umbral personalizado) y conducen a la misma pantalla Alerts para la gestión de la respuesta. La diferencia radica en el origen de la regla (UG01: reglas por defecto del sistema / UG04: reglas personalizadas configuradas desde Web App), pero la experiencia de usuario en mobile es idéntica.
 
+<img src="../assets/mobileapp-wireflows/mobileapp-wflow.png" alt="mobileapp-wflow1" width="600">
 
-**Main Monitoring & Location Selection Flow**
+UG06: Crear un refugio seguro
 
-<img src="../assets/mobileapp-wireflows/mobileapp-wflow1.png" alt="mobileapp-wflow0" width="1000">
+| # | Paso | Acción del usuario | Respuesta del sistema |
+|:---:|:---|:---|:---|
+| 1 | Usuario accede al Dashboard | Usuario ingresa a la aplicación y visualiza el Dashboard principal | Muestra indicadores de calidad del aire, estado general por zonas y el indicador AQI  |
+| 2 | Verificar calidad del aire | Usuario visualiza el AQI y los valores de los sensores en el Dashboard | El Dashboard muestra si el aire es saludable o no. El usuario confirma que su hogar es un "refugio seguro" al ver que los indicadores están dentro de rangos saludables |
 
-Este wireflow ilustra el recorrido principal de monitoreo, comenzando desde el Dashboard como punto de entrada tras la autenticación. Desde esta vista, el usuario puede navegar mediante la bottom tab bar hacia la sección Sensors (Sensores). Al acceder a la vista de Sensors, el sistema presenta la pantalla de Sensor Selection, que lista jerárquicamente los espacios disponibles. El usuario selecciona una opción y confirma mediante el botón "CONFIRM SELECTION", lo que desencadena la navegación hacia la vista Sensor Detail. El wireflow demuestra cómo la navegación por pestañas inferiores y la selección jerárquica de ubicaciones se combinan para ofrecer un recorrido eficiente desde la supervisión global hasta el diagnóstico de cada sensor.
+UG06 en Mobile se resuelve íntegramente en el Dashboard, ya que esta pantalla muestra el AQI y los valores de calidad del aire en tiempo real. No existe funcionalidad equivalente al widget de cumplimiento OMS en la versión mobile de Reports. El usuario valida que su hogar es un refugio seguro al observar indicadores saludables en el Dashboard.
 
-**Device Management & Settings Flow**
+<img src="../assets/mobileapp-wireflows/mobileapp-wflow.png" alt="mobileapp-wflow1" width="600">
 
-<img src="../assets/mobileapp-wireflows/mobileapp-wflow2.png" alt="mobileapp-wflow0" width="1000">
-
-Este wireflow representa el recorrido de gestión de preferencias de usuario y configuración del sistema, fundamental para la personalización de la experiencia móvil. El flujo puede iniciar desde cualquier pantalla principal (Dashboard o Sensor Detail), accediendo a la sección Settings a través de la bottom tab bar. Desde cualquier punto dentro de Settings, el usuario puede navegar hacia otras secciones principales (Dashboard, Sensors) mediante la barra inferior, o bien ejecutar la acción de cierre de sesión "LOGOUT". Al pulsar "LOGOUT", el sistema redirige al usuario hacia la pantalla Login, cerrando su sesión de forma segura. Este wireflow evidencia cómo la aplicación móvil ofrece un control completo sobre las preferencias del sistema y la gestión de cuenta, manteniendo una navegación coherente y accesible en todo momento.
 
 
 ### 5.4.3. Applications Mock-ups.
@@ -1199,7 +1131,7 @@ La interfaz de registro mantiene la coherencia visual con la pantalla de login, 
 
 <img src="../assets/mobileapp-mockup/DASHBOARD.png" alt="mobile-dashboard" width="300">
 
-La pantalla principal de la aplicación presenta un tablero de control resumido que prioriza los indicadores críticos de calidad del aire y el estado de la red. Este diseño permite una supervisión inmediata de la salud ambiental y de red desde el primer vistazo.
+La pantalla principal de la aplicación presenta un tablero de control resumido que prioriza los indicadores críticos de calidad del aire. Este diseño permite una supervisión inmediata de la salud ambiental y de red desde el primer vistazo.
 
 **Sensor Selection**
 
