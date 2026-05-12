@@ -1151,6 +1151,12 @@ La vista de detalle de un sensor específico concentra información técnica ope
 
 La pantalla de configuración sigue el estándar de plataformas móviles mediante una vista de lista desplazable (table view) agrupada por categorías funcionales. El mockup organiza las opciones en secciones claramente diferenciadas: "ACCOUNT", "PREFERENCES", "DEVICE SETTINGS" y "SUPPORT & LEGAL". Finalmente, un botón "LOGOUT" claramente diferenciado para el cierre la sesión. 
 
+**Alerts**
+
+<img src="../assets/mobileapp-mockup/ALERTS.png" alt="mobile-alerts" width="300">
+
+La pantalla de alertas consolida las notificaciones generadas por el sistema Clair. Cada alerta presenta un encabezado descriptivo, un mensaje contextual y un par de acciones rápidas que permiten responder de manera inmediata o ignorar la notificación. Refleja una arquitectura de notificaciones que equilibra la urgencia operativa con el mantenimiento programado, siguiendo las mejores prácticas de diseño de centros de control y monitoreo en aplicaciones móviles industriales o de seguridad.
+
 
 ### 5.4.4. Applications User Flow Diagrams.
 
