@@ -1006,7 +1006,7 @@ UG02: Demostrar salubridad / UG05: Validar acciones preventivas
 
 UG02 y UG05 comparten el mismo wireflow para Web Application, ya que ambos se resuelven a través de la funcionalidad de Reports. La diferencia radica en el propósito: UG02 busca evidencia para terceros (fiscalizaciones, clientes), mientras que UG05 busca validación personal (verificar si sus hábitos de limpieza/ventilación están funcionando). En ambos casos, el flujo de generación de reportes es idéntico.
 
-<img src="../assets/webapp-wireflows/webapp-wflow.png" alt="webapp-wflow2" width="1000">
+<img src="../assets/webapp-wireflows/webapp-wflow2.png" alt="webapp-wflow2" width="1000">
 
 UG04: Controlar síntomas crónicos
 
@@ -1019,7 +1019,7 @@ UG04: Controlar síntomas crónicos
 | 5 | Sistema aplica la regla (automático) | Ninguna (monitoreo continuo) | Sistema monitorea en tiempo real los sensores. Cuando la métrica supera el umbral definido, dispara la acción configurada (alerta preventiva en Dashboard y/o notificación) |
 | 6 | Recibir alerta preventiva | Usuario recibe la notificación/alerta | Muestra alerta en Dashboard y en la lista de Alerts & Actions, indicando que se ha superado el umbral configurado por el usuario para su alergia específica |
 
-<img src="../assets/webapp-wireflows/webapp-wflow2.png" alt="webapp-wflow2" width="1000">
+<img src="../assets/webapp-wireflows/webapp-wflow3.png" alt="webapp-wflow3" width="1000">
 
 UG06: Crear un refugio seguro
 
@@ -1031,7 +1031,7 @@ UG06: Crear un refugio seguro
 | 4 | (Opcional) Navegar a Reports para ver estándar OMS | Clic en la sección "Reports" del menú lateral | Navega a la pantalla Reports (W-07) |
 | 5 | Visualizar widget de cumplimiento OMS | Localiza el widget o área que indica estándares OMS | Muestra comparativa: "Cumple con estándares OMS: Sí/No" con información de métricas clave (CO2, VOC, etc.) vs límites recomendados por OMS |
 
-<img src="../assets/webapp-wireflows/webapp-wflow2.png" alt="webapp-wflow2" width="1000">
+<img src="../assets/webapp-wireflows/webapp-wflow4.png" alt="webapp-wflow4" width="1000">
 
 
 **Mobile Application**
@@ -1048,7 +1048,7 @@ UG01: Garantizar la salud ambiental / UG04: Controlar síntomas crónicos
 
 UG01 y UG04 comparten el mismo wireflow para Mobile Application, ya que ambos flujos se detonan por una alerta (automática por niveles críticos o preventiva por umbral personalizado) y conducen a la misma pantalla Alerts para la gestión de la respuesta. La diferencia radica en el origen de la regla (UG01: reglas por defecto del sistema / UG04: reglas personalizadas configuradas desde Web App), pero la experiencia de usuario en mobile es idéntica.
 
-<img src="../assets/mobileapp-wireflows/mobileapp-wflow.png" alt="mobileapp-wflow1" width="600">
+<img src="../assets/mobileapp-wireflows/mobileapp-wflow1.png" alt="mobileapp-wflow1" width="600">
 
 UG06: Crear un refugio seguro
 
@@ -1059,7 +1059,7 @@ UG06: Crear un refugio seguro
 
 UG06 en Mobile se resuelve íntegramente en el Dashboard, ya que esta pantalla muestra el AQI y los valores de calidad del aire en tiempo real. No existe funcionalidad equivalente al widget de cumplimiento OMS en la versión mobile de Reports. El usuario valida que su hogar es un refugio seguro al observar indicadores saludables en el Dashboard.
 
-<img src="../assets/mobileapp-wireflows/mobileapp-wflow.png" alt="mobileapp-wflow1" width="600">
+<img src="../assets/mobileapp-wireflows/mobileapp-wflow2.png" alt="mobileapp-wflow2" width="340">
 
 
 
