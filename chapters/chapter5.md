@@ -1164,64 +1164,55 @@ Esta sección presenta los diagramas de flujo de usuario, que ilustran las rutas
 
 **Web Application UserFlow**
 
-**Acquisition & Authentication**
+**User Flow: Gestión de alertas y acciones correctivas**
 
-UG-W01: Acceder al ecosistema digital desde la plataforma pública
+User Goals cubiertos:
+| ID | User Goal |
+|:---|:---|
+| UG01 | Garantizar la salud ambiental: Mantener un aire fresco y libre de viciamento para que los clientes permanezcan más tiempo en el local |
+| UG03 | Optimizar la productividad: Evitar que los empleados sufran de fatiga o pérdida de concentración por mala ventilación |
 
-<img src="../assets/webapp-userflows/webapp-uflow0.png" alt="webapp-uflow0" width="1000">
-
-El usuario accede a la Landing Page de Clair, donde visualiza la propuesta de valor y la arquitectura del sistema. Tras interactuar con el botón principal de "Get Started", es redirigido a la interfaz de Login. Una vez allí, ingresa sus credenciales de acceso para validar su identidad y acceder al panel de control centralizado de la organización.
-
-**Registration & Onboarding**
-
-UG-W02: Crear una cuenta y configurar el perfil inicial
+Ambos User Goals comparten el mismo flujo de interacción. El usuario recibe una alerta automática por niveles elevados de CO2 o VOC, accede a la pantalla Alerts & Actions, y activa una respuesta correctiva preconfigurada. La diferencia radica en el propósito (salud del cliente vs. productividad del empleado), pero la experiencia de usuario es idéntica.
 
 <img src="../assets/webapp-userflows/webapp-uflow1.png" alt="webapp-uflow1" width="1000">
 
-El usuario nuevo selecciona la opción de registro desde la Landing Page y visualiza el formulario en CREATE-ACCOUNT. Completa los campos de correo y contraseña, acepta los términos y condiciones de Clair y opta por la autenticación social si lo prefiere. Tras confirmar sus datos, el sistema lo redirige al flujo de bienvenida para iniciar la configuración de su red de monitoreo.
+**User Flow: Generación y gestión de reportes**
 
-**Asset & Infrastructure Management**
+User Goals cubiertos:
+| ID | User Goal |
+|:---|:---|
+| UG02 | Demostrar salubridad: Contar con evidencia tangible (reportes) de que el local cumple con estándares de aire seguro para clientes y fiscalizaciones |
+| UG05 | Validar acciones preventivas: Saber con certeza si sus hábitos de limpieza y ventilación están funcionando realmente para mejorar la calidad del aire |
 
-UG-W03: Administrar jerárquicamente edificios, espacios y dispositivos
+Ambos User Goals comparten el mismo flujo de interacción. El usuario accede a la pantalla Reports, selecciona el tipo de reporte deseado (Diario AQI, Semanal Alertas, Mensual Cumplimiento), configura los parámetros (rango de fechas, zonas), genera el reporte y lo exporta. La diferencia radica en el propósito (UG02: evidencia para terceros / UG05: validación personal), pero la experiencia de usuario es idéntica.
+
 
 <img src="../assets/webapp-userflows/webapp-uflow2.png" alt="webapp-uflow2" width="1000">
 
-El administrador accede a la sección "Space & Devices" desde el menú lateral para visualizar la lista de organizaciones. Selecciona un edificio específico (ej. Building A) y navega por los niveles hasta encontrar un espacio determinado, como se observa en wf-space1.png. Desde allí, elige un sensor individual (ej. Clair-01) para revisar su estado de conexión, salud técnica y configurar los umbrales operativos detallados en Space&Devices.
+**User Flow: Configuración de umbrales personalizados (Rules Builder)**
 
-**Web Application UserFlow Detailed Environmental Analysis**
+User Goals cubiertos:
 
-UG-W04: Consultar métricas detalladas y diagnóstico de calidad de aire
+| ID | User Goal |
+|:---|:---|
+| UG04 | Controlar síntomas crónicos: Reducir la frecuencia de episodios de rinitis alérgica, asma o dolores de cabeza asociados al ambiente cargado |
+
+El usuario accede a la pantalla Alerts & Actions, navega a la sección Rules Builder, y configura reglas personalizadas basadas en sus alergias o síntomas. Define una métrica (CO2, VOC, PM2.5, etc.), un operador (mayor que, menor que), un umbral específico, y una acción asociada (ej: enviar notificación, activar ventilación). El sistema monitorea continuamente los sensores y, cuando se supera el umbral definido, dispara la acción configurada y genera una alerta preventiva en el Dashboard y en Alerts & Actions.
 
 <img src="../assets/webapp-userflows/webapp-uflow3.png" alt="webapp-uflow3" width="1000">
 
-Desde el panel principal, el usuario selecciona la opción "Air Quality" para profundizar en el estado de un área específica. Utiliza los selectores para filtrar por local, espacio y dispositivo, visualizando el índice de calidad de aire en tiempo real y el impacto de contaminantes como $PM2.5$ y $CO_2$. Finalmente, revisa el análisis de causa raíz para comprender qué factores externos, como el tráfico o el sistema HVAC, están afectando el entorno.
+**User Flow: Verificación de calidad del aire y cumplimiento de estándares**
 
-**Web Application UserFlow Contingency Response & Alerts**
+User Goals cubiertos:
 
-UG-W05: Gestionar alertas críticas y ejecutar respuestas automatizadas
+| ID | User Goal |
+|:---|:---|
+| UG06 | Crear un refugio seguro: Garantizar que, a pesar de la contaminación exterior de la ciudad, el interior de su hogar sea un espacio de respiración pura |
+
+El usuario accede a la pantalla Air Quality para visualizar el indicador AQI (Bueno/Moderado/Malo) y los registros de los sensores Clair (CO2, VOC, temperatura, humedad). Opcionalmente, puede navegar a la pantalla Reports para consultar el widget de cumplimiento de directrices OMS, que compara los valores actuales con los límites recomendados por la Organización Mundial de la Salud. Al verificar que el AQI es saludable y que se cumple con los estándares OMS, el usuario confirma que el interior de su hogar es un "refugio seguro" a pesar de la contaminación exterior.
 
 <img src="../assets/webapp-userflows/webapp-uflow4.png" alt="webapp-uflow4" width="1000">
 
-El usuario ingresa a la sección de "Alerts & Response" para monitorear las anomalías detectadas en las últimas 24 horas. En la vista Alerts&Actions, revisa la severidad de las alertas activas y consulta el historial de eventos. Utiliza el "Rules Builder" para definir acciones automáticas (ej. activar purificadores ante exceso de $CO_2$) o ejecuta respuestas rápidas sugeridas por el sistema para mitigar riesgos ambientales de forma inmediata.
-
-**Web Application UserFlow Data Intelligence & Audit**
-
-UG-W06: Generar reportes de cumplimiento y exportar datos históricos
-
-<img src="../assets/webapp-userflows/webapp-uflow5.png" alt="webapp-uflow5" width="1000">
-
-El usuario accede al módulo de "Reports" para evaluar el rendimiento histórico de la red de sensores. En la interfaz de Reports, analiza los resúmenes de cumplimiento diario, semanal y mensual, comparando los datos obtenidos con las directrices internacionales de salud. Posteriormente, configura la generación automática de archivos PDF o CSV para ser enviados a destinatarios específicos, asegurando la trazabilidad de los datos para auditorías legales.
-
-**Resumen de User Flows - Web Application**
-
-| ID | Objetivo de Usuario | Pantallas Involucradas | Acción Principal |
-|----|---------------------|------------------------|------------------|
-| UG-W01 | Acceder al ecosistema digital desde la plataforma pública | Landing Page → Login | Autenticación de credenciales |
-| UG-W02 | Crear una cuenta y configurar el perfil inicial | Landing Page → Register → Dashboard | Registro y onboarding |
-| UG-W03 | Administrar jerárquicamente edificios, espacios y dispositivos | Space & Devices → Sensor Detail | Selección jerárquica y configuración |
-| UG-W04 | Consultar métricas detalladas y diagnóstico de calidad de aire | Air Quality → Filtros → Análisis | Visualización de contaminantes y causa raíz |
-| UG-W05 | Gestionar alertas críticas y ejecutar respuestas automatizadas | Alerts & Response → Rules Builder | Monitoreo de anomalías y acciones automáticas |
-| UG-W06 | Generar reportes de cumplimiento y exportar datos históricos | Reports → Configuración de exportación | Generación de PDF/CSV para auditorías |
 
 **Mobile Application UserFlow**
 
