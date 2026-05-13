@@ -346,17 +346,109 @@ En conjunto, esta versión establece la primera base funcional y visual de la pl
 
 #### 6.2.1.7. Services Documentation Evidence for Sprint Review.
 
+**Documentación de Web Services (OpenAPI)**
+
+Durante este Sprint, logramos un avance significativo documentando nuestros Web Services con OpenAPI (Swagger) mediante `springdoc-openapi`. Se implementó seguridad centralizada (`BearerAuth` con JWT) para proteger los endpoints, y se documentaron exhaustivamente los controladores de **Autenticación** (registro, inicio de sesión, Google OAuth 2.0) y **Facturación** (suscripciones y Stripe). La interfaz interactiva resultante permite probar las integraciones directamente desde.
+
+**Endpoints Principales y Acciones Soportadas**
+
+A continuación, se resumen las principales operaciones implementadas y documentadas:
+
+**1. Autenticación y Sesión**
+
+* **Inicio de Sesión (`POST /api/v1/auth/sign-in`):**
+  * **Input:** `email` y `password`.
+  * **Output:** HTTP 200 OK con tokens JWT de acceso y refresco (o 401 si falla).
+  * **Ejemplo de Respuesta:**
+    ```json
+    {
+      "id": "8dc54a71-6ca1-4205-923c-c1a684585bc1",
+      "email": "usuario@ejemplo.com",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5c...",
+      "refreshToken": "d7a8fcc-45f8-4b72-826a..."
+    }
+    ```
+* **Cierre de Sesión (`DELETE /api/v1/auth/sign-out`):**
+  * **Input:** Cabecera `Authorization` con token Bearer.
+  * **Output:** HTTP 204 No Content (sesión cerrada) o 401.
+* **Otras operaciones:** Registro (`POST /api/v1/auth/sign-up`), Confirmación (`POST /api/v1/auth/confirm`), y Autenticación con Google (`POST /api/v1/auth/google/sign-in`).
+**2. Gestión de Facturación y Suscripciones**
+
+* **Consultar Plan de Usuario (`GET /api/v1/subscriptions/plans/{userId}`):**
+  
+  * **Output:** HTTP 200 OK con el tipo de plan y estado.
+  * **Ejemplo de Respuesta:**
+    ```json
+    {
+      "userId": "8dc54a71-6ca1-4205-923c-c1a684585bc1",
+      "plan": "premium",
+      "status": "ACTIVE"
+    }
+    ```
+* **Crear Sesión Checkout en Stripe (`POST /api/v1/subscriptions/checkout-session`):**
+  
+  * **Input:** `userId`, `amount`, `currency`, `returnUrl`.
+  * **Output:** HTTP 200 OK con la URL de redirección al pago.
+  * **Ejemplo de Respuesta:**
+    ```json
+    {
+      "checkoutUrl": "https://checkout.stripe.com/pay/cs_test_..."
+    }
+    ```
+
+Evidencia de Interacción (Capturas Swagger UI)
+
+<p align="center">
+ <img src="https://imgur.com/zkJ0AV3.png">
+</p>
+
 #### 6.2.1.8. Software Deployment Evidence for Sprint Review.
 
-1. **Landing page**
+En esta sección se resume los procesos realizados en relación con el Deployment durante el Sprint 1. Las actividades abarcaron la creación y configuración de cuentas en plataformas de despliegue, la configuración de recursos en proveedores de nube, la configuración de proyectos de desarrollo para integración y automatización, así como el despliegue de todos los productos digitales que forman parte del alcance: Landing Page, Web Application y Web Services. A continuación, se describen los pasos realizados y las evidencias correspondientes.
 
-   <p align="center">
-    <img src="https://imgur.com/MgnEBBK.png" width="500">
-   </p>
+**1. Landing Page**
+
+Para el despliegue de la Landing Page, se creó una cuenta en **Vercel** y se configuró el proyecto vinculado al repositorio de GitHub (`Vanana-Desarrollo-de-Soluciones-IOT/site`). Se configuró el dominio personalizado y se establecieron las variables de entorno necesarias para la internacionalización (i18n). La Landing Page fue desplegada como sitio estático, aprovechando la infraestructura global de CDN de Vercel para garantizar baja latencia y alta disponibilidad. El sitio incluye múltiples **Call-to-Action (CTA)** estratégicamente ubicados para guiar a los visitantes hacia el registro.
+
+**URL de producción:** https://clair-psi.vercel.app/
+
+<p align="center">
+ <img src="https://imgur.com/MgnEBBK.png">
+</p>
+
+**2. Web Application**
+
+Para la Web Application desarrollada en Angular, se creó un proyecto en **Vercel** vinculado al repositorio (`Vanana-Desarrollo-de-Soluciones-IOT/clair-ui`). Se configuró el pipeline de despliegue automático a partir de la rama `develop`, de modo que cada fusión de código genera automáticamente una nueva versión en el entorno de producción. La aplicación se despliega como Single Page Application (SPA) con pre-rendering estático.
+
+<p align="center">
+ <img src="https://imgur.com/IhiWayd.png">
+</p>
+
+**3. Web Services**
+
+Los Web Services implementados durante este sprint comprenden el módulo de **Identity and Access Management (IAM)** y el contexto de **Billing**. Para el despliegue del backend, se creó y configuró una cuenta en **Contabo** para la contratación de un servidor dedicado donde se desplegaron los servicios Spring Boot mediante contenedores **Docker**. Adicionalmente, se configuró **Cloudflare Tunnel** para establecer un túnel seguro y encriptado que expone los servicios hacia internet sin necesidad de exponer directamente la dirección IP pública del servidor, protegiendo así la infraestructura backend.
+
+Los servicios incluyen la integración con dos proveedores externos configurados durante este sprint:
+- **Google OAuth2** para autenticación segura de usuarios mediante cuentas de Google.
+- **Resend** para el envío de notificaciones y correos electrónicos transaccionales.
+
+<p align="center">
+ <img src="https://imgur.com/rHOetSh.png">
+</p>
 
 2. **Web application**
 
+   La Web Application desarrollada en Angular ha sido desplegada en Vercel, aprovechando su infraestructura global de CDN para la distribución de la Single Page Application (SPA). Esto garantiza baja latencia y alta disponibilidad para los usuarios que acceden a la plataforma web.
+
+   **URL de producción:** https://clair-ui.vercel.app/
+
+   <p align="center">
+    <img src="https://imgur.com/IhiWayd.png">
+   </p>
+
 3. **Web services**
+
+   Los Web Services implementados durante este sprint comprenden el módulo de Identity and Access Management (IAM) y el contexto de Billing, desplegados en un servidor Contabo. Estos servicios incluyen la integración con dos proveedores externos: Google OAuth2 para autenticación de usuarios y Resend para el envío de notificaciones por correo electrónico. La exposición segura de los servicios hacia internet se realiza mediante Cloudflare Tunnel, el cual establece un túnel seguro y encriptado sin necesidad de exponer directamente la dirección IP pública del servidor, protegiendo así la infraestructura backend.
 
    <p align="center">
     <img src="https://imgur.com/rHOetSh.png">
