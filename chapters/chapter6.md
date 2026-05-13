@@ -350,13 +350,27 @@ En conjunto, esta versión establece la primera base funcional y visual de la pl
 
 1. **Landing page**
 
+   La Landing Page de Clair ha sido desplegada exitosamente en Vercel, plataforma serverless especializada en el despliegue de aplicaciones frontend y sitios estáticos. El sitio se encuentra disponible públicamente en línea e incluye múltiples Call-to-Action (CTA) estratégicamente ubicados para guiar a los visitantes hacia el registro y la creación de cuenta.
+
+   **URL de producción:** https://site-beige-mu.vercel.app/
+
    <p align="center">
-    <img src="https://imgur.com/MgnEBBK.png" width="500">
+    <img src="https://imgur.com/MgnEBBK.png">
    </p>
 
 2. **Web application**
 
+   La Web Application desarrollada en Angular ha sido desplegada en Vercel, aprovechando su infraestructura global de CDN para la distribución de la Single Page Application (SPA). Esto garantiza baja latencia y alta disponibilidad para los usuarios que acceden a la plataforma web.
+
+   **URL de producción:** https://clair-ui.vercel.app/
+
+   <p align="center">
+    <img src="https://imgur.com/IhiWayd.png">
+   </p>
+
 3. **Web services**
+
+   Los Web Services implementados durante este sprint comprenden el módulo de Identity and Access Management (IAM) y el contexto de Billing, desplegados en un servidor Contabo. Estos servicios incluyen la integración con dos proveedores externos: Google OAuth2 para autenticación de usuarios y Resend para el envío de notificaciones por correo electrónico. La exposición segura de los servicios hacia internet se realiza mediante Cloudflare Tunnel, el cual establece un túnel seguro y encriptado sin necesidad de exponer directamente la dirección IP pública del servidor, protegiendo así la infraestructura backend.
 
    <p align="center">
     <img src="https://imgur.com/rHOetSh.png">
