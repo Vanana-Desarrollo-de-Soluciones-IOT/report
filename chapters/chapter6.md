@@ -202,24 +202,17 @@ La gestión y el seguimiento del progreso se realizan de manera centralizada en 
 <p align="center">
  <img src="https://i.imgur.com/IKoNdzg.png" width="700">
 </p>
+| **StoryID** | **Title**              | **ID task** | **Título**             | **Descripción**                                              | **Estimation (Hours)** | **Assigned To** | **Status** |
+| :---------: | :--------------------- | :---------- | :--------------------- | :----------------------------------------------------------- | :--------------------- | :-------------- | :--------- |
+|    US01     | Register a new account | TA1         | Register a new account | As a Visitor, I want to create an account with my email and a password, so that I can access Clair as a registered Customer. | 3                      | Mateo           | done       |
+|    US02     | Verify email address   | TA2         | Verify email address   | As a Customer, I want to confirm ownership of my email through a verification link, so that my account is activated and I can log in. | 3                      | Ian             | done       |
+|    US03     | Log in                 | TA3         | Log in                 | As a Customer, I want to authenticate with my credentials, so that I can access my personalized Clair workspace. | 3                      | Fabrizio        | done       |
+|    US57     | FAQ & Help Center      | TA4         | FAQ & Help Center      | As a Visitor, I want to resolve doubts about Device installation and data privacy, to feel secure implementing the system in my home. | 4                      | Josue           | done       |
+|    US58     | Multi-language Support | TA5         | Multi-language Support | As a Visitor, I want the Landing Page to be available in English and Spanish, to understand the technical specifications in my preferred language. | 2                      | Neil            | done       |
+|    US01     | Register a new account | TA7         | Register a new account | As a Visitor, I want to create an account with my email and a password, so that I can access Clair as a registered Customer. | 3                      | Mateo           | done       |
+|    US59     | Log in                 | TA9         | Log in                 | As a Visitor, I want to access the terms of service, to know the legal handling of my data and Clair's responsibilities regarding the hardware. | 3                      | Ian             | done       |
 
 
-| **StoryID** | **Title**                        | **ID task** | **Título**                       | **Descripción**                                              | **Estimation (Hours)** | **Assigned To** | **Status** |
-| :---------: | :------------------------------- | :---------- | :------------------------------- | :----------------------------------------------------------- | :--------------------- | :-------------- | :--------- |
-|    US55     | Clair Value Proposition          | TA1         | Clair Value Proposition          | As a Visitor, I want to learn about the benefits of CO2 and PM2.5 monitoring, to understand how Clair improves health in indoor spaces. | 3                      | Mateo           | done       |
-|    US56     | Development Team Background      | TA2         | Development Team Background      | As a Visitor, I want to know the technical background of the development team, to validate the scientific accuracy and technological reliability of the sensor. | 3                      | Ian             | done       |
-|    US57     | FAQ & Help Center                | TA3         | FAQ & Help Center                | As a Visitor, I want to resolve doubts about Device installation and data privacy, to feel secure implementing the system in my home. | 3                      | Fabrizio        | done       |
-|    US58     | Multi-language Support           | TA4         | Multi-language Support           | As a Visitor, I want the Landing Page to be available in English and Spanish, to understand the technical specifications in my preferred language. | 4                      | Josue           | done       |
-|    US59     | Privacy Policies & Terms         | TA5         | Privacy Policies & Terms         | As a Visitor, I want to access the terms of service, to know the legal handling of my data and Clair's responsibilities regarding the hardware. | 2                      | Neil            | done       |
-|    US01     | Register a new account           | TA7         | Register a new account           | As a Visitor, I want to create an account with my email and a password, so that I can access Clair as a registered Customer. | 3                      | Mateo           | done       |
-|    US03     | Log in                           | TA9         | Log in                           | As a Customer, I want to authenticate with my credentials, so that I can access my personalized Clair workspace. | 3                      | Ian             | done       |
-|    US61     | Arduino Core Setup               | TA10        | Arduino Core Setup               | As a Developer, I want to set up the Arduino/ESP32 framework and basic library dependencies, so that I can begin hardware-level programming. | 4                      | Fabrizio        | done       |
-|    US62     | CO2 Sensor Integration           | TA11        | CO2 Sensor Integration           | As a Developer, I want to interface the CO2 sensor (e.g., SCD4x) via I2C, so that I can read atmospheric concentration levels. | 5                      | Josue           | done       |
-|    US63     | Particulate Matter Integration   | TA12        | Particulate Matter Integration   | As a Developer, I want to interface the PM sensor (e.g., PMS7003) via UART, so that I can monitor air quality particles (PM2.5/PM10). | 4                      | Neil            | done       |
-|    US64     | Local Data Persistence (SD Card) | TA13        | Local Data Persistence (SD Card) | As a Developer, I want to write readings to an SD card module, so that data is not lost if connectivity fails during early field tests. | 5                      | Mateo           | done       |
-|    US65     | WiFi Connectivity & NTP Sync     | TA14        | WiFi Connectivity & NTP Sync     | As a Developer, I want to connect the device to WiFi and sync time via NTP, so that readings are correctly timestamped at the source. | 5                      | Ian             | done       |
-|    US66     | Serial Debugging Interface       | TA15        | Serial Debugging Interface       | As a Developer, I want to output formatted sensor data to the Serial Monitor, so that I can verify sensor accuracy during laboratory testing. | 5                      | Fabrizio        | done       |
-|    US67     | Deep Sleep Implementation        | TA16        | Deep Sleep Implementation        | As a Developer, I want to implement deep sleep cycles between readings, so that the device can operate on battery power for extended periods. | 4                      | Josue           | done       |
 
 #### 6.2.1.4. Development Evidence for Sprint Review.
 
@@ -341,6 +334,86 @@ En conjunto, esta versión establece la primera base funcional y visual de la pl
 | main                            | 0341f90b31b35d8f30a64f4eadcf0e3025d48b5d | first commit                                                 | -                                                            | 2026-04-23          | zGIKS               |
 
 #### 6.2.1.5. Testing Suite Evidence for Sprint Review.
+
+En esta sección se presenta la evidencia de las pruebas automatizadas diseñadas para validar el correcto funcionamiento, la seguridad y la fiabilidad de los servicios desarrollados durante el Sprint actual. La implementación de este conjunto de pruebas asegura que las funcionalidades clave del sistema, específicamente las relacionadas con la gestión de identidades y accesos (IAM), cumplan con los criterios de aceptación establecidos y mantengan la integridad del producto a medida que este evoluciona.
+
+Para la validación de los requerimientos, se han diseñado pruebas bajo el enfoque de Behavior-Driven Development (BDD), permitiendo una comunicación clara entre los objetivos del negocio y la implementación técnica. A continuación, se detallan los archivos `.feature` elaborados en lenguaje Gherkin, los cuales se relacionan directamente con los User Stories del Sprint (US01, US02 y US03). Asimismo, se expone la tabla de control de versiones que documenta la integración continua de estas pruebas tanto en el repositorio del backend (`clair-core`) como en el del frontend (`clair-ui`).
+
+#### **Control de Versiones de Testing**
+
+La siguiente tabla consolida los *commits* realizados en los repositorios del proyecto, evidenciando el avance en la configuración del entorno Cucumber y la implementación de los escenarios de prueba para el módulo de autenticación:
+
+```gherkin
+Feature: Register a new account
+  As a Visitor, I want to create an account with my email and a password, so that I can access Clair as a registered Customer.
+
+  Scenario: Successful registration
+    Given the Visitor is on the sign-up page and has no existing account with the submitted email
+    When the Visitor submits a valid email, a password meeting the strength policy, and accepts the terms
+    Then a Customer account is created in an "unverified" state
+    And a verification email is dispatched
+    And the Visitor is informed that verification is required to continue
+
+  Scenario: Duplicate email
+    Given an account already exists for the submitted email
+    When the Visitor attempts to register
+    Then registration is rejected with a clear, non-revealing message
+
+```
+
+```gherkin
+Feature: Verify email address
+  As a Customer, I want to confirm ownership of my email through a verification link, so that my account is activated and I can log in.
+
+  Scenario: Valid verification token
+    Given the Customer received a verification email with a unique, unexpired token
+    When the Customer follows the verification link
+    Then the account is marked as verified
+    And the Customer is redirected to the login page
+
+  Scenario: Expired or reused token
+    Given the verification token is expired or has already been consumed
+    When the Customer follows the link
+    Then verification fails
+    And the Customer is offered to request a new verification email
+
+```
+
+```gherkin
+Feature: Log in
+  As a Customer, I want to authenticate with my credentials, so that I can access my personalized Clair workspace.
+
+  Scenario: Successful login
+    Given the Customer's account is verified and the credentials match
+    When the Customer submits email and password
+    Then a session is established
+    And the Customer is routed to their dashboard
+
+  Scenario: Invalid credentials
+    Given the submitted credentials do not match any verified account
+    When the Customer attempts to log in
+    Then access is denied with a generic error that does not reveal which field is wrong
+
+  Scenario: Unverified account
+    Given the account exists but has not been verified
+    When the Customer attempts to log in
+    Then access is denied
+    And the Customer is offered to resend the verification email
+```
+
+
+
+| Repository                                     | Branch             | Commit Id | Commit Message                                              | Commit Message Body                                          | Commited on (Date) |
+| ---------------------------------------------- | ------------------ | --------- | ----------------------------------------------------------- | ------------------------------------------------------------ | ------------------ |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | test/Testing-Suite | c26f0e0   | test(iam): configure BDD environment and step definitions   | Set up Cucumber dependencies in pom.xml and implement step definitions for IAM bounded context tests | 13/05/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | test/Testing-Suite | 3ea2e69   | test(iam): add BDD scenario for US01 Register a new account | Implement cucumber feature file for US01 to validate new account registration | 13/05/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | test/Testing-Suite | f027fe4   | test(iam): add BDD scenario for US02 Verify email address   | Implement cucumber feature file for US02 to validate email verification process | 13/05/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | test/Testing-Suite | 946de87   | test(iam): add BDD scenario for US03 Log in                 | Implement cucumber feature file for US03 to validate user login and session establishment | 13/05/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-ui   | test/Testing-Suite | ddbfc1c   | test: add US01 register account feature and cucumber setup  | Add cucumber setup and implement feature file for US01 to validate new account registration | 13/05/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-ui   | test/Testing-Suite | 43fc634   | test: add US02 verify email address feature                 | Implement cucumber feature file for US02 to validate email verification process | 13/05/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-ui   | test/Testing-Suite | 69bea66   | test: add US03 log in feature                               | Implement cucumber feature file for US03 to validate user login and session establishment | 13/05/2026         |
+
+
 
 #### 6.2.1.6. Execution Evidence for Sprint Review.
 
