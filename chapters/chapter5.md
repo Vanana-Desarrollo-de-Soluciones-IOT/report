@@ -957,66 +957,115 @@ La vista de detalle de un sensor específico concentra la información técnica 
 
 La pantalla de configuración sigue el estándar de plataformas móviles (iOS/Android) mediante una vista de lista desplazable (table view) agrupada por categorías funcionales. La presencia de un botón de "LOGOUT" claramente diferenciado al final de la lista refuerza las normas de usabilidad y seguridad en aplicaciones móviles, ofreciendo un control total sobre la sesión del usuario.
 
+**Alerts**
+
+<img src="../assets/mobileapp-wf/WF-ALERTS.png" alt="wf-Settings" width="300">
+
+La pantalla de alertas consolida las notificaciones generadas por el sistema Clair, organizadas por niveles de prioridad para facilitar la atención diferenciada por parte del usuario. Cada alerta presenta un encabezado descriptivo, un mensaje contextual y un par de acciones rápidas que permiten responder de manera inmediata o ignorar la notificación. Refleja una arquitectura de notificaciones que equilibra la urgencia operativa con el mantenimiento programado, siguiendo las mejores prácticas de diseño de centros de control y monitoreo en aplicaciones móviles industriales o de seguridad.
+
 ### 5.4.2. Applications Wireflow Diagrams.
 Esta sección presenta los diagramas de flujo (wireflows) de las aplicaciones, que ilustran la navegación y las interacciones del usuario entre las diferentes pantallas, facilitando la comprensión del recorrido dentro del sistema.
 
+**User Goals**
+
+| ID | User Goal | Descripción operativa |
+|:---:|:---|:---|
+| **UG01** | Garantizar la salud ambiental | Mantener un aire fresco y libre de viciamento para que los clientes permanezcan más tiempo en el local. |
+| **UG02** | Demostrar salubridad | Contar con evidencia tangible (reportes) de que el local cumple con estándares de aire seguro para clientes y fiscalizaciones. |
+| **UG03** | Optimizar la productividad | Evitar que los empleados sufran de fatiga o pérdida de concentración por mala ventilación. |
+| **UG04** | Controlar síntomas crónicos | Reducir la frecuencia de episodios de rinitis alérgica, asma o dolores de cabeza asociados al ambiente cargado. |
+| **UG05** | Validar acciones preventivas | Saber con certeza si sus hábitos de limpieza y ventilación están funcionando realmente para mejorar la calidad del aire. |
+| **UG06** | Crear un refugio seguro | Garantizar que, a pesar de la contaminación exterior de la ciudad, el interior de su hogar sea un espacio de respiración pura. |
+
 **Web Application**
 
-**User Acquisition & Authentication Flow**
+**Wireflow: Generación y gestión de reportes**
 
-<img src="../assets/webapp-wireflows/webapp-wflow0.png" alt="webapp-wflow0" width="1000">
+User Goals cubiertos:
 
-Este flujo representa la transición desde la propuesta de valor externa en la Landing Page hacia el acceso al ecosistema digital de Clair. El proceso se activa mediante un Call to Action (CTA) estratégico que redirige al usuario hacia la interfaz de Login, donde se validan las credenciales de seguridad bajo una estética minimalista y profesional. Es el punto de enlace crítico que transforma el interés comercial en una sesión activa, permitiendo al usuario ingresar al tablero de control centralizado para iniciar el monitoreo ambiental.
+| ID | User Goal |
+|:---|:---|
+| UG02 | Demostrar salubridad: Contar con evidencia tangible (reportes) de que el local cumple con estándares de aire seguro para clientes y fiscalizaciones |
+| UG05 | Validar acciones preventivas: Saber con certeza si sus hábitos de limpieza y ventilación están funcionando realmente para mejorar la calidad del aire |
 
-**Registration & Onboarding Flow**
+El usuario accede al Overview y navega a la sección Reports mediante un clic en el menú lateral. Una vez en la pantalla Reports, selecciona el tipo de reporte deseado entre las opciones disponibles (Diario AQI, Semanal Alertas, Mensual Cumplimiento). El sistema presenta una pantalla de configuración donde el usuario puede ajustar el rango de fechas y seleccionar las zonas a incluir. Al hacer clic en "Generar reporte", el sistema recopila los datos del período seleccionado, muestra una barra de progreso y genera el reporte con gráficos, métricas clave y comparativas con estándares. Finalmente, el usuario puede exportar el reporte en formato PDF o compartirlo a través de las opciones del sistema, recibiendo una confirmación de que la acción fue exitosa y quedando registrada en el historial.
+
+UG02 y UG05 comparten el mismo wireflow para Web Application, ya que ambos se resuelven a través de la funcionalidad de Reports. La diferencia radica en el propósito: UG02 busca evidencia para terceros (fiscalizaciones, clientes), mientras que UG05 busca validación personal (verificar si sus hábitos de limpieza y ventilación están funcionando). En ambos casos, el flujo de generación de reportes es idéntico.
+
 
 <img src="../assets/webapp-wireflows/webapp-wflow1.png" alt="webapp-wflow1" width="1000">
 
-Este recorrido modela la experiencia de los nuevos usuarios que se integran al ecosistema a través de la interfaz Register. El flujo se centra en la simplicidad funcional, guiando al usuario por la creación de cuenta, la validación de datos y la aceptación de términos legales antes de su primer acceso. Al completarse, el sistema facilita una transición fluida hacia el Overview, asegurando que el despliegue inicial de la red de monitoreo comience con una configuración de usuario clara y estructurada.
+**Wireflow: Generación y gestión de reportes**
 
-**Asset & Infrastructure Management Flow**
+**User Goals cubiertos:**
+
+| ID | User Goal |
+|:---|:---|
+| UG02 | Demostrar salubridad: Contar con evidencia tangible (reportes) de que el local cumple con estándares de aire seguro para clientes y fiscalizaciones |
+| UG05 | Validar acciones preventivas: Saber con certeza si sus hábitos de limpieza y ventilación están funcionando realmente para mejorar la calidad del aire |
+
+El usuario accede al Overview y visualiza el Dashboard principal con los indicadores de calidad del aire en tiempo real. Desde allí, navega a la sección Reports mediante un clic en el menú lateral, lo que lo lleva a la pantalla Reports donde se muestra la lista de reportes disponibles. El usuario selecciona el tipo de reporte deseado (Diario AQI, Semanal Alertas o Mensual Cumplimiento), y el sistema presenta una pantalla de configuración con opciones para ajustar el rango de fechas y seleccionar las zonas a incluir. Una vez configurados los parámetros, el usuario hace clic en "Generar reporte", y el sistema recopila los datos del período seleccionado, muestra una barra de progreso y genera el reporte. Finalmente, el sistema muestra un mensaje de confirmación y registra la acción en el historial del usuario.
+
+UG02 y UG05 comparten el mismo wireflow para Web Application, ya que ambos se resuelven a través de la funcionalidad de Reports. La diferencia radica en el propósito: UG02 busca evidencia para terceros (fiscalizaciones, clientes), mientras que UG05 busca validación personal (verificar si sus hábitos de limpieza y ventilación están funcionando). En ambos casos, el flujo de generación de reportes es idéntico.
 
 <img src="../assets/webapp-wireflows/webapp-wflow2.png" alt="webapp-wflow2" width="1000">
 
-Este flujo describe la administración jerárquica de la infraestructura IoT de la organización a través de las vistas de Space & Devices. El usuario navega desde una visión macro de los edificios hacia el control detallado de cada espacio, permitiendo la supervisión técnica individual de dispositivos como los sensores SCD41 y PMS5003. La interfaz facilita el monitoreo de la conectividad y la salud del hardware, garantizando que el despliegue en áreas comerciales o residenciales mantenga una operatividad constante y profesional.
+**Wireflow: Configuración de umbrales personalizados (Rules Builder)**
 
-**Detailed Environmental Analysis Flow**
+**User Goals cubiertos:**
+
+| ID | User Goal |
+|:---|:---|
+| UG04 | Controlar síntomas crónicos: Reducir la frecuencia de episodios de rinitis alérgica, asma o dolores de cabeza asociados al ambiente cargado |
+
+El usuario accede al Overview y visualiza el Dashboard principal con los indicadores de calidad del aire en tiempo real. Desde allí, navega a la sección Alerts & Actions mediante un clic en el menú lateral. Dentro de Alerts & Actions, el usuario accede a la pestaña o sección "Rules Builder" / "Configurar reglas", donde el sistema presenta una interfaz para crear reglas personalizadas que incluye selección de métrica (CO2, VOC, PM2.5, etc.), operador (mayor que, menor que), umbral numérico y acción asociada (enviar notificación, activar ventilación, etc.). El usuario configura una regla personalizada basada en sus alergias o síntomas, seleccionando por ejemplo la métrica "VOC" o "PM2.5", definiendo un umbral específico (ej: "> 250 µg/m³") y asignando una acción (ej: "Enviar notificación" o "Activar ventilación"). El sistema valida la regla y la guarda en la lista de reglas activas del usuario. A partir de entonces, el sistema monitorea en tiempo real los sensores y, cuando la métrica supera el umbral definido, dispara automáticamente la acción configurada. El usuario recibe entonces una alerta preventiva en el Dashboard y en la lista de Alerts & Actions, indicando que se ha superado el umbral configurado específicamente para su alergia.
 
 <img src="../assets/webapp-wireflows/webapp-wflow3.png" alt="webapp-wflow3" width="1000">
 
-Este proceso conecta el tablero principal de Overview con el análisis profundo en la interfaz de Air Quality para diagnosticar la salud ambiental de un espacio específico. El usuario puede profundizar en métricas críticas como $CO_2$, $PM2.5$ y compuestos orgánicos volátiles ($VOCs$), utilizando selectores de tiempo para identificar tendencias históricas y causas raíz. El diseño permite comparar la calidad de aire entre distintos sectores de la organización, proporcionando una base científica para la toma de decisiones basada en datos precisos de sensores de alta fidelidad.
+**Wireflow: Verificación de calidad del aire y cumplimiento de estándares**
 
-**Contingency Response & Alert Flow**
+**User Goals cubiertos:**
+
+| ID | User Goal |
+|:---|:---|
+| UG06 | Crear un refugio seguro: Garantizar que, a pesar de la contaminación exterior de la ciudad, el interior de su hogar sea un espacio de respiración pura |
+
+El usuario accede al Overview y visualiza el Dashboard principal con los indicadores de calidad del aire en tiempo real y el estado general por zonas. Desde allí, navega a la sección Air Quality mediante un clic en el menú lateral,  donde se muestran los registros de los sensores Clair (CO2, VOC, temperatura, humedad) y el indicador AQI (Bueno/Moderado/Malo). El usuario visualiza el indicador AQI, y el sistema muestra el estado actual del aire (ej: "Bueno - El aire es saludable") junto con las tendencias recientes. Opcionalmente, el usuario puede navegar a la sección Reports mediante un clic en el menú lateral, donde localiza el widget o área que indica el cumplimiento de estándares OMS. El sistema presenta entonces una comparativa indicando si se cumple o no con los estándares de la Organización Mundial de la Salud, mostrando información de métricas clave (CO2, VOC, etc.) frente a los límites recomendados por la OMS. De esta manera, el usuario puede verificar que el aire interior es saludable y que su hogar constituye un "refugio seguro".
 
 <img src="../assets/webapp-wireflows/webapp-wflow4.png" alt="webapp-wflow4" width="1000">
 
-Este flujo operativo modela la detección y mitigación de anomalías ambientales a través de la interfaz de Alerts & Actions. Se activa ante un disparo de umbral crítico (como niveles altos de material particulado), dirigiendo al usuario a revisar la distribución de incidencias y la severidad del evento en tiempo real. El flujo culmina en la ejecución de acciones sugeridas o el uso del Rules Builder para automatizar respuestas, como la activación de purificadores, asegurando una gestión proactiva ante riesgos en la calidad del aire.
-
-**Data Intelligence & Audit Flow**
-
-<img src="../assets/webapp-wireflows/webapp-wflow5.png" alt="webapp-wflow5" width="1000">
-
-Este flujo se especializa en la interpretación estratégica de datos y la generación de documentación técnica mediante la interfaz de Reports. El usuario interactúa con resúmenes de cumplimiento normativo y mapas de correlación de partículas para evaluar el impacto a largo plazo en la organización. El proceso incluye la configuración de exportaciones automatizadas en formatos PDF y CSV, proporcionando una herramienta de auditoría esencial para certificar que los espacios cumplen con las directrices de salud y seguridad ambiental vigentes.
 
 **Mobile Application**
 
-**Authentication & Account Creation Flow**
+**Wireflow: Gestión de alertas y activación de respuestas**
 
-<img src="../assets/mobileapp-wireflows/mobileapp-wflow0.png" alt="mobileapp-wflow0" width="1000">
+**User Goals cubiertos:**
 
-Este wireflow representa el recorrido completo de autenticación en la aplicación móvil, abarcando tanto el inicio de sesión de usuarios existentes como la creación de cuentas para nuevos miembros. El flujo inicia en la pantalla Login, donde el usuario introduce sus credenciales. Desde aquí, existen dos caminos principales: (1) pulsar el botón "Login" para acceder directamente al Dashboard si las credenciales son válidas, o (2) pulsar el enlace "Register" para navegar hacia la pantalla de creación de cuenta. En la pantalla Register, el usuario completa el correo electrónico, la contraseña, acepta los términos y condiciones mediante un checkbox o texto enlazado, y puede optar por la autenticación social con Google como alternativa de registro rápido. Al completar el formulario y pulsar "Register", el sistema redirige al usuario autenticado hacia el Dashboard, estableciendo así una experiencia de onboarding fluida, segura y optimizada para entornos táctiles.
+| ID | User Goal |
+|:---|:---|
+| UG01 | Garantizar la salud ambiental: Mantener un aire fresco y libre de viciamento para que los clientes permanezcan más tiempo en el local |
+| UG04 | Controlar síntomas crónicos: Reducir la frecuencia de episodios de rinitis alérgica, asma o dolores de cabeza asociados al ambiente cargado |
 
-**Main Monitoring & Location Selection Flow**
+El usuario ingresa a la aplicación y visualiza el Dashboard principal, donde se muestran los indicadores de calidad del aire en tiempo real y el estado general por zonas. El sistema monitorea continuamente los sensores y, cuando detecta una condición crítica (UG01: CO2/VOC elevado) o la superación de un umbral personalizado configurado desde la Web App (UG04), genera una notificación emergente en la parte superior de la pantalla. El usuario ingresa a la lista de alerts mediante un tap en el ícono de campana o directamente en la notificación, accediendo a la pantalla Alerts donde la alerta aparece destacada con información contextual. El sistema muestra cada alerta con título, mensaje y botones de acción ("Activar respuesta" si está configurada, "Descartar", "Ver más"). Si el usuario realiza tap en el botón "Activar respuesta" correspondiente a la alerta (siempre que la acción haya sido preconfigurada desde la Web App), el sistema ejecuta la acción correctiva de inmediato (ej: activar ventilación, enviar notificación al administrador), muestra un toast o snackbar de confirmación y marca la alerta como "En proceso" o "Resuelta". Opcionalmente, el usuario puede tap en "Descartar" o "Recordar más tarde", en cuyo caso la alerta se archiva o se programa para reapparecer después de un tiempo definido.
 
-<img src="../assets/mobileapp-wireflows/mobileapp-wflow1.png" alt="mobileapp-wflow0" width="1000">
+UG01 y UG04 comparten el mismo wireflow para Mobile Application, ya que ambos flujos se detonan por una alerta (automática por niveles críticos o preventiva por umbral personalizado) y conducen a la misma pantalla Alerts para la gestión de la respuesta. La diferencia radica en el origen de la regla (UG01: reglas por defecto del sistema / UG04: reglas personalizadas configuradas desde Web App), pero la experiencia de usuario en mobile es idéntica.
 
-Este wireflow ilustra el recorrido principal de monitoreo, comenzando desde el Dashboard como punto de entrada tras la autenticación. Desde esta vista, el usuario puede navegar mediante la bottom tab bar hacia la sección Sensors (Sensores). Al acceder a la vista de Sensors, el sistema presenta la pantalla de Sensor Selection, que lista jerárquicamente los espacios disponibles. El usuario selecciona una opción y confirma mediante el botón "CONFIRM SELECTION", lo que desencadena la navegación hacia la vista Sensor Detail. El wireflow demuestra cómo la navegación por pestañas inferiores y la selección jerárquica de ubicaciones se combinan para ofrecer un recorrido eficiente desde la supervisión global hasta el diagnóstico de cada sensor.
+<img src="../assets/mobileapp-wireflows/mobileapp-wflow1.png" alt="mobileapp-wflow1" width="600">
 
-**Device Management & Settings Flow**
+**Wireflow: Verificación de calidad del aire (Refugio seguro)**
 
-<img src="../assets/mobileapp-wireflows/mobileapp-wflow2.png" alt="mobileapp-wflow0" width="1000">
+**User Goals cubiertos:**
 
-Este wireflow representa el recorrido de gestión de preferencias de usuario y configuración del sistema, fundamental para la personalización de la experiencia móvil. El flujo puede iniciar desde cualquier pantalla principal (Dashboard o Sensor Detail), accediendo a la sección Settings a través de la bottom tab bar. Desde cualquier punto dentro de Settings, el usuario puede navegar hacia otras secciones principales (Dashboard, Sensors) mediante la barra inferior, o bien ejecutar la acción de cierre de sesión "LOGOUT". Al pulsar "LOGOUT", el sistema redirige al usuario hacia la pantalla Login, cerrando su sesión de forma segura. Este wireflow evidencia cómo la aplicación móvil ofrece un control completo sobre las preferencias del sistema y la gestión de cuenta, manteniendo una navegación coherente y accesible en todo momento.
+| ID | User Goal |
+|:---|:---|
+| UG06 | Crear un refugio seguro: Garantizar que, a pesar de la contaminación exterior de la ciudad, el interior de su hogar sea un espacio de respiración pura |
+
+El usuario ingresa a la aplicación y visualiza el Dashboard principal. En esta pantalla, el sistema muestra los indicadores de calidad del aire (CO2, VOC, temperatura, humedad), el estado general por zonas y el indicador AQI (Bueno/Moderado/Malo). El usuario visualiza el AQI y los valores de los sensores directamente en el Dashboard. El sistema presenta el estado actual del aire, indicando si es saludable o no. Al observar que los indicadores están dentro de rangos saludables y que el AQI es "Bueno" o "Moderado", el usuario confirma que su hogar es un "refugio seguro", es decir, un espacio de respiración pura a pesar de la contaminación exterior del entorno urbano.
+
+UG06 en Mobile se resuelve íntegramente en el Dashboard, ya que esta pantalla muestra el AQI y los valores de calidad del aire en tiempo real. No existe funcionalidad equivalente al widget de cumplimiento OMS en la versión mobile de Reports. El usuario valida que su hogar es un refugio seguro al observar indicadores saludables en el Dashboard.
+
+<img src="../assets/mobileapp-wireflows/mobileapp-wflow2.png" alt="mobileapp-wflow2" width="340">
+
 
 
 ### 5.4.3. Applications Mock-ups.
@@ -1087,7 +1136,7 @@ La interfaz de registro mantiene la coherencia visual con la pantalla de login, 
 
 <img src="../assets/mobileapp-mockup/DASHBOARD.png" alt="mobile-dashboard" width="300">
 
-La pantalla principal de la aplicación presenta un tablero de control resumido que prioriza los indicadores críticos de calidad del aire y el estado de la red. Este diseño permite una supervisión inmediata de la salud ambiental y de red desde el primer vistazo.
+La pantalla principal de la aplicación presenta un tablero de control resumido que prioriza los indicadores críticos de calidad del aire. Este diseño permite una supervisión inmediata de la salud ambiental y de red desde el primer vistazo.
 
 **Sensor Selection**
 
@@ -1107,6 +1156,12 @@ La vista de detalle de un sensor específico concentra información técnica ope
 
 La pantalla de configuración sigue el estándar de plataformas móviles mediante una vista de lista desplazable (table view) agrupada por categorías funcionales. El mockup organiza las opciones en secciones claramente diferenciadas: "ACCOUNT", "PREFERENCES", "DEVICE SETTINGS" y "SUPPORT & LEGAL". Finalmente, un botón "LOGOUT" claramente diferenciado para el cierre la sesión. 
 
+**Alerts**
+
+<img src="../assets/mobileapp-mockup/ALERTS.png" alt="mobile-alerts" width="300">
+
+La pantalla de alertas consolida las notificaciones generadas por el sistema Clair. Cada alerta presenta un encabezado descriptivo, un mensaje contextual y un par de acciones rápidas que permiten responder de manera inmediata o ignorar la notificación. Refleja una arquitectura de notificaciones que equilibra la urgencia operativa con el mantenimiento programado, siguiendo las mejores prácticas de diseño de centros de control y monitoreo en aplicaciones móviles industriales o de seguridad.
+
 
 ### 5.4.4. Applications User Flow Diagrams.
 
@@ -1114,98 +1169,82 @@ Esta sección presenta los diagramas de flujo de usuario, que ilustran las rutas
 
 **Web Application UserFlow**
 
-**Acquisition & Authentication**
+**User Flow: Gestión de alertas y acciones correctivas**
 
-UG-W01: Acceder al ecosistema digital desde la plataforma pública
+User Goals cubiertos:
+| ID | User Goal |
+|:---|:---|
+| UG01 | Garantizar la salud ambiental: Mantener un aire fresco y libre de viciamento para que los clientes permanezcan más tiempo en el local |
+| UG03 | Optimizar la productividad: Evitar que los empleados sufran de fatiga o pérdida de concentración por mala ventilación |
 
-<img src="../assets/webapp-userflows/webapp-uflow0.png" alt="webapp-uflow0" width="1000">
-
-El usuario accede a la Landing Page de Clair, donde visualiza la propuesta de valor y la arquitectura del sistema. Tras interactuar con el botón principal de "Get Started", es redirigido a la interfaz de Login. Una vez allí, ingresa sus credenciales de acceso para validar su identidad y acceder al panel de control centralizado de la organización.
-
-**Registration & Onboarding**
-
-UG-W02: Crear una cuenta y configurar el perfil inicial
+Ambos User Goals comparten el mismo flujo de interacción. El usuario recibe una alerta automática por niveles elevados de CO2 o VOC, accede a la pantalla Alerts & Actions, y activa una respuesta correctiva preconfigurada. La diferencia radica en el propósito (salud del cliente vs. productividad del empleado), pero la experiencia de usuario es idéntica.
 
 <img src="../assets/webapp-userflows/webapp-uflow1.png" alt="webapp-uflow1" width="1000">
 
-El usuario nuevo selecciona la opción de registro desde la Landing Page y visualiza el formulario en CREATE-ACCOUNT. Completa los campos de correo y contraseña, acepta los términos y condiciones de Clair y opta por la autenticación social si lo prefiere. Tras confirmar sus datos, el sistema lo redirige al flujo de bienvenida para iniciar la configuración de su red de monitoreo.
+**User Flow: Generación y gestión de reportes**
 
-**Asset & Infrastructure Management**
+User Goals cubiertos:
+| ID | User Goal |
+|:---|:---|
+| UG02 | Demostrar salubridad: Contar con evidencia tangible (reportes) de que el local cumple con estándares de aire seguro para clientes y fiscalizaciones |
+| UG05 | Validar acciones preventivas: Saber con certeza si sus hábitos de limpieza y ventilación están funcionando realmente para mejorar la calidad del aire |
 
-UG-W03: Administrar jerárquicamente edificios, espacios y dispositivos
+Ambos User Goals comparten el mismo flujo de interacción. El usuario accede a la pantalla Reports, selecciona el tipo de reporte deseado (Diario AQI, Semanal Alertas, Mensual Cumplimiento), configura los parámetros (rango de fechas, zonas), genera el reporte y lo exporta. La diferencia radica en el propósito (UG02: evidencia para terceros / UG05: validación personal), pero la experiencia de usuario es idéntica.
+
 
 <img src="../assets/webapp-userflows/webapp-uflow2.png" alt="webapp-uflow2" width="1000">
 
-El administrador accede a la sección "Space & Devices" desde el menú lateral para visualizar la lista de organizaciones. Selecciona un edificio específico (ej. Building A) y navega por los niveles hasta encontrar un espacio determinado, como se observa en wf-space1.png. Desde allí, elige un sensor individual (ej. Clair-01) para revisar su estado de conexión, salud técnica y configurar los umbrales operativos detallados en Space&Devices.
+**User Flow: Configuración de umbrales personalizados (Rules Builder)**
 
-**Web Application UserFlow Detailed Environmental Analysis**
+User Goals cubiertos:
 
-UG-W04: Consultar métricas detalladas y diagnóstico de calidad de aire
+| ID | User Goal |
+|:---|:---|
+| UG04 | Controlar síntomas crónicos: Reducir la frecuencia de episodios de rinitis alérgica, asma o dolores de cabeza asociados al ambiente cargado |
+
+El usuario accede a la pantalla Alerts & Actions, navega a la sección Rules Builder, y configura reglas personalizadas basadas en sus alergias o síntomas. Define una métrica (CO2, VOC, PM2.5, etc.), un operador (mayor que, menor que), un umbral específico, y una acción asociada (ej: enviar notificación, activar ventilación). El sistema monitorea continuamente los sensores y, cuando se supera el umbral definido, dispara la acción configurada y genera una alerta preventiva en el Dashboard y en Alerts & Actions.
 
 <img src="../assets/webapp-userflows/webapp-uflow3.png" alt="webapp-uflow3" width="1000">
 
-Desde el panel principal, el usuario selecciona la opción "Air Quality" para profundizar en el estado de un área específica. Utiliza los selectores para filtrar por local, espacio y dispositivo, visualizando el índice de calidad de aire en tiempo real y el impacto de contaminantes como $PM2.5$ y $CO_2$. Finalmente, revisa el análisis de causa raíz para comprender qué factores externos, como el tráfico o el sistema HVAC, están afectando el entorno.
+**User Flow: Verificación de calidad del aire y cumplimiento de estándares**
 
-**Web Application UserFlow Contingency Response & Alerts**
+User Goals cubiertos:
 
-UG-W05: Gestionar alertas críticas y ejecutar respuestas automatizadas
+| ID | User Goal |
+|:---|:---|
+| UG06 | Crear un refugio seguro: Garantizar que, a pesar de la contaminación exterior de la ciudad, el interior de su hogar sea un espacio de respiración pura |
+
+El usuario accede a la pantalla Air Quality para visualizar el indicador AQI (Bueno/Moderado/Malo) y los registros de los sensores Clair (CO2, VOC, temperatura, humedad). Opcionalmente, puede navegar a la pantalla Reports para consultar el widget de cumplimiento de directrices OMS, que compara los valores actuales con los límites recomendados por la Organización Mundial de la Salud. Al verificar que el AQI es saludable y que se cumple con los estándares OMS, el usuario confirma que el interior de su hogar es un "refugio seguro".
 
 <img src="../assets/webapp-userflows/webapp-uflow4.png" alt="webapp-uflow4" width="1000">
 
-El usuario ingresa a la sección de "Alerts & Response" para monitorear las anomalías detectadas en las últimas 24 horas. En la vista Alerts&Actions, revisa la severidad de las alertas activas y consulta el historial de eventos. Utiliza el "Rules Builder" para definir acciones automáticas (ej. activar purificadores ante exceso de $CO_2$) o ejecuta respuestas rápidas sugeridas por el sistema para mitigar riesgos ambientales de forma inmediata.
-
-**Web Application UserFlow Data Intelligence & Audit**
-
-UG-W06: Generar reportes de cumplimiento y exportar datos históricos
-
-<img src="../assets/webapp-userflows/webapp-uflow5.png" alt="webapp-uflow5" width="1000">
-
-El usuario accede al módulo de "Reports" para evaluar el rendimiento histórico de la red de sensores. En la interfaz de Reports, analiza los resúmenes de cumplimiento diario, semanal y mensual, comparando los datos obtenidos con las directrices internacionales de salud. Posteriormente, configura la generación automática de archivos PDF o CSV para ser enviados a destinatarios específicos, asegurando la trazabilidad de los datos para auditorías legales.
-
-**Resumen de User Flows - Web Application**
-
-| ID | Objetivo de Usuario | Pantallas Involucradas | Acción Principal |
-|----|---------------------|------------------------|------------------|
-| UG-W01 | Acceder al ecosistema digital desde la plataforma pública | Landing Page → Login | Autenticación de credenciales |
-| UG-W02 | Crear una cuenta y configurar el perfil inicial | Landing Page → Register → Dashboard | Registro y onboarding |
-| UG-W03 | Administrar jerárquicamente edificios, espacios y dispositivos | Space & Devices → Sensor Detail | Selección jerárquica y configuración |
-| UG-W04 | Consultar métricas detalladas y diagnóstico de calidad de aire | Air Quality → Filtros → Análisis | Visualización de contaminantes y causa raíz |
-| UG-W05 | Gestionar alertas críticas y ejecutar respuestas automatizadas | Alerts & Response → Rules Builder | Monitoreo de anomalías y acciones automáticas |
-| UG-W06 | Generar reportes de cumplimiento y exportar datos históricos | Reports → Configuración de exportación | Generación de PDF/CSV para auditorías |
 
 **Mobile Application UserFlow**
 
-**Acquisition & Authentication**
+**User Flow: Gestión de alertas y activación de respuestas**
 
-**UG-M01:** Iniciar sesión o crear una cuenta desde la aplicación móvil
+User Goals cubiertos:
 
-<img src="../assets/mobileapp-userflows/mobileapp-uflow0.png" alt="mobile-uflow1" width="1000">
+| ID | User Goal |
+|:---|:---|
+| UG01 | Garantizar la salud ambiental: Mantener un aire fresco y libre de viciamento para que los clientes permanezcan más tiempo en el local |
+| UG04 | Controlar síntomas crónicos: Reducir la frecuencia de episodios de rinitis alérgica, asma o dolores de cabeza asociados al ambiente cargado |
 
-El usuario accede a la pantalla de Login de la aplicación móvil de Clair, donde visualiza los campos de ingreso de credenciales y el enlace de registro. Si ya posee una cuenta, introduce su correo electrónico y contraseña, y pulsa el botón "Login" para ser redirigido directamente al Dashboard de monitoreo. Si es un usuario nuevo, pulsa el enlace "Register" y navega hacia la pantalla de creación de cuenta. En Register, completa el formulario con correo electrónico y contraseña (visualmente enmascarada), acepta los términos y condiciones de Clair mediante verificación, y puede optar por la autenticación social con Google como alternativa de registro rápido. Tras confirmar sus datos correctamente, el sistema valida la información y redirige al usuario autenticado hacia el Dashboard, permitiéndole iniciar el monitoreo de su red de sensores desde el primer acceso.
+Ambos User Goals comparten el mismo flujo de interacción en Mobile Application. El usuario recibe una notificación emergente en el Dashboard cuando el sistema detecta una condición crítica (UG01) o la superación de un umbral personalizado (UG04). El usuario ingresa a la pantalla Alerts, visualiza la alerta destacada, y puede activar una respuesta preconfigurada (si está disponible desde Web App) o descartarla. La diferencia radica en el origen de la regla (UG01: reglas por defecto del sistema / UG04: reglas personalizadas configuradas desde Web App), pero la experiencia de usuario en mobile es idéntica.
 
-**Location Selection & Sensor Monitoring**
+<img src="../assets/mobileapp-userflows/mobileapp-uflow1.png" alt="webapp-uflow1" width="1000">
 
-**UG-M02:** Seleccionar una ubicación y visualizar el estado detallado de un sensor
+**User Flow: Verificación de calidad del aire (Refugio seguro)**
 
-<img src="../assets/mobileapp-userflows/mobileapp-uflow1.png" alt="mobile-uflow2" width="1000">
+User Goals cubiertos:
 
-El usuario, una vez autenticado en el Dashboard, puede navegar a la sección de gestión de sensores utilizando la barra inferior. Al pulsar la pestaña "Sensors", accede a la pantalla de selección de ubicación, donde se despliega una lista jerárquica de los espacios disponibles en su organización. El usuario selecciona la ubicación deseada y confirma su elección mediante el botón "CONFIRM SELECTION". El sistema entonces navega hacia la vista detallada del sensor, donde se presentan métricas técnicas críticas del dispositivo. Este flujo permite al usuario móvil realizar un monitoreo profundo y contextualizado, desde la selección jerárquica del espacio hasta el diagnóstico granular del estado operativo de cada sensor.
+| ID | User Goal |
+|:---|:---|
+| UG06 | Crear un refugio seguro: Garantizar que, a pesar de la contaminación exterior de la ciudad, el interior de su hogar sea un espacio de respiración pura |
 
-**User Preferences & System Configuration**
+El usuario accede al Dashboard de Mobile Application. En esta pantalla, se muestran los indicadores de calidad del aire (CO2, VOC, temperatura, humedad) y el indicador AQI (Bueno/Moderado/Malo). El usuario visualiza estos indicadores y verifica que el aire interior es saludable. Al observar que el AQI es "Bueno" o "Moderado" y que los valores están dentro de rangos saludables, el usuario confirma que su hogar es un "refugio seguro". No existe funcionalidad equivalente al widget de cumplimiento OMS en la versión mobile.
 
-**UG-M03:** Configurar preferencias de usuario y ajustes del sistema
-
-<img src="../assets/mobileapp-userflows/mobileapp-uflow2.png" alt="mobile-uflow3" width="1000">
-
-El usuario accede a la pantalla de Settings mediante la barra inferior desde cualquier vista principal de la aplicación. Dentro de la interfaz de configuración, organizada en categorías funcionales, el usuario puede gestionar múltiples aspectos de su experiencia. Finalmente, si el usuario desea cerrar sesión de forma segura, pulsa el botón "LOGOUT", confirma la acción, y el sistema lo redirige automáticamente a la pantalla Login. Todos los ajustes se guardan de forma inmediata al ser modificados, ofreciendo una experiencia de configuración fluida, intuitiva y sin fricciones, adaptada a los estándares de usabilidad de plataformas móviles.
-
-**Resumen de User Flows - Mobile Application**
-
-| ID | Objetivo de Usuario | Pantallas Involucradas | Acción Principal |
-|----|---------------------|------------------------|------------------|
-| UG-M01 | Iniciar sesión o crear una cuenta desde la aplicación móvil | Login → Register → Dashboard | Autenticación de credenciales o registro con verificación de términos |
-| UG-M02 | Seleccionar una ubicación y visualizar el estado detallado de un sensor | Dashboard → Sensors → Sensor-Selection → Sensor Detail | Navegación por bottom tab, selección jerárquica y diagnóstico técnico |
-| UG-M03 | Configurar preferencias de usuario y ajustes del sistema | Settings → (Preferences / Device Settings / Support) → Login | Gestión de notificaciones, idioma, unidades, frecuencia de actualización y cierre de sesión |
+<img src="../assets/mobileapp-userflows/mobileapp-uflow2.png" alt="webapp-uflow2" width="600">
 
 ## 5.5. Applications Prototyping.
 
