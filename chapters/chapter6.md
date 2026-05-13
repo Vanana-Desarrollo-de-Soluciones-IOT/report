@@ -344,6 +344,20 @@ En conjunto, esta versión establece la primera base funcional y visual de la pl
 
 #### 6.2.1.6. Execution Evidence for Sprint Review.
 
+En el Execution Evidence se muestra el desarrollo de los principales entregables correspondientes al Sprint 1 del proyecto. Se evidencia la implementación de la Landing Page, el primer avance de la Web Application y la integración inicial de los Web Services como parte de la arquitectura del sistema.
+
+Respecto a la Landing Page, se presentan las diferentes secciones implementadas para la plataforma, incluyendo la página principal, información sobre el producto, descripción del proyecto, presentación del equipo, página de precios, contacto y políticas de privacidad. Asimismo, se evidencia que la interfaz fue desarrollada completamente en inglés y que cuenta con soporte de internacionalización mediante i18n para futuros cambios de idioma.
+
+También se muestra la estructura del modelo SaaS basado en suscripciones, donde los usuarios podrán acceder a métricas relacionadas con el sistema IoT desarrollado por el equipo. Dentro de las evidencias presentadas, se visualizan las especificaciones del producto, contenido multimedia referencial y los distintos call to action que permiten la navegación hacia la aplicación web.
+
+Por otro lado, se evidencia la implementación del sistema de autenticación de usuarios. El proyecto incorpora registro e inicio de sesión mediante proveedor de correo electrónico con validación por código, así como autenticación utilizando Google OAuth API. Adicionalmente, el sistema verifica la aceptación de términos y condiciones antes de permitir el acceso o registro de nuevos usuarios.
+
+Finalmente, se muestra el primer avance funcional de la Web Application, donde se implementaron componentes base como el overview principal, sidebar de navegación, header y módulo de settings para cierre de sesión. Estos elementos representan la estructura inicial de la experiencia de usuario y servirán como base para el desarrollo de futuras funcionalidades en los siguientes sprints.
+
+<p align="center">  <img src="https://imgur.com/ifF1IYC.png"> </p>
+
+Evidencia de ejecución disponible en Anexo: https://bit.ly/4wzn8Jl
+
 #### 6.2.1.7. Services Documentation Evidence for Sprint Review.
 
 **Documentación de Web Services (OpenAPI)**
@@ -486,7 +500,7 @@ Avance preliminar del UI de Clair, donde se implementó registro y login con aut
 
 4. **Web services**
 
-El avance preliminar de los serivicios web es de los servicios genericos como IAM y Billing, para los proximos sprint se trabajara en los bounded context core de la aplicacion
+El avance preliminar de los servicios web es de los servicios genericos como IAM y Billing, para los proximos sprint se trabajara en los bounded context core de la aplicacion
 
 <img src="../assets/insights-tp/insights-core.png" alt="c4-container" width="500">
 
