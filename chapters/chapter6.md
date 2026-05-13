@@ -348,15 +348,37 @@ En conjunto, esta versión establece la primera base funcional y visual de la pl
 
 #### 6.2.1.8. Software Deployment Evidence for Sprint Review.
 
-1. **Landing page**
+En esta sección se resume los procesos realizados en relación con el Deployment durante el Sprint 1. Las actividades abarcaron la creación y configuración de cuentas en plataformas de despliegue, la configuración de recursos en proveedores de nube, la configuración de proyectos de desarrollo para integración y automatización, así como el despliegue de todos los productos digitales que forman parte del alcance: Landing Page, Web Application y Web Services. A continuación, se describen los pasos realizados y las evidencias correspondientes.
 
-   La Landing Page de Clair ha sido desplegada exitosamente en Vercel, plataforma serverless especializada en el despliegue de aplicaciones frontend y sitios estáticos. El sitio se encuentra disponible públicamente en línea e incluye múltiples Call-to-Action (CTA) estratégicamente ubicados para guiar a los visitantes hacia el registro y la creación de cuenta.
+**1. Landing Page**
 
-   **URL de producción:** https://site-beige-mu.vercel.app/
+Para el despliegue de la Landing Page, se creó una cuenta en **Vercel** y se configuró el proyecto vinculado al repositorio de GitHub (`Vanana-Desarrollo-de-Soluciones-IOT/site`). Se configuró el dominio personalizado y se establecieron las variables de entorno necesarias para la internacionalización (i18n). La Landing Page fue desplegada como sitio estático, aprovechando la infraestructura global de CDN de Vercel para garantizar baja latencia y alta disponibilidad. El sitio incluye múltiples **Call-to-Action (CTA)** estratégicamente ubicados para guiar a los visitantes hacia el registro.
 
-   <p align="center">
-    <img src="https://imgur.com/MgnEBBK.png">
-   </p>
+**URL de producción:** https://clair-psi.vercel.app/
+
+<p align="center">
+ <img src="https://imgur.com/MgnEBBK.png">
+</p>
+
+**2. Web Application**
+
+Para la Web Application desarrollada en Angular, se creó un proyecto en **Vercel** vinculado al repositorio (`Vanana-Desarrollo-de-Soluciones-IOT/clair-ui`). Se configuró el pipeline de despliegue automático a partir de la rama `develop`, de modo que cada fusión de código genera automáticamente una nueva versión en el entorno de producción. La aplicación se despliega como Single Page Application (SPA) con pre-rendering estático.
+
+<p align="center">
+ <img src="https://imgur.com/IhiWayd.png">
+</p>
+
+**3. Web Services**
+
+Los Web Services implementados durante este sprint comprenden el módulo de **Identity and Access Management (IAM)** y el contexto de **Billing**. Para el despliegue del backend, se creó y configuró una cuenta en **Contabo** para la contratación de un servidor dedicado donde se desplegaron los servicios Spring Boot mediante contenedores **Docker**. Adicionalmente, se configuró **Cloudflare Tunnel** para establecer un túnel seguro y encriptado que expone los servicios hacia internet sin necesidad de exponer directamente la dirección IP pública del servidor, protegiendo así la infraestructura backend.
+
+Los servicios incluyen la integración con dos proveedores externos configurados durante este sprint:
+- **Google OAuth2** para autenticación segura de usuarios mediante cuentas de Google.
+- **Resend** para el envío de notificaciones y correos electrónicos transaccionales.
+
+<p align="center">
+ <img src="https://imgur.com/rHOetSh.png">
+</p>
 
 2. **Web application**
 
