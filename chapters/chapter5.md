@@ -1281,19 +1281,18 @@ El esquema fue desarrollado en **Cirkit Designer** (https://app.cirkitdesigner.c
 | Componente | Descripción | Especificaciones Técnicas |
 |------------|-------------|---------------------------|
 | **ESP32 DevKit** | Microcontrolador principal con WiFi/Bluetooth integrado | Dual-core 240MHz, 520KB SRAM, USB Tipo C |
-| **Sensor MQ-135** | Sensor de calidad de aire para detección de CO2 y gases | 5V, salida analógica/digital, rango 10-1000ppm |
+| **Sensor SCD41** | Sensor de calidad de aire para detección de CO2 | 5V, interfaz I2C, rango 0-40000 ppm, precisión ±(40 ppm + 5%) |
 | **Display OLED 0.96"** | Pantalla local para visualización de métricas | I2C (SDA/SCL), 128x64 píxeles, 3.3V-5V |
 | **LED Panel** | Panel de LEDs para indicadores visuales de estado | Requiere definición de bits/resolución específica |
 | **Protoboards** | Placas de prototipado para conexiones | MB-102 (830 puntos) y 400 puntos |
 | **Cables Dupont** | Conexiones hembra-hembra, macho-hembra, macho-macho | 20cm, 40 piezas cada tipo |
 
-Es importante destacar que durante la fase de diseño y validación técnica, se identificaron las siguientes limitaciones críticas:
+Es importante destacar que durante la fase de diseño y validación técnica, se identificaron las siguientes consideraciones:
 
-1. **Sensor MQ-135 - Limitaciones Funcionales:** Según la documentación oficial del fabricante y las especificaciones técnicas revisadas, el sensor MQ-135 presenta limitaciones significativas para la detección precisa de CO2 en aplicaciones de monitoreo ambiental profesional. El sensor está diseñado principalmente para detectar una mezcla de gases (NH3, NOx, alcohol, benzeno, humo) pero carece de la selectividad y precisión requeridas para mediciones fiables de CO2 en tiempo real.
+1. **Sensor SCD41 - Alta precisión:** El sensor SCD41 de Sensirion ha sido seleccionado por su alta precisión en la detección de CO2, utilizando tecnología NDIR (Non-Dispersive Infrared) que garantiza mediciones fiables en rangos de 0 a 40000 ppm. A diferencia de sensores de bajo costo, el SCD41 no requiere calibración periódica gracias a su algoritmo de compensación interna (SHP), lo que lo hace ideal para aplicaciones de monitoreo ambiental profesional.
 
-2. **Uso como Placeholder:** A pesar de estas limitaciones documentadas, el equipo decidió utilizar el MQ-135 como componente placeholder en el prototipo inicial debido a que el hardware físico ya había sido adquirido por el equipo para el desarrollo del proyecto. Esto permitió avanzar con la integración del sistema, el desarrollo del firmware del ESP32, y la validación de la arquitectura de comunicación (Embedded→Edge→Cloud), mientras se evalúa la incorporación de sensores más precisos (como el Sensirion SCD30 o MHZ-19B) en iteraciones futuras.
+2. **Integración planificada:** El sensor utiliza interfaz I2C estándar, lo que facilitará su comunicación con el ESP32. No se requieren tiempos de calentamiento prolongados ni compensaciones complejas, a diferencia de sensores de tipo electroquímico o de óxido metálico. Esto permitirá avanzar rápidamente con el desarrollo del firmware y la validación de la arquitectura de comunicación (Embedded → Edge → Cloud).
 
 3. **LED Panel - Especificaciones Pendientes:** El diseño incluye un panel de LEDs para indicadores visuales del estado del sistema (conexión WiFi, umbrales de calidad de aire). Sin embargo, las especificaciones exactas del panel (número de bits, resolución, protocolo de comunicación) requieren definición adicional para la implementación final.
 
-
-El diseño representa la versión inicial de prototipado enfocada en validar la arquitectura de hardware y las conexiones básicas. Las pruebas preliminares confirman el funcionamiento de la comunicación I2C con el display OLED, la lectura analógica del ADC del ESP32, y la conectividad WiFi para transmisión de datos al Edge Station.
+El diseño representa la versión inicial de prototipado enfocada en validar la arquitectura de hardware y las conexiones básicas. Las pruebas realizadas en el simulador Cirkit Designer confirman el funcionamiento esperado de la comunicación I2C con el display OLED, la lectura del ADC del ESP32, y la conectividad WiFi para transmisión de datos al Edge Station. El desarrollo del firmware para los componentes reales se realizará en iteraciones posteriores.
