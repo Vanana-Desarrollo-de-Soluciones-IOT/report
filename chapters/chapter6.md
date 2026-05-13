@@ -474,9 +474,24 @@ Los servicios incluyen la integración con dos proveedores externos configurados
 
 3. **Web application**
 
+Avance preliminar del UI de Clair, donde se implementó registro y login con autenticación Google OAuth2 y correo electrónico
+
+<img src="../assets/insights-tp/insights-ui1.png" alt="c4-container" width="500">
+
+<img src="../assets/insights-tp/insights-ui2.png" alt="c4-container" width="500">
+
+<img src="../assets/insights-tp/insights-ui3.png" alt="c4-container" width="500">
+
+
+
 4. **Web services**
 
-   
+El avance preliminar de los serivicios web es de los servicios genericos como IAM y Billing, para los proximos sprint se trabajara en los bounded context core de la aplicacion
+
+<img src="../assets/insights-tp/insights-core.png" alt="c4-container" width="500">
+
+
+
 
 ### 6.2.2. Sprint 2
 
