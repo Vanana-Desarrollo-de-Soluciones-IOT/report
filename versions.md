@@ -77,3 +77,7 @@ Neil Curipaco Huayllani desarrolló los User Personas y la User Task Matrix para
 <p align="center">
  <img src="https://imgur.com/uKOh4vF.png" width="500">
 </p>
+2. **TB1 **
+
+
+

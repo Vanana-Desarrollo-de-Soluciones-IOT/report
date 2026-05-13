@@ -500,7 +500,7 @@ Avance preliminar del UI de Clair, donde se implementó registro y login con aut
 
 4. **Web services**
 
-El avance preliminar de los serivicios web es de los servicios genericos como IAM y Billing, para los proximos sprint se trabajara en los bounded context core de la aplicacion
+El avance preliminar de los servicios web es de los servicios genericos como IAM y Billing, para los proximos sprint se trabajara en los bounded context core de la aplicacion
 
 <img src="../assets/insights-tp/insights-core.png" alt="c4-container" width="500">
 
