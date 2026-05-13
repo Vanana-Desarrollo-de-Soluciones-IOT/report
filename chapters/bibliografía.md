@@ -26,3 +26,7 @@ Cirkit Designer. (s. f.). *Online circuit design and prototyping platform for Io
 - Candidate Context Discovery: https://imgur.com/a/OX5FnV6
 - Backlog en Trello: https://sl1nk.com/r2diehi
 - Diagramas C4: https://bit.ly/48eogr9
+
+- Landing Page: https://github.com/Vanana-Desarrollo-de-Soluciones-IOT/site
+- Web Services: https://github.com/Vanana-Desarrollo-de-Soluciones-IOT/clair-core
+- Frontend Web Applications: https://github.com/Vanana-Desarrollo-de-Soluciones-IOT/clair-ui

@@ -346,6 +346,62 @@ En conjunto, esta versión establece la primera base funcional y visual de la pl
 
 #### 6.2.1.7. Services Documentation Evidence for Sprint Review.
 
+**Documentación de Web Services (OpenAPI)**
+
+Durante este Sprint, logramos un avance significativo documentando nuestros Web Services con OpenAPI (Swagger) mediante `springdoc-openapi`. Se implementó seguridad centralizada (`BearerAuth` con JWT) para proteger los endpoints, y se documentaron exhaustivamente los controladores de **Autenticación** (registro, inicio de sesión, Google OAuth 2.0) y **Facturación** (suscripciones y Stripe). La interfaz interactiva resultante permite probar las integraciones directamente desde.
+
+**Endpoints Principales y Acciones Soportadas**
+
+A continuación, se resumen las principales operaciones implementadas y documentadas:
+
+**1. Autenticación y Sesión**
+
+* **Inicio de Sesión (`POST /api/v1/auth/sign-in`):**
+  * **Input:** `email` y `password`.
+  * **Output:** HTTP 200 OK con tokens JWT de acceso y refresco (o 401 si falla).
+  * **Ejemplo de Respuesta:**
+    ```json
+    {
+      "id": "8dc54a71-6ca1-4205-923c-c1a684585bc1",
+      "email": "usuario@ejemplo.com",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5c...",
+      "refreshToken": "d7a8fcc-45f8-4b72-826a..."
+    }
+    ```
+* **Cierre de Sesión (`DELETE /api/v1/auth/sign-out`):**
+  * **Input:** Cabecera `Authorization` con token Bearer.
+  * **Output:** HTTP 204 No Content (sesión cerrada) o 401.
+* **Otras operaciones:** Registro (`POST /api/v1/auth/sign-up`), Confirmación (`POST /api/v1/auth/confirm`), y Autenticación con Google (`POST /api/v1/auth/google/sign-in`).
+**2. Gestión de Facturación y Suscripciones**
+
+* **Consultar Plan de Usuario (`GET /api/v1/subscriptions/plans/{userId}`):**
+  
+  * **Output:** HTTP 200 OK con el tipo de plan y estado.
+  * **Ejemplo de Respuesta:**
+    ```json
+    {
+      "userId": "8dc54a71-6ca1-4205-923c-c1a684585bc1",
+      "plan": "premium",
+      "status": "ACTIVE"
+    }
+    ```
+* **Crear Sesión Checkout en Stripe (`POST /api/v1/subscriptions/checkout-session`):**
+  
+  * **Input:** `userId`, `amount`, `currency`, `returnUrl`.
+  * **Output:** HTTP 200 OK con la URL de redirección al pago.
+  * **Ejemplo de Respuesta:**
+    ```json
+    {
+      "checkoutUrl": "https://checkout.stripe.com/pay/cs_test_..."
+    }
+    ```
+
+Evidencia de Interacción (Capturas Swagger UI)
+
+<p align="center">
+ <img src="https://imgur.com/zkJ0AV3.png">
+</p>
+
 #### 6.2.1.8. Software Deployment Evidence for Sprint Review.
 
 En esta sección se resume los procesos realizados en relación con el Deployment durante el Sprint 1. Las actividades abarcaron la creación y configuración de cuentas en plataformas de despliegue, la configuración de recursos en proveedores de nube, la configuración de proyectos de desarrollo para integración y automatización, así como el despliegue de todos los productos digitales que forman parte del alcance: Landing Page, Web Application y Web Services. A continuación, se describen los pasos realizados y las evidencias correspondientes.
