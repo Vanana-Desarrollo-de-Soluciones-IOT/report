@@ -35,6 +35,6 @@
   <p style="margin: 4px 0;"><code>U202121325</code> - Macavilca Quispe, Ian</p>
   <p style="margin: 4px 0;"><code>u202119095</code> - Paiva Quispe, Josue Gonzalo</p>
 
-  <p style="margin-top: 25px;"><strong>Lima - Mayo 2026</strong></p>
+  <p style="margin-top: 25px;"><strong>Lima - Junio 2026</strong></p>
 
 </div>

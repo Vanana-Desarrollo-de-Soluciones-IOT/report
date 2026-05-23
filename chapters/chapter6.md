@@ -94,7 +94,7 @@ En el ámbito móvil, la Mobile Application desarrollada en Flutter se distribuy
 
 La solución integra una capa de computación perimetral (Edge) y aplicaciones embebidas para la gestión directa del hardware. La Edge Station se despliega en nodos físicos locales utilizando Python y Flask, funcionando como un punto intermedio de procesamiento que deduplica y sincroniza la información capturada. Por otro lado, la aplicación embebida en C++ se distribuye como firmware dentro de los sensores físicos de Clair Hardware, permitiendo la captura de métricas ambientales en tiempo real. El ecosistema se complementa con servicios SaaS para autenticación mediante Google OAuth2, procesamiento de pagos con Stripe y mensajería transaccional a través de Resend.
 
-<img src="../assets/c4-diagrams/deploy/Development-dark.svg" alt="deploy-diagram">
+<img src="../assets/c4-diagrams/deploy/Development-dark.png" alt="deploy-diagram">
 
 
 # 6.2. Landing Page, Services & Applications Implementation.
