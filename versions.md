@@ -59,6 +59,7 @@
 | 1.1.4   | 13/05/2026 | Josue Paiva                          | Redaccion del student outcome                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | 1.1.5 | 13/05/2026 | Dante Mateo Aleman Romano | Se completaron las secciones 6.2.1.4 (Development Evidence) y 6.2.1.8 (Software Deployment Evidence) con evidencia de despliegue de Landing Page, Web Application y Web Services. Adicionalmente, se añadió sección de Repositorios de Código en Anexo. |
 | 1.1.5 | 13/05/2026 | Neil Curipaco Huayllani | He completado la sección de Testing Suite Evidence |
+| 2.0.1 | 23/05/2026 | Dante Mateo Aleman Romano | Actualice los diagramas c4 agregando el Message broker. |
 
 # Project Report Collaboration Insights
 
