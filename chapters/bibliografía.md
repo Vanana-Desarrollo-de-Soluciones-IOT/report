@@ -30,3 +30,5 @@ Cirkit Designer. (s. f.). *Online circuit design and prototyping platform for Io
 - Landing Page: https://github.com/Vanana-Desarrollo-de-Soluciones-IOT/site
 - Web Services: https://github.com/Vanana-Desarrollo-de-Soluciones-IOT/clair-core
 - Frontend Web Applications: https://github.com/Vanana-Desarrollo-de-Soluciones-IOT/clair-ui
+
+- Prototype Navigation Video: https://upcedupe-my.sharepoint.com/:v:/g/personal/u202119095_upc_edu_pe/IQCJvkfaVIQoSryXz5_kPvoFAajI51VjS2W_iFQvUlZlKjU?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=g0iWeS
