@@ -2,11 +2,11 @@
 
 ## 3.1. User Stories.
 
-La presente sección detalla las Historias de Usuario que fundamentan el desarrollo funciónal de la solución IoT **Clair**, estructuradas bajo el lenguaje ubicuo de **Home User** y **Facility Admin** para diferenciar las necesidades de salud residencial de las metas de gestión operativa en establecimientos. Estas historias representan los requisitos funciónales derivados directamente del proceso de *Needfinding*, centrándose en la automatización de la calidad del aire, la personalización de umbrales de seguridad y la generación de evidencia analítica para la toma de decisiones. Cada entrada ha sido diseñada para abordar los puntos de dolor identificados en las entrevistas, como la falta de control sobre contaminantes invisibles y la necesidad de una respuesta autónoma mediante actuadores para garantizar un entorno saludable y eficiente.
+La presente sección detalla las Historias de Usuario (User Stories) que fundamentan el desarrollo funcional de la solución IoT **Clair**, estructuradas bajo el lenguaje ubicuo de **Home User** y **Facility Admin** para diferenciar las necesidades de salud residencial de las metas de gestión operativa en establecimientos. Estas historias representan los requisitos funcionales derivados directamente del proceso de *Needfinding*, centrándose en la automatización de la calidad del aire, la personalización de umbrales de seguridad y la generación de evidencia analítica para la toma de decisiones. Cada entrada ha sido diseñada para abordar los puntos de dolor identificados en las entrevistas, como la falta de control sobre contaminantes invisibles y la necesidad de una respuesta autónoma mediante actuadores para garantizar un entorno saludable y eficiente.
 
 ### 3.1.1. Landing Page User Stories.
 
-Esta sección presenta la Épica e Historias de Usuario esenciales identificadas para la landing page de Clair. Cada historia está estructurada para definir las necesidades informativas del visitante sin hacer referencia a elementos de interfaz de usuario (UI), garantizando un enfoque puramente funcional y de negocio.
+Esta sección presenta las Épicas e Historias de Usuario esenciales identificadas para la landing page de Clair. Cada historia está estructurada para definir las necesidades informativas de los visitantes comerciales y potenciales clientes, detallando la propuesta de valor del dispositivo Clair Alpha, sus especificaciones técnicas de sensado sin pantallas molestas, la comparación clara entre planes de precios y el acceso a canales de soporte preventa, estableciendo una narrativa de marca confiable respaldada por el equipo fundador.
 
 **Épicas**
 
@@ -26,7 +26,7 @@ Esta sección presenta la Épica e Historias de Usuario esenciales identificadas
 
 ### 3.1.2. Web Application User Stories.
 
-Este documento centraliza todas las Épicas e Historias de Usuario correspondientes al frontend (Web Application / Clair UI) de la plataforma Clair IoT.
+Esta sección detalla las Épicas e Historias de Usuario correspondientes a la aplicación web (frontend) de la plataforma Clair. Se abordan los flujos clave de usuario para la gestión de identidad y seguridad de sesión con Google SSO, el control administrativo de organizaciones, espacios y red de sensores (incluyendo comandos remotos y configuración de umbrales), la visualización y paginación de alertas críticas, el análisis gráfico de tendencias con variaciones porcentuales (delta) y la suscripción y facturación del plan Mesh Network Premium integrado con Stripe.
 
 **Epics**
 
@@ -113,7 +113,7 @@ Este documento centraliza todas las Épicas e Historias de Usuario correspondien
 
 ### 3.1.3. Web Service User Stories.
 
-Este documento centraliza todas las Épicas e Historias Técnicas correspondientes al backend (Core API) de la plataforma Clair IoT.
+Esta sección consolida las Épicas e Historias Técnicas que rigen el comportamiento del backend central (Core API) del sistema. Define la implementación a nivel de servicios REST de los mecanismos de seguridad e IAM (Identity and Access Management), el aprovisionamiento, registro e inventario de dispositivos físicos, la evaluación automática de telemetrías entrantes, la ingesta y persistencia histórica de datos ambientales, y la integración técnica con proveedores críticos como Stripe para cobros y Resend para notificaciones por correo.
 
 **Epics**
 
@@ -189,7 +189,7 @@ Este documento centraliza todas las Épicas e Historias Técnicas correspondient
 
 ### 3.1.4. Mobile Application User Stories.
 
-Este documento centraliza todas las Épicas y Historias de Usuario correspondientes a la aplicación móvil (Mobile Application) de la plataforma Clair IoT.
+Esta sección describe las Épicas e Historias de Usuario para la aplicación móvil de Clair. Se enfocan en proporcionar una experiencia portátil e inmediata para que los usuarios puedan registrar dispositivos, monitorizar variables ambientales críticas en tiempo real con notificaciones push rápidas ante cualquier anomalía, configurar límites y umbrales personalizados de seguridad de manera sencilla y auditar el historial de alertas y tendencias directamente desde sus dispositivos móviles.
 
 **Epics**
 
@@ -235,7 +235,7 @@ Este documento centraliza todas las Épicas y Historias de Usuario correspondien
 
 ### 3.1.5. Edge Service User Stories.
 
-**Epics**
+Esta sección detalla las Épicas e Historias Técnicas destinadas a la estación perimetral (Edge Station). Abarca la validación e ingesta local y segura de telemetría de sensores, el aprovisionamiento y sincronización de datos de dispositivos en tiempo real consumiendo buses de eventos mediante Apache Kafka, el monitoreo continuo de presencia física (ONLINE/OFFLINE) de la red y la transmisión asíncrona de comandos de control hacia el hardware.
 
 | Epic / Story ID | Título                                        | Descripción                                                  |
 | :-------------- | :-------------------------------------------- | :----------------------------------------------------------- |
@@ -258,7 +258,7 @@ Este documento centraliza todas las Épicas y Historias de Usuario correspondien
 
 ### 3.1.6. Embedded Service User Stories.
 
-Esta sección presenta la Epic y las User Stories funcionales identificadas para la plataforma. Cada historia está escrita desde la perspectiva de un rol real de la plataforma e incluye criterios de aceptación detallados para validar su completitud.
+Esta sección presenta la Épica y las Historias de Usuario correspondientes a la aplicación embebida (firmware) que corre en los microcontroladores de Clair. Define el comportamiento directo del hardware para la captura periódica de datos de CO2 y clima (SCD41) y partículas finas (PMS5003), la visualización de métricas en la pantalla OLED local, la señalización inmediata mediante LED parpadeantes por anomalías en la calidad de aire, la sincronización horaria mediante NTP y el soporte para comandos remotos como el paso autónomo a modo de bajo consumo (Standby).
 
 **Epics**
 
