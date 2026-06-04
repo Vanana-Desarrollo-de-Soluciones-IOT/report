@@ -591,12 +591,98 @@ El avance preliminar de los servicios web es de los servicios genericos como IAM
 
 
 
-
 ### 6.2.2. Sprint 2
 
 #### 6.2.2.1. Sprint Planning 2.
 
+El Sprint Planning 2 tuvo como propósito definir el alcance de las funcionalidades core del sistema Clair, priorizando la integración completa del hardware de sensado ambiental, la telemetría en tiempo real y su visualización en las aplicaciones cliente. Durante esta sesión, el equipo revisó los avances del Sprint 1 y acordó enfocar los esfuerzos en completar la lectura de sensores de aire (CO₂, material particulado, temperatura y humedad), la transmisión de estos datos hacia los Web Services y su presentación tanto en la aplicación móvil como en la aplicación web.
+
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sprint #</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">Sprint 2</td>
+  </tr>
+  <tr>
+    <td colspan="2" style="border: 1px solid #ddd; padding: 8px; font-weight: bold; text-align: center;">Sprint Planning Background</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Date</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">20/04/2026</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Time</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">10:00 AM</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Location</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">Google Meet</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Prepared By</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">Aleman Romano, Dante Mateo</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Attendees (to planning meeting)</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">Contreras Peralta Fabrizio Alessandro; Macavilca Quispe Ian; Paiva Quispe Josue Gonzalo; Curipaco Huayllani Neil</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sprint n - 1 Review Summary</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">En el Sprint 1 se completó exitosamente la Landing Page con todas sus secciones (Home, Product, Pricing, About, Privacy, Contact), incluyendo soporte de internacionalización (i18n) y diseño responsive. También se implementó el módulo de Identity and Access Management (IAM) tanto en el backend (registro, login, JWT, Google OAuth2) como en el frontend web, permitiendo a los usuarios registrarse, verificar su correo e iniciar sesión de forma segura. Finalmente, se aprobaron los mockups de alta fidelidad de la Web App y se configuró la infraestructura de despliegue inicial en Vercel y Contabo.</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sprint n - 1 Retrospective Summary</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">El equipo reconoció que la entrega de la Landing Page y el sistema IAM fue exitosa dentro del tiempo planificado. Se identificó como punto positivo el uso de GitFlow y Conventional Commits, que facilitó la integración continua. Como área de mejora, se sugirió anticipar la configuración de variables de entorno y credenciales de servicios externos (como Google OAuth2 y Resend) antes del inicio del desarrollo para evitar bloqueos. Se acordó mantener la comunicación diaria mediante el canal de Discord y actualizar el tablero de Trello con mayor frecuencia.</td>
+  </tr>
+  <tr>
+    <td colspan="2" style="border: 1px solid #ddd; padding: 8px; font-weight: bold; text-align: center;">Sprint Goal & User Stories</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sprint 2 Goal</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">
+      Our focus is on completing the core air quality sensing functionality by implementing the full suite of environmental sensors (CO₂, particulate matter, temperature, humidity), enabling real-time transmission of telemetry data to the web services, and surfacing these metrics through the mobile and web application dashboards.<br><br>
+      We believe it delivers actionable environmental visibility to end users, a reliable data pipeline from edge devices to the cloud, and a unified user experience across platforms.<br><br>
+      This will be confirmed when the embedded device successfully reads and displays air quality metrics on its OLED screen, the edge station and web services ingest and persist telemetry in real time, and users can view live sensor data, historical trends, thresholds, and alerts on both the mobile app and the web dashboard.
+    </td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sprint 2 Velocity</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">419</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sum of Story Points</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">419</td>
+  </tr>
+</table>
+
 #### 6.2.2.2. Aspect Leaders and Collaborators.
+
+En esta sección se detalla la **Leadership-and-Collaboration Matrix (LACX)** para el Sprint 2. Dado que el objetivo de este sprint se centra en las funcionalidades core de monitoreo ambiental, la matriz distribuye la responsabilidad sobre nueve aspectos críticos: la gestión jerárquica de organizaciones y espacios, el emparejamiento y administración de dispositivos, la ingestión de telemetría, la configuración de alertas y umbrales, la visualización analítica en dashboards, el sistema de suscripciones y pagos, la experiencia de la aplicación móvil, el firmware embebido de sensores y la conectividad perimetral (Edge).
+
+| **Team Member (Last Name, First Name)** | **GitHub Username** | **ORG (L/C)** | **DEV (L/C)** | **TEL (L/C)** | **ALR (L/C)** | **DSH (L/C)** | **SUB (L/C)** | **MOB (L/C)** | **EMB (L/C)** | **EDG (L/C)** |
+| --------------------------------------- | ------------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| **Aleman Romano, Dante Mateo**          | zGIKS               | C             | **L**         | C             | C             | C             | C             | **L**         | C             | C             |
+| **Contreras Peralta, Fabrizio**         | fabriziocpa         | C             | C             | C             | C             | **L**         | C             | C             | C             | C             |
+| **Curipaco Huayllani, Neil A.**         | Neilcur7            | C             | C             | C             | C             | C             | **L**         | C             | C             | C             |
+| **Macavilca Quispe, Ian**               | IanMQ               | C             | C             | **L**         | C             | C             | C             | C             | **L**         | C             |
+| **Paiva Quispe, Josue Gonzalo**         | JosuePaiva02        | **L**         | C             | C             | **L**         | C             | C             | C             | C             | **L**         |
+
+**Leyenda de Aspectos (Key):**
+
+Para facilitar la lectura de la matriz, se han utilizado los siguientes acrónimos basados en las tareas del Sprint:
+
+- **ORG:** Organization & Space Management (Gestión jerárquica de organizaciones y espacios físicos)
+- **DEV:** Device Pairing & Management (Emparejamiento, reclamo y administración de dispositivos IoT)
+- **TEL:** Telemetry Ingestion & Real-time Metrics (Ingesta de telemetría y métricas en tiempo real desde los sensores)
+- **ALR:** Alerts & Thresholds Configuration (Configuración de umbrales y gestión de alertas ambientales)
+- **DSH:** Dashboard & Analytics Visualization (Visualización de analíticas, tendencias históricas y resúmenes globales)
+- **SUB:** Subscriptions & Billing (Gestión de suscripciones, pagos e integración con Stripe)
+- **MOB:** Mobile Application Core (Funcionalidades core de la aplicación móvil Flutter)
+- **EMB:** Embedded Sensors & Hardware (Firmware embebido, lectura de sensores CO₂, PM, temperatura y humedad)
+- **EDG:** Edge Station & Connectivity (Estación perimetral, autenticación de dispositivos, comandos y sincronización con la nube)
+
+> **L:** Leader (Responsable principal de la entrega y calidad del aspecto).
+>
+> **C:** Collaborator (Apoyo técnico, revisión de código y soporte en la implementación).
 
 #### 6.2.2.3. Sprint Backlog 2.
 
