@@ -195,24 +195,36 @@ Para facilitar la lectura de la matriz, se han utilizado los siguientes acrónim
 
 #### 6.2.1.3. Sprint Backlog 1.
 
-El **Sprint Backlog** representa la selección de historias de usuario y tareas técnicas que el equipo de desarrollo se ha comprometido a completar durante la presente iteración. Para el **Sprint 1**, el esfuerzo se ha concentrado en establecer la infraestructura crítica de **Clair**, priorizando la visibilidad comercial del producto a través de la Landing Page y la seguridad de la información mediante el sistema de gestión de identidades y accesos (**IAM**). Esta fase inicial es fundamental para garantizar que las bases tecnológicas y visuales de la solución sean sólidas antes de proceder con el desarrollo de funcionalidades de monitoreo avanzado.
-
-La gestión y el seguimiento del progreso se realizan de manera centralizada en la plataforma **Trello**, la cual permite una visibilidad en tiempo real del estado de cada unidad de trabajo. Este sistema de control facilita la descomposición de las historias de usuario en tareas técnicas específicas (*Work-items*), así como la gestión de actividades transversales relacionadas con la configuración del entorno y el cumplimiento de los estándares de diseño de **Material Design 3**. A continuación, se detalla el desglose de los elementos de trabajo seleccionados para este periodo.
-
-<p align="center">
- <img src="https://i.imgur.com/IKoNdzg.png" width="700">
-</p>
-| **StoryID** | **Title**              | **ID task** | **Título**             | **Descripción**                                              | **Estimation (Hours)** | **Assigned To** | **Status** |
-| :---------: | :--------------------- | :---------- | :--------------------- | :----------------------------------------------------------- | :--------------------- | :-------------- | :--------- |
-|    US01     | Register a new account | TA1         | Register a new account | As a Visitor, I want to create an account with my email and a password, so that I can access Clair as a registered Customer. | 3                      | Mateo           | done       |
-|    US02     | Verify email address   | TA2         | Verify email address   | As a Customer, I want to confirm ownership of my email through a verification link, so that my account is activated and I can log in. | 3                      | Ian             | done       |
-|    US03     | Log in                 | TA3         | Log in                 | As a Customer, I want to authenticate with my credentials, so that I can access my personalized Clair workspace. | 3                      | Fabrizio        | done       |
-|    US57     | FAQ & Help Center      | TA4         | FAQ & Help Center      | As a Visitor, I want to resolve doubts about Device installation and data privacy, to feel secure implementing the system in my home. | 4                      | Josue           | done       |
-|    US58     | Multi-language Support | TA5         | Multi-language Support | As a Visitor, I want the Landing Page to be available in English and Spanish, to understand the technical specifications in my preferred language. | 2                      | Neil            | done       |
-|    US01     | Register a new account | TA7         | Register a new account | As a Visitor, I want to create an account with my email and a password, so that I can access Clair as a registered Customer. | 3                      | Mateo           | done       |
-|    US59     | Log in                 | TA9         | Log in                 | As a Visitor, I want to access the terms of service, to know the legal handling of my data and Clair's responsibilities regarding the hardware. | 3                      | Ian             | done       |
+En el presente Sprint Backlog se detallan las Historias de Usuario correspondientes a la etapa inicial del proyecto, enfocándose principalmente en la construcción de la Landing Page informativa y la implementación de los módulos fundamentales de seguridad, gestión de identidad y control de sesiones (IAM) tanto en la aplicación web como en los servicios de backend.
 
 
+
+<img src="https://i.imgur.com/7ugv2lf.png" alt="">
+
+| N | Story ID | Título | Descripción | Story Points |
+|---|----------|--------|-------------|--------------|
+| 1 | LP-US-01 | Conocer la propuesta de valor y precio base | Como Visitante, quiero conocer el nombre del dispositivo, su beneficio de sensado y su costo inicial, para que pueda comprender el propósito de Clair Alpha de inmediato. | 2 |
+| 2 | LP-US-02 | Evaluar las especificaciones del dispositivo y su diseño | Como Visitante, quiero conocer el rendimiento de sensado y la ausencia de pantallas en el dispositivo, para que pueda evaluar su funcionalidad e integración estética en mi espacio. | 2 |
+| 3 | LP-US-03 | Comparar las opciones de precios y suscripciones | Como Visitante, quiero comparar el costo de adquisición frente a los beneficios de los planes básico y multi-dispositivo, para que pueda elegir la opción que se ajuste a mi presupuesto y cantidad de sensores. | 3 |
+| 4 | LP-US-04 | Conocer la trayectoria y los profesionales detrás del proyecto | Como Visitante, quiero conocer la misión de la marca y la experiencia del equipo de desarrollo, para que pueda confiar en la calidad del sensor. | 2 |
+| 5 | LP-US-05 | Obtener canales de atención comercial y horarios | Como Visitante, quiero conocer los medios de contacto y disponibilidad del equipo de ventas, para que pueda planificar mis consultas preventa. | 2 |
+| 6 | WA-US-01 | Registro con Correo y Contraseña | Como Visitante, quiero registrar una cuenta nueva proporcionando mi correo electrónico y una contraseña, para iniciar mi registro en la plataforma. | 3 |
+| 7 | WA-US-02 | Verificación de Cuenta | Como Visitante, quiero introducir el código enviado a mi correo electrónico, para confirmar mi dirección y activar mi cuenta. | 2 |
+| 8 | WA-US-03 | Inicio de Sesión con Credenciales | Como Visitante, quiero iniciar sesión con mi correo electrónico y contraseña, para acceder a la plataforma como Usuario. | 3 |
+| 9 | WA-US-04 | Alternar Visibilidad de Contraseña | Como Visitante o Usuario, quiero poder visualizar u ocultar los caracteres de mi contraseña al escribirla, para verificar que es correcta. | 2 |
+| 10 | WA-US-05 | Autenticación con Google (SSO) | Como Visitante, quiero iniciar sesión o registrarme usando mi cuenta de Google, para acceder a la plataforma de forma rápida. | 3 |
+| 11 | WA-US-06 | Renovación Automática de Sesión | Como Usuario, quiero que mi sesión se renueve de forma automática antes de expirar, para poder continuar con mis actividades sin interrupciones. | 3 |
+| 12 | WA-US-07 | Restricción de Acceso a Secciones Privadas | Como Usuario, quiero que las secciones de la plataforma estén protegidas contra accesos no autorizados, para asegurar que nadie pueda ver mi información sin iniciar sesión. | 2 |
+| 13 | WA-US-08 | Cierre de Sesión Seguro | Como Usuario, quiero cerrar mi sesión activa, para asegurar que mis datos queden protegidos al dejar de usar la plataforma. | 2 |
+| 14 | WS-US-01 | Iniciar Registro de Usuario | Como Desarrollador, quiero iniciar el registro de un nuevo usuario a través de una API, para crear una sesión de validación temporal y despachar un código de verificación. | 3 |
+| 15 | WS-US-02 | Confirmar Registro de Usuario | Como Desarrollador, quiero confirmar un registro de usuario validando el código de verificación a través de una API, para persistir definitivamente la cuenta del usuario. | 3 |
+| 16 | WS-US-03 | Iniciar Sesión con Contraseña | Como Desarrollador, quiero autenticar las credenciales de correo y contraseña a través de una API, para emitir los tokens de acceso JWT. | 3 |
+| 17 | WS-US-04 | Autenticar mediante Token de Google | Como Desarrollador, quiero autenticar usuarios mediante su ID token de Google OAuth a través de una API, para permitir inicios de sesión directos federados. | 3 |
+| 18 | WS-US-05 | Iniciar Flujo de Autorización de Google | Como Desarrollador, quiero iniciar el flujo de autorización de Google OAuth a través de una API, para redirigir al usuario al formulario de consentimiento oficial de Google. | 5 |
+| 19 | WS-US-06 | Procesar Callback de Google OAuth | Como Desarrollador, quiero recibir y procesar el código devuelto por Google en el callback a través de una API, para generar las credenciales de acceso y devolver al usuario al frontend. | 2 |
+| 20 | WS-US-07 | Cerrar Sesión del Usuario | Como Desarrollador, quiero revocar la validez de los tokens del usuario a través de una API, para asegurar el cierre de sesión de la cuenta. | 5 |
+| 21 | WS-US-08 | Refrescar Token de Acceso | Como Desarrollador, quiero emitir un nuevo token de acceso a partir de un token de refresco válido a través de una API, para extender el tiempo de sesión del usuario. | 5 |
+| 22 | WS-US-09 | Verificar Validez del Token | Como Desarrollador, quiero validar la vigencia de un token de acceso a través de una API, para permitir la verificación de sesiones en servicios externos. | 5 |
 
 #### 6.2.1.4. Development Evidence for Sprint Review.
 
@@ -339,7 +351,7 @@ En esta sección se presenta la evidencia de las pruebas automatizadas diseñada
 
 Para la validación de los requerimientos, se han diseñado pruebas bajo el enfoque de Behavior-Driven Development (BDD), permitiendo una comunicación clara entre los objetivos del negocio y la implementación técnica. A continuación, se detallan los archivos `.feature` elaborados en lenguaje Gherkin, los cuales se relacionan directamente con los User Stories del Sprint (US01, US02 y US03). Asimismo, se expone la tabla de control de versiones que documenta la integración continua de estas pruebas tanto en el repositorio del backend (`clair-core`) como en el del frontend (`clair-ui`).
 
-#### **Control de Versiones de Testing**
+**Control de Versiones de Testing**
 
 La siguiente tabla consolida los *commits* realizados en los repositorios del proyecto, evidenciando el avance en la configuración del entorno Cucumber y la implementación de los escenarios de prueba para el módulo de autenticación:
 
@@ -587,6 +599,157 @@ El avance preliminar de los servicios web es de los servicios genericos como IAM
 #### 6.2.2.2. Aspect Leaders and Collaborators.
 
 #### 6.2.2.3. Sprint Backlog 2.
+
+Para este segundo Sprint, el Backlog engloba las funcionalidades core de la plataforma Clair. Se incluyen todas las historias restantes relacionadas con la gestión jerárquica de dispositivos, organizaciones y espacios, el procesamiento analítico y telemetría, el sistema de facturación y suscripciones, así como la integración con la aplicación móvil y los componentes físicos (Edge y Embedded).
+
+<img src="https://i.imgur.com/7ugv2lf.png" alt="">
+
+| N | Story ID | Título | Descripción | Story Points |
+|---|----------|--------|-------------|--------------|
+| 1 |WA-US-09|Crear Organización|Como Usuario, quiero crear una organización nueva proporcionando un nombre, para agrupar mis espacios y dispositivos bajo una entidad.|3|
+| 2 |WA-US-10|Renombrar Organización|Como Usuario, quiero actualizar el nombre de una de mis organizaciones, para mantener precisa la información de mi cuenta.|2|
+| 3 |WA-US-11|Eliminar Organización|Como Usuario, quiero eliminar una organización de mi cuenta, para quitar las agrupaciones que ya no son necesarias.|2|
+| 4 |WA-US-12|Ver Mis Organizaciones|Como Usuario, quiero obtener el listado de mis organizaciones asociadas, para poder seleccionar sobre cuál navegar y trabajar.|2|
+| 5 |WA-US-13|Crear Espacio|Como Usuario, quiero crear un espacio físico dentro de una organización, para agrupar mis dispositivos por área o sala de monitoreo.|3|
+| 6 |WA-US-14|Renombrar Espacio|Como Usuario, quiero modificar el nombre de un espacio físico existente, para mantener actualizada la información de mis ubicaciones.|2|
+| 7 |WA-US-15|Eliminar Espacio|Como Usuario, quiero eliminar un espacio físico de mi organización, para quitar las ubicaciones que ya no utilizo.|2|
+| 8 |WA-US-16|Ver Espacios por Organización|Como Usuario, quiero consultar los espacios físicos que pertenecen a una organización, para poder seleccionar uno de ellos y ver sus dispositivos.|2|
+| 9 |WA-US-17|Reclamar Dispositivo para un Espacio|Como Usuario, quiero reclamar un dispositivo utilizando un token de reclamo y asignarlo a un espacio, para registrarlo en mi cuenta y comenzar a monitorear la calidad del aire.|3|
+| 10 |WA-US-18|Emparejar Dispositivo por ID de Hardware|Como Usuario, quiero vincular un dispositivo físico utilizando su identificador de hardware, para registrarlo en la plataforma.|3|
+| 11 |WA-US-19|Renombrar Dispositivo|Como Usuario, quiero cambiar el nombre de un dispositivo registrado, para poder identificarlo fácilmente por su ubicación o función.|2|
+| 12 |WA-US-20|Eliminar Dispositivo|Como Usuario, quiero dar de baja un dispositivo registrado en la plataforma, para quitar del sistema los sensores que ya no utilizo.|2|
+| 13 |WA-US-21|Restablecer Asignación de Espacio del Dispositivo|Como Usuario, quiero desvincular un dispositivo de su espacio actual sin eliminarlo de la plataforma, para poder reasignarlo a otro espacio en el futuro.|2|
+| 14 |WA-US-22|Ver Dispositivos por Espacio|Como Usuario, quiero obtener el listado de dispositivos registrados en un espacio físico determinado, para conocer qué sensores están asignados a dicha área.|2|
+| 15 |WA-US-23|Ver Detalles del Dispositivo|Como Usuario, quiero consultar la configuración y los parámetros del sistema de un dispositivo registrado, para evaluar sus detalles técnicos.|2|
+| 16 |WA-US-24|Monitorear el Estado en Tiempo Real del Dispositivo|Como Usuario, quiero conocer el estado de conexión actual de un dispositivo en tiempo real, para saber si está activo, inactivo o en falla.|2|
+| 17 |WA-US-25|Ver Reporte de Telemetría de Dispositivo|Como Usuario, quiero obtener las lecturas de telemetría de comunicación más recientes de un dispositivo, para evaluar la calidad de su señal Wi-Fi y su estado de salud de hardware.|2|
+| 18 |WA-US-26|Ver Consolidado de Telemetría para Dispositivos de un Espacio|Como Usuario, quiero obtener un resumen de telemetría de todos los dispositivos asignados a un espacio, para identificar rápidamente sensores con problemas de conexión o de hardware.|2|
+| 19 |WA-US-27|Cambiar Dispositivo a Standby|Como Usuario, quiero enviar un comando de reposo a un dispositivo activo, para reducir su consumo de energía cuando no se requiera monitoreo.|3|
+| 20 |WA-US-28|Despertar Dispositivo de Standby|Como Usuario, quiero enviar un comando de activación a un dispositivo en reposo, para reanudar el monitoreo ambiental.|3|
+| 21 |WA-US-29|Reiniciar Dispositivo|Como Usuario, quiero enviar un comando de reinicio a un dispositivo, para intentar recuperarlo de un estado de error o falta de respuesta.|3|
+| 22 |WA-US-30|Crear Umbral para Métrica del Dispositivo|Como Usuario, quiero configurar un límite de alerta para una métrica del aire en un dispositivo, para que el sistema controle las condiciones ambientales de forma automática.|3|
+| 23 |WA-US-31|Actualizar Umbral de Métrica del Dispositivo|Como Usuario, quiero modificar un límite de alerta configurado previamente, para ajustar las reglas de monitoreo ambiental.|3|
+| 24 |WA-US-32|Eliminar Umbral de Métrica del Dispositivo|Como Usuario, quiero borrar una regla de umbral configurada en un dispositivo, para quitar reglas de alertas obsoletas.|2|
+| 25 |WA-US-33|Ver Umbrales del Dispositivo|Como Usuario, quiero consultar todas las reglas de umbrales configuradas en un dispositivo, para revisar las reglas de alerta activas para PM2.5, CO₂, temperatura y humedad.|2|
+| 26 |WA-US-34|Ver Alertas Activas|Como Usuario, quiero consultar las alertas que se encuentran activas en la plataforma, para identificar qué dispositivos están superando actualmente los límites de calidad del aire configurados.|2|
+| 27 |WA-US-35|Identificar la Gravedad de la Alerta|Como Usuario, quiero conocer el nivel de gravedad de las alertas del sistema, para priorizar mi atención en las anomalías más críticas de la calidad del aire.|2|
+| 28 |WA-US-36|Navegar por la Lista de Alertas|Como Usuario, quiero paginar los registros de la lista de alertas, para poder revisar todos los eventos cuando el volumen total supere la capacidad de visualización del sistema.|2|
+| 29 |WA-US-37|Ver Historial de Alertas Resueltas|Como Usuario, quiero consultar las alertas que han vuelto a condiciones normales y se encuentran resueltas, para evaluar el histórico de incidentes ambientales.|2|
+| 30 |WA-US-38|Distinguir Alertas Activas de Resueltas|Como Usuario, quiero alternar mis consultas entre alertas activas e historial de alertas resueltas, para separar las tareas pendientes de atención de los registros pasados.|2|
+| 31 |WA-US-39|Ver Resumen Diario de Alertas|Como Usuario, quiero obtener un resumen diario del recuento de alertas generadas en la plataforma, para identificar de forma global los patrones de anomalías a lo largo de los días.|2|
+| 32 |WA-US-40|Ver Resumen Global de ICA|Como Usuario, quiero obtener el Índice de Calidad del Aire (ICA) promedio y los valores agregados de todos mis dispositivos, para conocer la calidad del aire global.|2|
+| 33 |WA-US-41|Ver Resumen de Infraestructura|Como Usuario, quiero obtener los recuentos totales de mi despliegue de IoT, para conocer la escala de mi infraestructura en la plataforma.|2|
+| 34 |WA-US-42|Ver ICA por Espacio|Como Usuario, quiero consultar el estado de la calidad del aire clasificado por cada uno de mis espacios físicos y organizaciones, para detectar áreas críticas de contaminación.|2|
+| 35 |WA-US-43|Ver Alertas Activas en el Consolidado|Como Usuario, quiero obtener la lista de las alertas críticas activas más recientes de mi plataforma, para estar enterado de anomalías en curso sin necesidad de ir a la sección de alertas.|2|
+| 36 |WA-US-44|Identificar la Frescura de los Datos|Como Usuario, quiero conocer qué tan recientes son los datos analíticos calculados, para evaluar la confiabilidad de la información presentada.|2|
+| 37 |WA-US-45|Ver Métricas Agregadas para un Dispositivo|Como Usuario, quiero consultar las métricas de calidad del aire agregadas para un dispositivo en un período de tiempo determinado, para comprender su comportamiento.|2|
+| 38 |WA-US-46|Consultar Variación Porcentual de Métricas|Como Usuario, quiero conocer la variación porcentual de cada métrica en comparación con el período de tiempo anterior, para evaluar si las condiciones del aire están mejorando o empeorando.|2|
+| 39 |WA-US-47|Clasificar la Calidad del Aire por Métrica|Como Usuario, quiero que el sistema categorice de forma lógica el nivel de seguridad de cada métrica de calidad de aire en base a umbrales, para saber si los parámetros individuales están en rangos saludables.|3|
+| 40 |WA-US-48|Actualización Automática de Datos|Como Usuario, quiero que los cálculos analíticos del dispositivo se actualicen periódicamente de forma automática, para disponer de datos actualizados de calidad del aire.|3|
+| 41 |WA-US-49|Obtener Tendencia de Métricas Históricas|Como Usuario, quiero obtener las series temporales de datos históricos de un dispositivo para un período de tiempo, para analizar la evolución temporal de la calidad del aire.|3|
+| 42 |WA-US-50|Segmentar Tendencia por Métrica Específica|Como Usuario, quiero solicitar el histórico del dispositivo filtrando por un único indicador, para focalizar mi análisis en una métrica específica de la calidad del aire.|3|
+| 43 |WA-US-51|Filtrar Tendencias por Rango Predefinido|Como Usuario, quiero solicitar el histórico del dispositivo utilizando rangos de tiempo predefinidos (en vivo, día, semana, mes), para simplificar la consulta de datos comunes.|3|
+| 44 |WA-US-52|Filtrar Tendencias por Rango de Fechas Personalizado|Como Usuario, quiero definir fechas de inicio y fin específicas para consultar el histórico del dispositivo, para analizar la calidad del aire en ventanas de tiempo precisas.|3|
+| 45 |WA-US-53|Consultar Último Reporte de Telemetría|Como Usuario, quiero obtener la telemetría más reciente registrada por el dispositivo, para evaluar su estado de comunicación física e integridad actual en paralelo a los datos históricos.|5|
+| 46 |WA-US-54|Filtrar Analíticas por Organización|Como Usuario, quiero seleccionar una organización para limitar las búsquedas analíticas a sus elementos relacionados, para gestionar mi información de forma ordenada.|8|
+| 47 |WA-US-55|Filtrar Analíticas por Espacio Físico|Como Usuario, quiero seleccionar un espacio físico perteneciente a la organización activa, para limitar las búsquedas analíticas a los sensores de esa zona.|8|
+| 48 |WA-US-56|Seleccionar Dispositivo para Análisis|Como Usuario, quiero seleccionar un dispositivo específico perteneciente al espacio físico activo, para cargar toda su información de métricas y tendencias.|3|
+| 49 |WA-US-57|Ver Planes Disponibles|Como Usuario, quiero ver los planes de suscripción disponibles en el sistema, para comparar sus características y precios antes de tomar una decisión.|2|
+| 50 |WA-US-58|Revisar Características del Plan Free|Como Usuario, quiero revisar las características del plan Free, para comprender qué capacidades de monitoreo puedo acceder sin costo.|2|
+| 51 |WA-US-59|Revisar Características del Plan Premium|Como Usuario, quiero revisar las características del plan Premium, para evaluar si las capacidades adicionales justifican el coste mensual.|2|
+| 52 |WA-US-60|Iniciar Proceso de Suscripción Premium|Como Usuario, quiero iniciar el proceso de suscripción al plan Premium, para proceder al pago y activar mi cuenta.|5|
+| 53 |WA-US-61|Confirmar Resumen del Pedido|Como Usuario, quiero verificar el resumen de mi suscripción antes de realizar el pago, para confirmar el nombre del plan, el coste y el monto total debido.|5|
+| 54 |WA-US-62|Ver Fecha de Auto-Renovación|Como Usuario, quiero conocer la fecha en la que se renovará mi suscripción, para prever los cargos automáticos.|2|
+| 55 |WA-US-63|Proporcionar Información de Pago|Como Usuario, quiero ingresar los detalles de mi tarjeta de pago de manera segura, para proceder con la transacción de suscripción.|5|
+| 56 |WA-US-64|Completar Pago de Suscripción Premium|Como Usuario, quiero completar la transacción de pago, para activar mi suscripción Premium de inmediato.|5|
+| 57 |WA-US-65|Control de Fallos en el Pago|Como Usuario, quiero recibir detalles sobre fallos en mi transacción de pago, para poder corregir la información o utilizar otro medio.|5|
+| 58 |WA-US-66|Consultar Plan de Usuario Actual|Como Usuario, quiero comprobar mi tipo de plan activo y su estado de validez, para saber si mi cuenta se encuentra en el nivel Free, Freemium o Premium.|3|
+| 59 |WS-US-10|Pair Physical Device|Como Desarrollador, quiero emparejar un dispositivo físico a través de una API, para que esté disponible para el flujo de inicialización del dispositivo.|3|
+| 60 |WS-US-11|Claim Device Ownership|Como Desarrollador, quiero reclamar la propiedad de un dispositivo emparejado a través de una API, para poder asignarlo a un espacio del usuario.|3|
+| 61 |WS-US-12|Retrieve Space Devices|Como Desarrollador, quiero obtener la lista de dispositivos de un espacio a través de una API, para que las aplicaciones clientes puedan renderizar los dispositivos activos.|3|
+| 62 |WS-US-13|View Device Details|Como Desarrollador, quiero consultar los detalles de un dispositivo por su ID a través de una API, para inspeccionar su configuración y atributos.|3|
+| 63 |WS-US-14|Monitor Device Status|Como Desarrollador, quiero consultar el estado de conexión de un dispositivo a través de una API, para verificar si se encuentra en línea.|3|
+| 64 |WS-US-15|Update Device Name|Como Desarrollador, quiero actualizar el nombre de un dispositivo a través de una API, para poder reflejar cambios de identificación en el sistema.|3|
+| 65 |WS-US-16|Reset Device Assignment|Como Desarrollador, quiero desasignar un dispositivo de su espacio actual a través de una API, para dejarlo disponible para futuras configuraciones.|3|
+| 66 |WS-US-17|View Device Thresholds|Como Desarrollador, quiero recuperar todos los umbrales de métricas asociados a un dispositivo a través de una API, para evaluar las reglas activas de alerta.|3|
+| 67 |WS-US-18|Create Device Threshold|Como Desarrollador, quiero registrar un nuevo umbral de métrica para un dispositivo a través de una API, para establecer alertas automatizadas de calidad del aire.|3|
+| 68 |WS-US-19|Update Device Threshold|Como Desarrollador, quiero actualizar un umbral de métrica existente para un dispositivo a través de una API, para modificar los límites de alerta.|3|
+| 69 |WS-US-20|Remove Device Threshold|Como Desarrollador, quiero eliminar un umbral de métrica de un dispositivo a través de una API, para desactivar el monitoreo de esa métrica en particular.|2|
+| 70 |WS-US-21|Create Device Command|Como Desarrollador, quiero enviar comandos de control a un dispositivo a través de una API, para habilitar operaciones remotas de hardware.|5|
+| 71 |WS-US-22|Retrieve Device Command|Como Desarrollador, quiero consultar el estado de un comando por su ID a través de una API, para verificar el estado de ejecución en el hardware.|5|
+| 72 |WS-US-23|Retrieve Latest Command|Como Desarrollador, quiero obtener el último comando enviado a un dispositivo a través de una API, para comprobar la instrucción activa más reciente.|3|
+| 73 |WS-US-24|Create Organization|Como Desarrollador, quiero crear una organización a través de una API, para poder estructurar y segmentar los espacios de trabajo de los usuarios.|3|
+| 74 |WS-US-25|Retrieve Organization Details|Como Desarrollador, quiero obtener los detalles de una organización por su ID a través de una API, para inspeccionar sus atributos de auditoría y propiedad.|3|
+| 75 |WS-US-26|Retrieve User Organizations|Como Desarrollador, quiero listar las organizaciones pertenecientes a un usuario a través de una API, para permitir la navegación multi-inquilino en la aplicación cliente.|3|
+| 76 |WS-US-27|Delete Organization|Como Desarrollador, quiero eliminar una organización a través de una API, para poder depurar espacios obsoletos.|2|
+| 77 |WS-US-28|Update Organization Name|Como Desarrollador, quiero renombrar una organización a través de una API, para mantener actualizada su identificación en la plataforma.|2|
+| 78 |WS-US-29|Create Space|Como Desarrollador, quiero crear un espacio físico dentro de una organización a través de una API, para agrupar y ubicar los dispositivos sensores.|3|
+| 79 |WS-US-30|Retrieve Space Details|Como Desarrollador, quiero obtener los detalles de un espacio específico a través de una API, para validar su relación de pertenencia organizacional.|3|
+| 80 |WS-US-31|Retrieve Spaces by Organization|Como Desarrollador, quiero obtener la lista de espacios asociados a una organización a través de una API, para estructurar los selectores en las pantallas de administración.|3|
+| 81 |WS-US-32|Delete Space|Como Desarrollador, quiero eliminar un espacio a través de una API, para permitir la limpieza de zonas de monitoreo inactivas.|2|
+| 82 |WS-US-33|Update Space Name|Como Desarrollador, quiero cambiar el nombre de un espacio a través de una API, para corregir o actualizar la etiqueta de ubicación física.|3|
+| 83 |WS-US-34|Obtener Alertas del Usuario|Como Desarrollador, quiero obtener la lista de alertas del usuario autenticado a través de una API, para poder visualizarlas en el panel de notificaciones principal.|3|
+| 84 |WS-US-35|Obtener Resumen Diario de Alertas del Usuario|Como Desarrollador, quiero obtener un resumen diario de ocurrencia de alertas del usuario a través de una API, para alimentar gráficos de volumen de fallos históricos.|3|
+| 85 |WS-US-36|Obtener Alertas por Dispositivo|Como Desarrollador, quiero obtener las alertas pertenecientes a un dispositivo específico a través de una API, para permitir diagnósticos detallados por hardware en la aplicación cliente.|5|
+| 86 |WS-US-37|Obtener Alertas por Espacio|Como Desarrollador, quiero obtener las alertas de un espacio a través de una API, para que los usuarios puedan identificar problemas en ubicaciones físicas particulares.|3|
+| 87 |WS-US-38|Obtener Resumen Diario de Alertas por Espacio|Como Desarrollador, quiero obtener el resumen diario agregador de alertas de un espacio a través de una API, para alimentar los gráficos de métricas físicas locales.|3|
+| 88 |WS-US-39|Obtener Métricas en Tiempo Real|Como Desarrollador, quiero obtener las métricas clave de rendimiento en tiempo real a través de una API, para poder renderizar inmediatamente los valores de telemetría en el panel de control.|5|
+| 89 |WS-US-40|Transmitir Telemetría en Vivo mediante SSE|Como Desarrollador, quiero establecer un canal de Server-Sent Events (SSE) para un dispositivo a través de una API, para transmitir flujos de datos en tiempo real al navegador.|5|
+| 90 |WS-US-41|Obtener Métricas Históricas|Como Desarrollador, quiero consultar métricas de rendimiento históricas agrupadas por períodos a través de una API, para permitir análisis retrospectivos del entorno físico.|3|
+| 91 |WS-US-42|Obtener Tendencias Históricas del Dispositivo|Como Desarrollador, quiero recuperar series temporales de datos históricos de un dispositivo a través de una API, para alimentar los gráficos de tendencias temporales en el frontend.|3|
+| 92 |WS-US-43|Obtener Resumen General de Analíticas|Como Desarrollador, quiero obtener una vista global unificada de espacios, dispositivos y alertas recientes a través de una API, para renderizar la página principal del dashboard del usuario.|8|
+| 93 |WS-US-44|Crear Intento de Pago en Stripe|Como Desarrollador, quiero crear un intento de pago en Stripe a través de una API, para iniciar flujos de pago integrados directos.|3|
+| 94 |WS-US-45|Obtener Suscripciones del Usuario|Como Desarrollador, quiero consultar el historial de suscripciones de un usuario a través de una API, para poder renderizar su estado de pagos en su perfil.|5|
+| 95 |WS-US-46|Obtener Plan del Usuario|Como Desarrollador, quiero resolver el plan de servicios activo de un usuario a través de una API, para validar sus límites de uso en otros módulos.|2|
+| 96 |WS-US-47|Degradación de Plan a Freemium|Como Desarrollador, quiero degradar manualmente o por vencimiento el plan de un usuario a Freemium a través de una API, para suspender los beneficios premium.|3|
+| 97 |WS-US-48|Procesar Notificaciones de Stripe mediante Webhook|Como Desarrollador, quiero procesar los eventos de confirmación de pago de Stripe mediante una API de webhook, para activar o extender de forma automatizada las suscripciones de los usuarios.|5|
+| 98 |WS-US-49|Registrar Telemetría del Dispositivo|Como Desarrollador, quiero almacenar y evaluar lecturas de sensores de un dispositivo en el borde a través de una API, para registrar la calidad del aire histórica y el estado de salud del hardware.|3|
+| 99 |WS-US-50|Obtener Historial de Evaluaciones de Telemetría|Como Desarrollador, quiero obtener una lista paginada de registros de telemetría de un dispositivo a través de una API, para permitir la auditoría e inspección de reportes previos.|5|
+| 100 |WS-US-51|Obtener Último Registro de Telemetría|Como Desarrollador, quiero recuperar la lectura de telemetría más reciente de un dispositivo a través de una API, para mostrar el estado instantáneo actual de la calidad del aire.|5|
+| 101 |WS-US-52|Obtener Historial de Notificaciones Push del Usuario|Como Desarrollador, quiero recuperar la lista paginada de registros de notificaciones push enviadas a un usuario a través de una API, para mostrar su historial de alertas en el panel de control.|3|
+| 102 |MA-US-01|Iniciar Registro de Cuenta|Como Visitante, quiero iniciar mi registro proporcionando mis datos básicos, para que el sistema comience mi proceso de alta en la plataforma.|3|
+| 103 |MA-US-02|Confirmar Registro con Código|Como Visitante, quiero ingresar mi código de verificación recibido, para que mi cuenta de usuario quede activada de manera definitiva.|3|
+| 104 |MA-US-03|Iniciar Sesión con Correo y Contraseña|Como Visitante, quiero iniciar sesión con mi correo electrónico y contraseña, para que pueda acceder de forma segura a mi cuenta.|3|
+| 105 |MA-US-04|Autenticar con Cuenta de Google|Como Visitante, quiero iniciar sesión usando mi cuenta de Google, para que pueda acceder de forma simplificada sin recordar contraseñas adicionales.|3|
+| 106 |MA-US-05|Cerrar Sesión|Como Usuario, quiero cerrar mi sesión activa, para que mis credenciales se invaliden y se evite el acceso no autorizado en mi dispositivo.|3|
+| 107 |MA-US-06|Crear Organización|Como Usuario, quiero crear una organización, para que pueda comenzar a organizar mis espacios y dispositivos bajo un grupo dedicado.|3|
+| 108 |MA-US-07|Actualizar Nombre de Organización|Como Usuario, quiero actualizar el nombre de una organización, para que pueda mantener su etiqueta de grupo de manera precisa.|3|
+| 109 |MA-US-08|Eliminar Organización|Como Usuario, quiero eliminar una organización, para que pueda remover grupos que ya no son necesarios.|2|
+| 110 |MA-US-09|Crear Espacio|Como Usuario, quiero crear un espacio en una organización, para que pueda agrupar dispositivos en una ubicación física o lógica.|3|
+| 111 |MA-US-10|Actualizar Nombre de Espacio|Como Usuario, quiero actualizar el nombre de un espacio, para que pueda renombrar ubicaciones y reflejar mejor su uso.|2|
+| 112 |MA-US-11|Eliminar Espacio|Como Usuario, quiero eliminar un espacio, para que pueda remover ubicaciones que ya no están en uso.|2|
+| 113 |MA-US-12|Vincular Dispositivo|Como Usuario, quiero vincular un dispositivo a mi cuenta usando su ID de hardware y token de vinculación, para que pueda ser authorized y registrado.|5|
+| 114 |MA-US-13|Reclamar Dispositivo a un Espacio|Como Usuario, quiero reclamar un dispositivo a un espacio específico usando su token de reclamo, para que el dispositivo quede enlazado a una ubicación física.|5|
+| 115 |MA-US-14|Actualizar Nombre de Dispositivo|Como Usuario, quiero actualizar el nombre de un dispositivo, para que pueda identificarlo fácilmente.|3|
+| 116 |MA-US-15|Eliminar Dispositivo|Como Usuario, quiero eliminar un dispositivo, para que pueda darlo de baja o removerlo de mi espacio.|2|
+| 117 |MA-US-16|Configurar Umbral de Métrica de Dispositivo|Como Usuario, quiero establecer una configuración de umbral para una métrica de dispositivo, para que pueda definir rangos operativos seguros para las lecturas de telemetría.|3|
+| 118 |MA-US-17|Remover Umbral de Métrica de Dispositivo|Como Usuario, quiero remover un umbral de una métrica de dispositivo, para que la métrica ya no esté restringida a rangos operativos específicos.|2|
+| 119 |MA-US-18|Enviar Comando de Control a Dispositivo|Como Usuario, quiero encolar un comando para un dispositivo, para que pueda activar acciones como actualizar su estado de energía.|3|
+| 120 |MA-US-19|Ver Lista Completa de Alertas|Como Usuario, quiero ver la lista completa de alertas generadas en mi plataforma, para que pueda conocer todas las notificaciones de problemas en mis dispositivos.|2|
+| 121 |MA-US-20|Filtrar Alertas por Dispositivo o Espacio|Como Usuario, quiero filtrar las alertas por un dispositivo o espacio específico, para que pueda enfocar mi atención en áreas particulares del sistema.|3|
+| 122 |MA-US-21|Ver Resumen Diario de Alertas|Como Usuario, quiero ver un resumen diario del conteo de alertas generadas, para que pueda comprender la frecuencia y evolución de las incidencias en el tiempo.|2|
+| 123 |MA-US-22|Reconocer Alerta Activa|Como Usuario, quiero reconocer una alerta activa en el sistema, para que quede registrado que la incidencia ha sido revisada o atendida.|2|
+| 124 |MA-US-23|Ver Métricas Actuales del Dashboard|Como Usuario, quiero ver las métricas actuales de calidad del aire del dispositivo, para que pueda conocer el estado actual de mi entorno de manera rápida.|2|
+| 125 |MA-US-24|Monitorear Telemetría en Tiempo Real|Como Usuario, quiero ver lecturas de telemetría en tiempo real con un indicador en vivo, para que pueda reaccionar ante cambios inmediatos en el entorno.|2|
+| 126 |MA-US-25|Visualizar Gráfico de Tendencias|Como Usuario, quiero ver un gráfico de tendencias de las métricas del dispositivo, para que pueda identificar patrones o anomalías visualmente.|2|
+| 127 |MA-US-26|Filtrar Tendencias por Rango de Fechas|Como Usuario, quiero seleccionar un rango de fechas para el gráfico de tendencias, para que pueda analizar datos históricos en un intervalo específico de tiempo.|3|
+| 128 |MA-US-27|Ver Lista de Notificaciones|Como Usuario, quiero ver el listado de mis notificaciones recibidas, para que pueda enterarme de los avisos del sistema y eventos ocurridos.|2|
+| 129 |ES-US-01|Autenticación de Credenciales de Dispositivo|Como Desarrollador, quiero que el sistema valide el identificador de hardware y la clave de API del dispositivo físico, para que la autenticación esté disponible al construir solicitudes seguras para mis aplicaciones.|5|
+| 130 |ES-US-02|Monitoreo de Presencia y Transición de Estado a Fuera de Línea|Como Desarrollador, quiero que el sistema identifique dispositivos inactivos en segundo plano y publique sus cambios de estado, para que los eventos de conectividad actualizados estén disponibles para mis aplicaciones.|3|
+| 131 |ES-US-03|Sincronizar Evento de Aprovisionamiento de Dispositivos|Como Desarrollador, quiero que el sistema consuma y procese eventos de cambio de dispositivos desde un tema de Kafka, para que la información del dispositivo esté disponible para mis aplicaciones en el caché local.|5|
+| 132 |ES-US-04|Ingestar Telemetría de Dispositivos|Como Desarrollador, quiero enviar datos de telemetría a través de la API REST, para que estén disponibles al construir funcionalidades en mis aplicaciones.|5|
+| 133 |ES-US-05|Obtener Comandos Pendientes|Como Desarrollador, quiero obtener la lista de comandos pendientes de un dispositivo a través de la API REST, para que el dispositivo edge pueda consultar las acciones que debe ejecutar.|3|
+| 134 |ES-US-06|Confirmar Ejecución de Comando|Como Desarrollador, quiero enviar una confirmación de ejecución de comando a través de la API REST, para que el estado de ejecución quede registrado y disponible para las aplicaciones.|3|
+| 135 |ES-US-07|Consultar Estado de Conexión del Dispositivo|Como Desarrollador, quiero consultar el estado de conexión de un dispositivo a través de la API REST, para verificar si un equipo está en línea o fuera de línea al construir paneles de control.|3|
+| 136 |EMB-US-01|Leer Datos de CO2 y Clima|Como Usuario, quiero que el dispositivo mida el CO2, la temperatura y la humedad relativa a intervalos periódicos, para poder monitorear los indicadores estándar de la calidad del aire interior.|3|
+| 137 |EMB-US-02|Leer Material Particulado|Como Usuario, quiero que el dispositivo mida los niveles de concentración de polvo fino (PM1.0, PM2.5 y PM10) a intervalos periódicos, para poder monitorear la contaminación por partículas respirables.|3|
+| 138 |EMB-US-03|Visualizar Métricas en Pantalla|Como Usuario, quiero ver las últimas lecturas de los sensores en la pantalla OLED, para poder conocer el estado ambiental a simple vista sin tener que ingresar a un panel web.|2|
+| 139 |EMB-US-04|Parpadear LED por Incidentes Activos|Como Usuario, quiero que una luz de advertencia parpadee cuando se detecten incidentes activos de calidad del aire, para recibir una notificación visual directa aunque no esté mirando la pantalla OLED.|3|
+| 140 |EMB-US-05|Conectar a Red WiFi Local|Como Administrador, quiero ingresar las credenciales de WiFi en el dispositivo, para permitir la comunicación remota con el servidor de la plataforma.|3|
+| 141 |EMB-US-06|Sincronizar Hora con Servidor NTP|Como Administrador, quiero que el sistema obtenga la hora de un servidor NTP, para que el historial de telemetría de mi dispositivo tenga marcas de tiempo exactas.|5|
+| 142 |EMB-US-07|Activar y Desactivar Modo Standby|Como Usuario, quiero que el dispositivo entre en un estado de bajo consumo donde la pantalla y el LED de alarma estén apagados, para que el dispositivo no me perturbe durante la noche.|3|
+| 143 |EMB-US-08|Solicitar Reporte de Telemetría en Tiempo Real|Como Administrador, quiero forzar el envío inmediato de un reporte de telemetría bajo demanda, para poder verificar el estado del entorno de manera instantánea.|5|
+| 144 |EMB-US-09|Visualizar Estado de Salud del Dispositivo|Como Administrador, ver el estado de salud calculado del dispositivo en el panel de control, para identificar rápidamente unidades que tengan problemas de conexión o fallas en los sensores.|2|
 
 #### 6.2.2.4. Development Evidence for Sprint Review.
 
