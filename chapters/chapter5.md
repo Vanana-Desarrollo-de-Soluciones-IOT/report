@@ -1269,6 +1269,11 @@ El prototipo de la aplicación web muestra la estructura general de navegación,
 
 Web Application Prototype: https://sl1nk.com/1a68tor
 
+<img src="../assets/prototypes/webapp-video.png" alt="webapp-proto" width="1000">
+
+Video de presentación del prototipo Web Application: https://bit.ly/3Q84l7g
+
+
 **Mobile Application Prototype**
 
 El prototipo de la aplicación móvil representa la materialización interactiva de los wireframes y mockups diseñados para dispositivos móviles. Este prototipo simula la experiencia táctil del usuario final, permitiendo validar la ergonomía y la coherencia entre las diferentes secciones operativas del sistema Clair en formato móvil.
@@ -1276,6 +1281,11 @@ El prototipo de la aplicación móvil representa la materialización interactiva
 <img src="../assets/prototypes/mobileapp-proto.png" alt="webapp-proto" width="300">
 
 Mobile Application Prototype:  https://sl1nk.com/s0e7d73
+
+<img src="../assets/prototypes/mobileapp-video.png" alt="webapp-proto" width="300">
+
+Video de presentación del prototipo Mobile Application: https://bit.ly/43bBBh7
+
 
 ## 5.6. IoT Device Design
 
