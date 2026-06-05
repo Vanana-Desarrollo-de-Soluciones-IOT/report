@@ -19,7 +19,7 @@ Balestrieri, E., De Vito, L., Lamonaca, F., Picariello, F., Rapuano, S., & Tudos
 Cirkit Designer. (s. f.). *Online circuit design and prototyping platform for IoT projects*. https://app.cirkitdesigner.com
 
 
-# Anexo
+# Anexos
 
 - Entrevista: https://goo.su/KKwEhz4
 - Big Picture Event Storming: https://bit.ly/3QwYkAS
