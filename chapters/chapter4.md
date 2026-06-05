@@ -626,6 +626,24 @@ El **Deployment Diagram** (Diagrama de Despliegue) ilustra la distribución de l
 
 ## 4.2. Tactical-Level Domain-Driven Design - Web Services
 
+En esta sección se detalla el diseño táctico basado en Domain-Driven Design (DDD) para el contenedor central de servicios web de la plataforma Vanana (Platform API). El backend se construye sobre una arquitectura modular estructurada por Bounded Contexts independientes, lo que permite que cada área de negocio mantenga su consistencia y evolucione sin afectar directamente a los demás componentes del sistema.
+
+**Arquitectura de Componentes de la API del Backend (Platform API)**
+
+El contenedor **Platform API** (desarrollado en Spring Boot y Java 25) agrupa de forma modular los contextos acotados de IAM, Billing, Device & Space Management, Air Quality Evaluation, Alerting & Response, Analytics y Notifications. El siguiente diagrama de componentes a nivel de contenedor muestra la descomposición general de la API, detallando cómo interactúan estos bloques estructurales principales y cómo se delegan las responsabilidades:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/backend/components/PlatformApiComponents-dark.svg" alt="Platform API General Component Diagram" width="850">
+</p>
+
+A nivel de diseño táctico, cada uno de los contextos acotados dentro del backend sigue una arquitectura limpia (Clean Architecture) dividida en cuatro capas bien definidas:
+1.  **Interfaces/Presentation Layer:** Compuesto por controladores REST que exponen los endpoints públicos y adaptadores de entrada encargados de recibir peticiones externas y serializarlas.
+2.  **Application Layer:** Contiene los servicios de aplicación, casos de uso del sistema, y la lógica de enrutamiento y orquestación de comandos y consultas (*Commands/Queries*).
+3.  **Domain Layer:** Representa el núcleo del sistema, libre de dependencias tecnológicas. Contiene las entidades base, agregados (*Aggregates*), objetos de valor (*Value Objects*), servicios de dominio e interfaces de repositorios (puertos).
+4.  **Infrastructure Layer:** Implementa los adaptadores de salida necesarios para la persistencia de datos (conectando a PostgreSQL o Redis), la comunicación externa con APIs de terceros (Stripe, Google, Resend) y el encolamiento de eventos de integración en Kafka.
+
+La comunicación interna entre contextos acotados dentro de la misma API se realiza de manera desacoplada a través de fachadas lógicas (*Facades*), o mediante la publicación y consumo asíncrono de eventos de integración a través del bus de datos de Apache Kafka, evitando el acoplamiento directo de base de datos.
+
 ### 4.2.1. Bounded Context: Identity & Access (IAM)
 
 El contexto acotado de **Identity & Access Management (IAM)** gestiona el registro de nuevos usuarios, la autenticación segura, el control de acceso basado en roles y el inicio de sesión federado (Google OAuth2). Asegura que los recursos de la plataforma Vanana estén protegidos y que solo los usuarios autorizados puedan interactuar con los sensores y actuadores.
@@ -829,75 +847,404 @@ FALTA!!! - AYUDA
 
 ### 4.2.3. Bounded Context: Device & Space Management
 
+El contexto acotado de **Device & Space Management** gestiona el inventario de hardware y la organización espacial lógica de la plataforma. Permite registrar dispositivos de sensores (`Device`), asignar ubicaciones organizacionales (`Organization` y `Space`), controlar las vinculaciones físicas (`DeviceAssignment`), registrar comandos enviados al hardware (`DeviceCommand`) y definir los umbrales personalizados de alerta por dispositivo.
+
+**Diccionario de Clases del Contexto Device & Space Management**
+
+A continuación, se detallan las clases principales identificadas para este contexto, clasificadas por capa de arquitectura:
+
+| Nombre de la Clase | Capa | Propósito / Responsabilidad | Atributos Principales | Métodos Clave | Relaciones de Asociación / Dependencia |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Device** | Dominio | Representa el sensor físico registrado en el sistema global. | `id` (UUID), `serialNumber` (String), `name` (String), `hardwareId` (HardwareId), `apiKey` (ApiKey) | `rotateApiKey()`, `updateName()` | Contiene `HardwareId` y `ApiKey`. |
+| **DeviceAssignment** | Dominio | Entidad que modela el emparejamiento físico de un sensor a un espacio y usuario específico. | `id` (UUID), `device` (Device), `ownerUserId` (UserId), `spaceId` (UUID), `status` (DeviceStatus), `claimToken` (ClaimToken) | `claimToSpace()`, `markOnline()`, `markOffline()` | Contiene `Device`. |
+| **DeviceCommand** | Dominio | Entidad que almacena el historial y estado de comandos enviados a un actuador. | `id` (UUID), `deviceId` (UUID), `commandType` (String), `payload` (String), `status` (String) | `acknowledge()` | Vinculado a `Device` por ID. |
+| **Organization** | Dominio | Representa la agrupación lógica superior (empresa o cuenta principal) para locales comerciales. | `id` (UUID), `name` (String), `ownerUserId` (UserId) | `updateName()` | Vinculado a `UserId`. |
+| **Space** | Dominio | Representa un espacio o zona física específica asociada a una organización (ej: "Sala A"). | `id` (UUID), `name` (String), `organizationId` (UUID) | `updateName()` | Asociado a `Organization` por ID. |
+| **DeviceRepository** | Dominio | Interfaz de persistencia para el inventario de sensores registrados. | *N/A* | `save()`, `findById()`, `findByHardwareId()` | Utilizado por `DeviceCommandServiceImpl`. |
+| **DeviceAssignmentRepository** | Dominio | Interfaz de persistencia para los emparejamientos y estados de conexión en tiempo real. | *N/A* | `save()`, `findByDeviceId()`, `findBySpaceId()` | Utilizado por los servicios de comando de dispositivos y espacios. |
+| **DeviceController** | Interfaz | Controlador REST para emparejar, reclamar, listar y renombrar dispositivos sensores. | `deviceCommandService`, `deviceQueryService` | `pairDevice()`, `claimDevice()`, `getDevices()` | Depende de los servicios de aplicación de dispositivos. |
+| **DeviceCommandController** | Interfaz | Controlador REST que permite emitir acciones o comandos manuales hacia los actuadores. | `deviceControlCommandService` | `createDeviceCommand()`, `getDeviceCommand()` | Depende de `DeviceControlCommandServiceImpl`. |
+| **DeviceThresholdController** | Interfaz | Controlador REST para registrar y eliminar los umbrales de advertencia específicos de métricas de aire. | `thresholdCommandService` | `writeThreshold()`, `removeThreshold()` | Depende de `DeviceThresholdCommandServiceImpl`. |
+| **OrganizationController** | Interfaz | Controlador REST para crear, renombrar y eliminar organizaciones. | `organizationCommandService` | `createOrganization()`, `updateOrganizationName()` | Depende de `OrganizationCommandServiceImpl`. |
+| **SpaceController** | Interfaz | Controlador REST para crear y administrar los espacios de monitoreo. | `spaceCommandService` | `createSpace()`, `updateSpaceName()` | Depende de `SpaceCommandServiceImpl`. |
+| **DeviceCommandServiceImpl** | Aplicación | Servicio de aplicación para el aprovisionamiento, vinculación y desvinculación de hardware Clair. | `deviceRepository`, `deviceAssignmentRepository`, `spaceRepository`, `publisher` | `handle(PairDeviceCommand)`, `handle(ClaimDeviceCommand)` | Usa repositorios y publica eventos vía Kafka. |
+| **DeviceControlCommandServiceImpl** | Aplicación | Servicio para emitir comandos y despachar colas de acciones pendientes hacia los sensores. | `deviceCommandRepository`, `publisher` | `handle(CreateDeviceCommandCommand)` | Usa `DeviceCommandRepository` y Kafka. |
+| **ProvisioningDevicesChangedKafkaPublisher** | Infraestructura | Adaptador para publicar eventos de integración de cambio de dispositivos en Apache Kafka. | `kafkaTemplate` | `publish()` | Implementa el puerto de mensajería para eventos de aprovisionamiento. |
+| **JpaDeviceRepository** | Infraestructura | Adaptador JPA que implementa `DeviceRepository` para la base de datos PostgreSQL. | *N/A* | `findByHardwareId()` | Implementa `DeviceRepository`. |
+
+---
+
 #### 4.2.3.1. Domain Layer
+
+La capa de dominio define el inventario físico y la jerarquía organizacional del sistema.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/device-bc/domain-layer.svg" alt="Device Domain Layer Class Diagram" width="750">
+</p>
+
+*   **Entities y Aggregates:** `Device` es el agregado de hardware. `DeviceAssignment` es la raíz de agregado que controla si un dispositivo está online/offline y en qué espacio físico y usuario está asignado. `DeviceCommand` controla el ciclo de vida de confirmación de órdenes. `Organization` y `Space` estructuran la geografía física de los sensores.
+*   **Value Objects:** `HardwareId` (ID físico MAC/serie) y `ApiKey` (clave criptográfica de comunicación del sensor).
+*   **Ports:** Interfaces de repositorio (`DeviceRepository`, `DeviceAssignmentRepository`, `DeviceCommandRepository`, `OrganizationRepository`, `SpaceRepository`).
 
 #### 4.2.3.2. Interface Layer
 
+Provee la interfaz REST para la gestión física del hardware y la estructuración espacial.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/device-bc/interfaces-layer.svg" alt="Device Interface Layer Class Diagram" width="750">
+</p>
+
+*   **DeviceController:** Registra y empareja dispositivos en el sistema.
+*   **DeviceThresholdController:** Endpoint para configurar los límites seguros de las lecturas.
+*   **OrganizationController y SpaceController:** API para configurar la estructura de locales y áreas.
+
 #### 4.2.3.3. Application Layer
+
+Orquesta los flujos de configuración del entorno e ingesta/acciones del hardware.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/device-bc/application-layer.svg" alt="Device Application Layer Class Diagram" width="750">
+</p>
+
+*   **DeviceCommandServiceImpl:** Coordina el emparejamiento seguro de dispositivos, validando las existencias de espacio y publicando en Kafka los cambios de asignación.
+*   **DeviceControlCommandServiceImpl:** Administra el envío y despacho de comandos asíncronos para activar extractores o ventanas de ventilación inteligentes.
+*   **SpaceCommandServiceImpl:** Orquesta el ciclo de vida del local, verificando a través del servicio externo `BillingContextFacade` (comunicación inter-contexto) si el plan del usuario tiene permisos para crear nuevos espacios.
 
 #### 4.2.3.4. Infrastructure Layer
 
+Proporciona persistencia SQL relacional para la configuración e integra mensajería Kafka.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/device-bc/infrastructure-layer.svg" alt="Device Infrastructure Layer Class Diagram" width="750">
+</p>
+
+*   **Adaptadores de Persistencia:** Repositorios Spring Data JPA que implementan los puertos de dominio para PostgreSQL.
+*   **Kafka Publishers:** Adaptadores `ProvisioningDevicesChangedKafkaPublisher` y `DeviceCommandsPendingKafkaPublisher` que formatean y transmiten los payloads hacia las colas correspondientes de Apache Kafka.
+
 #### 4.2.3.5. Bounded Context Software Architecture Component Level Diagrams
+
+Organización de capas de componentes en el contenedor principal de la API para Device & Space Management:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/backend/components/contexts/DeviceSpaceLayers-dark.svg" alt="Device & Space Layer Components Diagram" width="850">
+</p>
+
+*   **DeviceSpace Interfaces (Component):** Expone las API HTTP REST para la manipulación de la organización y emparejamiento de hardware.
+*   **DeviceSpace Application (Component):** Orquesta los casos de uso llamando al dominio y disparando publicadores.
+*   **DeviceSpace Domain (Component):** Aloja las reglas de asignación y jerarquías lógicas de espacios.
+*   **DeviceSpace Infrastructure (Component):** Implementa el acceso físico a las tablas relacionales y el encolamiento de eventos en Kafka.
 
 #### 4.2.3.6. Bounded Context Software Architecture Code Level Diagrams
 
 ##### 4.2.3.6.1. Bounded Context Domain Layer Class Diagrams
 
+El diagrama unificado de dominio para Device & Space Management define la estructura táctica y relaciones:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/device-bc/unified.svg" alt="Unified Device Domain Class Diagram" width="850">
+</p>
+
 ##### 4.2.3.6.2. Bounded Context Database Design Diagram
+
+FALTA!!! - AYUDA
 
 ### 4.2.4. Bounded Context: Air Quality Evaluation
 
+El contexto acotado de **Air Quality Evaluation** es el encargado de procesar, analizar y almacenar la telemetría en tiempo real recibida desde los sensores físicos. Realiza la validación de integridad técnica de los datos y la posterior evaluación de las métricas ambientales de salubridad ($CO_2$, material particulado, temperatura y humedad) contra los umbrales configurados para cada espacio.
+
+**Diccionario de Clases del Contexto Air Quality Evaluation**
+
+A continuación, se detallan las clases principales identificadas para este contexto, clasificadas por capa de arquitectura:
+
+| Nombre de la Clase | Capa | Propósito / Responsabilidad | Atributos Principales | Métodos Clave | Relaciones de Asociación / Dependencia |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **TelemetryEvaluation** | Dominio | Entidad raíz del agregado que consolida los datos ambientales de un sensor e indica su estado de salud general. | `id` (UUID), `deviceId` (DeviceId), `airQuality` (AirQuality), `particulateMatter` (ParticulateMatter), `connectivity` (Connectivity), `location` (Location) | *N/A* | Contiene `DeviceId`, `AirQuality`, `ParticulateMatter`, `Connectivity` y `Location`. |
+| **DeviceId** | Dominio | Objeto de Valor (*Value Object*) que tipa de manera fuerte el identificador único del sensor. | `value` (UUID) | *N/A* | Composición en `TelemetryEvaluation`. |
+| **AirQuality** | Dominio | Objeto de Valor que encapsula los niveles medidos de dióxido de carbono, temperatura y humedad. | `co2` (Double), `temperature` (Double), `humidity` (Double) | *N/A* | Composición en `TelemetryEvaluation`. |
+| **ParticulateMatter** | Dominio | Objeto de Valor que agrupa la densidad medida de polvo y partículas suspendidas. | `pm1_0` (Double), `pm2_5` (Double), `pm10` (Double) | *N/A* | Composición en `TelemetryEvaluation`. |
+| **Connectivity** | Dominio | Objeto de Valor que almacena datos de diagnóstico del hardware (señal, red, estado). | `status` (String), `network` (String), `signalStrength` (Double) | *N/A* | Composición en `TelemetryEvaluation`. |
+| **Location** | Dominio | Objeto de Valor que identifica la localización geográfica del dispositivo reportado. | `country` (String) | *N/A* | Composición en `TelemetryEvaluation`. |
+| **TelemetryEvaluationRepository** | Dominio | Interfaz (Puerto) que define los métodos de persistencia para el histórico de evaluaciones ambientales. | *N/A* | `save()`, `findByDeviceId()`, `findFirstByDeviceIdValueOrderByRecordedAtDesc()` | Utilizado por los servicios de comando y consulta de telemetría. |
+| **TelemetryEvaluationController** | Interfaz | Controlador REST para solicitar evaluaciones manuales y obtener históricos o la última lectura de un dispositivo. | `telemetryEvaluationQueryService`, `telemetryEvaluationCommandService` | `evaluateTelemetry()`, `getLatestEvaluationByDevice()` | Depende de `TelemetryEvaluationCommandServiceImpl` y `TelemetryEvaluationQueryServiceImpl`. |
+| **EvaluationContextFacade** | Interfaz | Fachada expuesta para que otros contextos consulten históricos agregados (como el módulo de Analytics). | *N/A* | `getLatestEvaluationRecordedAt()`, `getHourlyTelemetryAggregation()` | Implementado por `EvaluationContextFacadeImpl`. |
+| **TelemetryEvaluationCommandServiceImpl** | Aplicación | Servicio de aplicación que procesa el comando de ingesta, evalúa los umbrales y guarda el registro. | `telemetryEvaluationRepository` | `handle(EvaluateTelemetryCommand)` | Usa `TelemetryEvaluationRepository` para persistir la evaluación. |
+| **TelemetryEvaluationQueryServiceImpl** | Aplicación | Servicio de aplicación para consultar evaluaciones históricas de forma paginada o el último registro recibido. | `telemetryEvaluationRepository` | `handle(GetEvaluationsByDeviceQuery)`, `handle(GetLatestEvaluationByDeviceQuery)` | Usa `TelemetryEvaluationRepository`. |
+| **TelemetryRecordedKafkaConsumer** | Aplicación | Consumidor (Listener) de Kafka que procesa asíncronamente los mensajes de telemetría e inicia la evaluación. | `telemetryEvaluationCommandService`, `externalDeviceService` | `consume()` | Recibe datos crudos, resuelve el ID mediante `ExternalDeviceService` y delega a `TelemetryEvaluationCommandService`. |
+| **ExternalDeviceService** | Aplicación | Interfaz (Puerto de comunicación inter-contexto) para validar la existencia y pertenencia de un dispositivo. | *N/A* | `findDeviceIdByHardwareId()`, `isDeviceOwnedByUser()` | Consumido por el controlador y el consumidor Kafka. |
+| **JpaTelemetryEvaluationRepository** | Infraestructura | Adaptador JPA que implementa `TelemetryEvaluationRepository` para PostgreSQL. | *N/A* | *N/A* | Implementa `TelemetryEvaluationRepository`. |
+
+---
+
 #### 4.2.4.1. Domain Layer
+
+La capa de dominio modela las especificaciones físicas de calidad del aire y la integridad de las lecturas ambientales.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/evaluation-bc/domain-layer.svg" alt="Evaluation Domain Layer Class Diagram" width="750">
+</p>
+
+*   **Entities y Aggregates:** `TelemetryEvaluation` representa el agregado principal que encapsula el estado físico del aire medido en un punto temporal específico.
+*   **Value Objects:** `AirQuality` (parámetros de gases y ambiente), `ParticulateMatter` (concentración de polvo PM1.0, PM2.5, PM10), `Connectivity` (diagnóstico de señal), `Location` (país de reporte) y `DeviceId`.
+*   **Ports:** `TelemetryEvaluationRepository` es el puerto de repositorio para guardar y recuperar mediciones.
 
 #### 4.2.4.2. Interface Layer
 
+Provee los endpoints HTTP y fachadas internas para consultar las evaluaciones y estados ambientales.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/evaluation-bc/interfaces-layer.svg" alt="Evaluation Interface Layer Class Diagram" width="750">
+</p>
+
+*   **TelemetryEvaluationController:** Expone endpoints RESTful para obtener la telemetría en tiempo real de un dispositivo o su histórico paginado de evaluaciones.
+*   **EvaluationContextFacade:** Fachada de comunicación interna utilizada por el contexto acotado de Analytics & Reporting para recuperar consolidados de telemetría horaria sin acoplarse a los repositorios de este contexto.
+
 #### 4.2.4.3. Application Layer
+
+Orquesta la ingesta de eventos de telemetría y ejecuta los flujos de consulta ambiental.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/evaluation-bc/application-layer.svg" alt="Evaluation Application Layer Class Diagram" width="750">
+</p>
+
+*   **TelemetryRecordedKafkaConsumer (Event Handler):** Suscriptor de Kafka que escucha de forma reactiva y no bloqueante los eventos del bus de mensajería asíncrona cuando un sensor Clair reporta telemetría.
+*   **TelemetryEvaluationCommandServiceImpl:** Recibe el comando de validación, realiza los cálculos de salubridad y guarda la evaluación en base a los umbrales configurados.
+*   **ExternalDeviceService (Port):** Puerto para interactuar de forma segura con el contexto de `Device Management` y validar la existencia y propietario de los sensores.
 
 #### 4.2.4.4. Infrastructure Layer
 
+Provee el acceso físico al motor de series temporales/PostgreSQL.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/evaluation-bc/infrastructure-layer.svg" alt="Evaluation Infrastructure Layer Class Diagram" width="750">
+</p>
+
+*   **JpaTelemetryEvaluationRepository:** Adaptador que traduce las consultas y escrituras del dominio en sentencias SQL a través de Spring Data JPA sobre PostgreSQL.
+
 #### 4.2.4.5. Bounded Context Software Architecture Component Level Diagrams
+
+Dentro del backend de Platform API, las capas tácticas de Air Quality Evaluation se representan bajo los siguientes componentes organizados:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/backend/components/contexts/AirQualityLayers-dark.svg" alt="Air Quality Layer Components Diagram" width="850">
+</p>
+
+*   **AirQuality Interfaces (Component):** Expone las API HTTP y la Fachada interna de consulta del aire.
+*   **AirQuality Application (Component):** Procesa de forma reactiva los eventos procedentes de Kafka y ejecuta comandos de persistencia.
+*   **AirQuality Domain (Component):** Modela la estructura lógica de los gases y partículas finas.
+*   **AirQuality Infrastructure (Component):** Implementa el repositorio conectándose a PostgreSQL para almacenar el histórico ambiental.
 
 #### 4.2.4.6. Bounded Context Software Architecture Code Level Diagrams
 
 ##### 4.2.4.6.1. Bounded Context Domain Layer Class Diagrams
 
+El diagrama unificado de clases del dominio para Air Quality Evaluation define los atributos y métodos completos:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/evaluation-bc/unified.svg" alt="Unified Air Quality Domain Class Diagram" width="850">
+</p>
+
 ##### 4.2.4.6.2. Bounded Context Database Design Diagram
+
+FALTA!!! - AYUDA
 
 ### 4.2.5. Bounded Context: Alerting & Response
 
+El contexto acotado de **Alerting & Response** es responsable del ciclo de vida de los incidentes de calidad del aire. Evalúa de forma continua la telemetría recibida contra los umbrales específicos de seguridad, dispara alertas ante transgresiones de límites de contaminantes, gestiona el acuse de recibo de los operadores y despacha comandos de respuesta hacia los dispositivos inteligentes de forma autónoma.
+
+**Diccionario de Clases del Contexto Alerting & Response**
+
+A continuación, se detallan las clases principales identificadas para este contexto, clasificadas por capa de arquitectura:
+
+| Nombre de la Clase | Capa | Propósito / Responsabilidad | Atributos Principales | Métodos Clave | Relaciones de Asociación / Dependencia |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Alert** | Dominio | Entidad raíz del agregado que modela el ciclo de vida de un incidente ambiental (abierto, reconocido, cerrado). | `id` (UUID), `deviceId` (UUID), `spaceId` (UUID), `metric` (MetricType), `thresholdValue` (BigDecimal), `actualValue` (BigDecimal), `message` (String), `status` (AlertStatus), `severity` (AlertSeverity), `occurredAt` (Instant), `resolvedAt` (Instant) | `acknowledge()`, `resolve(resolvedAt)` | Contiene `MetricType`, `AlertStatus` y `AlertSeverity`. |
+| **MetricType** | Dominio | Enumeración que define las métricas propensas a generar alertas. | *N/A* | *N/A* | Composición en `Alert`. |
+| **AlertSeverity** | Dominio | Enumeración que indica la gravedad de la alerta (Low, Warning, Critical). | *N/A* | *N/A* | Composición en `Alert`. |
+| **AlertStatus** | Dominio | Enumeración para controlar el estado de atención del incidente (Active, Acknowledged, Resolved). | *N/A* | *N/A* | Composición en `Alert`. |
+| **AlertRepository** | Dominio | Interfaz (Puerto) que define los métodos de persistencia para las alertas. | *N/A* | `save()`, `findById()`, `findFirstByDeviceIdAndMetricAndStatusIn()` | Utilizado por los servicios de aplicación de alertas. |
+| **AlertController** | Interfaz | Controlador REST para consultar alertas de dispositivos, espacios y obtener resúmenes. | `alertQueryService` | `getAlertsByDevice()`, `getAlertsBySpace()`, `getDailySummary()` | Depende de `AlertQueryServiceImpl`. |
+| **AlertingContextFacade** | Interfaz | Fachada interna expuesta para que otros contextos consulten detalles específicos de incidentes. | *N/A* | `findAlertDetailsById()` | Implementado por `AlertingContextFacadeImpl`. |
+| **AlertCommandServiceImpl** | Aplicación | Servicio de aplicación para evaluar telemetría, generar incidentes o resolverlos automáticamente. | `alertRepository`, `externalThresholdService`, `externalDeviceService`, `publisher` | `handle(EvaluateTelemetryForAlertsCommand)` | Usa `AlertRepository`, puertos externos de consulta y publica en Kafka. |
+| **AlertQueryServiceImpl** | Aplicación | Servicio de consulta para obtener historiales de incidentes filtrados y resúmenes diarios. | `alertRepository`, `externalDeviceService` | `handle(GetAlertsByDeviceQuery)`, `handle(GetAlertsByOwnerQuery)` | Usa `AlertRepository` y `ExternalAlertingDeviceService`. |
+| **AlertingTelemetryRecordedKafkaConsumer** | Aplicación | Consumidor asíncrono de Kafka que procesa lecturas reportadas para gatillar la detección de alertas. | `alertCommandService` | `consume()` | Delega a `AlertCommandServiceImpl` la evaluación del payload recibido. |
+| **ExternalAlertingDeviceService** | Aplicación | Interfaz (Puerto de comunicación inter-contexto) para obtener nombres y localizaciones del hardware. | *N/A* | `fetchSpaceIdByDeviceId()`, `fetchDeviceNameByDeviceId()` | Utilizado por `AlertCommandServiceImpl`. |
+| **ExternalAlertingThresholdService** | Aplicación | Interfaz (Puerto de comunicación inter-contexto) para obtener los umbrales habilitados por sensor. | *N/A* | `fetchEnabledThresholdsByDeviceId()` | Utilizado por `AlertCommandServiceImpl`. |
+| **JpaAlertRepository** | Infraestructura | Adaptador JPA que implementa `AlertRepository` para almacenar alertas en PostgreSQL. | *N/A* | *N/A* | Implementa `AlertRepository`. |
+| **AlertIncidentsChangedKafkaPublisher** | Infraestructura | Adaptador que publica eventos de integración de cambio de estado de alertas en Apache Kafka. | `kafkaTemplate` | `publish()` | Publica eventos consumidos por otros contextos (como notificaciones). |
+
 #### 4.2.5.1. Domain Layer
+
+La capa de dominio gestiona la lógica del ciclo de vida de los incidentes y las reglas de severidad del aire.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/alerting-bc/domain-layer.svg" alt="Alerting Domain Layer Class Diagram" width="750">
+</p>
+
+*   **Entities y Aggregates:** `Alert` actúa como agregado que encapsula los datos puntuales del incidente, implementando los métodos de negocio `acknowledge()` (acuse de recibo humano) y `resolve()` (cierre técnico de la alerta).
+*   **Value Objects / Enums:** Enums `MetricType` (CO2, PM2.5, temperatura, humedad), `AlertStatus` y `AlertSeverity`.
+*   **Ports:** `AlertRepository` define el contrato para almacenar y consultar alertas activas de sensores.
 
 #### 4.2.5.2. Interface Layer
 
+Expone las APIs para la consulta de incidentes y provee fachadas para la interacción inter-contextos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/alerting-bc/interfaces-layer.svg" alt="Alerting Interface Layer Class Diagram" width="750">
+</p>
+
+*   **AlertController:** Controlador REST para listar alertas e incidentes históricos o activos por local o dispositivo.
+*   **AlertingContextFacade:** Fachada de comunicación directa utilizada para que otros contextos de la aplicación consulten la gravedad de un incidente específico de forma rápida.
+
 #### 4.2.5.3. Application Layer
+
+Orquesta la evaluación reactiva de las lecturas físicas e inicia el despacho de notificaciones de incidentes.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/alerting-bc/application-layer.svg" alt="Alerting Application Layer Class Diagram" width="750">
+</p>
+
+*   **AlertingTelemetryRecordedKafkaConsumer:** Listener asíncrono que procesa las lecturas de telemetría emitidas en el broker.
+*   **AlertCommandServiceImpl:** Resuelve el caso de uso central: analiza la lectura recibida contra los umbrales configurados (obtenidos mediante `ExternalAlertingThresholdService`). Si hay transgresión y no existe una alerta activa para esa métrica, crea un nuevo incidente `Alert` y publica un evento `AlertIncidentChangedIntegrationEvent` en Kafka.
+*   **Ports de consulta:** `ExternalAlertingDeviceService` y `ExternalAlertingThresholdService` resuelven datos de otros contextos de forma desacoplada.
 
 #### 4.2.5.4. Infrastructure Layer
 
+Provee almacenamiento relacional SQL y control del encolamiento de eventos de incidentes.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/alerting-bc/infrastructure-layer.svg" alt="Alerting Infrastructure Layer Class Diagram" width="750">
+</p>
+
+*   **JpaAlertRepository:** Adaptador concreto que persiste los registros de incidentes en PostgreSQL.
+*   **AlertIncidentsChangedKafkaPublisher:** Adaptador que despacha los eventos de integración de alertas abiertas/resueltas a colas de Apache Kafka.
+
 #### 4.2.5.5. Bounded Context Software Architecture Component Level Diagrams
+
+Estructuración de componentes internos para Alerting & Response en el contenedor principal de la API:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/backend/components/contexts/AlertingLayers-dark.svg" alt="Alerting Layer Components Diagram" width="850">
+</p>
+
+*   **Alerting Interfaces (Component):** Expone las API HTTP REST para la auditoría y gestión de alertas.
+*   **Alerting Application (Component):** Consume lecturas e inicia la evaluación y despacho de eventos de incidentes.
+*   **Alerting Domain (Component):** Define las reglas lógicas de incidentes y estados de severidad.
+*   **Alerting Infrastructure (Component):** Conecta a PostgreSQL para almacenamiento y encola avisos en el broker de Kafka.
 
 #### 4.2.5.6. Bounded Context Software Architecture Code Level Diagrams
 
 ##### 4.2.5.6.1. Bounded Context Domain Layer Class Diagrams
 
+El diagrama unificado de dominio para Alerting & Response define las propiedades completas del agregado:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/alerting-bc/unified.svg" alt="Unified Alerting Domain Class Diagram" width="850">
+</p>
+
 ##### 4.2.5.6.2. Bounded Context Database Design Diagram
+
+FALTA!!! - AYUDA
 
 ### 4.2.6. Bounded Context: Analytics & Reporting
 
+El contexto acotado de **Analytics & Reporting** se encarga de estructurar el análisis retrospectivo del aire, consolidar métricas de telemetría en series temporales agregadas (diarias y mensuales), y generar los reportes de salubridad y dashboards interactivos. Utiliza técnicas de Server-Sent Events (SSE) para servir telemetría en tiempo real y programadores de tareas en segundo plano (*schedulers*) para consolidar reportes históricos.
+
+**Diccionario de Clases del Contexto Analytics & Reporting**
+
+A continuación, se detallan las clases principales identificadas para este contexto, clasificadas por capa de arquitectura:
+
+| Nombre de la Clase | Capa | Propósito / Responsabilidad | Atributos Principales | Métodos Clave | Relaciones de Asociación / Dependencia |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **DeviceAnalyticsSnapshot** | Dominio | Entidad que almacena promedios ambientales calculados para un sensor en una ventana temporal (ej: 1 hora). | `id` (UUID), `deviceId` (DeviceId), `timeWindowStart` (Instant), `averageCo2` (Double), `calculatedAqi` (AirQualityIndex) | *N/A* | Contiene `DeviceId` y `AirQualityIndex`. |
+| **DeviceDailySummary** | Dominio | Entidad raíz del agregado para reportes históricos consolidados de un día. | `id` (UUID), `deviceId` (DeviceId), `summaryDate` (LocalDate), `co2` (MetricStats), `pm2_5` (MetricStats), `averageAqi` (Integer) | *N/A* | Contiene `DeviceId`, `MetricStats` y `AqiCategoryBreakdown`. |
+| **DeviceMonthlySummary** | Dominio | Entidad raíz del agregado para consolidados históricos por mes. | `id` (UUID), `deviceId` (DeviceId), `summaryMonth` (LocalDate), `daysCovered` (int) | *N/A* | Contiene `DeviceId` y `MetricStats`. |
+| **MetricStats** | Dominio | Objeto de Valor (*Value Object*) que agrupa estadísticas mínimas, máximas y promedio de una métrica. | `avg` (Double), `min` (Double), `max` (Double) | *N/A* | Composición en los resúmenes diario y mensual. |
+| **AqiCategoryBreakdown** | Dominio | Objeto de Valor que segmenta la cantidad de horas en que el aire estuvo en cada estado de riesgo. | `good` (Long), `moderate` (Long), `hazardous` (Long) | `plus()`, `dominant()` | Composición en los resúmenes diario y mensual. |
+| **AirQualityIndex** | Dominio | Objeto de Valor que encapsula la escala y categoría oficial de AQI (Índice de Calidad del Aire). | `value` (Double), `category` (AqiCategory) | *N/A* | Composición en `DeviceAnalyticsSnapshot`. |
+| **AqiCalculationDomainService** | Dominio | Servicio de Dominio que implementa las fórmulas oficiales EPA para calcular el nivel de AQI. | *N/A* | `calculateAqi(pm2_5, co2)` | Utilizado por los generadores de reportes y schedulers. |
+| **DeviceAnalyticsSnapshotRepository** | Dominio | Interfaz de repositorio para almacenar y recuperar snapshots temporales. | *N/A* | `save()`, `findByDeviceIdAndTimeWindowStartBetween()` | Utilizado por servicios de consulta de tendencias. |
+| **AnalyticsController** | Interfaz | Controlador REST para servir streams en tiempo real vía SSE e históricos de tendencias. | `kpiDashboardMetricsQueryService`, `analyticsSseService` | `getLiveMetrics()`, `streamLiveMetrics()`, `getTrends()` | Depende de los servicios de aplicación del dashboard. |
+| **ReportController** | Interfaz | Controlador REST que exporta los resúmenes en formato de reportes diarios y mensuales. | `dailyReportQueryService`, `externalBillingService` | `getDailyReport()`, `getMonthlyReport()` | Valida permisos llamando a `ExternalBillingService`. |
+| **KpiLiveMetricsCommandServiceImpl** | Aplicación | Servicio de aplicación que procesa la telemetría en caliente, refresca la caché y transmite vía SSE. | `kpiLiveMetricsCache`, `analyticsSseService` | `handle(ProcessTelemetryAnalyticCommand)` | Actualiza la caché y activa difusión SSE. |
+| **DailyReportAggregationService** | Aplicación | Generador programado por lotes que procesa lecturas diarias anteriores para emitir reportes históricos. | `dailySummaryRepository`, `aqiCalculationDomainService` | `aggregatePreviousDay()` | Ejecuta agregación SQL masiva e inserta reportes en PostgreSQL. |
+| **TelemetryAnalyticKafkaConsumer** | Aplicación | Consumidor de Kafka que escucha la telemetría recibida para actualizar de forma asíncrona la caché KPI. | `kpiLiveMetricsCommandService` | `consume()` | Transmite datos al procesador de métricas en vivo. |
+| **ExternalBillingService** | Aplicación | Interfaz (Puerto de comunicación inter-contexto) para validar límites del plan antes de servir reportes. | *N/A* | `canAccessMonthlyReports()` | Consumido por el `ReportController`. |
+| **DeviceDailySummaryRepository** | Infraestructura | Puerto (Interfaz de persistencia relacional) para guardar y buscar reportes de resumen diario. | *N/A* | `findByDeviceIdAndDate()`, `existsByDeviceIdAndDate()` | Implementado en la capa de infraestructura. |
+
 #### 4.2.6.1. Domain Layer
+
+La capa de dominio de Analytics implementa las estructuras estadísticas y cálculos matemáticos para reportes y AQI.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/analytics-bc/domain-layer.svg" alt="Analytics Domain Layer Class Diagram" width="750">
+</p>
+
+*   **Entities y Aggregates:** `DeviceDailySummary` y `DeviceMonthlySummary` son los agregados a largo plazo que consolidan el historial de calidad del aire. `DeviceAnalyticsSnapshot` es la entidad utilizada para agrupar lecturas en micro-ventanas de análisis.
+*   **Value Objects:** `MetricStats` (mín/máx/promedio), `AqiCategoryBreakdown` (distribución de riesgo diario), `AirQualityIndex` e `DeviceId`.
+*   **Domain Services:** `AqiCalculationDomainService` (calcula el índice oficial de calidad del aire), `MetricsAggregationDomainService` (funciones estadísticas de agregación) y `TrendAnalysisDomainService` (análisis de variación de contaminantes).
 
 #### 4.2.6.2. Interface Layer
 
+Provee interfaces para la visualización en vivo de métricas y la descarga de resúmenes estructurados.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/analytics-bc/interfaces-layer.svg" alt="Analytics Interface Layer Class Diagram" width="750">
+</p>
+
+*   **AnalyticsController:** Provee endpoints tradicionales para consultar métricas, así como conexiones asíncronas persistentes basadas en Server-Sent Events (SSE) a través de `SseEmitter` para empujar lecturas en vivo a las aplicaciones cliente sin sobrecargar el servidor.
+*   **AnalyticsOverviewController:** Consolida los indicadores de salud y estados de conexión para la vista del panel principal.
+*   **ReportController:** Expone la obtención de reportes diarios y mensuales, validando la autorización mediante llamadas desacopladas.
+
+---
+
 #### 4.2.6.3. Application Layer
+
+Orquesta los flujos de analítica en tiempo real y el procesamiento diferido de reportes por lotes (*batch*).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/analytics-bc/application-layer.svg" alt="Analytics Application Layer Class Diagram" width="750">
+</p>
+
+*   **KpiLiveMetricsCommandServiceImpl:** Recibe eventos de Kafka en caliente, actualiza un caché rápido en memoria `KpiLiveMetricsCache` y transmite la información vía SSE.
+*   **Daily/Monthly Report Aggregation Service:** Tareas del sistema que leen de forma asíncrona datos del día/mes anterior para consolidar métricas transaccionales masivas.
+*   **SnapshotAggregationScheduler:** Componente temporizado que ejecuta periódicamente promedios de telemetría y los guarda en base de datos.
 
 #### 4.2.6.4. Infrastructure Layer
 
+Implementa la persistencia a largo plazo para agregados analíticos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/analytics-bc/infrastructure-layer.svg" alt="Analytics Infrastructure Layer Class Diagram" width="750">
+</p>
+
+*   **Adaptadores de Repositorio:** `JpaDeviceAnalyticsSnapshotRepository`, `DeviceDailySummaryRepository` y `DeviceMonthlySummaryRepository` implementan los puertos de dominio persistiendo en PostgreSQL.
+
 #### 4.2.6.5. Bounded Context Software Architecture Component Level Diagrams
+
+Organización de capas de componentes en el contenedor principal de la API para Analytics & Reporting:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/backend/components/contexts/AnalyticsLayers-dark.svg" alt="Analytics Layer Components Diagram" width="850">
+</p>
+
+*   **Analytics Interfaces (Component):** Expone las API HTTP REST y gestiona las conexiones abiertas para streams SSE.
+*   **Analytics Application (Component):** Orquesta los schedulers, consume del bus de Kafka y escribe en memoria caché.
+*   **Analytics Domain (Component):** Modela las fórmulas oficiales de AQI y agregaciones estadísticas.
+*   **Analytics Infrastructure (Component):** Persiste los reportes e históricos de snapshots en las tablas relacionales de PostgreSQL.
 
 #### 4.2.6.6. Bounded Context Software Architecture Code Level Diagrams
 
 ##### 4.2.6.6.1. Bounded Context Domain Layer Class Diagrams
 
+El diagrama unificado de dominio para Analytics & Reporting define la estructura táctica y las firmas completas del contexto:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/analytics-bc/unified.svg" alt="Unified Analytics Domain Class Diagram" width="850">
+</p>
+
 ##### 4.2.6.6.2. Bounded Context Database Design Diagram
+
+FALTA!!! - AYUDA
 
 ### 4.2.7. Bounded Context: Notifications
 
@@ -921,9 +1268,43 @@ FALTA!!! - AYUDA
 
 SE APLICO EN ANGULAR DDD XD
 
+### 4.3.1. Bounded Context: NAME
+
+#### 4.3.1.1. Domain Layer
+
+#### 4.3.1.2. Interface Layer
+
+#### 4.3.1.3. Application Layer
+
+#### 4.3.1.4. Infrastructure Layer
+
+### 4.3.2. Bounded Context: NAME
+
+#### 4.3.2.1. Domain Layer
+
+#### 4.3.2.2. Interface Layer
+
+#### 4.3.2.3. Application Layer
+
+#### 4.3.2.4. Infrastructure Layer
+
+
+
+
+
 ## 4.4. Tactical-Level Domain-Driven Design -  Mobile application
 
 SE APLICO DDD XD EN FLUTTER
+
+### 4.4.1. Bounded Context: NAME
+
+#### 4.4.1.1. Domain Layer
+
+#### 4.4.1.2. Interface Layer
+
+#### 4.4.1.3. Application Layer
+
+#### 4.4.1.4. Infrastructure Layer
 
 ## 4.5. Tactical-Level Domain-Driven Design - Edge station
 
