@@ -537,8 +537,23 @@ Este diagrama demuestra que la plataforma de Vanana no opera de forma aislada, s
 
 #### 4.1.3.2. Software Architecture Context Level Diagrams.
 
-ACTUALIZAR
+El diagrama de contexto de sistema (System Context Diagram) representa el nivel de abstracción más alto de la arquitectura C4 para la plataforma **Vanana**. Este modelo delimita las fronteras del sistema de software principal, identificando sus interacciones directas con los actores y con los sistemas externos integrados en el ecosistema.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/context/VananaContext-dark.svg" alt="Vanana System Context Diagram" width="850">
+</p>
+
+Las interacciones clave representadas en el diagrama de contexto son las siguientes:
+
+*   **Actores del Sistema:**
+    *   **Home User y Facility Admin:** Interactúan directamente con la plataforma para la monitorización ambiental de sus respectivos entornos (hogares y locales comerciales). Ambos perfiles delegan la autenticación de sus credenciales al sistema externo de **Google** y la gestión de planes y transacciones monetarias al servicio de **Stripe**.
+*   **Dispositivos de Hardware (Clair Hardware):**
+    *   Los sensores y actuadores físicos establecen una comunicación bidireccional con la plataforma central, transmitiendo datos de telemetría de calidad del aire (CO2, material particulado y temperatura) y ejecutando comandos automáticos de ventilación en respuesta a las evaluaciones ambientales.
+*   **Servicios Externos de Soporte:**
+    *   **Google OAuth2:** Provee el servicio de autenticación federada y validación de identidad.
+    *   **Stripe:** Administra los flujos de cobro, procesamiento de pagos y el ciclo de vida de las suscripciones.
+    *   **OneSignal:** Recibe peticiones de la plataforma para despachar notificaciones push a los dispositivos móviles de los usuarios.
+    *   **Resend:** Gestiona el envío de correos electrónicos transaccionales con alertas críticas y reportes de analítica periódica.
 
 
 #### 4.1.3.3. Software Architecture Container Level Diagrams.
