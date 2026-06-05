@@ -726,38 +726,106 @@ A continuación, se detalla el diagrama de clases unificado de la capa de domini
 
 ##### 4.2.1.6.2. Bounded Context Database Design Diagram
 
-La persistencia del contexto IAM se divide físicamente en dos motores de almacenamiento debido a los diferentes requisitos de volatilidad de los datos:
-
-1.  **PostgreSQL (Persistencia Relacional - Tabla `users`):**
-    Los datos de perfil persistentes se almacenan en una base de datos relacional PostgreSQL. La tabla de usuarios (`users`) se define con la siguiente estructura:
-    *   `id` (UUID, PRIMARY KEY): Identificador único global de la cuenta.
-    *   `email` (VARCHAR(150), UNIQUE, NOT NULL): Correo electrónico que actúa como login alternativo.
-    *   `password_hash` (VARCHAR(255), NULLABLE): Hash Bcrypt de la contraseña (nulo si el registro es puramente a través de Google).
-    *   `status` (VARCHAR(20), NOT NULL): Estado actual de la cuenta (`PENDING_CONFIRMATION`, `ACTIVE`, `SUSPENDED`).
-    *   `google_user_id` (VARCHAR(50), UNIQUE, NULLABLE): Identificador único del perfil federado de Google.
-
-2.  **Redis (Almacenamiento Clave-Valor - Estructura de caché):**
-    Las sesiones activas de refresco y códigos temporales de registro se persisten en Redis con llaves optimizadas por clave única y TTL:
-    *   `registration_session:[session_id]` -> Estructura JSON conteniendo email, password encriptado y código de verificación con un TTL fijo de 10 minutos.
-    *   `token_session:[jti]` -> Estructura conteniendo el estado de validez del token y el ID de usuario con un TTL equivalente a la expiración del Refresh Token.
+FALTA!!! - AYUDA
 
 ### 4.2.2. Bounded Context: Billing
 
+El contexto acotado de **Billing** es responsable de administrar el modelo de monetización de la plataforma. Controla las pasarelas de pago, los límites operativos impuestos a los usuarios según su plan (Freemium o Premium) y el procesamiento de suscripciones mensuales, integrándose de forma directa con la API externa de Stripe.
+
+**Diccionario de Clases del Contexto Billing**
+
+A continuación, se detallan las clases principales identificadas para este contexto, clasificadas por capa de arquitectura:
+
+| Nombre de la Clase | Capa | Propósito / Responsabilidad | Atributos Principales | Métodos Clave | Relaciones de Asociación / Dependencia |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **UserPlan** | Dominio | Entidad raíz que define el plan de suscripción asignado a un usuario y sus fechas de vigencia. | `id` (UUID), `userId` (UserId), `planType` (PlanType), `startDate` (LocalDate), `endDate` (LocalDate) | `upgradeToPremium()`, `downgradeToFreemium()`, `isPremiumExpired()` | Contiene `UserId` y `PlanType`. |
+| **PaymentRecord** | Dominio | Entidad que registra el historial de cobros y transacciones de los usuarios. | `id` (UUID), `userId` (UserId), `amount` (Money), `status` (PaymentStatus), `stripePaymentIntentId` (String) | `markAsCompleted()` | Contiene `UserId`, `Money` y `PaymentStatus`. |
+| **PaymentGateway** | Dominio | Interfaz (Puerto) que define los métodos de interacción con pasarelas de cobro externas. | *N/A* | `createCheckoutSession()`, `createPaymentIntent()` | Implementado por `StripePaymentGatewayAdapter`. |
+| **UserPlanRepository** | Dominio | Interfaz de repositorio para persistir y consultar el plan de un usuario. | *N/A* | `save()`, `findByUserId()` | Utilizado por los servicios de comando y consulta de suscripciones. |
+| **PaymentRecordRepository** | Dominio | Interfaz de repositorio para persistir transacciones financieras. | *N/A* | `save()`, `findByStripePaymentIntentId()`, `findByUserId()` | Utilizado por los servicios de comando y consulta de suscripciones. |
+| **SubscriptionController** | Interfaz | Controlador REST que expone endpoints para iniciar checkouts, degradar cuentas y ver planes activos. | `subscriptionCommandService`, `subscriptionQueryService` | `createCheckoutSession()`, `getSubscriptionsByUserId()`, `downgradeToFreemium()` | Depende de `SubscriptionCommandServiceImpl` y `SubscriptionQueryServiceImpl`. |
+| **StripeWebhookController** | Interfaz | Controlador de entrada que procesa eventos asíncronos enviados por webhooks de Stripe. | `subscriptionCommandService`, `stripeWebhookSecret` | `handleWebhook()` | Depende de `SubscriptionCommandServiceImpl`. |
+| **BillingContextFacade** | Interfaz | Fachada expuesta para que otros contextos consulten límites de negocio (suscripción activa del usuario). | *N/A* | `getMaxOrganizations()`, `getMaxSpaces()`, `getMaxDevices()` | Implementado por `BillingContextFacadeImpl`. |
+| **SubscriptionCommandServiceImpl** | Aplicación | Servicio de aplicación que procesa comandos para actualizar suscripciones y registrar pagos exitosos. | `paymentGateway`, `paymentRecordRepository`, `userPlanRepository` | `handle(CreateCheckoutSessionCommand)`, `handle(FulfillSubscriptionCommand)` | Usa `PaymentGateway`, `PaymentRecordRepository` y `UserPlanRepository`. |
+| **SubscriptionQueryServiceImpl** | Aplicación | Servicio de aplicación para consultar registros de pago e historial de planes activos. | `userPlanRepository`, `paymentRecordRepository` | `handle(GetSubscriptionByIdQuery)`, `resolveUserPlan()` | Usa `UserPlanRepository` y `PaymentRecordRepository`. |
+| **StripePaymentGatewayAdapter** | Infraestructura | Adaptador que implementa el puerto `PaymentGateway` utilizando el SDK de Stripe. | `stripeApiKey` | `createCheckoutSession()`, `createPaymentIntent()` | Implementa `PaymentGateway`. |
+| **JpaUserPlanRepository** | Infraestructura | Adaptador JPA que implementa `UserPlanRepository` para almacenar planes en PostgreSQL. | *N/A* | *N/A* | Implementa `UserPlanRepository`. |
+
+---
+
 #### 4.2.2.1. Domain Layer
+
+La capa de dominio de Billing resguarda la consistencia del modelo de monetización y límites de la plataforma.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/billing-bc/domain-layer.svg" alt="Billing Domain Layer Class Diagram" width="750">
+</p>
+
+*   **Entities y Aggregates:** `UserPlan` mantiene las reglas de upgrade/downgrade temporal, determinando si el periodo de cobro ha expirado. `PaymentRecord` almacena el estado de cada pago (`PENDING`, `COMPLETED`, `FAILED`).
+*   **Value Objects:** `Money` encapsula el monto y divisa de transacciones, mientras que `UserId` e `PlanType` regulan tipados y accesos.
+*   **Ports:** `PaymentGateway` abstrae la lógica del cobro para no depender directamente de las librerías de Stripe a nivel de dominio.
 
 #### 4.2.2.2. Interface Layer
 
+Se encarga de recibir peticiones de cobro web y registrar webhooks provenientes de la pasarela de pagos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/billing-bc/interfaces-layer.svg" alt="Billing Interface Layer Class Diagram" width="750">
+</p>
+
+*   **SubscriptionController:** Permite a los clientes iniciar la pasarela de checkout redirigiendo al portal de Stripe.
+*   **StripeWebhookController:** Endpoint de escucha perimetral que recibe y valida firmas HMAC de Stripe para autorizar el cobro y aprovisionar el plan del usuario de forma asíncrona.
+*   **BillingContextFacade:** Puerto expuesto internamente que permite a contextos externos (como Device Management) consultar los límites del plan (`getMaxDevices()`) para denegar emparejamientos si el plan del usuario es Freemium y ya alcanzó su cupo.
+
 #### 4.2.2.3. Application Layer
+
+Orquesta el aprovisionamiento de suscripciones y la recepción segura de pagos en la plataforma.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/billing-bc/application-layer.svg" alt="Billing Application Layer Class Diagram" width="750">
+</p>
+
+*   **Command Handlers:** `SubscriptionCommandServiceImpl` maneja la creación de intenciones de cobro y finaliza la activación del plan Premium cuando recibe el evento de pago aprobado.
+*   **Event Handlers:** `UserRegisteredEventHandler` escucha el evento de integración `UserRegisteredEvent` (del contexto IAM) para asignarle inmediatamente un `UserPlan` en plan `FREEMIUM` al nuevo usuario.
+*   **SubscriptionPaidEventHandler:** Transforma el webhook recibido en una confirmación interna de negocio para desbloquear funciones Premium.
 
 #### 4.2.2.4. Infrastructure Layer
 
+Provee la comunicación externa con Stripe y la persistencia de datos financieros.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/billing-bc/infrastructure-layer.svg" alt="Billing Infrastructure Layer Class Diagram" width="750">
+</p>
+
+*   **StripePaymentGatewayAdapter:** Consume el API externo de Stripe para generar enlaces de pago de manera dinámica.
+*   **Adaptadores de base de datos:** `JpaUserPlanRepository` y `JpaPaymentRecordRepository` realizan la persistencia relacional en PostgreSQL para garantizar transacciones ACID.
+
 #### 4.2.2.5. Bounded Context Software Architecture Component Level Diagrams
+
+A nivel de contenedores en la API principal, el contexto de Billing descompone sus responsabilidades a través de componentes en capas:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/backend/components/contexts/BillingLayers-dark.svg" alt="Billing Layer Components Diagram" width="850">
+</p>
+
+*   **Billing Interfaces (Component):** Expone los controladores de checkout y recepción de webhooks de Stripe.
+*   **Billing Application (Component):** Orquesta los comandos de creación de cobros y escucha de registros de usuarios.
+*   **Billing Domain (Component):** Contiene el modelo lógico de cobro y límites del plan de usuario.
+*   **Billing Infrastructure (Component):** Implementa la integración técnica con el SDK de Stripe y la base de datos PostgreSQL.
 
 #### 4.2.2.6. Bounded Context Software Architecture Code Level Diagrams
 
 ##### 4.2.2.6.1. Bounded Context Domain Layer Class Diagrams
 
+El siguiente diagrama detalla la capa de dominio de Billing de forma unificada con sus correspondientes firmas, enumeraciones y multiplicidad:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/billing-bc/unified.svg" alt="Unified Billing Domain Class Diagram" width="850">
+</p>
+
 ##### 4.2.2.6.2. Bounded Context Database Design Diagram
+
+FALTA!!! - AYUDA
 
 ### 4.2.3. Bounded Context: Device & Space Management
 
