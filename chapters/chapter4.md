@@ -1357,6 +1357,21 @@ FALTA!!! - AYUDA
 
 ## 4.3. Tactical-Level Domain-Driven Design - Web application
 
+El frontend de Clair está desarrollado bajo el framework Angular, organizando sus módulos mediante la separación estricta en cuatro capas siguiendo las directrices de Domain-Driven Design (DDD) táctico. Esta arquitectura promueve el desacoplamiento de la interfaz gráfica y los mecanismos de red del negocio principal de la aplicación.
+
+### Arquitectura de Componentes de la Aplicación Web (Angular Frontend)
+
+A continuación se detalla el diagrama C4 de nivel de Componentes para la aplicación web de Clair, ilustrando la organización interna de los Bounded Contexts y cómo interactúan las capas de interfaces, aplicación, dominio e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/frontend/WebAppComponents-dark.svg" alt="Web Application Component Architecture Diagram" width="850">
+</p>
+
+*   **Interfaces Layer (Componente de Presentación):** Contiene los componentes visuales de Angular (Pages, Cards, Tables, Modals) que se encargan de renderizar la interfaz y capturar eventos del usuario, además de mappers/transformadores locales e interceptores HTTP que inyectan el token JWT de forma transparente.
+*   **Application Layer (Componente de Aplicación):** Orquesta los flujos de control de los casos de uso a través de la implementación de servicios de comandos (`CommandServiceImpl`) y consultas (`QueryServiceImpl`). No contiene lógica de negocio directa, sino que delega la ejecución de reglas al dominio y gestiona transacciones y transformaciones.
+*   **Domain Layer (Componente de Dominio):** Representa el núcleo del negocio. Aquí se ubican las interfaces de servicios de comandos/consultas, los contratos de pasarela (`Gateway Interfaces`), entidades de dominio, enums y value objects puros. Esta capa es agnóstica de frameworks o librerías externas.
+*   **Infrastructure Layer (Componente de Infraestructura):** Implementa los adaptadores concretos definidos en la capa de dominio. Esto incluye pasarelas HTTP (`HttpGateways`) encargadas de consumir la API REST del backend mediante el `HttpClient` de Angular y el almacenamiento persistente en el cliente mediante el uso de LocalStorage.
+
 ### 4.3.1. Bounded Context: Identity & Access Management (IAM)
 
 #### 4.3.1.1. Domain Layer
@@ -2321,8 +2336,6 @@ namespace domain {
 }
 ```
 
----
-
 #### 4.3.7.2. Interface Layer
 
 Contiene los adaptadores y fachadas que permiten a otras partes de la UI interactuar con la bandeja de entrada de notificaciones push.
@@ -2351,8 +2364,6 @@ NotificationsContextFacadeImpl ..|> NotificationsContextFacade : implements
 PushNotificationTransform --> PushNotificationLog : maps to
 PushNotificationTransform --> PushNotificationLogResource : maps from
 ```
-
----
 
 #### 4.3.7.3. Application Layer
 
@@ -2386,8 +2397,6 @@ NotificationQueryServiceImpl --> PushNotificationTransform : uses
 NotificationQueryServiceImpl --> GetPushNotificationsQuery : receives
 ```
 
----
-
 #### 4.3.7.4. Infrastructure Layer
 
 Adaptadores que consultan el historial de notificaciones registrado en el servidor de Clair.
@@ -2414,8 +2423,6 @@ class NotificationGateway
 NotificationHttpGateway ..|> NotificationGateway : implements
 NotificationHttpGateway --> PushNotificationLogResource : maps
 ```
-
----
 
 
 ## 4.4. Tactical-Level Domain-Driven Design -  Mobile application
