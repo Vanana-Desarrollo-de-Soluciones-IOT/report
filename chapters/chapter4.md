@@ -1357,9 +1357,7 @@ FALTA!!! - AYUDA
 
 ## 4.3. Tactical-Level Domain-Driven Design - Web application
 
-SE APLICO EN ANGULAR DDD XD
-
-### 4.3.1. Bounded Context: NAME
+### 4.3.1. Bounded Context: Identity & Access Management (IAM)
 
 #### 4.3.1.1. Domain Layer
 
@@ -1369,7 +1367,7 @@ SE APLICO EN ANGULAR DDD XD
 
 #### 4.3.1.4. Infrastructure Layer
 
-### 4.3.2. Bounded Context: NAME
+### 4.3.2. Bounded Context: Billing
 
 #### 4.3.2.1. Domain Layer
 
@@ -1379,15 +1377,62 @@ SE APLICO EN ANGULAR DDD XD
 
 #### 4.3.2.4. Infrastructure Layer
 
+### 4.3.3. Bounded Context: Devices & Space Management
 
+#### 4.3.3.1. Domain Layer
 
+#### 4.3.3.2. Interface Layer
+
+#### 4.3.3.3. Application Layer
+
+#### 4.3.3.4. Infrastructure Layer
+
+### 4.3.4. Bounded Context: Air Quality Evaluation
+
+#### 4.3.4.1. Domain Layer
+
+#### 4.3.4.2. Interface Layer
+
+#### 4.3.4.3. Application Layer
+
+#### 4.3.4.4. Infrastructure Layer
+
+### 4.3.5. Bounded Context: Alerting & Response
+
+#### 4.3.5.1. Domain Layer
+
+#### 4.3.5.2. Interface Layer
+
+#### 4.3.5.3. Application Layer
+
+#### 4.3.5.4. Infrastructure Layer
+
+### 4.3.6. Bounded Context: Analytics & Reporting
+
+#### 4.3.6.1. Domain Layer
+
+#### 4.3.6.2. Interface Layer
+
+#### 4.3.6.3. Application Layer
+
+#### 4.3.6.4. Infrastructure Layer
+
+### 4.3.7. Bounded Context: Notifications
+
+#### 4.3.7.1. Domain Layer
+
+#### 4.3.7.2. Interface Layer
+
+#### 4.3.7.3. Application Layer
+
+#### 4.3.7.4. Infrastructure Layer
 
 
 ## 4.4. Tactical-Level Domain-Driven Design -  Mobile application
 
-SE APLICO DDD XD EN FLUTTER
+SE APLICO DDD EN FLUTTER
 
-### 4.4.1. Bounded Context: NAME
+### 4.4.1. Bounded Context: Identity & Access Management (IAM)
 
 #### 4.4.1.1. Domain Layer
 
@@ -1397,9 +1442,99 @@ SE APLICO DDD XD EN FLUTTER
 
 #### 4.4.1.4. Infrastructure Layer
 
+### 4.4.2. Bounded Context: Device & Space Management
+
+#### 4.4.2.1. Domain Layer
+
+#### 4.4.2.2. Interface Layer
+
+#### 4.4.2.3. Application Layer
+
+#### 4.4.2.4. Infrastructure Layer
+
+### 4.4.3. Bounded Context: Air Quality Evaluation
+
+#### 4.4.3.1. Domain Layer
+
+#### 4.4.3.2. Interface Layer
+
+#### 4.4.3.3. Application Layer
+
+#### 4.4.3.4. Infrastructure Layer
+
+### 4.4.4. Bounded Context: Alerting & Response
+
+#### 4.4.4.1. Domain Layer
+
+#### 4.4.4.2. Interface Layer
+
+#### 4.4.4.3. Application Layer
+
+#### 4.4.4.4. Infrastructure Layer
+
+### 4.4.5. Bounded Context: Analytics & Reporting
+
+#### 4.4.5.1. Domain Layer
+
+#### 4.4.5.2. Interface Layer
+
+#### 4.4.5.3. Application Layer
+
+#### 4.4.5.4. Infrastructure Layer
+
+### 4.4.6. Bounded Context: Notifications
+
+#### 4.4.6.1. Domain Layer
+
+#### 4.4.6.2. Interface Layer
+
+#### 4.4.6.3. Application Layer
+
+#### 4.4.6.4. Infrastructure Layer
+
 ## 4.5. Tactical-Level Domain-Driven Design - Edge station
 
-SE APLICO DDD EN FLASK XD
+SE APLICO DDD EN FLASK
+
+### 4.5.1. Bounded Context: Identity & Access Management (IAM)
+
+#### 4.5.1.1. Domain Layer
+
+#### 4.5.1.2. Interface Layer
+
+#### 4.5.1.3. Application Layer
+
+#### 4.5.1.4. Infrastructure Layer
+
+### 4.5.2. Bounded Context: Device & Space Management
+
+#### 4.5.2.1. Domain Layer
+
+#### 4.5.2.2. Interface Layer
+
+#### 4.5.2.3. Application Layer
+
+#### 4.5.2.4. Infrastructure Layer
+
+### 4.5.3. Bounded Context: Alerting & Response
+
+#### 4.5.3.1. Domain Layer
+
+#### 4.5.3.2. Interface Layer
+
+#### 4.5.3.3. Application Layer
+
+#### 4.5.3.4. Infrastructure Layer
+
+### 4.5.4. Bounded Context: Device Provisioning
+
+#### 4.5.4.1. Domain Layer
+
+#### 4.5.4.2. Interface Layer
+
+#### 4.5.4.3. Application Layer
+
+#### 4.5.4.4. Infrastructure Layer
 
 ## 4.6. Tactical-Level Domain-Driven Design - Embedded application
 
