@@ -2473,15 +2473,15 @@ El diagrama de clases unificado del contexto acotado de Device Provisioning mues
 
 ## 4.6. Tactical-Level Domain-Driven Design - Embedded application
 
-La aplicación embebida (desarrollada en C/C++ para el microcontrolador ESP32) sigue un enfoque modular y reactivo para interactuar con los sensores de calidad del aire y los actuadores. La arquitectura separa los controladores de bajo nivel (Hardware Abstraction Layer - HAL) de la lógica de control principal.
 
-A continuación se detalla el diagrama C4 de nivel de Componentes para la aplicación embebida de Clair, ilustrando cómo se integran los controladores de hardware y el bucle de control del microcontrolador ESP32:
+
+EXPLICAR Y FALTA IAN 
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/embedded/EmbeddedAppComponents-dark.svg" alt="Embedded Application Component Architecture Diagram" width="850">
 </p>
 
-El microcontrolador gestiona de manera concurrente mediante tareas o hilos (a través de FreeRTOS o un bucle de control cooperativo) la lectura periódica de los sensores (CO2, temperatura, humedad, material particulado PM2.5 y PM10), la conectividad de red local (WiFi/HTTP), el envío periódico de telemetrías a la estación Edge y la respuesta inmediata a señales de actuadores o alarmas visuales/sonoras en caso de incidentes críticos.
+
 
 
 
