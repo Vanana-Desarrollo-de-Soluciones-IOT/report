@@ -419,21 +419,25 @@ El tablero completo del Bounded Context Canvases. puede visualizarse en el sigui
 
 ### 4.1.2. Context Mapping.
 
-Con el Context Mapping se presentan las relaciónes entre los bounded contexts identificados de manera gráfica y estructurada.
+Actualizar todo y documentar xd
 
-<img src="../assets/context-mapping/contextMap.png" alt="context-map" width="700">
+#### 4.1.2.1. Context Mapping - Web services.
 
-Las relaciónes Published Language (PL) se utilizan entre Edge Station y Air Quality Evaluation, y desde este último hacia Alerting & Response y Analytics & Reporting, porque en estos puntos del sistema se intercambia información ya estructurada del dominio, 
-como telemetría procesada, estados del aire o eventos de umbrales
+#### 4.1.2.2. Context Mapping - Web application.
 
-Las relaciónes Customer–Supplier (CUS → SUP) se presentan entre Embedded App y Edge Station, así como entre Alerting & Response y Notifications y Analytics & Reporting y Notifications, 
-porque existe una dependencia directa donde un contexto necesita que otro ejecute una función específica.
+#### 4.1.2.3. Context Mapping - Mobile application.
+
+#### 4.1.2.4. Context Mapping - Edge services.
+
+#### 4.1.2.5. Context Mapping - Embedded application.
 
 ### 4.1.3. Software Architecture.
 
 #### 4.1.3.1. Software Architecture System Landscape Diagram.
 
 ACTUALIZAR
+
+
 
 
 
@@ -455,29 +459,31 @@ ACTUALIZAR
 
 
 
-## 4.2. Tactical-Level Domain-Driven Design - Web services
+## 4.2. Tactical-Level Domain-Driven Design - Web Services
 
 ### 4.2.1. Bounded Context: Identity & Access
 
+TEXTO EXPLICATIVO Y MERMAID UNIFIED
+
 #### 4.2.1.1. Domain Layer
 
-mermeid y texto 
+TEXTO EXPLICATIVO Y MERMAID
 
 #### 4.2.1.2. Interface Layer
 
-mermeid y texto 
+TEXTO EXPLICATIVO Y MERMAID
 
 #### 4.2.1.3. Application Layer
 
-mermeid y texto 
+TEXTO EXPLICATIVO Y MERMAID
 
 #### 4.2.1.4. Infrastructure Layer
 
-mermeid y texto 
+TEXTO EXPLICATIVO Y MERMAID
 
 #### 4.2.1.5. Bounded Context Software Architecture Component Level Diagrams
 
-diagrama de structurizer xd
+ TEXTO Y C4 STRUCTURIZER
 
 #### 4.2.1.6. Bounded Context Software Architecture Code Level Diagrams
 
@@ -487,25 +493,127 @@ diagrama de structurizer xd
 
 ### 4.2.2. Bounded Context: Billing
 
+#### 4.2.2.1. Domain Layer
+
+#### 4.2.2.2. Interface Layer
+
+#### 4.2.2.3. Application Layer
+
+#### 4.2.2.4. Infrastructure Layer
+
+#### 4.2.2.5. Bounded Context Software Architecture Component Level Diagrams
+
+#### 4.2.2.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.2.6.1. Bounded Context Domain Layer Class Diagrams
+
+##### 4.2.2.6.2. Bounded Context Database Design Diagram
+
 ### 4.2.3. Bounded Context: Device & Space Management
+
+#### 4.2.3.1. Domain Layer
+
+#### 4.2.3.2. Interface Layer
+
+#### 4.2.3.3. Application Layer
+
+#### 4.2.3.4. Infrastructure Layer
+
+#### 4.2.3.5. Bounded Context Software Architecture Component Level Diagrams
+
+#### 4.2.3.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.3.6.1. Bounded Context Domain Layer Class Diagrams
+
+##### 4.2.3.6.2. Bounded Context Database Design Diagram
 
 ### 4.2.4. Bounded Context: Air Quality Evaluation
 
+#### 4.2.4.1. Domain Layer
+
+#### 4.2.4.2. Interface Layer
+
+#### 4.2.4.3. Application Layer
+
+#### 4.2.4.4. Infrastructure Layer
+
+#### 4.2.4.5. Bounded Context Software Architecture Component Level Diagrams
+
+#### 4.2.4.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.4.6.1. Bounded Context Domain Layer Class Diagrams
+
+##### 4.2.4.6.2. Bounded Context Database Design Diagram
+
 ### 4.2.5. Bounded Context: Alerting & Response
+
+#### 4.2.5.1. Domain Layer
+
+#### 4.2.5.2. Interface Layer
+
+#### 4.2.5.3. Application Layer
+
+#### 4.2.5.4. Infrastructure Layer
+
+#### 4.2.5.5. Bounded Context Software Architecture Component Level Diagrams
+
+#### 4.2.5.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.5.6.1. Bounded Context Domain Layer Class Diagrams
+
+##### 4.2.5.6.2. Bounded Context Database Design Diagram
 
 ### 4.2.6. Bounded Context: Analytics & Reporting
 
+#### 4.2.6.1. Domain Layer
+
+#### 4.2.6.2. Interface Layer
+
+#### 4.2.6.3. Application Layer
+
+#### 4.2.6.4. Infrastructure Layer
+
+#### 4.2.6.5. Bounded Context Software Architecture Component Level Diagrams
+
+#### 4.2.6.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.6.6.1. Bounded Context Domain Layer Class Diagrams
+
+##### 4.2.6.6.2. Bounded Context Database Design Diagram
+
 ### 4.2.7. Bounded Context: Notifications
+
+#### 4.2.7.1. Domain Layer
+
+#### 4.2.7.2. Interface Layer
+
+#### 4.2.7.3. Application Layer
+
+#### 4.2.7.4. Infrastructure Layer
+
+#### 4.2.7.5. Bounded Context Software Architecture Component Level Diagrams
+
+#### 4.2.7.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.7.6.1. Bounded Context Domain Layer Class Diagrams
+
+##### 4.2.7.6.2. Bounded Context Database Design Diagram
 
 ## 4.3. Tactical-Level Domain-Driven Design - Web application
 
+SE APLICO EN ANGULAR DDD XD
+
 ## 4.4. Tactical-Level Domain-Driven Design -  Mobile application
+
+SE APLICO DDD XD EN FLUTTER
 
 ## 4.5. Tactical-Level Domain-Driven Design - Edge station
 
+SE APLICO DDD EN FLASK XD
+
 ## 4.6. Tactical-Level Domain-Driven Design - Embedded application
 
-
+No me acuerdo que tipo de arquitectura iot era xd 
 
 
 
