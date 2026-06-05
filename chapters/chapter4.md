@@ -1412,6 +1412,14 @@ Proporciona la implementación concreta de los contratos del dominio a través d
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/iam_bc_class_diagram/infrastructure-iam.svg" alt="Frontend IAM Infrastructure Layer Class Diagram" width="750">
 </p>
 
+#### 4.3.1.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Identity & Access Management (IAM) muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/iam_bc_class_diagram/diagram.svg" alt="Unified Web App IAM Class Diagram" width="850">
+</p>
+
 ### 4.3.2. Bounded Context: Billing
 
 #### 4.3.2.1. Domain Layer
@@ -1463,6 +1471,14 @@ Implementa las pasarelas de red utilizando la infraestructura Angular HTTP para 
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/billing_bc_class_diagram/infrastructure-billing.svg" alt="Frontend Billing Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.3.2.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Billing muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/billing_bc_class_diagram/diagram.svg" alt="Unified Web App Billing Class Diagram" width="850">
 </p>
 
 ---
@@ -1521,6 +1537,14 @@ Proporciona la conectividad física de red con el API de Clair e implementa los 
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/devices_bc_class_diagram/infrastructure-devices.svg" alt="Frontend Devices Infrastructure Layer Class Diagram" width="750">
 </p>
 
+#### 4.3.3.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device & Space Management muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/devices_bc_class_diagram/diagram.svg" alt="Unified Web App Devices Class Diagram" width="850">
+</p>
+
 ---
 
 ### 4.3.4. Bounded Context: Air Quality Evaluation
@@ -1570,6 +1594,14 @@ Proporciona los clientes HTTP y adaptadores que se conectan con los endpoints de
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/evaluation_bc_class_diagram/infrastructure-evaluation.svg" alt="Frontend Evaluation Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.3.4.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Air Quality Evaluation muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/evaluation_bc_class_diagram/diagram.svg" alt="Unified Web App Evaluation Class Diagram" width="850">
 </p>
 
 ### 4.3.5. Bounded Context: Alerting & Response
@@ -1639,6 +1671,14 @@ Proporciona los clientes HTTP adaptados a la API REST de alertas del Platform AP
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/alerting_bc_class_diagram/infrastructure-alerting.svg" alt="Frontend Alerting Infrastructure Layer Class Diagram" width="750">
 </p>
 
+#### 4.3.5.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Alerting & Response muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/alerting_bc_class_diagram/diagram.svg" alt="Unified Web App Alerting Class Diagram" width="850">
+</p>
+
 ---
 
 ### 4.3.6. Bounded Context: Analytics & Reporting
@@ -1696,6 +1736,14 @@ Adaptadores que conectan con la base de datos de telemetrías agregadas a travé
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/analytics_bc_class_diagram/infrastructure-analytics.svg" alt="Frontend Analytics Infrastructure Layer Class Diagram" width="750">
 </p>
 
+#### 4.3.6.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Analytics & Reporting muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/analytics_bc_class_diagram/diagram.svg" alt="Unified Web App Analytics Class Diagram" width="850">
+</p>
+
 ---
 
 ### 4.3.7. Bounded Context: Notifications
@@ -1746,6 +1794,14 @@ Adaptadores que consultan el historial de notificaciones registrado en el servid
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/notifications_bc_class_diagram/infrastructure-notifications.svg" alt="Frontend Notifications Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.3.7.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Notifications muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/notifications_bc_class_diagram/diagram.svg" alt="Unified Web App Notifications Class Diagram" width="850">
 </p>
 
 ---
@@ -1818,6 +1874,14 @@ Proporciona los adaptadores concretos para la persistencia del almacenamiento lo
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/iam_class_diagram/infrastructure-layer.svg" alt="Mobile IAM Infrastructure Layer Class Diagram" width="750">
 </p>
 
+#### 4.4.1.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Identity & Access Management (IAM) muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/iam_class_diagram/unified.svg" alt="Unified Mobile IAM Class Diagram" width="850">
+</p>
+
 ### 4.4.2. Bounded Context: Device & Space Management
 
 #### 4.4.2.1. Domain Layer
@@ -1867,6 +1931,14 @@ Contiene los contratos crudos y adaptadores HTTP mediante la biblioteca `Dio` pa
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/devices_class_diagram/infrastructure-layer.svg" alt="Mobile Devices Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.4.2.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device & Space Management muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/devices_class_diagram/unified.svg" alt="Unified Mobile Devices Class Diagram" width="850">
 </p>
 
 ---
@@ -1927,6 +1999,14 @@ Maneja la serialización y la interacción HTTP para las solicitudes de telemetr
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/evaluation_class_diagram/infrastructure-layer.svg" alt="Mobile Evaluation Infrastructure Layer Class Diagram" width="750">
 </p>
 
+#### 4.4.3.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Air Quality Evaluation muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/evaluation_class_diagram/unified.svg" alt="Unified Mobile Evaluation Class Diagram" width="850">
+</p>
+
 ---
 
 ### 4.4.4. Bounded Context: Alerting & Response
@@ -1983,6 +2063,14 @@ Proporciona el adaptador HTTP concreto para consumir la API de alertas de Clair.
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/alerts_class_diagram/infrastructure-layer.svg" alt="Mobile Alerts Infrastructure Layer Class Diagram" width="750">
 </p>
 
+#### 4.4.4.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Alerting & Response muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/alerts_class_diagram/unified.svg" alt="Unified Mobile Alerts Class Diagram" width="850">
+</p>
+
 ### 4.4.5. Bounded Context: Analytics & Reporting
 
 #### 4.4.5.1. Domain Layer
@@ -2034,6 +2122,14 @@ Maneja los adaptadores concretos para interactuar con la API REST y las tecnolog
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/analytics_class_diagram/infrastructure-layer.svg" alt="Mobile Analytics Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.4.5.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Analytics & Reporting muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/analytics_class_diagram/unified.svg" alt="Unified Mobile Analytics Class Diagram" width="850">
 </p>
 
 ### 4.4.6. Bounded Context: Notifications
@@ -2088,6 +2184,14 @@ Adaptadores concretos que gestionan el consumo de la API de Clair sobre el canal
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/notifications_class_diagram/infrastructure-layer.svg" alt="Mobile Notifications Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.4.6.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Notifications muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/notifications_class_diagram/unified.svg" alt="Unified Mobile Notifications Class Diagram" width="850">
 </p>
 
 ## 4.5. Tactical-Level Domain-Driven Design - Edge station
@@ -2163,6 +2267,14 @@ Adaptadores concretos de base de datos relacional y mensajería para IAM en el E
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/iam_class_diagram/infrastructure-layer.svg" alt="Edge IAM Infrastructure Layer Class Diagram" width="750">
 </p>
 
+#### 4.5.1.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Identity & Access Management (IAM) muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/iam_class_diagram/unified.svg" alt="Unified Edge IAM Class Diagram" width="850">
+</p>
+
 ---
 
 ### 4.5.2. Bounded Context: Device & Space Management
@@ -2224,6 +2336,14 @@ Componentes de almacenamiento de base de datos relacional local e integración c
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/device_class_diagram/infrastructure-layer.svg" alt="Edge Device Infrastructure Layer Class Diagram" width="750">
 </p>
 
+#### 4.5.2.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device & Space Management muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/device_class_diagram/unified.svg" alt="Unified Edge Devices Class Diagram" width="850">
+</p>
+
 ---
 
 ### 4.5.3. Bounded Context: Alerting & Response
@@ -2276,6 +2396,14 @@ Componentes de persistencia local y constantes de bus de eventos para las alerta
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/alerting_class_diagram/infrastructure-layer.svg" alt="Edge Alerting Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.5.3.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Alerting & Response muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/alerting_class_diagram/unified.svg" alt="Unified Edge Alerting Class Diagram" width="850">
 </p>
 
 ---
@@ -2331,6 +2459,14 @@ Implementaciones de persistencia local y definición de tópicos de aprovisionam
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/provisioning_class_diagram/infrastructure-layer.svg" alt="Edge Provisioning Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.5.4.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device Provisioning muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/provisioning_class_diagram/unified.svg" alt="Unified Edge Provisioning Class Diagram" width="850">
 </p>
 
 ---
