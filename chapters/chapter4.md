@@ -1195,8 +1195,6 @@ Provee interfaces para la visualización en vivo de métricas y la descarga de r
 *   **AnalyticsOverviewController:** Consolida los indicadores de salud y estados de conexión para la vista del panel principal.
 *   **ReportController:** Expone la obtención de reportes diarios y mensuales, validando la autorización mediante llamadas desacopladas.
 
----
-
 #### 4.2.6.3. Application Layer
 
 Orquesta los flujos de analítica en tiempo real y el procesamiento diferido de reportes por lotes (*batch*).
@@ -1248,21 +1246,114 @@ FALTA!!! - AYUDA
 
 ### 4.2.7. Bounded Context: Notifications
 
+El contexto acotado de **Notifications** unifica el envío de mensajes a los usuarios a través de múltiples canales, incluyendo correos electrónicos transaccionales y notificaciones push en dispositivos móviles. Actúa como un módulo puramente utilitario y reactivo que responde a eventos disparados por otros contextos de la aplicación (como alertas críticas o códigos de registro).
+
+**Diccionario de Clases del Contexto Notifications**
+
+A continuación, se detallan las clases principales identificadas para este contexto, clasificadas por capa de arquitectura:
+
+| Nombre de la Clase | Capa | Propósito / Responsabilidad | Atributos Principales | Métodos Clave | Relaciones de Asociación / Dependencia |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **EmailLog** | Dominio | Entidad que registra el historial, estado y errores de los envíos de correos electrónicos. | `id` (UUID), `recipient` (EmailRecipient), `subject` (EmailSubject), `content` (EmailContent), `status` (String), `sentAt` (Instant) | *N/A* | Contiene `EmailRecipient`, `EmailSubject` y `EmailContent`. |
+| **PushNotificationLog** | Dominio | Entidad que registra las notificaciones push despachadas a los dispositivos de los usuarios. | `id` (UUID), `userId` (UUID), `title` (String), `message` (String), `status` (String), `sentAt` (Instant), `externalId` (String) | *N/A* | Vinculado a `UserId` por ID. |
+| **EmailDeliveryService** | Dominio | Interfaz (Puerto) que define la firma técnica para despachar correos electrónicos. | *N/A* | `send()` | Implementado por `SmtpEmailService` o adaptadores externos. |
+| **PushNotificationDeliveryService** | Dominio | Interfaz (Puerto) que define el envío de alertas push directas al smartphone. | *N/A* | `sendPush()` | Implementado por `OneSignalPushNotificationService`. |
+| **EmailRecipient** | Dominio | Objeto de Valor (*Value Object*) para encapsular la dirección de correo destinataria. | `value` (String) | *N/A* | Composición en `EmailLog`. |
+| **EmailSubject** | Dominio | Objeto de Valor que encapsula el asunto o título del correo. | `value` (String) | *N/A* | Composición en `EmailLog`. |
+| **EmailContent** | Dominio | Objeto de Valor para el cuerpo y formato del correo. | `value` (String) | *N/A* | Composición en `EmailLog`. |
+| **EmailLogRepository** | Dominio | Interfaz de persistencia para auditar el historial de emails enviados. | *N/A* | `save()` | Utilizado por `EmailCommandServiceImpl`. |
+| **PushNotificationLogRepository** | Dominio | Interfaz de persistencia para auditar las alertas push. | *N/A* | `save()` | Utilizado por `AlertIncidentChangedKafkaConsumer`. |
+| **NotificationController** | Interfaz | Controlador REST utilitario para realizar tests rápidos de conectividad y envíos. | *N/A* | `testEmail()` | Depende de `EmailCommandServiceImpl`. |
+| **NotificationsContextFacade** | Interfaz | Fachada expuesta internamente para ordenar envíos rápidos de emails de verificación. | *N/A* | `sendVerificationCode()` | Implementado por `NotificationsContextFacadeImpl`. |
+| **EmailCommandServiceImpl** | Aplicación | Servicio de aplicación que procesa comandos de envío de correos (código, bienvenida). | `emailDeliveryService`, `emailLogRepository` | `handle(SendVerificationCodeCommand)`, `handle(SendWelcomeEmailCommand)` | Usa `EmailDeliveryService` y `EmailLogRepository`. |
+| **AlertIncidentChangedKafkaConsumer** | Aplicación | Consumidor asíncrono de Kafka que escucha cambios en incidentes de alertas para despachar notificaciones push. | `pushNotificationDeliveryService`, `externalDeviceService`, `externalAlertingService` | `consume()` | Resuelve detalles de hardware e incidentes y envía push a través del SDK. |
+| **SmtpEmailService** | Infraestructura | Adaptador concreto que despacha correos utilizando SMTP local o servidor de correo de Spring. | `mailSender` | `send()` | Implementa `EmailDeliveryService`. |
+| **OneSignalPushNotificationService** | Infraestructura | Adaptador que implementa `PushNotificationDeliveryService` utilizando la API de OneSignal. | `oneSignalApiKey` | `sendPush()` | Implementa `PushNotificationDeliveryService`. |
+
+---
+
 #### 4.2.7.1. Domain Layer
+
+La capa de dominio de Notifications contiene los modelos para auditoría de entrega de mensajes y los puertos de infraestructura.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/notifications-bc/domain-layer.svg" alt="Notifications Domain Layer Class Diagram" width="750">
+</p>
+
+*   **Entities y Aggregates:** `EmailLog` (auditoría de correos enviados, registrando errores si fallan) y `PushNotificationLog` (auditoría de notificaciones móviles con su respectivo ID externo del proveedor).
+*   **Value Objects:** `EmailRecipient` (correo destinatario), `EmailSubject` y `EmailContent`.
+*   **Ports:** Interfaces de servicios técnicos (`EmailDeliveryService`, `PushNotificationDeliveryService`) e interfaces de repositorio (`EmailLogRepository`, `PushNotificationLogRepository`).
+
+---
 
 #### 4.2.7.2. Interface Layer
 
+Expone las fachadas internas del sistema para delegar envíos de forma rápida.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/notifications-bc/interfaces-layer.svg" alt="Notifications Interface Layer Class Diagram" width="750">
+</p>
+
+*   **NotificationController:** Endpoint REST utilitario de prueba.
+*   **NotificationsContextFacade:** Fachada de comunicación directa que permite al contexto de IAM gatillar el envío de códigos de confirmación de forma síncrona sin acoplarse a SMTP.
+
+---
+
 #### 4.2.7.3. Application Layer
+
+Orquesta los flujos de mensajería y procesa los eventos procedentes del bus asíncrono.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/notifications-bc/application-layer.svg" alt="Notifications Application Layer Class Diagram" width="750">
+</p>
+
+*   **AlertIncidentChangedKafkaConsumer:** Listener asíncrono que reacciona de forma inmediata a los eventos de incidentes modificados. Cuando una alerta crítica es detectada, consulta al contexto de dispositivo (`ExternalDeviceService`) para obtener al propietario y despacha la notificación push.
+*   **EmailCommandServiceImpl:** Recibe comandos para formatear plantillas de correos electrónicos transaccionales y delega la transmisión física al servicio de entrega.
+
+---
 
 #### 4.2.7.4. Infrastructure Layer
 
+Conecta la aplicación a servidores de correo electrónico y servicios externos de mensajería push.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/notifications-bc/infrastructure-layer.svg" alt="Notifications Infrastructure Layer Class Diagram" width="750">
+</p>
+
+*   **SmtpEmailService:** Adaptador SMTP estándar.
+*   **OneSignalPushNotificationService:** Adaptador que realiza peticiones HTTP seguras al API de OneSignal para encolar alertas push móviles.
+*   **Repositorios JPA:** Adaptadores Spring Data JPA para la persistencia del log histórico en PostgreSQL.
+
+---
+
 #### 4.2.7.5. Bounded Context Software Architecture Component Level Diagrams
+
+Organización de componentes en el Platform API para el contexto acotado de Notifications:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/backend/components/contexts/NotificationsLayers-dark.svg" alt="Notifications Layer Components Diagram" width="850">
+</p>
+
+*   **Notifications Interfaces (Component):** Expone las interfaces REST y fachadas de llamadas internas.
+*   **Notifications Application (Component):** Procesa eventos de incidentes de Kafka y formatea los templates de emails.
+*   **Notifications Domain (Component):** Modela el estado lógicos de envíos de alertas y correos.
+*   **Notifications Infrastructure (Component):** Implementa el cliente SMTP, la integración HTTP de OneSignal y la persistencia JPA a PostgreSQL.
+
+---
 
 #### 4.2.7.6. Bounded Context Software Architecture Code Level Diagrams
 
 ##### 4.2.7.6.1. Bounded Context Domain Layer Class Diagrams
 
+El diagrama de clases unificado del dominio de Notifications muestra todas sus entidades, value objects y métodos con visibilidad explícita:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/notifications-bc/unified.svg" alt="Unified Notifications Domain Class Diagram" width="850">
+</p>
+
 ##### 4.2.7.6.2. Bounded Context Database Design Diagram
+
+FALTA!!! - AYUDA
 
 ## 4.3. Tactical-Level Domain-Driven Design - Web application
 
