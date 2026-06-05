@@ -1361,71 +1361,1061 @@ FALTA!!! - AYUDA
 
 #### 4.3.1.1. Domain Layer
 
+Define las reglas de negocio principales, entidades, value objects e interfaces de servicio para la autenticación y autorización de usuarios.
+
+*   **AuthCommandService (Interface):** Interfaz que define las operaciones de comando para iniciar sesión, registrarse y confirmar cuentas.
+*   **AuthQueryService (Interface):** Interfaz que define la verificación de tokens y consultas del estado de sesión.
+*   **AuthGateway (Interface):** Contrato que modela las interacciones de autenticación contra APIs externas.
+*   **TokenStorageGateway (Interface):** Contrato encargado de abstraer el guardado, recuperación y eliminación de tokens de sesión (Access y Refresh tokens).
+*   **SignInCommand / SignUpCommand (Value Objects):** Objetos de valor inmutables que encapsulan las credenciales del usuario.
+
+```mermaid
+classDiagram
+namespace domain {
+    class AuthCommandService {
+        <<interface>>
+        +handleSignIn(command)
+        +handleSignUp(command)
+    }
+    class AuthQueryService {
+        <<interface>>
+        +handleVerifyToken(query)
+    }
+    class AuthGateway {
+        <<interface>>
+        +signIn(resource)
+        +signUp(resource)
+        +confirmRegistration(resource)
+    }
+    class TokenStorageGateway {
+        <<interface>>
+        +saveTokens(accessToken, refreshToken)
+        +getAccessToken()
+        +clearTokens()
+    }
+    class SignInCommand {
+        +email: Email
+        +password: Password
+    }
+    class SignUpCommand {
+        +email: Email
+        +password: Password
+    }
+}
+```
+
 #### 4.3.1.2. Interface Layer
+
+Se encarga de la interacción directa con el usuario, controlando el ciclo de vida de los formularios y las peticiones salientes mediante interceptores.
+
+*   **LoginPageComponent:** Componente Angular que procesa el formulario de login y maneja los eventos `onSignIn()` y `onSignInWithGoogle()`.
+*   **RegisterPageComponent:** Componente Angular para el registro de nuevos usuarios en la plataforma.
+*   **ConfirmPageComponent:** Componente para validar el código de verificación enviado por correo electrónico.
+*   **AuthInterceptor:** Interceptor HTTP de Angular que recupera el token de acceso actual desde `TokenStorageGateway` y lo inyecta automáticamente en la cabecera `Authorization` de todas las peticiones salientes.
+
+```mermaid
+classDiagram
+namespace interfaces {
+    class LoginPageComponent {
+        +onSignIn()
+        +onSignInWithGoogle()
+    }
+    class RegisterPageComponent {
+        +onSignUp()
+    }
+    class ConfirmPageComponent {
+        +onConfirm()
+    }
+    class AuthInterceptor {
+        +intercept(request, next)
+    }
+}
+
+class AuthCommandService
+class TokenStorageGateway
+
+LoginPageComponent --> AuthCommandService : uses
+RegisterPageComponent --> AuthCommandService : uses
+ConfirmPageComponent --> AuthCommandService : uses
+AuthInterceptor --> TokenStorageGateway : uses
+```
 
 #### 4.3.1.3. Application Layer
 
+Orquesta los casos de uso específicos del contexto de autenticación, interactuando con los contratos definidos en el dominio.
+
+*   **AuthCommandServiceImpl:** Implementación del servicio de comandos de autenticación. Coordina la validación, la llamada a la pasarela de autenticación (`AuthGateway`), y el almacenamiento seguro de los tokens.
+*   **AuthQueryServiceImpl:** Implementación del servicio de consultas encargado de verificar los tokens JWT.
+
+```mermaid
+classDiagram
+namespace application {
+    class AuthCommandServiceImpl {
+        +handleSignIn(command)
+        +handleSignUp(command)
+        +handleConfirmRegistration(command)
+        +handleRefreshToken(command)
+    }
+    class AuthQueryServiceImpl {
+        +handleVerifyToken(query)
+    }
+}
+
+class AuthCommandService
+class AuthQueryService
+class AuthGateway
+class TokenStorageGateway
+
+AuthCommandServiceImpl ..|> AuthCommandService : implements
+AuthQueryServiceImpl ..|> AuthQueryService : implements
+AuthCommandServiceImpl --> AuthGateway : uses
+AuthCommandServiceImpl --> TokenStorageGateway : uses
+AuthQueryServiceImpl --> AuthGateway : uses
+```
+
 #### 4.3.1.4. Infrastructure Layer
+
+Proporciona la implementación concreta de los contratos del dominio a través del consumo de servicios web e interacción con la memoria persistente del navegador.
+
+*   **AuthHttpGateway:** Adaptador que realiza las llamadas HTTP usando Angular `HttpClient` hacia el servicio IAM de la API de Clair.
+*   **LocalTokenStorageGateway:** Implementación concreta encargada de guardar y leer los tokens usando la API de `LocalStorage` del navegador.
+*   **AuthResponseResource:** Recurso DTO que modela el cuerpo de respuesta de la API que incluye el accessToken y refreshToken.
+
+```mermaid
+classDiagram
+namespace infrastructure {
+    class AuthHttpGateway {
+        +signIn(resource)
+        +signUp(resource)
+    }
+    class LocalTokenStorageGateway {
+        +saveTokens(accessToken, refreshToken)
+        +getAccessToken()
+    }
+    class AuthResponseResource {
+        +accessToken: string
+        +refreshToken: string
+    }
+}
+
+class AuthGateway
+class TokenStorageGateway
+
+AuthHttpGateway ..|> AuthGateway : implements
+LocalTokenStorageGateway ..|> TokenStorageGateway : implements
+```
 
 ### 4.3.2. Bounded Context: Billing
 
 #### 4.3.2.1. Domain Layer
 
+Define las entidades financieras, planes y contratos de servicios para la suscripción a Clair Premium.
+
+*   **UserPlan (Entity):** Entidad que representa la suscripción activa del usuario con su respectivo `UserId` y `PlanType`.
+*   **PaymentIntent (Entity):** Modela la intención de pago generada por Stripe (`clientSecret`).
+*   **PlanType (Enum):** Enumerador de planes soportados por la aplicación (`FREE`, `PREMIUM`).
+*   **BillingCommandService / BillingQueryService (Interfaces):** Contratos del dominio para ejecutar pagos y consultar claves o planes de usuario.
+*   **BillingGateway (Interface):** Contrato para el envío de datos de pago e integración del checkout.
+
+```mermaid
+classDiagram
+namespace domain {
+    class UserPlan {
+        +userId: UserId
+        +planType: PlanType
+    }
+    class PaymentIntent {
+        +clientSecret: string
+    }
+    class BillingCommandService {
+        <<interface>>
+        +handleCreateSubscriptionPaymentIntent(command)
+    }
+    class BillingQueryService {
+        <<interface>>
+        +handleGetUserPlan(query)
+        +handleGetStripePublicKey(query)
+    }
+    class BillingGateway {
+        <<interface>>
+        +getUserPlan(userId)
+        +getStripePublicKey()
+        +createPaymentIntent(resource)
+    }
+    class PlanType {
+        <<enumeration>>
+        FREE
+        PREMIUM
+    }
+}
+```
+
 #### 4.3.2.2. Interface Layer
+
+Contiene los componentes visuales interactivos y los servicios de transformación de datos para los flujos de pago.
+
+*   **SelectPlanComponent:** Vista de selección de planes (Free vs Premium).
+*   **PremiumCheckoutComponent:** Componente que controla el proceso de pago, interactúa con Stripe Elements y despacha la confirmación de la transacción.
+*   **PaymentModalComponent:** Modal interactivo encargado de instanciar de forma segura las pasarelas del lado del cliente.
+*   **BillingTransform (Service):** Servicio encargado de mapear los datos JSON de la infraestructura (`PaymentIntentResource`) a los modelos del dominio (`PaymentIntent`).
+
+```mermaid
+classDiagram
+namespace interfaces {
+    class SelectPlanComponent {
+        +onSelectPlan(plan)
+    }
+    class PremiumCheckoutComponent {
+        +onConfirmPayment()
+    }
+    class PaymentModalComponent {
+        +open()
+    }
+    class BillingTransform {
+        <<service>>
+        +paymentIntentToDomain(resource)
+    }
+}
+
+class BillingQueryService
+class BillingCommandService
+class PaymentIntent
+class PaymentIntentResource
+
+SelectPlanComponent --> BillingQueryService : uses
+PremiumCheckoutComponent --> BillingCommandService : uses
+PremiumCheckoutComponent --> PaymentModalComponent : uses
+BillingTransform --> PaymentIntent : maps to
+BillingTransform --> PaymentIntentResource : maps from
+```
 
 #### 4.3.2.3. Application Layer
 
+Encapsula la lógica de orquestación para la generación de intentos de pago e información del plan asignado.
+
+*   **BillingCommandServiceImpl:** Implementa la orquestación necesaria para el inicio del proceso de facturación creando un `PaymentIntent` a través del gateway.
+*   **BillingQueryServiceImpl:** Maneja las consultas de planes activos y obtención segura de credenciales de plataformas terceras (Stripe Public Key).
+
+```mermaid
+classDiagram
+namespace application {
+    class BillingCommandServiceImpl {
+        +handleCreateSubscriptionPaymentIntent(command)
+    }
+    class BillingQueryServiceImpl {
+        +handleGetUserPlan(query)
+        +handleGetStripePublicKey(query)
+    }
+}
+
+class BillingCommandService
+class BillingQueryService
+class BillingGateway
+
+BillingCommandServiceImpl ..|> BillingCommandService : implements
+BillingQueryServiceImpl ..|> BillingQueryService : implements
+BillingCommandServiceImpl --> BillingGateway : uses
+BillingQueryServiceImpl --> BillingGateway : uses
+```
+
 #### 4.3.2.4. Infrastructure Layer
+
+Implementa las pasarelas de red utilizando la infraestructura Angular HTTP para comunicarse con el servidor y Stripe.
+
+*   **BillingHttpGateway:** Implementa `BillingGateway` conectando la aplicación con el backend de Clair y recuperando las claves necesarias de Stripe.
+*   **PaymentIntentResource:** DTO que define la estructura JSON de la intención de pago recibida de la API.
+
+```mermaid
+classDiagram
+namespace infrastructure {
+    class BillingHttpGateway {
+        +getUserPlan(userId)
+        +getStripePublicKey()
+        +createPaymentIntent(resource)
+    }
+    class PaymentIntentResource {
+        +client_secret: string
+    }
+}
+
+class BillingGateway
+
+BillingHttpGateway ..|> BillingGateway : implements
+BillingHttpGateway --> PaymentIntentResource : maps
+```
 
 ### 4.3.3. Bounded Context: Devices & Space Management
 
 #### 4.3.3.1. Domain Layer
 
+Define la estructura organizativa de la solución y las identidades de negocio de los sensores, actuadores y espacios.
+
+*   **Organization (Entity):** Entidad que representa la organización dueña del espacio.
+*   **Space (Entity):** Entidad que modela un entorno físico específico (oficina, sala, etc.).
+*   **Device (Entity):** Modela el sensor físico y su estado actual (`serialNumber`, `hardwareId`, `status`).
+*   **DeviceCommandService (Interface):** Contrato para manejar los comandos de emparejamiento (`PairDevice`) e inscripción (`ClaimDevice`).
+*   **DeviceThresholdCommandService (Interface):** Contrato para actualizar la configuración de umbrales en un sensor específico.
+*   **DeviceGateway (Interface):** Contrato para comunicarse con servicios de hardware y backend de control.
+
+```mermaid
+classDiagram
+namespace domain {
+    class Organization {
+        +id: OrganizationId
+        +name: string
+    }
+    class Space {
+        +id: SpaceId
+        +name: string
+    }
+    class Device {
+        +id: DeviceId
+        +serialNumber: string
+        +status: DeviceStatus
+        +hardwareId: HardwareId
+    }
+    class DeviceCommandService {
+        <<interface>>
+        +handleClaimDevice(command)
+        +handlePairDevice(command)
+    }
+    class DeviceThresholdCommandService {
+        <<interface>>
+        +handleUpdateThreshold(command)
+    }
+    class DeviceGateway {
+        <<interface>>
+        +getDevicesBySpace(spaceId)
+        +pairDevice(resource)
+    }
+    class ClaimDeviceCommand {
+        +serialNumber: string
+    }
+    class PairDeviceCommand {
+        +deviceId: DeviceId
+        +pairingCode: string
+    }
+}
+```
+
 #### 4.3.3.2. Interface Layer
+
+Contiene los componentes y mappers que exponen la configuración y el listado de dispositivos asignados a los espacios.
+
+*   **SpaceDevicesPage:** Página Angular que muestra los dispositivos de un espacio y permite reclamar uno nuevo mediante `onClaimDevice()`.
+*   **DeviceTransform:** Servicio encargado de mapear y formatear las respuestas de la API (`DeviceResource`) hacia las entidades de negocio (`Device`).
+*   **DeviceContextFacade (Facade):** Fachada expuesta para permitir que otros Bounded Contexts consulten datos rápidos de un dispositivo de manera desacoplada.
+
+```mermaid
+classDiagram
+namespace interfaces {
+    class SpaceDevicesPage {
+        +onInit()
+        +onClaimDevice()
+    }
+    class DeviceTransform {
+        <<service>>
+        +deviceResourceToDomain(resource)
+        +deviceToResource(device)
+    }
+    class DeviceContextFacade {
+        <<interface>>
+        +getDeviceById(id)
+    }
+}
+
+class DeviceQueryService
+class DeviceCommandService
+class Device
+class DeviceResource
+
+SpaceDevicesPage --> DeviceQueryService : uses
+SpaceDevicesPage --> DeviceCommandService : uses
+DeviceTransform --> Device : maps to
+DeviceTransform --> DeviceResource : maps from
+```
 
 #### 4.3.3.3. Application Layer
 
+Orquesta los casos de uso para aprovisionamiento, emparejamiento de hardware y establecimiento de umbrales físicos del dispositivo.
+
+*   **DeviceCommandServiceImpl:** Implementa y gestiona el registro de organizaciones y el proceso de reclamo de dispositivos (`handleClaimDevice`).
+*   **DeviceQueryServiceImpl:** Orquesta las consultas para listar los sensores pertenecientes a una sala específica.
+*   **DeviceThresholdCommandServiceImpl:** Gestiona la creación y modificación de umbrales recomendados por sensor.
+*   **DeviceThresholdQueryServiceImpl:** Obtiene las configuraciones de alerta recomendadas de calidad de aire para un dispositivo determinado.
+
+```mermaid
+classDiagram
+namespace application {
+    class DeviceCommandServiceImpl {
+        +handleCreateOrganization(command)
+        +handleClaimDevice(command)
+        +handlePairDevice(command)
+        +handleQueueDeviceCommand(command)
+    }
+    class DeviceQueryServiceImpl {
+        +handleGetDevicesBySpace(query)
+        +handleGetOrganizationById(query)
+    }
+    class DeviceThresholdCommandServiceImpl {
+        +handleCreateThreshold(command)
+        +handleUpdateThreshold(command)
+    }
+    class DeviceThresholdQueryServiceImpl {
+        +handleGetThresholdsByDevice(query)
+    }
+}
+
+class DeviceQueryService
+class DeviceCommandService
+class DeviceGateway
+class DeviceTransform
+class CreateOrganizationCommand
+class GetDevicesBySpaceQuery
+
+DeviceQueryServiceImpl ..|> DeviceQueryService : implements
+DeviceCommandServiceImpl ..|> DeviceCommandService : implements
+DeviceQueryServiceImpl --> DeviceGateway : uses
+DeviceCommandServiceImpl --> DeviceGateway : uses
+DeviceQueryServiceImpl --> DeviceTransform : uses
+DeviceCommandServiceImpl --> DeviceTransform : uses
+DeviceCommandServiceImpl --> CreateOrganizationCommand : receives
+DeviceQueryServiceImpl --> GetDevicesBySpaceQuery : receives
+```
+
 #### 4.3.3.4. Infrastructure Layer
+
+Proporciona la conectividad física de red con el API de Clair e implementa los adaptadores HTTP.
+
+*   **DeviceHttpGateway:** Adaptador que implementa la pasarela de dispositivos (`DeviceGateway`) usando el cliente HTTP de Angular para persistir cambios y emparejar.
+*   **DeviceThresholdHttpGateway:** Adaptador específico encargado del canal de comunicación de umbrales de alerta del hardware.
+*   **DeviceResource:** DTO que modela el JSON enviado/recibido para dispositivos en la API de Clair.
+
+```mermaid
+classDiagram
+namespace infrastructure {
+    class DeviceHttpGateway {
+        +claimDevice(resource)
+        +pairDevice(resource)
+    }
+    class DeviceThresholdHttpGateway {
+        +getThresholds(deviceId)
+    }
+    class DeviceResource {
+        +id: string
+        +serialNumber: string
+    }
+}
+
+class DeviceGateway
+class OrganizationResource
+
+DeviceHttpGateway ..|> DeviceGateway : implements
+DeviceHttpGateway --> DeviceResource : maps
+DeviceHttpGateway --> OrganizationResource : maps
+```
 
 ### 4.3.4. Bounded Context: Air Quality Evaluation
 
 #### 4.3.4.1. Domain Layer
 
+Modeliza la lógica y las métricas de evaluación ambiental del aire, procesando el estado de salubridad y la telemetría histórica.
+
+*   **TelemetryEvaluation (Entity):** Representa el resultado detallado del análisis de calidad del aire para un dispositivo, consolidando métricas como material particulado (`ParticulateMatter`), calidad general (`AirQuality`), conectividad (`Connectivity`), y estado general de salud del ambiente (`healthStatus`).
+*   **TelemetryEvaluationCommandService / TelemetryEvaluationQueryService (Interfaces):** Contratos del dominio para despachar solicitudes de evaluación y consultar históricos de mediciones.
+*   **TelemetryEvaluationGateway (Interface):** Contrato que especifica el envío de telemetría a evaluar y la recuperación de reportes agregados.
+*   **EvaluateTelemetryCommand / GetEvaluationsByDeviceQuery (Value Objects):** Comandos y consultas inmutables que encapsulan parámetros de dispositivo y paginación.
+
+```mermaid
+classDiagram
+namespace domain {
+    class TelemetryEvaluation {
+        +id: EvaluationId
+        +deviceId: EvaluationDeviceId
+        +deviceTime: string
+        +uptime: SystemUptime
+        +airQuality: AirQuality
+        +particulateMatter: ParticulateMatter
+        +connectivity: Connectivity
+        +location: Location
+        +healthStatus: number
+        +status: string
+        +recordedAt: string
+        +createdAt: string
+    }
+    class TelemetryEvaluationCommandService {
+        <<interface>>
+        +handleEvaluateTelemetry(command, apiKey)
+    }
+    class TelemetryEvaluationQueryService {
+        <<interface>>
+        +handleGetEvaluationsByDevice(query)
+        +handleGetLatestEvaluationByDevice(query)
+    }
+    class TelemetryEvaluationGateway {
+        <<interface>>
+        +evaluateTelemetry(apiKey, resource)
+        +getEvaluationsByDevice(deviceId, page, size)
+        +getLatestEvaluationByDevice(deviceId)
+    }
+    class EvaluateTelemetryCommand {
+        +deviceId: EvaluationDeviceId
+        +timestamp: string
+        +uptime: number
+    }
+    class GetEvaluationsByDeviceQuery {
+        +deviceId: EvaluationDeviceId
+        +page: number
+        +size: number
+    }
+    class GetLatestEvaluationByDeviceQuery {
+        +deviceId: EvaluationDeviceId
+    }
+}
+```
+
 #### 4.3.4.2. Interface Layer
+
+Contiene las interfaces y transformadores que comunican el contexto de evaluación de telemetría con el resto de la aplicación y componentes visuales.
+
+*   **EvaluationContextFacade (Facade):** Fachada de integración que permite a otros módulos del frontend consultar rápidamente la última lectura o estado de telemetría de un dispositivo sin acoplarse a los detalles del módulo de evaluación.
+*   **TelemetryEvaluationTransform / EvaluateTelemetryTransform (Services):** Servicios mappers de Angular que traducen recursos JSON crudos de la infraestructura a entidades y comandos limpios de negocio.
+
+```mermaid
+classDiagram
+namespace interfaces {
+    class EvaluationContextFacade {
+        <<interface>>
+        +getLatestTelemetryByDevice(deviceId)
+    }
+    class TelemetryEvaluationTransform {
+        <<service>>
+        +telemetryEvaluationResourceToDomain(resource)
+        +telemetryEvaluationPageResourceToDomain(resource)
+    }
+    class EvaluateTelemetryTransform {
+        <<service>>
+        +evaluateTelemetryCommandToResource(command)
+    }
+}
+
+class EvaluationContextFacadeImpl
+class TelemetryEvaluation
+class TelemetryEvaluationResource
+class EvaluateTelemetryResource
+class EvaluateTelemetryCommand
+
+EvaluationContextFacadeImpl ..|> EvaluationContextFacade : implements
+TelemetryEvaluationTransform --> TelemetryEvaluation : maps to
+TelemetryEvaluationTransform --> TelemetryEvaluationResource : maps from
+EvaluateTelemetryTransform --> EvaluateTelemetryResource : maps to
+EvaluateTelemetryTransform --> EvaluateTelemetryCommand : maps from
+```
 
 #### 4.3.4.3. Application Layer
 
+Encapsula los servicios encargados de la coordinación de la lógica de evaluación en tiempo real y consultas del histórico de sensores.
+
+*   **TelemetryEvaluationCommandServiceImpl:** Orquesta el flujo de evaluación enviando nuevas cargas de telemetría a procesar junto con la firma del API Key.
+*   **TelemetryEvaluationQueryServiceImpl:** Implementa la lógica para retornar listados paginados de telemetrías y la consulta en tiempo real del último estado reportado.
+*   **EvaluationContextFacadeImpl:** Implementación de la fachada que delega al servicio de consultas para exponer la información de manera limpia a otros bounded contexts frontend.
+
+```mermaid
+classDiagram
+namespace application {
+    class TelemetryEvaluationCommandServiceImpl {
+        +handleEvaluateTelemetry(command, apiKey)
+    }
+    class TelemetryEvaluationQueryServiceImpl {
+        +handleGetEvaluationsByDevice(query)
+        +handleGetLatestEvaluationByDevice(query)
+    }
+    class EvaluationContextFacadeImpl {
+        +getLatestTelemetryByDevice(deviceId)
+    }
+}
+
+class EvaluationContextFacade
+class TelemetryEvaluationCommandService
+class TelemetryEvaluationQueryService
+class TelemetryEvaluationGateway
+class EvaluateTelemetryCommand
+class GetEvaluationsByDeviceQuery
+class GetLatestEvaluationByDeviceQuery
+
+EvaluationContextFacadeImpl ..|> EvaluationContextFacade : implements
+TelemetryEvaluationCommandServiceImpl ..|> TelemetryEvaluationCommandService : implements
+TelemetryEvaluationQueryServiceImpl ..|> TelemetryEvaluationQueryService : implements
+TelemetryEvaluationCommandServiceImpl --> TelemetryEvaluationGateway : uses
+TelemetryEvaluationQueryServiceImpl --> TelemetryEvaluationGateway : uses
+EvaluationContextFacadeImpl --> TelemetryEvaluationQueryService : uses
+TelemetryEvaluationCommandServiceImpl --> EvaluateTelemetryCommand : receives
+TelemetryEvaluationQueryServiceImpl --> GetEvaluationsByDeviceQuery : receives
+TelemetryEvaluationQueryServiceImpl --> GetLatestEvaluationByDeviceQuery : receives
+```
+
 #### 4.3.4.4. Infrastructure Layer
+
+Proporciona los clientes HTTP y adaptadores que se conectan con los endpoints de evaluación ambiental en el Platform API.
+
+*   **TelemetryEvaluationHttpGateway:** Implementación de `TelemetryEvaluationGateway` usando `HttpClient` de Angular para persistir telemetrías y leer evaluaciones estructuradas.
+*   **TelemetryEvaluationResource / EvaluateTelemetryResource:** DTOs que modelan la estructura JSON para la entrada de datos brutos del sensor y la salida enriquecida con los umbrales e indicadores calculados.
+
+```mermaid
+classDiagram
+namespace infrastructure {
+    class TelemetryEvaluationHttpGateway {
+        +evaluateTelemetry(apiKey, resource)
+        +getEvaluationsByDevice(deviceId, page, size)
+        +getLatestEvaluationByDevice(deviceId)
+    }
+    class TelemetryEvaluationResource {
+        +id: string
+        +deviceId: string
+    }
+    class EvaluateTelemetryResource {
+        +deviceId: string
+    }
+}
+
+class TelemetryEvaluationGateway
+
+TelemetryEvaluationHttpGateway ..|> TelemetryEvaluationGateway : implements
+TelemetryEvaluationHttpGateway --> TelemetryEvaluationResource : maps
+TelemetryEvaluationHttpGateway --> EvaluateTelemetryResource : maps
+```
 
 ### 4.3.5. Bounded Context: Alerting & Response
 
 #### 4.3.5.1. Domain Layer
 
+Define las entidades y contratos para el procesamiento y catalogación de incidentes críticos y alertas ambientales.
+
+*   **Alert (Entity):** Entidad principal que representa un incidente de seguridad ambiental. Contiene severidad (`AlertSeverity`), estado, mensaje e indicador temporal (`timestamp`).
+*   **AlertSeverity (Enum):** Gravedad del incidente (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`).
+*   **AlertQueryService (Interface):** Interfaz para consultar los incidentes y resúmenes diarios de alertas.
+*   **AlertGateway (Interface):** Contrato para recuperar alertas desde la persistencia externa.
+*   **GetAlertsQuery (Value Object):** Query que encapsula los parámetros de paginación para la lista de alertas.
+
+```mermaid
+classDiagram
+namespace domain {
+    class Alert {
+        +id: AlertId
+        +severity: AlertSeverity
+        +status: AlertStatus
+        +message: string
+        +timestamp: string
+    }
+    class AlertQueryService {
+        <<interface>>
+        +handleGetAlerts(query)
+        +handleGetAlertDailySummary(query)
+    }
+    class AlertGateway {
+        <<interface>>
+        +getAlerts(query)
+        +getAlertDailySummary(query)
+    }
+    class GetAlertsQuery {
+        +page: number
+        +size: number
+    }
+    class AlertSeverity {
+        <<enumeration>>
+        LOW
+        MEDIUM
+        HIGH
+        CRITICAL
+    }
+}
+```
+
 #### 4.3.5.2. Interface Layer
+
+Contiene los componentes y fachadas de integración visual para desplegar las alertas en la interfaz de usuario.
+
+*   **AlertsPageComponent:** Componente Angular contenedor que inicializa la carga de alertas activas del sistema.
+*   **AlertCardComponent:** Componente visual reutilizable para mostrar detalles rápidos de una alerta específica.
+*   **AlertTableComponent:** Tabla estructurada que renderiza colecciones de alertas con soporte para filtros de severidad y paginación.
+*   **AlertTransform (Service):** Servicio encargado de traducir los registros crudos de respuesta JSON (`AlertResponseResource`) a la entidad `Alert`.
+*   **AlertingContextFacade (Facade):** Fachada que expone métodos para que otros contextos consulten alertas activas por dispositivo.
+
+```mermaid
+classDiagram
+namespace interfaces {
+    class AlertsPageComponent {
+        +onInit()
+    }
+    class AlertTransform {
+        <<service>>
+        +alertResourceToDomain(resource)
+    }
+    class AlertingContextFacade {
+        <<interface>>
+        +getAlertsByDevice(deviceId)
+    }
+    class AlertCardComponent {
+        +alert: Alert
+    }
+    class AlertTableComponent {
+        +alerts: Alert[]
+    }
+}
+
+class Alert
+class AlertQueryService
+class AlertResponseResource
+
+AlertsPageComponent --> AlertQueryService : uses
+AlertCardComponent --> Alert : uses
+AlertTableComponent --> Alert : uses
+AlertTransform --> Alert : maps to
+AlertTransform --> AlertResponseResource : maps from
+```
 
 #### 4.3.5.3. Application Layer
 
+Encapsula los servicios encargados de la orquestación para consultar la telemetría fuera de rango e incidentes generados.
+
+*   **AlertQueryServiceImpl:** Servicio de aplicación que implementa la orquestación para recuperar alertas paginadas o generar resúmenes analíticos rápidos del día.
+*   **AlertingContextFacadeImpl:** Implementación concreta de la fachada para el consumo de datos de alertas por otros módulos frontend.
+
+```mermaid
+classDiagram
+namespace application {
+    class AlertQueryServiceImpl {
+        +handleGetAlerts(query)
+        +handleGetAlertDailySummary(query)
+    }
+    class AlertingContextFacadeImpl {
+        +getAlertsByDevice(deviceId)
+    }
+}
+
+class AlertQueryService
+class AlertingContextFacade
+class AlertGateway
+class AlertTransform
+class GetAlertsQuery
+
+AlertQueryServiceImpl ..|> AlertQueryService : implements
+AlertingContextFacadeImpl ..|> AlertingContextFacade : implements
+AlertQueryServiceImpl --> AlertGateway : uses
+AlertQueryServiceImpl --> AlertTransform : uses
+AlertQueryServiceImpl --> GetAlertsQuery : receives
+```
+
 #### 4.3.5.4. Infrastructure Layer
+
+Proporciona los clientes HTTP adaptados a la API REST de alertas del Platform API.
+
+*   **AlertHttpGateway:** Adaptador que implementa `AlertGateway` usando el cliente HTTP de Angular para realizar consultas paginadas e interactuar con la persistencia.
+*   **AlertResponseResource:** DTO que modela el recurso JSON de respuesta de una alerta de la API.
+
+```mermaid
+classDiagram
+namespace infrastructure {
+    class AlertHttpGateway {
+        +getAlerts(query)
+        +getAlertDailySummary(query)
+    }
+    class AlertResponseResource {
+        +id: string
+        +severity: string
+        +status: string
+    }
+}
+
+class AlertGateway
+
+AlertHttpGateway ..|> AlertGateway : implements
+AlertHttpGateway --> AlertResponseResource : maps
+```
 
 ### 4.3.6. Bounded Context: Analytics & Reporting
 
 #### 4.3.6.1. Domain Layer
 
+Define la representación lógica de las tendencias temporales y las métricas resumidas que consumen los dashboards de Clair.
+
+*   **Trend (Entity):** Modela el comportamiento histórico de una métrica física a lo largo del tiempo (marcas temporales, valores leídos y tipo de métrica).
+*   **AnalyticsOverview (Entity):** Estructura consolidada que expone el Índice de Calidad del Aire (ICA/AQI) promedio y el contador de incidentes activos para el dashboard general.
+*   **AnalyticsQueryService / AnalyticsOverviewQueryService (Interfaces):** Contratos para las búsquedas de series temporales y visualización de paneles agregados.
+*   **AnalyticsGateway (Interface):** Contrato que abstrae el origen de datos históricos y analíticos.
+
+```mermaid
+classDiagram
+namespace domain {
+    class Trend {
+        +timestamp: string
+        +value: number
+        +metricType: string
+    }
+    class AnalyticsOverview {
+        +aqi: number
+        +activeAlerts: number
+    }
+    class AnalyticsQueryService {
+        <<interface>>
+        +handleGetTrends(query)
+    }
+    class AnalyticsOverviewQueryService {
+        <<interface>>
+        +handleGetOverview(query)
+    }
+    class AnalyticsGateway {
+        <<interface>>
+        +getTrends(query)
+        +getOverview(query)
+    }
+}
+```
+
 #### 4.3.6.2. Interface Layer
+
+Contiene los controladores de gráficos e indicadores interactivos para el análisis retrospectivo en la interfaz de usuario.
+
+*   **AnalyticsPageComponent:** Componente Angular para el análisis avanzado y filtrado de series de telemetría.
+*   **OverviewPageComponent:** Componente principal que sirve como panel de control resumen del establecimiento monitoreado.
+*   **TrendChartCardComponent:** Tarjeta visual que dibuja y renderiza gráficos interactivos de líneas basados en las tendencias de `Trend`.
+*   **AqiGaugeCardComponent:** Indicador visual tipo velocímetro para mostrar de manera instantánea el nivel de AQI calculado.
+*   **AnalyticsTransform (Service):** Servicio encargado de traducir los datos agregados a los modelos de dominio.
+*   **AnalyticsContextFacade (Facade):** Fachada de integración para que otros contextos recuperen las métricas rápidas de los dashboards.
+
+```mermaid
+classDiagram
+namespace interfaces {
+    class AnalyticsPageComponent {
+        +onInit()
+    }
+    class OverviewPageComponent {
+        +onInit()
+    }
+    class AnalyticsTransform {
+        <<service>>
+        +analyticsResourceToDomain(resource)
+    }
+    class AnalyticsContextFacade {
+        <<interface>>
+        +getDashboardMetrics(organizationId)
+    }
+    class TrendChartCardComponent {
+        +trends: Trend[]
+    }
+    class AqiGaugeCardComponent {
+        +aqiValue: number
+    }
+}
+
+class AnalyticsQueryService
+class AnalyticsOverviewQueryService
+class Trend
+class TrendsResource
+
+AnalyticsPageComponent --> AnalyticsQueryService : uses
+OverviewPageComponent --> AnalyticsOverviewQueryService : uses
+TrendChartCardComponent --> Trend : uses
+AnalyticsTransform --> Trend : maps to
+AnalyticsTransform --> TrendsResource : maps from
+```
 
 #### 4.3.6.3. Application Layer
 
+Orquesta los flujos de consulta de series históricas y agregaciones requeridos por los componentes visuales.
+
+*   **AnalyticsQueryServiceImpl:** Implementación del servicio de aplicación que gestiona la recuperación de tendencias históricas de los sensores.
+*   **AnalyticsOverviewQueryServiceImpl:** Orquesta el cálculo y agregación rápidos de alertas y calidad de aire para construir el resumen global.
+*   **AnalyticsContextFacadeImpl:** Implementación concreta de la fachada expuesta hacia el exterior del módulo analítico.
+
+```mermaid
+classDiagram
+namespace application {
+    class AnalyticsQueryServiceImpl {
+        +handleGetTrends(query)
+    }
+    class AnalyticsOverviewQueryServiceImpl {
+        +handleGetOverview(query)
+    }
+    class AnalyticsContextFacadeImpl {
+        +getDashboardMetrics(organizationId)
+    }
+}
+
+class AnalyticsQueryService
+class AnalyticsOverviewQueryService
+class AnalyticsContextFacade
+class AnalyticsGateway
+class AnalyticsTransform
+
+AnalyticsQueryServiceImpl ..|> AnalyticsQueryService : implements
+AnalyticsOverviewQueryServiceImpl ..|> AnalyticsOverviewQueryService : implements
+AnalyticsContextFacadeImpl ..|> AnalyticsContextFacade : implements
+AnalyticsQueryServiceImpl --> AnalyticsGateway : uses
+AnalyticsOverviewQueryServiceImpl --> AnalyticsGateway : uses
+AnalyticsQueryServiceImpl --> AnalyticsTransform : uses
+```
+
 #### 4.3.6.4. Infrastructure Layer
+
+Adaptadores que conectan con la base de datos de telemetrías agregadas a través de la API REST de Clair.
+
+*   **AnalyticsHttpGateway:** Adapter concreto que implementa `AnalyticsGateway` consumiendo los recursos analíticos mediante Angular `HttpClient`.
+*   **TrendsResource / AnalyticsOverviewResource:** DTOs que mapean los JSON de respuestas estructuradas con tendencias y totales.
+
+```mermaid
+classDiagram
+namespace infrastructure {
+    class AnalyticsHttpGateway {
+        +getTrends(query)
+        +getOverview(query)
+    }
+    class TrendsResource {
+        +data: any[]
+    }
+    class AnalyticsOverviewResource {
+        +aqi: number
+        +alerts: number
+    }
+}
+
+class AnalyticsGateway
+
+AnalyticsHttpGateway ..|> AnalyticsGateway : implements
+AnalyticsHttpGateway --> TrendsResource : maps
+AnalyticsHttpGateway --> AnalyticsOverviewResource : maps
+```
 
 ### 4.3.7. Bounded Context: Notifications
 
 #### 4.3.7.1. Domain Layer
 
+Define la estructura de logs de auditoría de mensajes enviados y los contratos para recuperar el historial de notificaciones.
+
+*   **PushNotificationLog (Entity):** Entidad de dominio que representa una notificación enviada (identificador, título, cuerpo del mensaje, y fecha de despacho `sentAt`).
+*   **NotificationQueryService (Interface):** Contrato para el control del caso de uso de lectura del historial de notificaciones.
+*   **NotificationGateway (Interface):** Contrato que abstrae las llamadas de infraestructura para recuperar el listado.
+*   **GetPushNotificationsQuery (Value Object):** Query inmutable que encapsula las opciones de paginación para la lista de notificaciones.
+
+```mermaid
+classDiagram
+namespace domain {
+    class PushNotificationLog {
+        +id: string
+        +title: string
+        +message: string
+        +sentAt: string
+    }
+    class NotificationQueryService {
+        <<interface>>
+        +handleGetPushNotifications(query)
+    }
+    class NotificationGateway {
+        <<interface>>
+        +getPushNotifications(page, size)
+    }
+    class GetPushNotificationsQuery {
+        +page: number
+        +size: number
+    }
+}
+```
+
+---
+
 #### 4.3.7.2. Interface Layer
+
+Contiene los adaptadores y fachadas que permiten a otras partes de la UI interactuar con la bandeja de entrada de notificaciones push.
+
+*   **NotificationsContextFacade (Facade):** Fachada que expone el método `getPushNotifications(page, size)` permitiendo un desacoplamiento directo con otros módulos de la app web.
+*   **PushNotificationTransform (Service):** Servicio encargado de transformar DTOs de infraestructura (`PushNotificationLogResource`) a entidades del negocio (`PushNotificationLog`).
+
+```mermaid
+classDiagram
+namespace interfaces {
+    class NotificationsContextFacade {
+        <<interface>>
+        +getPushNotifications(page, size)
+    }
+    class PushNotificationTransform {
+        <<service>>
+        +resourceToDomain(resource)
+    }
+}
+
+class NotificationsContextFacadeImpl
+class PushNotificationLog
+class PushNotificationLogResource
+
+NotificationsContextFacadeImpl ..|> NotificationsContextFacade : implements
+PushNotificationTransform --> PushNotificationLog : maps to
+PushNotificationTransform --> PushNotificationLogResource : maps from
+```
+
+---
 
 #### 4.3.7.3. Application Layer
 
+Encapsula la orquestación para recuperar los mensajes push del usuario autenticado.
+
+*   **NotificationQueryServiceImpl:** Servicio de aplicación que delega en el gateway para consultar y transformar la colección de alertas enviadas.
+*   **NotificationsContextFacadeImpl:** Fachada concreta que orquesta la llamada asíncrona hacia el servicio de consultas de aplicación.
+
+```mermaid
+classDiagram
+namespace application {
+    class NotificationQueryServiceImpl {
+        +handleGetPushNotifications(query)
+    }
+    class NotificationsContextFacadeImpl {
+        +getPushNotifications(page, size)
+    }
+}
+
+class NotificationsContextFacade
+class NotificationQueryService
+class NotificationGateway
+class PushNotificationTransform
+class GetPushNotificationsQuery
+
+NotificationsContextFacadeImpl ..|> NotificationsContextFacade : implements
+NotificationQueryServiceImpl ..|> NotificationQueryService : implements
+NotificationsContextFacadeImpl --> NotificationQueryService : uses
+NotificationQueryServiceImpl --> NotificationGateway : uses
+NotificationQueryServiceImpl --> PushNotificationTransform : uses
+NotificationQueryServiceImpl --> GetPushNotificationsQuery : receives
+```
+
+---
+
 #### 4.3.7.4. Infrastructure Layer
+
+Adaptadores que consultan el historial de notificaciones registrado en el servidor de Clair.
+
+*   **NotificationHttpGateway:** Implementación concreta del gateway utilizando `HttpClient` de Angular para obtener el log.
+*   **PushNotificationLogResource:** DTO que mapea el recurso JSON del log de notificaciones desde el API backend.
+
+```mermaid
+classDiagram
+namespace infrastructure {
+    class NotificationHttpGateway {
+        +getPushNotifications(page, size)
+    }
+    class PushNotificationLogResource {
+        +id: string
+        +title: string
+        +message: string
+        +sent_at: string
+    }
+}
+
+class NotificationGateway
+
+NotificationHttpGateway ..|> NotificationGateway : implements
+NotificationHttpGateway --> PushNotificationLogResource : maps
+```
+
+---
 
 
 ## 4.4. Tactical-Level Domain-Driven Design -  Mobile application
