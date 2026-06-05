@@ -511,11 +511,29 @@ Corresponde a la estación Edge de Clair desarrollada en Flask/Python, encargada
 
 #### 4.1.3.1. Software Architecture System Landscape Diagram.
 
-ACTUALIZAR
+El diagrama de **System Landscape** (Panorama del Sistema) proporciona una vista de alto nivel de todo el ecosistema de software de Vanana. A diferencia de un diagrama de contexto tradicional enfocado en un solo sistema, este diagrama representa un mapa global donde todos los sistemas de software (internos y externos) y los usuarios se muestran como pares (*peers*) dentro del entorno organizacional.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/landscape/VananaSystemLandscape-dark.svg" alt="Vanana System Landscape Diagram" width="850">
+</p>
 
+**Descripción Detallada del Ecosistema:**
 
+1.  **Usuarios y Actores del Sistema:**
+    *   **Facility Admin (Administrador de Instalaciones):** Es el operador responsable de gestionar múltiples espacios y monitorear los sensores de calidad del aire en establecimientos comerciales. Interactúa directamente con la plataforma Vanana, autenticándose a través de redes sociales (Google) y administrando sus planes de pago en Stripe.
+    *   **Home User (Usuario del Hogar):** Es el cliente residencial que monitorea la calidad del aire de su hogar. Al igual que el administrador, hace uso del login social (Google) y gestiona su suscripción premium en Stripe.
 
+2.  **Sistemas Internos de Vanana:**
+    *   **Vanana Platform:** Es el núcleo tecnológico centralizado que recibe, procesa y expone la información de telemetría, administrando los flujos de automatización de actuadores en base a los umbrales de contaminación.
+    *   **Clair Hardware:** Comprende el conjunto físico de sensores IOT (capturadores de telemetría de $CO_2$, material particulado PM2.5 y temperatura) y actuadores (ventanas inteligentes, extractores) instalados en los espacios de los usuarios.
+
+3.  **Sistemas Externos Integrados (Pares de Servicios):**
+    *   **Google OAuth2:** Servicio externo utilizado por la plataforma para proveer autenticación federada, segura y ágil mediante OpenID Connect.
+    *   **Stripe:** Pasarela externa encargada del procesamiento financiero de suscripciones y facturas electrónicas de los clientes.
+    *   **Resend:** Plataforma externa de entrega de correos electrónicos transaccionales (como reportes semanales e informes de salud).
+    *   **OneSignal:** Proveedor externo que gestiona el envío de notificaciones push a los dispositivos móviles de los usuarios en tiempo real ante alertas críticas de calidad del aire.
+
+Este diagrama demuestra que la plataforma de Vanana no opera de forma aislada, sino que colabora dinámicamente con una suite de servicios especializados para ofrecer resiliencia, escalabilidad y una experiencia de usuario integral.
 
 #### 4.1.3.2. Software Architecture Context Level Diagrams.
 
