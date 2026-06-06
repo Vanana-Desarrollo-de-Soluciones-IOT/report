@@ -2473,15 +2473,99 @@ El diagrama de clases unificado del contexto acotado de Device Provisioning mues
 
 ## 4.6. Tactical-Level Domain-Driven Design - Embedded application
 
+La aplicación embebida (Embedded Application) está desarrollada en C++ para ESP32, siguiendo los principios del framework **ModestIoT** (basado en eventos y comandos) para gestionar la adquisición de sensores, el control de actuadores y la comunicación con la estación base local (Edge Station) mediante HTTP/REST. A continuación, se detallan los componentes que estructuran la aplicación embebida, organizados según una arquitectura dirigida por eventos que respeta los bounded contexts implícitos del dominio.
 
+**Arquitectura de Componentes de la Aplicación Embebida (Clair Device)**
 
-EXPLICAR Y FALTA IAN 
+A continuación se detalla el diagrama C4 de nivel de Componentes para la aplicación embebida de Clair, ilustrando la interacción de sus capas internas y su comunicación con el hardware y la Edge Station:
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/embedded/EmbeddedAppComponents-dark.svg" alt="Embedded Application Component Architecture Diagram" width="850">
 </p>
 
+> **Nota sobre la arquitectura de comunicación:**  
+> El framework ModestIoT implementa un patrón de comunicación basado en eventos y comandos mediante handlers encadenados. No existen clases `EventBus` o `CommandBus` en el código; los recuadros con ese nombre en el diagrama son **representaciones conceptuales** para facilitar la comprensión del flujo de datos.
 
+*   **Interfaces Layer (Capa de Interfaces):** Expone los mecanismos para recibir comandos remotos y consultar incidentes desde la Edge Station mediante polling HTTP/REST.
+*   **Application Layer (Capa de Aplicación):** Orquesta los flujos de control del dispositivo: adquisición de sensores, evaluación de calidad del aire, publicación de telemetría y respuesta a comandos.
+*   **Domain Layer (Capa de Dominio):** Contiene la lógica central independiente del hardware (cálculo de AQI, evaluación de umbrales, estados de calidad del aire).
+*   **Infrastructure Layer (Capa de Infraestructura):** Implementa la comunicación con los sensores (I2C/UART), el control de actuadores (GPIO) y el envío de telemetría a la Edge Station (HTTP/REST).
 
+Esta arquitectura basada en eventos y comandos, con un orquestador central desacoplado de los adaptadores de hardware y de comunicación, permite un diseño modular, testeable y altamente mantenible para el firmware del dispositivo Clair.
 
+### 4.6.1. Bounded Context: Device Telemetry
+
+#### 4.6.1.1. Domain Layer
+
+Define las entidades principales, value objects y reglas de negocio para la captura y procesamiento de datos de telemetría en el dispositivo embebido.
+
+*   **ClairData (Aggregate Root):** Agrega todos los datos de telemetría del dispositivo. Incluye las lecturas de CO₂, temperatura, humedad, partículas (PM1.0, PM2.5, PM10), el índice de calidad del aire (AQI), el estado general de calidad del aire y metadatos como timestamp y timezone.
+*   **AirQuality (Value Object):** Contiene los valores de calidad del aire: `co2` (ppm), `temperature` (°C), `humidity` (%), y un flag `valid`.
+*   **ParticulateMatter (Value Object):** Contiene las concentraciones de partículas: `pm1_0`, `pm2_5`, `pm10` (µg/m³), y un flag `valid`.
+*   **AirQualityIndex (Value Object):** Calcula el AQI basado en PM2.5, incluye `aqi` (0-500) y la `category` (Good, Moderate, Unhealthy, etc.).
+*   **AirQualityThresholds (Value Object):** Define los umbrales configurables para evaluar la calidad del aire: límites para PM2.5, PM10, CO₂ y humedad.
+*   **AirQualityStatus (Enum):** Estados de calidad del aire: `OPTIMAL`, `MODERATE`, `CRITICAL`.
+*   **Event (Entity):** Evento base del framework ModestIoT. Contiene un `id` único. Los sensores propagan `DATA_READY_EVENT` a través del Event Propagation.
+*   **EventHandler (Interface):** Interfaz que deben implementar los suscriptores de eventos. Define el método `on(Event event)`.
+*   **Sensor (Abstract Entity):** Clase base abstracta para todos los sensores. Contiene `pin` y un `handler` opcional para propagar eventos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_telemetry_class_diagram/domain-layer.svg" alt="Device Telemetry Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.1.2. Interface Layer
+
+Punto de entrada principal que orquesta la adquisición de datos, el procesamiento de eventos y la gestión del estado del dispositivo.
+
+*   **ClairDevice (Orchestrator):** Es el orquestador central que implementa las interfaces `EventHandler` y `CommandHandler` del framework ModestIoT. Coordina la actualización de sensores, consume eventos (`on()`), ejecuta comandos (`handle()`), gestiona el estado del sistema (inicialización, modo normal, standby) y publica telemetría a través del `TelemetryPublisher`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_telemetry_class_diagram/interfaces-layer.svg" alt="Device Telemetry Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.1.3. Application Layer
+
+Orquesta los flujos de control para la publicación de telemetría y la coordinación de la actualización de sensores.
+
+*   **TelemetryPublisher (Application Service):** Servicio que construye el payload de telemetría (formato JSON), gestiona los intervalos de envío con throttling (cada 10 segundos), envía los datos a la Edge Station mediante HTTPS (`POST /api/v1/device/telemetry`) y mantiene estadísticas de envíos exitosos/fallidos.
+*   **TelemetryScheduler:** Componente auxiliar que gestiona los temporizadores para el envío periódico de telemetría.
+*   **SensorUpdateOrchestrator:** Coordina la activación de lecturas de sensores (SCD41 y PMS5003) cuando se reciben eventos `DATA_READY_EVENT`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_telemetry_class_diagram/application-layer.svg" alt="Device Telemetry Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.1.4. Infrastructure Layer
+
+Adaptadores concretos para comunicación con hardware de sensores (I2C/UART), mapeo de datos y mecanismo de propagación de eventos.
+
+*   **SCD41Sensor (Concrete Sensor):** Implementación del sensor de CO₂, temperatura y humedad. Comunica vía I2C usando la librería Sensirion. Publica `DATA_READY_EVENT` a través del Event Propagation cuando hay nuevas lecturas.
+*   **PMS5003Sensor (Concrete Sensor):** Implementación del sensor de partículas (PM1.0, PM2.5, PM10). Comunica vía UART (HardwareSerial), con manejo de trama de 32 bytes y checksum. Publica `DATA_READY_EVENT` a través del Event Propagation.
+*   **SCD41SensorDevice (Wrapper):** Wrapper que contiene el `SCD41Sensor` y conecta sus eventos al Device Orchestrator.
+*   **PMS5003SensorDevice (Wrapper):** Wrapper que contiene el `PMS5003Sensor` y conecta sus eventos al Device Orchestrator.
+*   **PMS5003Data (Data Model):** Estructura de datos cruda del PMS5003 (pm1_0, pm2_5, pm10, valid).
+*   **EventPropagation (Conceptual):** Mecanismo conceptual del framework ModestIoT que permite a los sensores llamar a `handler->on(event)` para notificar al orquestador. No existe una clase `EventBus` dedicada; se representa en el diagrama para claridad arquitectónica.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_telemetry_class_diagram/infrastructure-layer.svg" alt="Device Telemetry Infrastructure Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.1.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device Telemetry muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura. Se incluyen también las relaciones conceptuales de Event Propagation propias del framework ModestIoT.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_telemetry_class_diagram/unified.svg" alt="Unified Device Telemetry Class Diagram" width="850">
+</p>
+
+> **Nota sobre la arquitectura de comunicación:**  
+> El framework ModestIoT implementa un patrón de comunicación basado en eventos y comandos mediante handlers encadenados. Los sensores publican eventos invocando `handler->on(event)`, y el `ClairDevice` los consume implementando la interfaz `EventHandler`. No existen clases `EventBus` o `CommandBus` en el código; los recuadros con ese nombre en el diagrama son **representaciones conceptuales** para facilitar la comprensión del flujo de datos.
 
