@@ -37,3 +37,4 @@ Cirkit Designer. (s. f.). *Online circuit design and prototyping platform for Io
 
 - Prototype Web App Navigation Video: https://bit.ly/3Q84l7g
 - Prototype Mobile App Navigation Video: https://bit.ly/43bBBh7
+- About the Product: https://bit.ly/4olR1cf
