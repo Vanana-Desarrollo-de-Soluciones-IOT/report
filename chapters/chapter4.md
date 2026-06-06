@@ -744,7 +744,13 @@ A continuación, se detalla el diagrama de clases unificado de la capa de domini
 
 ##### 4.2.1.6.2. Bounded Context Database Design Diagram
 
-FALTA!!! - AYUDA
+Dado que la arquitectura del backend sigue un enfoque de monolito modular, todos los Bounded Contexts comparten una única base de datos relacional PostgreSQL. El siguiente diagrama presenta el diseño completo de la base de datos, incluyendo las tablas, columnas, tipos de datos, constraints (primary keys, foreign keys) y las relaciones entre tablas que permiten la persistencia de información para el contexto de **IAM** junto con los demás contextos del sistema.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/database/database.png" alt="Bounded Context Database Design Diagram - IAM" width="850">
+</p>
+
+Las tablas principales asociadas a este contexto son `users`, que almacena las credenciales y datos de autenticación OAuth2/OIDC de los usuarios del sistema.
 
 ### 4.2.2. Bounded Context: Billing
 
@@ -843,7 +849,13 @@ El siguiente diagrama detalla la capa de dominio de Billing de forma unificada c
 
 ##### 4.2.2.6.2. Bounded Context Database Design Diagram
 
-FALTA!!! - AYUDA
+Dado que la arquitectura del backend sigue un enfoque de monolito modular, todos los Bounded Contexts comparten una única base de datos relacional PostgreSQL. El siguiente diagrama presenta el diseño completo de la base de datos, incluyendo las tablas, columnas, tipos de datos, constraints (primary keys, foreign keys) y las relaciones entre tablas que permiten la persistencia de información para el contexto de **Billing** junto con los demás contextos del sistema.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/database/database.png" alt="Bounded Context Database Design Diagram - Billing" width="850">
+</p>
+
+Las tablas principales asociadas a este contexto son `user_plan`, que registra el tipo de suscripción (Freemium o Premium) y las fechas de vigencia, y `payment_record`, que almacena el historial de transacciones procesadas a través de Stripe.
 
 ### 4.2.3. Bounded Context: Device & Space Management
 
@@ -946,7 +958,13 @@ El diagrama unificado de dominio para Device & Space Management define la estruc
 
 ##### 4.2.3.6.2. Bounded Context Database Design Diagram
 
-FALTA!!! - AYUDA
+Dado que la arquitectura del backend sigue un enfoque de monolito modular, todos los Bounded Contexts comparten una única base de datos relacional PostgreSQL. El siguiente diagrama presenta el diseño completo de la base de datos, incluyendo las tablas, columnas, tipos de datos, constraints (primary keys, foreign keys) y las relaciones entre tablas que permiten la persistencia de información para el contexto de **Device & Space Management** junto con los demás contextos del sistema.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/database/database.png" alt="Bounded Context Database Design Diagram - Device and Space Management" width="850">
+</p>
+
+Las tablas principales asociadas a este contexto son `devices`, que almacena el inventario de sensores registrados; `organizations` y `spaces`, que definen la jerarquía organizacional; `device_assignments` y `device_assignment_configuration`, que gestionan la vinculación de dispositivos a espacios y sus configuraciones de umbrales; y `device_commands`, que registra los comandos enviados al hardware.
 
 ### 4.2.4. Bounded Context: Air Quality Evaluation
 
@@ -1045,7 +1063,13 @@ El diagrama unificado de clases del dominio para Air Quality Evaluation define l
 
 ##### 4.2.4.6.2. Bounded Context Database Design Diagram
 
-FALTA!!! - AYUDA
+Dado que la arquitectura del backend sigue un enfoque de monolito modular, todos los Bounded Contexts comparten una única base de datos relacional PostgreSQL. El siguiente diagrama presenta el diseño completo de la base de datos, incluyendo las tablas, columnas, tipos de datos, constraints (primary keys, foreign keys) y las relaciones entre tablas que permiten la persistencia de información para el contexto de **Air Quality Evaluation** junto con los demás contextos del sistema.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/database/database.png" alt="Bounded Context Database Design Diagram - Air Quality Evaluation" width="850">
+</p>
+
+Las tablas principales asociadas a este contexto son `telemetry_evaluations`, que almacena las lecturas de telemetría procesadas incluyendo métricas de calidad del aire (CO₂, temperatura, humedad, material particulado PM1.0, PM2.5 y PM10), estado de conectividad y salud del dispositivo.
 
 ### 4.2.5. Bounded Context: Alerting & Response
 
@@ -1143,7 +1167,13 @@ El diagrama unificado de dominio para Alerting & Response define las propiedades
 
 ##### 4.2.5.6.2. Bounded Context Database Design Diagram
 
-FALTA!!! - AYUDA
+Dado que la arquitectura del backend sigue un enfoque de monolito modular, todos los Bounded Contexts comparten una única base de datos relacional PostgreSQL. El siguiente diagrama presenta el diseño completo de la base de datos, incluyendo las tablas, columnas, tipos de datos, constraints (primary keys, foreign keys) y las relaciones entre tablas que permiten la persistencia de información para el contexto de **Alerting & Response** junto con los demás contextos del sistema.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/database/database.png" alt="Bounded Context Database Design Diagram - Alerting and Response" width="850">
+</p>
+
+Las tablas principales asociadas a este contexto son `alerts`, que registra los incidentes de calidad del aire con su severidad, estado, valores actuales y umbrales transgredidos, vinculándose mediante foreign keys a `devices` y `spaces`.
 
 ### 4.2.6. Bounded Context: Analytics & Reporting
 
@@ -1242,7 +1272,13 @@ El diagrama unificado de dominio para Analytics & Reporting define la estructura
 
 ##### 4.2.6.6.2. Bounded Context Database Design Diagram
 
-FALTA!!! - AYUDA
+Dado que la arquitectura del backend sigue un enfoque de monolito modular, todos los Bounded Contexts comparten una única base de datos relacional PostgreSQL. El siguiente diagrama presenta el diseño completo de la base de datos, incluyendo las tablas, columnas, tipos de datos, constraints (primary keys, foreign keys) y las relaciones entre tablas que permiten la persistencia de información para el contexto de **Analytics & Reporting** junto con los demás contextos del sistema.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/database/database.png" alt="Bounded Context Database Design Diagram - Analytics and Reporting" width="850">
+</p>
+
+Las tablas principales asociadas a este contexto son `device_analytics_snapshots`, que almacena los snapshots agregados de telemetría por ventana temporal, incluyendo promedios de CO₂, humedad, PM2.5, temperatura y la categoría AQI calculada para cada dispositivo.
 
 ### 4.2.7. Bounded Context: Notifications
 
@@ -1341,7 +1377,13 @@ El diagrama de clases unificado del dominio de Notifications muestra todas sus e
 
 ##### 4.2.7.6.2. Bounded Context Database Design Diagram
 
-FALTA!!! - AYUDA
+Dado que la arquitectura del backend sigue un enfoque de monolito modular, todos los Bounded Contexts comparten una única base de datos relacional PostgreSQL. El siguiente diagrama presenta el diseño completo de la base de datos, incluyendo las tablas, columnas, tipos de datos, constraints (primary keys, foreign keys) y las relaciones entre tablas que permiten la persistencia de información para el contexto de **Notifications** junto con los demás contextos del sistema.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/database/database.png" alt="Bounded Context Database Design Diagram - Notifications" width="850">
+</p>
+
+Las tablas principales asociadas a este contexto son `email_logs`, que registra el historial de correos electrónicos transaccionales enviados, y `push_notification_logs`, que almacena las notificaciones push despachadas a los usuarios, vinculándose mediante foreign keys a `alerts` y `users`.
 
 ## 4.3. Tactical-Level Domain-Driven Design - Web application
 
