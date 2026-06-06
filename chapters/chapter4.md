@@ -2473,15 +2473,395 @@ El diagrama de clases unificado del contexto acotado de Device Provisioning mues
 
 ## 4.6. Tactical-Level Domain-Driven Design - Embedded application
 
+La aplicación embebida (Embedded Application) está desarrollada en C++ para ESP32, siguiendo los principios del framework **ModestIoT** (basado en eventos y comandos) para gestionar la adquisición de sensores, el control de actuadores y la comunicación con la estación base local (Edge Station) mediante HTTP/REST. A continuación, se detallan los componentes que estructuran la aplicación embebida, organizados según una arquitectura dirigida por eventos que respeta los bounded contexts implícitos del dominio.
 
+**Arquitectura de Componentes de la Aplicación Embebida (Clair Device)**
 
-EXPLICAR Y FALTA IAN 
+A continuación se detalla el diagrama C4 de nivel de Componentes para la aplicación embebida de Clair, ilustrando la interacción de sus capas internas y su comunicación con el hardware y la Edge Station:
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/embedded/EmbeddedAppComponents-dark.svg" alt="Embedded Application Component Architecture Diagram" width="850">
 </p>
 
+> **Nota sobre la arquitectura de comunicación:**  
+> El framework ModestIoT implementa un patrón de comunicación basado en eventos y comandos mediante handlers encadenados. No existen clases `EventBus` o `CommandBus` en el código; los recuadros con ese nombre en el diagrama son **representaciones conceptuales** para facilitar la comprensión del flujo de datos.
 
+*   **Interfaces Layer (Capa de Interfaces):** Expone los mecanismos para recibir comandos remotos y consultar incidentes desde la Edge Station mediante polling HTTP/REST.
+*   **Application Layer (Capa de Aplicación):** Orquesta los flujos de control del dispositivo: adquisición de sensores, evaluación de calidad del aire, publicación de telemetría y respuesta a comandos.
+*   **Domain Layer (Capa de Dominio):** Contiene la lógica central independiente del hardware (cálculo de AQI, evaluación de umbrales, estados de calidad del aire).
+*   **Infrastructure Layer (Capa de Infraestructura):** Implementa la comunicación con los sensores (I2C/UART), el control de actuadores (GPIO) y el envío de telemetría a la Edge Station (HTTP/REST).
 
+Esta arquitectura basada en eventos y comandos, con un orquestador central desacoplado de los adaptadores de hardware y de comunicación, permite un diseño modular, testeable y altamente mantenible para el firmware del dispositivo Clair.
 
+### 4.6.1. Bounded Context: Device Telemetry
 
+#### 4.6.1.1. Domain Layer
+
+Define las entidades principales, value objects y reglas de negocio para la captura y procesamiento de datos de telemetría en el dispositivo embebido.
+
+*   **ClairData (Aggregate Root):** Agrega todos los datos de telemetría del dispositivo. Incluye las lecturas de CO₂, temperatura, humedad, partículas (PM1.0, PM2.5, PM10), el índice de calidad del aire (AQI), el estado general de calidad del aire y metadatos como timestamp y timezone.
+*   **AirQuality (Value Object):** Contiene los valores de calidad del aire: `co2` (ppm), `temperature` (°C), `humidity` (%), y un flag `valid`.
+*   **ParticulateMatter (Value Object):** Contiene las concentraciones de partículas: `pm1_0`, `pm2_5`, `pm10` (µg/m³), y un flag `valid`.
+*   **AirQualityIndex (Value Object):** Calcula el AQI basado en PM2.5, incluye `aqi` (0-500) y la `category` (Good, Moderate, Unhealthy, etc.).
+*   **AirQualityThresholds (Value Object):** Define los umbrales configurables para evaluar la calidad del aire: límites para PM2.5, PM10, CO₂ y humedad.
+*   **AirQualityStatus (Enum):** Estados de calidad del aire: `OPTIMAL`, `MODERATE`, `CRITICAL`.
+*   **Event (Entity):** Evento base del framework ModestIoT. Contiene un `id` único. Los sensores propagan `DATA_READY_EVENT` a través del Event Propagation.
+*   **EventHandler (Interface):** Interfaz que deben implementar los suscriptores de eventos. Define el método `on(Event event)`.
+*   **Sensor (Abstract Entity):** Clase base abstracta para todos los sensores. Contiene `pin` y un `handler` opcional para propagar eventos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_telemetry_class_diagram/domain-layer.svg" alt="Device Telemetry Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.1.2. Interface Layer
+
+Punto de entrada principal que orquesta la adquisición de datos, el procesamiento de eventos y la gestión del estado del dispositivo.
+
+*   **ClairDevice (Orchestrator):** Es el orquestador central que implementa las interfaces `EventHandler` y `CommandHandler` del framework ModestIoT. Coordina la actualización de sensores, consume eventos (`on()`), ejecuta comandos (`handle()`), gestiona el estado del sistema (inicialización, modo normal, standby) y publica telemetría a través del `TelemetryPublisher`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_telemetry_class_diagram/interfaces-layer.svg" alt="Device Telemetry Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.1.3. Application Layer
+
+Orquesta los flujos de control para la publicación de telemetría y la coordinación de la actualización de sensores.
+
+*   **TelemetryPublisher (Application Service):** Servicio que construye el payload de telemetría (formato JSON), gestiona los intervalos de envío con throttling (cada 10 segundos), envía los datos a la Edge Station mediante HTTPS (`POST /api/v1/device/telemetry`) y mantiene estadísticas de envíos exitosos/fallidos.
+*   **TelemetryScheduler:** Componente auxiliar que gestiona los temporizadores para el envío periódico de telemetría.
+*   **SensorUpdateOrchestrator:** Coordina la activación de lecturas de sensores (SCD41 y PMS5003) cuando se reciben eventos `DATA_READY_EVENT`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_telemetry_class_diagram/application-layer.svg" alt="Device Telemetry Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.1.4. Infrastructure Layer
+
+Adaptadores concretos para comunicación con hardware de sensores (I2C/UART), mapeo de datos y mecanismo de propagación de eventos.
+
+*   **SCD41Sensor (Concrete Sensor):** Implementación del sensor de CO₂, temperatura y humedad. Comunica vía I2C usando la librería Sensirion. Publica `DATA_READY_EVENT` a través del Event Propagation cuando hay nuevas lecturas.
+*   **PMS5003Sensor (Concrete Sensor):** Implementación del sensor de partículas (PM1.0, PM2.5, PM10). Comunica vía UART (HardwareSerial), con manejo de trama de 32 bytes y checksum. Publica `DATA_READY_EVENT` a través del Event Propagation.
+*   **SCD41SensorDevice (Wrapper):** Wrapper que contiene el `SCD41Sensor` y conecta sus eventos al Device Orchestrator.
+*   **PMS5003SensorDevice (Wrapper):** Wrapper que contiene el `PMS5003Sensor` y conecta sus eventos al Device Orchestrator.
+*   **PMS5003Data (Data Model):** Estructura de datos cruda del PMS5003 (pm1_0, pm2_5, pm10, valid).
+*   **EventPropagation (Conceptual):** Mecanismo conceptual del framework ModestIoT que permite a los sensores llamar a `handler->on(event)` para notificar al orquestador. No existe una clase `EventBus` dedicada; se representa en el diagrama para claridad arquitectónica.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_telemetry_class_diagram/infrastructure-layer.svg" alt="Device Telemetry Infrastructure Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.1.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device Telemetry muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura. Se incluyen también las relaciones conceptuales de Event Propagation propias del framework ModestIoT.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_telemetry_class_diagram/unified.svg" alt="Unified Device Telemetry Class Diagram" width="850">
+</p>
+
+> **Nota sobre la arquitectura de comunicación:**  
+> El framework ModestIoT implementa un patrón de comunicación basado en eventos y comandos mediante handlers encadenados. Los sensores publican eventos invocando `handler->on(event)`, y el `ClairDevice` los consume implementando la interfaz `EventHandler`. No existen clases `EventBus` o `CommandBus` en el código; los recuadros con ese nombre en el diagrama son **representaciones conceptuales** para facilitar la comprensión del flujo de datos.
+
+### 4.6.2. Bounded Context: Device Command
+
+#### 4.6.2.1. Domain Layer
+
+Define las abstracciones de comandos y el contrato para su manejo dentro del framework ModestIoT.
+
+*   **Command (Entity):** Comando base del framework ModestIoT. Contiene un `id` único que identifica el tipo de acción a ejecutar (ej. `LED_ON_COMMAND`, `STANDBY_COMMAND`).
+*   **CommandHandler (Interface):** Interfaz que deben implementar los suscriptores de comandos. Define el método `handle(Command command)`. `ClairDevice`, `Led` y `OLEDDisplay` implementan esta interfaz.
+*   **RemoteCommandType (Enum):** Enumeración de los tipos de comandos remotos que el dispositivo puede recibir desde la Edge Station: `STANDBY`, `WAKE`, `RESTART`, `REPORT`, `CALIBRATE`.
+*   **CommandResult (Value Object):** Objeto que encapsula el resultado de la ejecución de un comando. Incluye `success` (bool), `failureReason` (String) y `executionTimeMs` (unsigned long).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_command_class_diagram/domain-layer.svg" alt="Device Command Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.2.2. Interface Layer
+
+Punto de entrada principal que procesa los comandos recibidos y los despacha a los actuadores correspondientes.
+
+*   **ClairDevice (Orchestrator):** Implementa la interfaz `CommandHandler` y actúa como el gestor central de comandos. Recibe comandos del `EdgeService` (vía `CommandDispatch`), los procesa según su tipo (`STANDBY`, `WAKE`, `REPORT`, `CALIBRATE`, `RESET`) y ejecuta las acciones correspondientes (cambiar estado del dispositivo, forzar reporte, recalibrar sensores, etc.). También es responsable de rutar comandos específicos hacia `Led` y `OLEDDisplay`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_command_class_diagram/interfaces-layer.svg" alt="Device Command Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.2.3. Application Layer
+
+Orquesta el polling de comandos remotos, la cola de comandos pendientes y el envío de ACKs a la Edge Station.
+
+*   **EdgeService (Application Service):** Servicio unificado que gestiona tanto la telemetría como los comandos remotos. Contiene:
+    *   **Command Polling:** Consulta periódicamente (`pollCommands()`, cada 5-10 segundos) la Edge Station (`GET /api/v1/device/commands/pending`) en busca de comandos pendientes.
+    *   **Command Queue:** Mantiene una cola interna (`queue<RemoteCommand>`) para procesar comandos de forma ordenada y con un retraso configurable entre ellos (`commandProcessDelay`).
+    *   **Command Dispatch:** A través de un callback (`CommandCallback`), entrega los comandos al `ClairDevice` para su ejecución.
+    *   **Acknowledgments:** Envía ACKs a la Edge Station (`POST /api/v1/device/commands/{id}/ack`) indicando si el comando fue `EXECUTED` o `FAILED`.
+*   **RemoteCommand (DTO):** Estructura que representa un comando recibido del Edge. Contiene `commandId`, `type` (ej. "STANDBY"), `parameters` (JSON opcional) y un flag `valid`.
+*   **CommandProcessor:** Componente auxiliar que valida y parsea los comandos entrantes, extrayendo el tipo y los parámetros.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_command_class_diagram/application-layer.svg" alt="Device Command Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.2.4. Infrastructure Layer
+
+Adaptadores concretos que ejecutan comandos sobre el hardware y gestionan la comunicación HTTP con la Edge Station.
+
+*   **Led (Actuator):** Implementa `CommandHandler`. Ejecuta comandos específicos de LED: `LED_ON_COMMAND` (enciende), `LED_OFF_COMMAND` (apaga), `LED_BLINK_COMMAND` (inicia parpadeo cada 500ms), `LED_ACKNOWLEDGE_ALL` (detiene parpadeo). Controla el GPIO directamente.
+*   **OLEDDisplay (Actuator):** Implementa `CommandHandler`. Ejecuta comandos de pantalla: `DISPLAY_ON_COMMAND`, `DISPLAY_OFF_COMMAND`, `DISPLAY_SLEEP_COMMAND`, `DISPLAY_WAKE_COMMAND`, `DISPLAY_CLEAR_COMMAND`. Controla la pantalla vía I2C.
+*   **CommandDispatch (Conceptual):** Mecanismo conceptual del framework ModestIoT que permite la propagación de comandos a través de `handler->handle(command)`. Los comandos fluyen desde el `EdgeService` hacia el `ClairDevice` y desde éste hacia los actuadores `Led` y `OLEDDisplay`.
+*   **HttpCommandClient:** Cliente HTTP reutilizable para comunicarse con la Edge Station. Maneja los endpoints de comandos pendientes (GET) y ACKs (POST), incluyendo headers de autenticación (`X-Hardware-Id`, `X-API-Key`).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_command_class_diagram/infrastructure-layer.svg" alt="Device Command Infrastructure Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.2.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device Command muestra la relación entre todas sus entidades, servicios y adaptadores. Se incluyen las relaciones conceptuales de Command Dispatch propias del framework ModestIoT, que conectan el `EdgeService` con el `ClairDevice` y éste con los actuadores `Led` y `OLEDDisplay`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_command_class_diagram/unified.svg" alt="Unified Device Command Class Diagram" width="850">
+</p>
+
+> **Nota sobre la arquitectura de comandos:**  
+> El framework ModestIoT implementa un patrón de comunicación basado en comandos mediante handlers encadenados. El `EdgeService` recibe comandos remotos y los propaga a través del `CommandDispatch` hacia el `ClairDevice` (que implementa `CommandHandler`). A su vez, el `ClairDevice` puede reenviar comandos específicos a `Led` y `OLEDDisplay`. No existe una clase `CommandBus` dedicada; el mecanismo es una representación conceptual para facilitar la comprensión del flujo de comandos.
+
+### 4.6.3. Bounded Context: Device State
+
+#### 4.6.3.1. Domain Layer
+
+Define las enumeraciones de estados del dispositivo y las reglas de transición entre ellos.
+
+*   **DeviceState (Enum):** Enumeración que representa los estados de inicialización del dispositivo: `INIT_NOT_STARTED` (no iniciado), `INIT_STARTING_SENSORS` (iniciando sensores), `INIT_WAITING_SENSORS` (esperando sensores), `INIT_COMPLETE` (inicialización completa), `INIT_PARTIAL` (inicialización parcial por timeout).
+*   **OperationalMode (Enum):** Enumeración de los modos operativos del dispositivo: `NORMAL_MODE` (operación normal), `STANDBY_MODE` (modo bajo consumo), `SIMULATION_MODE` (modo simulación con datos sintéticos).
+*   **AirQualityStatus (Enum):** Enumeración de los estados de calidad del aire: `OPTIMAL` (óptimo), `MODERATE` (moderado), `CRITICAL` (crítico).
+*   **SystemHealth (Value Object):** Agrega indicadores de salud del sistema: `allSensorsReady`, `timeSynchronized`, `wifiConnected`, `displayInitialized`, `healthPercentage`. Incluye el método `evaluateHealth()` que calcula la salud general del dispositivo.
+*   **StateTransition (Value Object):** Registra una transición de estado, incluyendo `fromState`, `toState`, `transitionTime` y `success`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_state_class_diagram/domain-layer.svg" alt="Device State Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.3.2. Interface Layer
+
+Punto de entrada principal que gestiona y mantiene todos los estados del dispositivo, coordinando las transiciones según los eventos y comandos recibidos.
+
+*   **ClairDevice (Orchestrator):** Es el orquestador central responsable de mantener y gestionar:
+    *   **Estado de Inicialización:** Controla la secuencia de inicialización de sensores con timeout de 10 segundos (`initState`, `initStartTime`, `INIT_TIMEOUT_MS`). Métodos: `updateInitialization()`, `isInitializationComplete()`, `getInitStateString()`.
+    *   **Modo Operativo:** Gestiona el modo normal (`NORMAL_MODE`), modo standby (`STANDBY_MODE`) y modo simulación (`SIMULATION_MODE`). Métodos: `setStandbyMode()`, `isStandbyMode()`, `setSimulationEnabled()`.
+    *   **Estado de Calidad del Aire:** Mantiene el estado actual (`currentData.status`) y su etiqueta (`statusLabel`). Se actualiza automáticamente cuando llegan nuevos datos de sensores.
+    *   **Flags de Estado:** Mantiene indicadores como `allSensorsReady`, `displayInitialized`, `timeSynchronized`, `standbyMode`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_state_class_diagram/interfaces-layer.svg" alt="Device State Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.3.3. Application Layer
+
+Orquesta la lógica de transición de estados, la gestión de timeouts y la evaluación del estado general del dispositivo.
+
+*   **StateManager (Application Service):** Coordina las transiciones de estado. Métodos: `transitionTo(newState)`, `getCurrentState()`, `canTransitionTo(newState)`, `onStateEnter()`, `onStateExit()`.
+*   **InitStateManager:** Gestiona específicamente la inicialización del dispositivo. Métodos: `startInitialization()`, `updateInitialization()`, `isInitializationComplete()`, `hasInitializationTimeout()`, `getInitState()`, `getInitStateString()`.
+*   **StandbyManager:** Gestiona el modo standby. Métodos: `enableStandby()`, `disableStandby()`, `isStandbyActive()`, `suspendOperations()` (apaga display, duerme sensores), `resumeOperations()` (reactiva sensores, enciende display).
+*   **StatusEvaluator:** Evalúa el estado general de calidad del aire combinando todos los parámetros (CO₂, PM2.5, PM10, humedad). Métodos: `evaluateOverallStatus()`, `getCurrentStatus()`, `getStatusLabel()`, `getStatusIcon()`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_state_class_diagram/application-layer.svg" alt="Device State Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.3.4. Infrastructure Layer
+
+Adaptadores concretos para persistencia opcional de estado y temporización.
+
+*   **StatePersistence:** Servicio opcional para guardar/cargar el estado del dispositivo en memoria no volátil (ej. preferences). Métodos: `saveState(state)`, `loadState()`, `clearState()`.
+*   **StateTimer:** Componente de temporización utilizado para gestionar timeouts (como el timeout de inicialización de 10 segundos). Métodos: `start()`, `hasTimedOut()`, `reset()`, `getElapsedMs()`.
+*   **StateEventEmitter (Conceptual):** Mecanismo conceptual para emitir eventos cuando ocurren cambios de estado significativos (ej. `STATE_CHANGED`, `MODE_CHANGED`). Los suscriptores (como `ClairDevice`) pueden reaccionar a estos cambios.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_state_class_diagram/infrastructure-layer.svg" alt="Device State Infrastructure Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.3.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device State muestra la relación entre todas las enumeraciones de estado, los servicios de aplicación que gestionan las transiciones y el orquestador central que mantiene los estados del dispositivo.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_state_class_diagram/unified.svg" alt="Unified Device State Class Diagram" width="850">
+</p>
+
+> **Nota sobre la gestión de estados:**  
+> El `ClairDevice` actúa como el agregador de estados del dispositivo. Mantiene los flags de inicialización, modo operativo y calidad del aire. La inicialización sigue una secuencia no bloqueante con timeout de 10 segundos. El modo standby suspende las operaciones no esenciales (sensores, display, telemetría) para ahorrar energía. El estado de calidad del aire se actualiza automáticamente tras cada lectura de sensores y determina el comportamiento del LED.
+
+### 4.6.4. Bounded Context: Alerting
+
+#### 4.6.4.1. Domain Layer
+
+Define las entidades de incidentes, tipos de métricas y reglas de prioridad para las alertas en el dispositivo embebido.
+
+*   **Incident (Entity):** Representa un incidente o alerta activa en el dispositivo. Contiene `id`, `metric` (CO2, PM25, TEMP, HUMIDITY), `status` (ACTIVE, RESOLVED), `occurredAt`, `resolvedAt` y `acknowledged`. Incluye el método `print()` para depuración.
+*   **MetricType (Enum):** Enumeración de los tipos de métricas que pueden generar incidentes: `CO2`, `PM25`, `TEMP`, `HUMIDITY`.
+*   **IncidentStatus (Enum):** Estados de un incidente: `ACTIVE` (activo), `RESOLVED` (resuelto), `ACKNOWLEDGED` (reconocido).
+*   **IncidentPriority (Enum):** Niveles de prioridad para incidentes según la métrica: `HIGH` (CO2), `MEDIUM` (PM25), `LOW` (TEMP), `LOWEST` (HUMIDITY).
+*   **AlertRule (Value Object):** Define las reglas que determinan cuándo se genera un incidente. Contiene `metric`, `thresholdValue`, `operator` (ej. >, <) y `priority`. Incluye el método `evaluate(actualValue)` para evaluar si se debe activar una alerta.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/alerting_class_diagram/domain-layer.svg" alt="Alerting Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.4.2. Interface Layer
+
+Punto de entrada principal que integra el subsistema de alertas con el orquestador central y controla el LED según el estado de los incidentes.
+
+*   **ClairDevice (Orchestrator):** Integra el `IncidentManager` en el flujo principal del dispositivo. En cada ciclo `update()` llama a `incidentManager.pollIncidents()` y `incidentManager.process()`. Implementa los callbacks estáticos `onIncidentDetected()` e `onIncidentResolved()` que son invocados por el `IncidentManager` cuando cambia el estado de un incidente. El método `updateWarningLed()` verifica `hasActiveIncidents()` y controla el LED (parpadeo si hay incidentes activos, apagado si no).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/alerting_class_diagram/interfaces-layer.svg" alt="Alerting Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.4.3. Application Layer
+
+Orquesta el polling de incidentes, la gestión de la cola de ACKs y la lógica de reintentos para confirmar la recepción de incidentes.
+
+*   **IncidentManager (Application Service):** Servicio central que gestiona todo el ciclo de vida de los incidentes:
+    *   **Polling:** Consulta periódicamente (`pollIncidents()`, cada 5 segundos) la Edge Station (`GET /api/v1/alerting/incidents/pending`) para obtener incidentes activos y resueltos.
+    *   **Almacenamiento Local:** Mantiene un array de incidentes activos (`activeIncidents[5]`, máximo 5) y una cola de ACKs pendientes (`pendingAcks[10]`, máximo 10).
+    *   **Callbacks:** Invoca los callbacks configurados (`onIncidentDetected`, `onIncidentResolved`) cuando cambia el estado de un incidente.
+    *   **ACK Queue Management:** Encola ACKs cuando se detectan incidentes nuevos o resueltos, y los procesa en segundo plano con lógica de reintentos (máximo 3 reintentos, intervalo de 5 segundos).
+    *   **Métricos de Prioridad:** Proporciona `getMetricPriority()` y `getMostCriticalIncident()` para determinar el incidente más crítico cuando múltiples están activos.
+*   **Incident (DTO):** Estructura de datos que representa un incidente recibido del Edge o almacenado localmente.
+*   **PendingAck (Value Object):** Representa un ACK pendiente de envío. Contiene `incidentId`, `status` (ACTIVE/RESOLVED), `lastAttempt`, `retryCount` y `active`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/alerting_class_diagram/application-layer.svg" alt="Alerting Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.4.4. Infrastructure Layer
+
+Adaptadores concretos para la comunicación HTTP con la Edge Station, control del LED y gestión de la cola de ACKs.
+
+*   **Led (Actuator):** Implementa `CommandHandler`. Es controlado indirectamente por el `IncidentManager` a través del `ClairDevice`. Cuando `hasActiveIncidents()` es `true`, se inicia el parpadeo (`startBlink(500)`); cuando no hay incidentes activos, el LED se apaga (`off()`).
+*   **IncidentHttpClient:** Cliente HTTP para comunicarse con la Edge Station. Maneja el endpoint de incidentes pendientes (`GET /api/v1/alerting/incidents/pending`) y el endpoint de ACK (`POST /api/v1/alerting/incidents/{id}/ack`). Incluye headers de autenticación (`X-Hardware-Id`, `X-API-Key`).
+*   **IncidentAckQueue:** Cola especializada para gestionar ACKs pendientes. Métodos: `add(incidentId, status)`, `remove(incidentId)`, `getNext()`, `size()`, `isEmpty()`.
+*   **LedController (Conceptual):** Mecanismo conceptual que conecta el estado de incidentes con el control del LED. El `ClairDevice` actúa como este controlador en la implementación actual.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/alerting_class_diagram/infrastructure-layer.svg" alt="Alerting Infrastructure Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.4.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Alerting muestra la relación entre todas las entidades de incidentes, el servicio de aplicación `IncidentManager`, el orquestador `ClairDevice` y el actuador `Led`. Se incluyen las relaciones de polling HTTP hacia la Edge Station y el flujo de control que activa el parpadeo del LED cuando hay incidentes activos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/alerting_class_diagram/unified.svg" alt="Unified Alerting Class Diagram" width="850">
+</p>
+
+> **Nota sobre el flujo de incidentes:**  
+> El `IncidentManager` consulta periódicamente la Edge Station para obtener incidentes pendientes. Cuando se detecta un nuevo incidente activo, se añade al array local y se invoca el callback `onIncidentDetected()`, que a su vez llama a `updateWarningLed()` en el `ClairDevice`. Este método verifica `hasActiveIncidents()` y controla el LED (inicia parpadeo a 500ms si hay incidentes, apaga si no). Los ACKs se encolan y se envían en segundo plano con reintentos automáticos (máximo 3, cada 5 segundos).
+
+### 4.6.5. Bounded Context: Display
+
+#### 4.6.5.1. Domain Layer
+
+Define las estructuras de datos para mostrar en la pantalla, los estados de la pantalla y las reglas de gestión de energía.
+
+*   **DisplayData (Aggregate Root):** Agrega todos los datos que se muestran en la pantalla OLED. Contiene `AirQualityDisplay` (CO₂, temperatura, humedad, validez, etiqueta de estado), `ParticulateMatterDisplay` (PM1.0, PM2.5, PM10, validez) y `AQIDisplay` (valor AQI, categoría).
+*   **DisplayState (Enum):** Estados de la pantalla: `DISPLAY_ON` (encendida), `DISPLAY_SLEEP` (suspensión, ahorro de energía), `DISPLAY_OFF` (apagada completamente).
+*   **DisplayConfig (Value Object):** Configuración de la pantalla. Contiene `width` (128), `height` (64), `i2cAddress` (0x3C), `sdaPin` (21), `sclPin` (22), `sleepAfterMs` (30000 ms de inactividad antes de dormir), `wakeDurationMs` (10000 ms de actividad tras despertar).
+*   **AirQualityDisplay (Value Object):** Datos de calidad del aire para mostrar: `co2` (ppm), `temperature` (°C), `humidity` (%), `valid` (bool), `statusLabel` (String: "Optimal", "Moderate", "Critical").
+*   **ParticulateMatterDisplay (Value Object):** Datos de partículas para mostrar: `pm1_0`, `pm2_5`, `pm10` (µg/m³), `valid` (bool).
+*   **AQIDisplay (Value Object):** Índice de calidad del aire para mostrar: `value` (0-500), `category` (String: "Good", "Moderate", "Unhealthy", etc.).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/display_class_diagram/domain-layer.svg" alt="Display Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.5.2. Interface Layer
+
+Punto de entrada principal que actualiza la pantalla cuando cambian los datos del dispositivo o cuando se reciben comandos de control.
+
+*   **ClairDevice (Orchestrator):** Integra la pantalla en el flujo principal del dispositivo. En el método `refreshDisplay()` crea un objeto `DisplayData` a partir del `ClairData` actual y llama a `display.updateData(displayData)`. También envía comandos a la pantalla (`DISPLAY_ON_COMMAND`, `DISPLAY_OFF_COMMAND`, etc.) cuando recibe comandos remotos o cambia el estado del dispositivo (ej. al entrar/salir de modo standby). Mantiene el flag `displayInitialized` y la variable `lastDisplayedStatus` para evitar refrescos innecesarios.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/display_class_diagram/interfaces-layer.svg" alt="Display Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.5.3. Application Layer
+
+Orquesta la actualización de la pantalla, el mapeo de datos y la gestión automática de energía.
+
+*   **DisplayManager (Application Service):** Servicio central que coordina todas las operaciones de la pantalla. Métodos: `updateDisplay(data)` (actualiza y refresca), `refreshScreen()` (redibuja), `clearScreen()`, `sleep()`, `wake()`, `off()`, `on()`, `autoPowerManagement()` (gestiona el apagado automático por inactividad), `isInitialized()`, `getState()`.
+*   **DisplayDataMapper:** Servicio responsable de transformar `ClairData` (del dominio de telemetría) a `DisplayData` (del dominio de display). Métodos: `fromClairData(clairData)`, `toDisplayData(clairData)`, `getAirQualityLabel(co2)` (convierte CO₂ en etiqueta textual: "Excellent", "Good", "Normal", "Moderate", "Poor", "Bad").
+*   **DisplayScheduler:** Componente auxiliar que gestiona los temporizadores para el refresco periódico de la pantalla. Métodos: `scheduleRefresh(interval)`, `isTimeToRefresh()`, `resetTimer()`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/display_class_diagram/application-layer.svg" alt="Display Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.5.4. Infrastructure Layer
+
+Adaptadores concretos para la comunicación I2C con el hardware de la pantalla OLED SSD1306, la gestión de energía y el despacho de comandos.
+
+*   **OLEDDisplay (Actuator):** Implementa `CommandHandler`. Es el adaptador principal que controla la pantalla SSD1306 de 128x64 píxeles.
+    *   **Inicialización:** Configura I2C (`Wire.begin(sdaPin, sclPin)`, clock a 400kHz) e inicializa el display con `display.begin(SSD1306_SWITCHCAPVCC, i2cAddress)`.
+    *   **Rendering:** Métodos `refresh()`, `clear()`, y métodos privados de dibujo (`drawStatusBar()`, `drawAirQualityData()`, `drawParticulateMatterData()`, `drawAQI()`, `drawFooter()`).
+    *   **Power Management:** Métodos `sleep()` (envía comando `SSD1306_DISPLAYOFF`), `wake()` (envía `SSD1306_DISPLAYON` y refresca), `off()`, `on()`, `autoPowerManagement()` (duerme tras 30 segundos de inactividad).
+    *   **Command Handling:** Procesa comandos `DISPLAY_ON_COMMAND`, `DISPLAY_OFF_COMMAND`, `DISPLAY_SLEEP_COMMAND`, `DISPLAY_WAKE_COMMAND`, `DISPLAY_CLEAR_COMMAND`.
+*   **I2CBus:** Componente de bajo nivel para la comunicación I2C. Métodos: `begin(sda, scl)`, `setClock(frequency)`, `scanDevices()` (útil para depuración).
+*   **CommandDispatch (Conceptual):** Mecanismo conceptual del framework ModestIoT que permite la propagación de comandos hacia la pantalla a través de `handler->handle(command)`.
+*   **DisplayPowerManager:** Componente especializado en la gestión de energía de la pantalla. Métodos: `managePower(currentState, lastUpdateTime, sleepAfterMs)`, `shouldSleep(lastUpdateTime, sleepAfterMs)`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/display_class_diagram/infrastructure-layer.svg" alt="Display Infrastructure Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.5.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Display muestra la relación entre todas las estructuras de datos de visualización, el servicio de aplicación `DisplayManager`, el orquestador `ClairDevice` y el actuador `OLEDDisplay`. Se incluyen las relaciones de mapeo desde `ClairData` (proveniente del contexto de telemetría) hacia `DisplayData`, y el flujo de comandos a través del `CommandDispatch` del framework ModestIoT.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/display_class_diagram/unified.svg" alt="Unified Display Class Diagram" width="850">
+</p>
+
+> **Nota sobre el diseño de la pantalla:**  
+> La pantalla OLED se actualiza automáticamente cuando cambia el estado de calidad del aire o cuando se completa la inicialización del dispositivo. El contenido mostrado incluye PM1.0, PM2.5, PM10, CO₂ y temperatura/humedad. La pantalla implementa gestión automática de energía: tras 30 segundos sin actualizaciones entra en modo de suspensión para ahorrar energía, y se reactiva automáticamente cuando hay nuevos datos o se recibe un comando de activación. El layout utiliza texto de tamaño pequeño (8 píxeles por línea) y muestra "--" cuando los datos no son válidos.
