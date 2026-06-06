@@ -2569,3 +2569,75 @@ El diagrama de clases unificado del contexto acotado de Device Telemetry muestra
 > **Nota sobre la arquitectura de comunicación:**  
 > El framework ModestIoT implementa un patrón de comunicación basado en eventos y comandos mediante handlers encadenados. Los sensores publican eventos invocando `handler->on(event)`, y el `ClairDevice` los consume implementando la interfaz `EventHandler`. No existen clases `EventBus` o `CommandBus` en el código; los recuadros con ese nombre en el diagrama son **representaciones conceptuales** para facilitar la comprensión del flujo de datos.
 
+### 4.6.2. Bounded Context: Device Command
+
+#### 4.6.2.1. Domain Layer
+
+Define las abstracciones de comandos y el contrato para su manejo dentro del framework ModestIoT.
+
+*   **Command (Entity):** Comando base del framework ModestIoT. Contiene un `id` único que identifica el tipo de acción a ejecutar (ej. `LED_ON_COMMAND`, `STANDBY_COMMAND`).
+*   **CommandHandler (Interface):** Interfaz que deben implementar los suscriptores de comandos. Define el método `handle(Command command)`. `ClairDevice`, `Led` y `OLEDDisplay` implementan esta interfaz.
+*   **RemoteCommandType (Enum):** Enumeración de los tipos de comandos remotos que el dispositivo puede recibir desde la Edge Station: `STANDBY`, `WAKE`, `RESTART`, `REPORT`, `CALIBRATE`.
+*   **CommandResult (Value Object):** Objeto que encapsula el resultado de la ejecución de un comando. Incluye `success` (bool), `failureReason` (String) y `executionTimeMs` (unsigned long).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_command_class_diagram/domain-layer.svg" alt="Device Command Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.2.2. Interface Layer
+
+Punto de entrada principal que procesa los comandos recibidos y los despacha a los actuadores correspondientes.
+
+*   **ClairDevice (Orchestrator):** Implementa la interfaz `CommandHandler` y actúa como el gestor central de comandos. Recibe comandos del `EdgeService` (vía `CommandDispatch`), los procesa según su tipo (`STANDBY`, `WAKE`, `REPORT`, `CALIBRATE`, `RESET`) y ejecuta las acciones correspondientes (cambiar estado del dispositivo, forzar reporte, recalibrar sensores, etc.). También es responsable de rutar comandos específicos hacia `Led` y `OLEDDisplay`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_command_class_diagram/interfaces-layer.svg" alt="Device Command Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.2.3. Application Layer
+
+Orquesta el polling de comandos remotos, la cola de comandos pendientes y el envío de ACKs a la Edge Station.
+
+*   **EdgeService (Application Service):** Servicio unificado que gestiona tanto la telemetría como los comandos remotos. Contiene:
+    *   **Command Polling:** Consulta periódicamente (`pollCommands()`, cada 5-10 segundos) la Edge Station (`GET /api/v1/device/commands/pending`) en busca de comandos pendientes.
+    *   **Command Queue:** Mantiene una cola interna (`queue<RemoteCommand>`) para procesar comandos de forma ordenada y con un retraso configurable entre ellos (`commandProcessDelay`).
+    *   **Command Dispatch:** A través de un callback (`CommandCallback`), entrega los comandos al `ClairDevice` para su ejecución.
+    *   **Acknowledgments:** Envía ACKs a la Edge Station (`POST /api/v1/device/commands/{id}/ack`) indicando si el comando fue `EXECUTED` o `FAILED`.
+*   **RemoteCommand (DTO):** Estructura que representa un comando recibido del Edge. Contiene `commandId`, `type` (ej. "STANDBY"), `parameters` (JSON opcional) y un flag `valid`.
+*   **CommandProcessor:** Componente auxiliar que valida y parsea los comandos entrantes, extrayendo el tipo y los parámetros.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_command_class_diagram/application-layer.svg" alt="Device Command Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.2.4. Infrastructure Layer
+
+Adaptadores concretos que ejecutan comandos sobre el hardware y gestionan la comunicación HTTP con la Edge Station.
+
+*   **Led (Actuator):** Implementa `CommandHandler`. Ejecuta comandos específicos de LED: `LED_ON_COMMAND` (enciende), `LED_OFF_COMMAND` (apaga), `LED_BLINK_COMMAND` (inicia parpadeo cada 500ms), `LED_ACKNOWLEDGE_ALL` (detiene parpadeo). Controla el GPIO directamente.
+*   **OLEDDisplay (Actuator):** Implementa `CommandHandler`. Ejecuta comandos de pantalla: `DISPLAY_ON_COMMAND`, `DISPLAY_OFF_COMMAND`, `DISPLAY_SLEEP_COMMAND`, `DISPLAY_WAKE_COMMAND`, `DISPLAY_CLEAR_COMMAND`. Controla la pantalla vía I2C.
+*   **CommandDispatch (Conceptual):** Mecanismo conceptual del framework ModestIoT que permite la propagación de comandos a través de `handler->handle(command)`. Los comandos fluyen desde el `EdgeService` hacia el `ClairDevice` y desde éste hacia los actuadores `Led` y `OLEDDisplay`.
+*   **HttpCommandClient:** Cliente HTTP reutilizable para comunicarse con la Edge Station. Maneja los endpoints de comandos pendientes (GET) y ACKs (POST), incluyendo headers de autenticación (`X-Hardware-Id`, `X-API-Key`).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_command_class_diagram/infrastructure-layer.svg" alt="Device Command Infrastructure Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.2.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device Command muestra la relación entre todas sus entidades, servicios y adaptadores. Se incluyen las relaciones conceptuales de Command Dispatch propias del framework ModestIoT, que conectan el `EdgeService` con el `ClairDevice` y éste con los actuadores `Led` y `OLEDDisplay`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_command_class_diagram/unified.svg" alt="Unified Device Command Class Diagram" width="850">
+</p>
+
+> **Nota sobre la arquitectura de comandos:**  
+> El framework ModestIoT implementa un patrón de comunicación basado en comandos mediante handlers encadenados. El `EdgeService` recibe comandos remotos y los propaga a través del `CommandDispatch` hacia el `ClairDevice` (que implementa `CommandHandler`). A su vez, el `ClairDevice` puede reenviar comandos específicos a `Led` y `OLEDDisplay`. No existe una clase `CommandBus` dedicada; el mecanismo es una representación conceptual para facilitar la comprensión del flujo de comandos.
