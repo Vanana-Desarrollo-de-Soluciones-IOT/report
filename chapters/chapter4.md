@@ -2790,3 +2790,78 @@ El diagrama de clases unificado del contexto acotado de Alerting muestra la rela
 
 > **Nota sobre el flujo de incidentes:**  
 > El `IncidentManager` consulta periódicamente la Edge Station para obtener incidentes pendientes. Cuando se detecta un nuevo incidente activo, se añade al array local y se invoca el callback `onIncidentDetected()`, que a su vez llama a `updateWarningLed()` en el `ClairDevice`. Este método verifica `hasActiveIncidents()` y controla el LED (inicia parpadeo a 500ms si hay incidentes, apaga si no). Los ACKs se encolan y se envían en segundo plano con reintentos automáticos (máximo 3, cada 5 segundos).
+
+### 4.6.5. Bounded Context: Display
+
+#### 4.6.5.1. Domain Layer
+
+Define las estructuras de datos para mostrar en la pantalla, los estados de la pantalla y las reglas de gestión de energía.
+
+*   **DisplayData (Aggregate Root):** Agrega todos los datos que se muestran en la pantalla OLED. Contiene `AirQualityDisplay` (CO₂, temperatura, humedad, validez, etiqueta de estado), `ParticulateMatterDisplay` (PM1.0, PM2.5, PM10, validez) y `AQIDisplay` (valor AQI, categoría).
+*   **DisplayState (Enum):** Estados de la pantalla: `DISPLAY_ON` (encendida), `DISPLAY_SLEEP` (suspensión, ahorro de energía), `DISPLAY_OFF` (apagada completamente).
+*   **DisplayConfig (Value Object):** Configuración de la pantalla. Contiene `width` (128), `height` (64), `i2cAddress` (0x3C), `sdaPin` (21), `sclPin` (22), `sleepAfterMs` (30000 ms de inactividad antes de dormir), `wakeDurationMs` (10000 ms de actividad tras despertar).
+*   **AirQualityDisplay (Value Object):** Datos de calidad del aire para mostrar: `co2` (ppm), `temperature` (°C), `humidity` (%), `valid` (bool), `statusLabel` (String: "Optimal", "Moderate", "Critical").
+*   **ParticulateMatterDisplay (Value Object):** Datos de partículas para mostrar: `pm1_0`, `pm2_5`, `pm10` (µg/m³), `valid` (bool).
+*   **AQIDisplay (Value Object):** Índice de calidad del aire para mostrar: `value` (0-500), `category` (String: "Good", "Moderate", "Unhealthy", etc.).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/display_class_diagram/domain-layer.svg" alt="Display Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.5.2. Interface Layer
+
+Punto de entrada principal que actualiza la pantalla cuando cambian los datos del dispositivo o cuando se reciben comandos de control.
+
+*   **ClairDevice (Orchestrator):** Integra la pantalla en el flujo principal del dispositivo. En el método `refreshDisplay()` crea un objeto `DisplayData` a partir del `ClairData` actual y llama a `display.updateData(displayData)`. También envía comandos a la pantalla (`DISPLAY_ON_COMMAND`, `DISPLAY_OFF_COMMAND`, etc.) cuando recibe comandos remotos o cambia el estado del dispositivo (ej. al entrar/salir de modo standby). Mantiene el flag `displayInitialized` y la variable `lastDisplayedStatus` para evitar refrescos innecesarios.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/display_class_diagram/interfaces-layer.svg" alt="Display Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.5.3. Application Layer
+
+Orquesta la actualización de la pantalla, el mapeo de datos y la gestión automática de energía.
+
+*   **DisplayManager (Application Service):** Servicio central que coordina todas las operaciones de la pantalla. Métodos: `updateDisplay(data)` (actualiza y refresca), `refreshScreen()` (redibuja), `clearScreen()`, `sleep()`, `wake()`, `off()`, `on()`, `autoPowerManagement()` (gestiona el apagado automático por inactividad), `isInitialized()`, `getState()`.
+*   **DisplayDataMapper:** Servicio responsable de transformar `ClairData` (del dominio de telemetría) a `DisplayData` (del dominio de display). Métodos: `fromClairData(clairData)`, `toDisplayData(clairData)`, `getAirQualityLabel(co2)` (convierte CO₂ en etiqueta textual: "Excellent", "Good", "Normal", "Moderate", "Poor", "Bad").
+*   **DisplayScheduler:** Componente auxiliar que gestiona los temporizadores para el refresco periódico de la pantalla. Métodos: `scheduleRefresh(interval)`, `isTimeToRefresh()`, `resetTimer()`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/display_class_diagram/application-layer.svg" alt="Display Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.5.4. Infrastructure Layer
+
+Adaptadores concretos para la comunicación I2C con el hardware de la pantalla OLED SSD1306, la gestión de energía y el despacho de comandos.
+
+*   **OLEDDisplay (Actuator):** Implementa `CommandHandler`. Es el adaptador principal que controla la pantalla SSD1306 de 128x64 píxeles.
+    *   **Inicialización:** Configura I2C (`Wire.begin(sdaPin, sclPin)`, clock a 400kHz) e inicializa el display con `display.begin(SSD1306_SWITCHCAPVCC, i2cAddress)`.
+    *   **Rendering:** Métodos `refresh()`, `clear()`, y métodos privados de dibujo (`drawStatusBar()`, `drawAirQualityData()`, `drawParticulateMatterData()`, `drawAQI()`, `drawFooter()`).
+    *   **Power Management:** Métodos `sleep()` (envía comando `SSD1306_DISPLAYOFF`), `wake()` (envía `SSD1306_DISPLAYON` y refresca), `off()`, `on()`, `autoPowerManagement()` (duerme tras 30 segundos de inactividad).
+    *   **Command Handling:** Procesa comandos `DISPLAY_ON_COMMAND`, `DISPLAY_OFF_COMMAND`, `DISPLAY_SLEEP_COMMAND`, `DISPLAY_WAKE_COMMAND`, `DISPLAY_CLEAR_COMMAND`.
+*   **I2CBus:** Componente de bajo nivel para la comunicación I2C. Métodos: `begin(sda, scl)`, `setClock(frequency)`, `scanDevices()` (útil para depuración).
+*   **CommandDispatch (Conceptual):** Mecanismo conceptual del framework ModestIoT que permite la propagación de comandos hacia la pantalla a través de `handler->handle(command)`.
+*   **DisplayPowerManager:** Componente especializado en la gestión de energía de la pantalla. Métodos: `managePower(currentState, lastUpdateTime, sleepAfterMs)`, `shouldSleep(lastUpdateTime, sleepAfterMs)`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/display_class_diagram/infrastructure-layer.svg" alt="Display Infrastructure Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.5.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Display muestra la relación entre todas las estructuras de datos de visualización, el servicio de aplicación `DisplayManager`, el orquestador `ClairDevice` y el actuador `OLEDDisplay`. Se incluyen las relaciones de mapeo desde `ClairData` (proveniente del contexto de telemetría) hacia `DisplayData`, y el flujo de comandos a través del `CommandDispatch` del framework ModestIoT.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/display_class_diagram/unified.svg" alt="Unified Display Class Diagram" width="850">
+</p>
+
+> **Nota sobre el diseño de la pantalla:**  
+> La pantalla OLED se actualiza automáticamente cuando cambia el estado de calidad del aire o cuando se completa la inicialización del dispositivo. El contenido mostrado incluye PM1.0, PM2.5, PM10, CO₂ y temperatura/humedad. La pantalla implementa gestión automática de energía: tras 30 segundos sin actualizaciones entra en modo de suspensión para ahorrar energía, y se reactiva automáticamente cuando hay nuevos datos o se recibe un comando de activación. El layout utiliza texto de tamaño pequeño (8 píxeles por línea) y muestra "--" cuando los datos no son válidos.
