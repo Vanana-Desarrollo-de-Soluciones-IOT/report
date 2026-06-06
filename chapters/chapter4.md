@@ -2641,3 +2641,77 @@ El diagrama de clases unificado del contexto acotado de Device Command muestra l
 
 > **Nota sobre la arquitectura de comandos:**  
 > El framework ModestIoT implementa un patrón de comunicación basado en comandos mediante handlers encadenados. El `EdgeService` recibe comandos remotos y los propaga a través del `CommandDispatch` hacia el `ClairDevice` (que implementa `CommandHandler`). A su vez, el `ClairDevice` puede reenviar comandos específicos a `Led` y `OLEDDisplay`. No existe una clase `CommandBus` dedicada; el mecanismo es una representación conceptual para facilitar la comprensión del flujo de comandos.
+
+### 4.6.3. Bounded Context: Device State
+
+#### 4.6.3.1. Domain Layer
+
+Define las enumeraciones de estados del dispositivo y las reglas de transición entre ellos.
+
+*   **DeviceState (Enum):** Enumeración que representa los estados de inicialización del dispositivo: `INIT_NOT_STARTED` (no iniciado), `INIT_STARTING_SENSORS` (iniciando sensores), `INIT_WAITING_SENSORS` (esperando sensores), `INIT_COMPLETE` (inicialización completa), `INIT_PARTIAL` (inicialización parcial por timeout).
+*   **OperationalMode (Enum):** Enumeración de los modos operativos del dispositivo: `NORMAL_MODE` (operación normal), `STANDBY_MODE` (modo bajo consumo), `SIMULATION_MODE` (modo simulación con datos sintéticos).
+*   **AirQualityStatus (Enum):** Enumeración de los estados de calidad del aire: `OPTIMAL` (óptimo), `MODERATE` (moderado), `CRITICAL` (crítico).
+*   **SystemHealth (Value Object):** Agrega indicadores de salud del sistema: `allSensorsReady`, `timeSynchronized`, `wifiConnected`, `displayInitialized`, `healthPercentage`. Incluye el método `evaluateHealth()` que calcula la salud general del dispositivo.
+*   **StateTransition (Value Object):** Registra una transición de estado, incluyendo `fromState`, `toState`, `transitionTime` y `success`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_state_class_diagram/domain-layer.svg" alt="Device State Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.3.2. Interface Layer
+
+Punto de entrada principal que gestiona y mantiene todos los estados del dispositivo, coordinando las transiciones según los eventos y comandos recibidos.
+
+*   **ClairDevice (Orchestrator):** Es el orquestador central responsable de mantener y gestionar:
+    *   **Estado de Inicialización:** Controla la secuencia de inicialización de sensores con timeout de 10 segundos (`initState`, `initStartTime`, `INIT_TIMEOUT_MS`). Métodos: `updateInitialization()`, `isInitializationComplete()`, `getInitStateString()`.
+    *   **Modo Operativo:** Gestiona el modo normal (`NORMAL_MODE`), modo standby (`STANDBY_MODE`) y modo simulación (`SIMULATION_MODE`). Métodos: `setStandbyMode()`, `isStandbyMode()`, `setSimulationEnabled()`.
+    *   **Estado de Calidad del Aire:** Mantiene el estado actual (`currentData.status`) y su etiqueta (`statusLabel`). Se actualiza automáticamente cuando llegan nuevos datos de sensores.
+    *   **Flags de Estado:** Mantiene indicadores como `allSensorsReady`, `displayInitialized`, `timeSynchronized`, `standbyMode`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_state_class_diagram/interfaces-layer.svg" alt="Device State Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.3.3. Application Layer
+
+Orquesta la lógica de transición de estados, la gestión de timeouts y la evaluación del estado general del dispositivo.
+
+*   **StateManager (Application Service):** Coordina las transiciones de estado. Métodos: `transitionTo(newState)`, `getCurrentState()`, `canTransitionTo(newState)`, `onStateEnter()`, `onStateExit()`.
+*   **InitStateManager:** Gestiona específicamente la inicialización del dispositivo. Métodos: `startInitialization()`, `updateInitialization()`, `isInitializationComplete()`, `hasInitializationTimeout()`, `getInitState()`, `getInitStateString()`.
+*   **StandbyManager:** Gestiona el modo standby. Métodos: `enableStandby()`, `disableStandby()`, `isStandbyActive()`, `suspendOperations()` (apaga display, duerme sensores), `resumeOperations()` (reactiva sensores, enciende display).
+*   **StatusEvaluator:** Evalúa el estado general de calidad del aire combinando todos los parámetros (CO₂, PM2.5, PM10, humedad). Métodos: `evaluateOverallStatus()`, `getCurrentStatus()`, `getStatusLabel()`, `getStatusIcon()`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_state_class_diagram/application-layer.svg" alt="Device State Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.3.4. Infrastructure Layer
+
+Adaptadores concretos para persistencia opcional de estado y temporización.
+
+*   **StatePersistence:** Servicio opcional para guardar/cargar el estado del dispositivo en memoria no volátil (ej. preferences). Métodos: `saveState(state)`, `loadState()`, `clearState()`.
+*   **StateTimer:** Componente de temporización utilizado para gestionar timeouts (como el timeout de inicialización de 10 segundos). Métodos: `start()`, `hasTimedOut()`, `reset()`, `getElapsedMs()`.
+*   **StateEventEmitter (Conceptual):** Mecanismo conceptual para emitir eventos cuando ocurren cambios de estado significativos (ej. `STATE_CHANGED`, `MODE_CHANGED`). Los suscriptores (como `ClairDevice`) pueden reaccionar a estos cambios.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_state_class_diagram/infrastructure-layer.svg" alt="Device State Infrastructure Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.3.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device State muestra la relación entre todas las enumeraciones de estado, los servicios de aplicación que gestionan las transiciones y el orquestador central que mantiene los estados del dispositivo.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_state_class_diagram/unified.svg" alt="Unified Device State Class Diagram" width="850">
+</p>
+
+> **Nota sobre la gestión de estados:**  
+> El `ClairDevice` actúa como el agregador de estados del dispositivo. Mantiene los flags de inicialización, modo operativo y calidad del aire. La inicialización sigue una secuencia no bloqueante con timeout de 10 segundos. El modo standby suspende las operaciones no esenciales (sensores, display, telemetría) para ahorrar energía. El estado de calidad del aire se actualiza automáticamente tras cada lectura de sensores y determina el comportamiento del LED.
