@@ -873,26 +873,6 @@ Para este segundo Sprint, el Backlog engloba las funcionalidades core de la plat
 
 #### 6.2.3.9. Team Collaboration Insights during Sprint.
 
-### 6.2.4. Sprint 4
-
-#### 6.2.4.1. Sprint Planning 4.
-
-#### 6.2.4.2. Aspect Leaders and Collaborators.
-
-#### 6.2.4.3. Sprint Backlog 4.
-
-#### 6.2.4.4. Development Evidence for Sprint Review.
-
-#### 6.2.4.5. Testing Suite Evidence for Sprint Review.
-
-#### 6.2.4.6. Execution Evidence for Sprint Review.
-
-#### 6.2.4.7. Services Documentation Evidence for Sprint Review.
-
-#### 6.2.4.8. Software Deployment Evidence for Sprint Review.
-
-#### 6.2.4.9. Team Collaboration Insights during Sprint.
-
 ## 6.3. Validation Interviews.
 
 ### 6.3.1. Diseño de Entrevistas.
@@ -902,3 +882,14 @@ Para este segundo Sprint, el Backlog engloba las funcionalidades core de la plat
 ### 6.3.3. Evaluaciones según heurísticas.
 
 ## 6.4. Video About-the-Product.
+
+El video About-the-Product es una herramienta de comunicación audiovisual diseñada para presentar la propuesta de valor, el modelo de negocio y el funcionamiento de la solución Clair. Este recurso audiovisual está dirigido a dos audiencias principales:
+
+1. **Visitantes del Landing Page:** Administradores y propietarios de locales comerciales (gimnasios, restaurantes, coworkings) interesados en comprender el valor de negocio de Clair, sus beneficios competitivos y las características clave del producto.
+2. **Usuarios de las Aplicaciones:** Clientes y operadores finales que buscan interactuar con el sistema de monitoreo en tiempo real, visualizar indicadores de CO2 y PM2.5, y ejecutar acciones preventivas basadas en las notificaciones del sistema.
+
+| Detalle Técnico | Información / Recurso |
+| --- | --- |
+| **Duración total (Timing)** | 46 segundos |
+| **Enlace del video** | https://bit.ly/4olR1cf |
+| **Screenshot del Video** | ![About the product](https://i.imgur.com/3SeQtsr.png) |
