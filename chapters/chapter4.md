@@ -2715,3 +2715,78 @@ El diagrama de clases unificado del contexto acotado de Device State muestra la 
 
 > **Nota sobre la gestión de estados:**  
 > El `ClairDevice` actúa como el agregador de estados del dispositivo. Mantiene los flags de inicialización, modo operativo y calidad del aire. La inicialización sigue una secuencia no bloqueante con timeout de 10 segundos. El modo standby suspende las operaciones no esenciales (sensores, display, telemetría) para ahorrar energía. El estado de calidad del aire se actualiza automáticamente tras cada lectura de sensores y determina el comportamiento del LED.
+
+### 4.6.4. Bounded Context: Alerting
+
+#### 4.6.4.1. Domain Layer
+
+Define las entidades de incidentes, tipos de métricas y reglas de prioridad para las alertas en el dispositivo embebido.
+
+*   **Incident (Entity):** Representa un incidente o alerta activa en el dispositivo. Contiene `id`, `metric` (CO2, PM25, TEMP, HUMIDITY), `status` (ACTIVE, RESOLVED), `occurredAt`, `resolvedAt` y `acknowledged`. Incluye el método `print()` para depuración.
+*   **MetricType (Enum):** Enumeración de los tipos de métricas que pueden generar incidentes: `CO2`, `PM25`, `TEMP`, `HUMIDITY`.
+*   **IncidentStatus (Enum):** Estados de un incidente: `ACTIVE` (activo), `RESOLVED` (resuelto), `ACKNOWLEDGED` (reconocido).
+*   **IncidentPriority (Enum):** Niveles de prioridad para incidentes según la métrica: `HIGH` (CO2), `MEDIUM` (PM25), `LOW` (TEMP), `LOWEST` (HUMIDITY).
+*   **AlertRule (Value Object):** Define las reglas que determinan cuándo se genera un incidente. Contiene `metric`, `thresholdValue`, `operator` (ej. >, <) y `priority`. Incluye el método `evaluate(actualValue)` para evaluar si se debe activar una alerta.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/alerting_class_diagram/domain-layer.svg" alt="Alerting Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.4.2. Interface Layer
+
+Punto de entrada principal que integra el subsistema de alertas con el orquestador central y controla el LED según el estado de los incidentes.
+
+*   **ClairDevice (Orchestrator):** Integra el `IncidentManager` en el flujo principal del dispositivo. En cada ciclo `update()` llama a `incidentManager.pollIncidents()` y `incidentManager.process()`. Implementa los callbacks estáticos `onIncidentDetected()` e `onIncidentResolved()` que son invocados por el `IncidentManager` cuando cambia el estado de un incidente. El método `updateWarningLed()` verifica `hasActiveIncidents()` y controla el LED (parpadeo si hay incidentes activos, apagado si no).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/alerting_class_diagram/interfaces-layer.svg" alt="Alerting Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.4.3. Application Layer
+
+Orquesta el polling de incidentes, la gestión de la cola de ACKs y la lógica de reintentos para confirmar la recepción de incidentes.
+
+*   **IncidentManager (Application Service):** Servicio central que gestiona todo el ciclo de vida de los incidentes:
+    *   **Polling:** Consulta periódicamente (`pollIncidents()`, cada 5 segundos) la Edge Station (`GET /api/v1/alerting/incidents/pending`) para obtener incidentes activos y resueltos.
+    *   **Almacenamiento Local:** Mantiene un array de incidentes activos (`activeIncidents[5]`, máximo 5) y una cola de ACKs pendientes (`pendingAcks[10]`, máximo 10).
+    *   **Callbacks:** Invoca los callbacks configurados (`onIncidentDetected`, `onIncidentResolved`) cuando cambia el estado de un incidente.
+    *   **ACK Queue Management:** Encola ACKs cuando se detectan incidentes nuevos o resueltos, y los procesa en segundo plano con lógica de reintentos (máximo 3 reintentos, intervalo de 5 segundos).
+    *   **Métricos de Prioridad:** Proporciona `getMetricPriority()` y `getMostCriticalIncident()` para determinar el incidente más crítico cuando múltiples están activos.
+*   **Incident (DTO):** Estructura de datos que representa un incidente recibido del Edge o almacenado localmente.
+*   **PendingAck (Value Object):** Representa un ACK pendiente de envío. Contiene `incidentId`, `status` (ACTIVE/RESOLVED), `lastAttempt`, `retryCount` y `active`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/alerting_class_diagram/application-layer.svg" alt="Alerting Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.4.4. Infrastructure Layer
+
+Adaptadores concretos para la comunicación HTTP con la Edge Station, control del LED y gestión de la cola de ACKs.
+
+*   **Led (Actuator):** Implementa `CommandHandler`. Es controlado indirectamente por el `IncidentManager` a través del `ClairDevice`. Cuando `hasActiveIncidents()` es `true`, se inicia el parpadeo (`startBlink(500)`); cuando no hay incidentes activos, el LED se apaga (`off()`).
+*   **IncidentHttpClient:** Cliente HTTP para comunicarse con la Edge Station. Maneja el endpoint de incidentes pendientes (`GET /api/v1/alerting/incidents/pending`) y el endpoint de ACK (`POST /api/v1/alerting/incidents/{id}/ack`). Incluye headers de autenticación (`X-Hardware-Id`, `X-API-Key`).
+*   **IncidentAckQueue:** Cola especializada para gestionar ACKs pendientes. Métodos: `add(incidentId, status)`, `remove(incidentId)`, `getNext()`, `size()`, `isEmpty()`.
+*   **LedController (Conceptual):** Mecanismo conceptual que conecta el estado de incidentes con el control del LED. El `ClairDevice` actúa como este controlador en la implementación actual.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/alerting_class_diagram/infrastructure-layer.svg" alt="Alerting Infrastructure Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.4.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Alerting muestra la relación entre todas las entidades de incidentes, el servicio de aplicación `IncidentManager`, el orquestador `ClairDevice` y el actuador `Led`. Se incluyen las relaciones de polling HTTP hacia la Edge Station y el flujo de control que activa el parpadeo del LED cuando hay incidentes activos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/alerting_class_diagram/unified.svg" alt="Unified Alerting Class Diagram" width="850">
+</p>
+
+> **Nota sobre el flujo de incidentes:**  
+> El `IncidentManager` consulta periódicamente la Edge Station para obtener incidentes pendientes. Cuando se detecta un nuevo incidente activo, se añade al array local y se invoca el callback `onIncidentDetected()`, que a su vez llama a `updateWarningLed()` en el `ClairDevice`. Este método verifica `hasActiveIncidents()` y controla el LED (inicia parpadeo a 500ms si hay incidentes, apaga si no). Los ACKs se encolan y se envían en segundo plano con reintentos automáticos (máximo 3, cada 5 segundos).
