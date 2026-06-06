@@ -13,7 +13,7 @@ Esta sección establece el ecosistema de herramientas y servicios seleccionados 
 | **Git** | Software Development | Control de versiones distribuido para seguimiento de cambios en el código fuente. | https://git-scm.com/ |
 | **GitHub** | Software Development | Alojamiento del repositorio de código fuente y colaboración en equipo. | https://github.com/ |
 | **HTML / CSS / JavaScript** | Landing Page Development | Desarrollo de la landing page estática y componentes frontend básicos. | https://developer.mozilla.org/es/docs/Web |
-| **Bruno** | API Testing | Alternativa ligera a Postman para validación de endpoints y pruebas de API REST. | https://www.usebruno.com/ |
+| **Bruno** | API Testing | Cliente ligero para validación de endpoints y pruebas de integración de la API REST. | https://www.usebruno.com/ |
 | **Spring Boot (Java)** | Backend Development | Framework principal para el desarrollo de la API y lógica del negocio. | https://spring.io/projects/spring-boot |
 | **OpenAPI / Swagger** | Software Documentation | Generación de documentación interactiva y técnica de los endpoints del backend. | https://swagger.io/ |
 | **C++ (Arduino IDE)** | Embedded App | Programación de la lógica de sensores y conectividad en hardware físico. | https://www.arduino.cc/en/software |
@@ -24,7 +24,15 @@ Esta sección establece el ecosistema de herramientas y servicios seleccionados 
 | **Google OAuth2** | Identity & Access | Servicio para la autenticación segura de usuarios mediante cuentas de Google. | https://console.cloud.google.com/ |
 | **Stripe** | Billing & Subscription | Pasarela de pagos para la gestión de suscripciones y transacciones. | https://stripe.com/ |
 | **Resend** | Notifications | Plataforma para el envío de correos electrónicos y alertas críticas a usuarios. | https://resend.com/ |
-| **Postman** | Software Testing | Validación de endpoints y pruebas de integración de la API REST. | https://www.postman.com/downloads/ |
+| **OneSignal** | Push Notifications | Servicio de notificaciones push multiplataforma para el envío de alertas en tiempo real a dispositivos móviles. | https://onesignal.com/ |
+| **Angular** | Web App Development | Framework principal para el desarrollo de la aplicación web SPA de Clair. | https://angular.dev/ |
+| **TypeScript** | Web App Development | Lenguaje tipado utilizado en el desarrollo de la aplicación web Angular y lógica del frontend. | https://www.typescriptlang.org/ |
+| **Bun** | JavaScript Runtime | Entorno de ejecución y gestor de paquetes ultrarrápido utilizado para el desarrollo de la aplicación web. | https://bun.sh/ |
+| **Java** | Backend Development | Lenguaje de programación principal para el desarrollo del backend con Spring Boot. | https://www.oracle.com/java/technologies/downloads/ |
+| **Maven** | Build Automation | Herramienta de gestión de dependencias y automatización de compilación del proyecto backend Java. | https://maven.apache.org/ |
+| **Nix** | Environment Management | Gestor de paquetes y entornos reproducibles para garantizar consistencia en los entornos de desarrollo del equipo. | https://nixos.org/ |
+| **PostgreSQL** | Database | Sistema de gestión de base de datos relacional utilizado para la persistencia de datos del monolito modular. | https://www.postgresql.org/ |
+| **Redis** | Caching \& Messaging | Almacén de datos en memoria utilizado como caché y broker de mensajes para eventos en tiempo real. | https://redis.io/ |
 | **Docker** | Deployment | Contenedorización de microservicios para asegurar la portabilidad del sistema. | https://www.docker.com/products/docker-desktop |
 | **Vercel** | Deployment | Plataforma de despliegue serverless para la landing page y aplicación web Angular. | https://vercel.com/ |
 | **Cloudflare Tunnel** | Deployment | Túnel seguro para exponer la API Gateway y servicios Spring Boot sin IP pública. | https://www.cloudflare.com/products/tunnel/ |
