@@ -35,6 +35,8 @@ Cirkit Designer. (s. f.). *Online circuit design and prototyping platform for Io
 - Edge Station: https://github.com/Vanana-Desarrollo-de-Soluciones-IOT/edge
 - Embedded Application: https://github.com/Vanana-Desarrollo-de-Soluciones-IOT/embedded
 
+- Execution Evidence Web: https://413rsr4.s.gy/W0C0gD
+- Execution Evidence Mobile: https://413rsr4.s.gy/r0nBbK
 - Prototype Web App Navigation Video: https://bit.ly/3Q84l7g
 - Prototype Mobile App Navigation Video: https://bit.ly/43bBBh7
 - About the Product: https://bit.ly/4olR1cf

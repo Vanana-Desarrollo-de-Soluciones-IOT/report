@@ -828,11 +828,28 @@ Para este segundo Sprint, el Backlog engloba las funcionalidades core de la plat
 
 #### 6.2.2.6. Execution Evidence for Sprint Review.
 
+**Clair UI (Wep App)**
+
+Se presenta Clair ejecutando en entorno web, leyendo metricas y procesandola con los diferentes servicios disponibles como Alerts, Analytics, Overview, etc
+
+<img src="../assets/execution-evidences/web-execution.png" alt="c4-container" width="800">
+
+Link: https://413rsr4.s.gy/W0C0gD
+
+**Clair Mobile (Mobile App)**
+
+Ademas se implemento Clair Mobile, una version ágil y limpia de la version web, con las vistas Analytics, Alerts y Spaces
+
+<img src="../assets/execution-evidences/mobile-execution.png" alt="c4-container" width="800">
+
+Link: https://413rsr4.s.gy/r0nBbK
+
+
 #### 6.2.2.7. Services Documentation Evidence for Sprint Review.
 
 En el sprint 2 se completó en su totalidad la implementación de Clair Core, a continuación se documentan los endpoints implementados
 
-**Devices:** Represetación de los dispositivos físicos Clair
+**Devices:** Representación de los dispositivos físicos Clair
 
 | endpoint                          | verbo http | descripción                                                | parámetros                                        | request body              | response body                             | explicación                                                                                                                                                        |
 |-----------------------------------|------------|------------------------------------------------------------|---------------------------------------------------|---------------------------|-------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -896,6 +913,11 @@ En el sprint 2 se completó en su totalidad la implementación de Clair Core, a 
 | /api/v1/analytics/devices/{deviceId}/trends | GET        | Obtiene datos históricos de tendencias para un dispositivo.        | `deviceId` (path), `period` (query), `startDate` (query), `endDate` (query) | —            | Serie temporal de mediciones ambientales.                    | Permite visualizar la evolución de indicadores como AQI, PM2.5, CO₂, temperatura y humedad a lo largo del tiempo para identificar patrones, variaciones y posibles problemas recurrentes en la calidad del aire.                                 |
 | /api/v1/analytics/devices/{deviceId}/live   | GET        | Obtiene indicadores clave de desempeño (KPIs) para un dispositivo. | `deviceId` (path), `period` (query), `startDate` (query), `endDate` (query) | —            | Métricas agregadas y estado actual del ambiente monitoreado. | Permite consultar un resumen de las condiciones ambientales de un espacio, incluyendo el índice de calidad del aire (AQI), promedios de CO₂, PM2.5, temperatura y humedad, así como las variaciones porcentuales respecto a periodos anteriores. |
 
+**Analytics Overview:** Panel que presenta las métricas y el AQI de manera limpia y directa al usuario
+
+| endpoint                   | verbo http | descripción                                                                | parámetros                                          | request body | response body                                                                          | explicación                                                                                                                                                                                                                                                                                                                                                                                               |
+|----------------------------|------------|----------------------------------------------------------------------------|-----------------------------------------------------|--------------|----------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/analytics/overview | GET        | Obtiene el dashboard consolidado de analítica para el usuario autenticado. | `deviceLimitPerSpace` (query), `alertLimit` (query) | —            | Resumen general de métricas ambientales, organizaciones, espacios y alertas recientes. | Proporciona una vista integral del estado ambiental de todos los espacios asociados al usuario. Incluye indicadores globales como AQI, niveles promedio de CO₂, PM2.5, temperatura y humedad, variaciones porcentuales respecto a periodos anteriores, cantidad de organizaciones, espacios y dispositivos registrados, así como un resumen de alertas activas y el estado de actualización de los datos. |
 
 **Evaluations:** Registros de telemetría registrada por un Device
 
@@ -907,11 +929,13 @@ En el sprint 2 se completó en su totalidad la implementación de Clair Core, a 
 
 **Alerts:** Notifica amenazas en la calidad del aire del ambiente detectadas por un Device
 
-| endpoint                                      | verbo http | descripción                                                  | parámetros                                                          | request body | response body                                        | explicación                                                                                                                                                                                                    |
-|-----------------------------------------------|------------|--------------------------------------------------------------|---------------------------------------------------------------------|--------------|------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| /api/v1/spaces/{spaceId}/alerts               | GET        | Obtiene las alertas registradas para un espacio específico.  | `spaceId` (path), `page` (query), `size` (query), `status` (query)  | —            | Lista paginada de alertas.                           | Permite consultar los eventos generados cuando las mediciones ambientales de los dispositivos instalados en un espacio superan los umbrales configurados para métricas como PM2.5, CO₂, temperatura o humedad. |
-| /api/v1/spaces/{spaceId}/alerts/daily-summary | GET        | Obtiene un resumen diario de alertas para un espacio.        | `spaceId` (path), `days` (query)                                    | —            | Lista de fechas con cantidad de alertas registradas. | Permite analizar la frecuencia de incidentes relacionados con la calidad del aire y detectar tendencias o periodos con mayor ocurrencia de alertas ambientales.                                                |
-| /api/v1/devices/{deviceId}/alerts             | GET        | Obtiene las alertas generadas por un dispositivo específico. | `deviceId` (path), `page` (query), `size` (query), `status` (query) | —            | Lista paginada de alertas del dispositivo.           | Permite identificar qué dispositivo detectó una condición ambiental anómala y revisar el historial de eventos asociados a sus mediciones.                                                                      |
+| endpoint                                      | verbo http | descripción                                                                               | parámetros                                                          | request body | response body                                        | explicación                                                                                                                                                                                                                                                                              |
+|-----------------------------------------------|------------|-------------------------------------------------------------------------------------------|---------------------------------------------------------------------|--------------|------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/spaces/{spaceId}/alerts               | GET        | Obtiene las alertas registradas para un espacio específico.                               | `spaceId` (path), `page` (query), `size` (query), `status` (query)  | —            | Lista paginada de alertas.                           | Permite consultar todas las alertas generadas por los dispositivos instalados en un espacio determinado. Incluye información sobre la métrica afectada (PM2.5, temperatura, humedad, CO₂, etc.), valores detectados, severidad, estado de la alerta y fechas de ocurrencia o resolución. |
+| /api/v1/spaces/{spaceId}/alerts/daily-summary | GET        | Obtiene un resumen diario de alertas para un espacio.                                     | `spaceId` (path), `days` (query)                                    | —            | Lista de fechas con cantidad de alertas registradas. | Permite visualizar la cantidad de alertas generadas por día dentro de un espacio durante un período determinado, facilitando el análisis de tendencias e identificación de periodos con mayor incidencia de eventos ambientales.                                                         |
+| /api/v1/devices/{deviceId}/alerts             | GET        | Obtiene las alertas generadas por un dispositivo específico.                              | `deviceId` (path), `page` (query), `size` (query), `status` (query) | —            | Lista paginada de alertas del dispositivo.           | Permite consultar el historial de alertas asociadas a un dispositivo concreto, incluyendo las métricas monitoreadas, valores registrados, nivel de severidad y estado actual de cada alerta para facilitar el diagnóstico y seguimiento del dispositivo.                                 |
+| /api/v1/alerts                                | GET        | Obtiene todas las alertas asociadas a los dispositivos del usuario autenticado.           | `page` (query), `size` (query), `status` (query)                    | —            | Lista paginada de alertas.                           | Permite centralizar la consulta de alertas provenientes de todos los dispositivos pertenecientes al usuario, facilitando el monitoreo global de incidentes y condiciones ambientales detectadas en sus espacios registrados.                                                             |
+| /api/v1/alerts/daily-summary                  | GET        | Obtiene un resumen diario de alertas para todos los dispositivos del usuario autenticado. | `days` (query)                                                      | —            | Lista de fechas con cantidad de alertas registradas. | Permite analizar la evolución diaria de las alertas generadas en todos los dispositivos del usuario durante un período determinado, ayudando a identificar patrones de comportamiento y frecuencia de incidentes ambientales.                                                            |
 
 
 **Subscriptions:** Gestiona los planes de suscripción y los procesos de pago asociados a Clair.
