@@ -455,51 +455,24 @@ A continuación, se resumen las principales operaciones implementadas y document
 
 **1. Autenticación y Sesión**
 
-* **Inicio de Sesión (`POST /api/v1/auth/sign-in`):**
-  * **Input:** `email` y `password`.
-  * **Output:** HTTP 200 OK con tokens JWT de acceso y refresco (o 401 si falla).
-  * **Ejemplo de Respuesta:**
-    ```json
-    {
-      "id": "8dc54a71-6ca1-4205-923c-c1a684585bc1",
-      "email": "usuario@ejemplo.com",
-      "token": "eyJhbGciOiJIUzI1NiIsInR5c...",
-      "refreshToken": "d7a8fcc-45f8-4b72-826a..."
-    }
-    ```
-* **Cierre de Sesión (`DELETE /api/v1/auth/sign-out`):**
-  * **Input:** Cabecera `Authorization` con token Bearer.
-  * **Output:** HTTP 204 No Content (sesión cerrada) o 401.
-* **Otras operaciones:** Registro (`POST /api/v1/auth/sign-up`), Confirmación (`POST /api/v1/auth/confirm`), y Autenticación con Google (`POST /api/v1/auth/google/sign-in`).
-**2. Gestión de Facturación y Suscripciones**
+| endpoint                      | verbo http | descripción                                                            | parámetros                                                 | request body                      | response body                        | explicación                                                                                             |
+|-------------------------------|------------|------------------------------------------------------------------------|------------------------------------------------------------|-----------------------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------|
+| /api/v1/auth/sign-up          | POST       | Registra un nuevo usuario en el sistema.                               | —                                                          | `{ email, password }`             | `{ sessionId, message }`             | Inicia el proceso de registro enviando un código de verificación al correo del usuario.                 |
+| /api/v1/auth/sign-in          | POST       | Autentica a un usuario previamente registrado.                         | —                                                          | `{ email, password }`             | `{ id, email, token, refreshToken }` | Permite iniciar sesión y obtener los tokens necesarios para acceder a recursos protegidos.              |
+| /api/v1/auth/refresh          | POST       | Genera un nuevo token de acceso usando un refresh token válido.        | —                                                          | `{ refreshToken }`                | `{ id, email, token, refreshToken }` | Permite renovar la sesión del usuario sin necesidad de volver a autenticarse.                           |
+| /api/v1/auth/google/sign-in   | POST       | Autentica o registra usuarios mediante Google OAuth 2.0.               | —                                                          | `{ idToken }`                     | `{ id, email, token, refreshToken }` | Permite iniciar sesión utilizando una cuenta de Google y obtener los tokens de acceso de la aplicación. |
+| /api/v1/auth/confirm          | POST       | Confirma el registro de un usuario mediante un código de verificación. | —                                                          | `{ sessionId, verificationCode }` | `{ id, email }`                      | Finaliza el proceso de registro y crea la cuenta del usuario una vez validado el código recibido.       |
+| /api/v1/auth/verify           | GET        | Verifica la validez de un token de acceso.                             | `Authorization` (header)                                   | —                                 | `{ valid, userId, expiresAt }`       | Permite comprobar si el token sigue siendo válido y obtener información básica sobre su vigencia.       |
+| /api/v1/auth/google/callback  | GET        | Procesa la respuesta de Google OAuth después de la autenticación.      | `code` (query), `state` (query), `error` (query, opcional) | —                                 | Redirección al frontend.             | Intercambia el código de autorización por tokens y redirige al usuario a la aplicación cliente.         |
+| /api/v1/auth/google/authorize | GET        | Inicia el flujo de autenticación mediante Google OAuth 2.0.            | —                                                          | —                                 | Redirección a Google OAuth.          | Redirige al usuario a la pantalla de consentimiento de Google para autorizar el acceso.                 |
+| /api/v1/auth/sign-out         | DELETE     | Cierra la sesión del usuario y revoca los tokens activos.              | `Authorization` (header)                                   | —                                 | —                                    | Finaliza la sesión actual e invalida los tokens asociados al usuario autenticado.                       |
 
-* **Consultar Plan de Usuario (`GET /api/v1/subscriptions/plans/{userId}`):**
-  
-  * **Output:** HTTP 200 OK con el tipo de plan y estado.
-  * **Ejemplo de Respuesta:**
-    ```json
-    {
-      "userId": "8dc54a71-6ca1-4205-923c-c1a684585bc1",
-      "plan": "premium",
-      "status": "ACTIVE"
-    }
-    ```
-* **Crear Sesión Checkout en Stripe (`POST /api/v1/subscriptions/checkout-session`):**
-  
-  * **Input:** `userId`, `amount`, `currency`, `returnUrl`.
-  * **Output:** HTTP 200 OK con la URL de redirección al pago.
-  * **Ejemplo de Respuesta:**
-    ```json
-    {
-      "checkoutUrl": "https://checkout.stripe.com/pay/cs_test_..."
-    }
-    ```
+**2. Notificaciones**
 
-Evidencia de Interacción (Capturas Swagger UI)
+| endpoint                   | verbo http | descripción                                                          | parámetros               | request body | response body                                                                                           | explicación                                                                                                                                             |
+|----------------------------|------------|----------------------------------------------------------------------|--------------------------|--------------|---------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/notifications/push | GET        | Obtiene el historial de notificaciones push del usuario autenticado. | `page` (query, opcional) | —            | Página de notificaciones con información de envío, alertas asociadas y estado de entrega de las mismas. | Permite consultar las notificaciones push enviadas al usuario, incluyendo si fueron entregadas correctamente o si ocurrió algún error durante el envío. |
 
-<p align="center">
- <img src="https://imgur.com/zkJ0AV3.png">
-</p>
 
 #### 6.2.1.8. Software Deployment Evidence for Sprint Review.
 
@@ -848,6 +821,108 @@ Para este segundo Sprint, el Backlog engloba las funcionalidades core de la plat
 #### 6.2.2.6. Execution Evidence for Sprint Review.
 
 #### 6.2.2.7. Services Documentation Evidence for Sprint Review.
+
+En el sprint 2 se completó en su totalidad la implementación de Clair Core, a continuación se documentan los endpoints implementados
+
+**Devices:** Represetación de los dispositivos físicos Clair
+
+| endpoint                          | verbo http | descripción                                                | parámetros                                        | request body              | response body                             | explicación                                                                                                                                                        |
+|-----------------------------------|------------|------------------------------------------------------------|---------------------------------------------------|---------------------------|-------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/devices/pair              | POST       | Inicia el proceso de vinculación de un dispositivo físico. | —                                                 | `{ hardwareId }`          | `{ deviceId, claimToken }`                | Permite registrar un dispositivo Clair utilizando su identificador de hardware y generar un token temporal para asociarlo posteriormente a un espacio monitoreado. |
+| /api/v1/devices/claim             | POST       | Asigna un dispositivo a un espacio del usuario.            | —                                                 | `{ claimToken, spaceId }` | Datos completos del dispositivo asignado. | Permite incorporar un dispositivo Clair a un espacio específico para comenzar el monitoreo de calidad del aire y la recolección de mediciones ambientales.         |
+| /api/v1/devices/{deviceId}        | GET        | Obtiene la información de un dispositivo específico.       | `deviceId` (path)                                 | —                         | Datos detallados del dispositivo.         | Permite consultar la configuración, estado y datos generales de un dispositivo instalado en un espacio monitoreado.                                                |
+| /api/v1/devices/{deviceId}        | DELETE     | Restablece la asignación de un dispositivo.                | `deviceId` (path)                                 | —                         | —                                         | Permite desvincular un dispositivo de un espacio para su reubicación, mantenimiento o nueva configuración.                                                         |
+| /api/v1/devices/{deviceId}        | PATCH      | Actualiza el nombre visible de un dispositivo.             | `deviceId` (path)                                 | `{ name }`                | Dispositivo actualizado.                  | Permite personalizar el nombre con el que se identifica el dispositivo dentro de la plataforma Clair.                                                              |
+| /api/v1/devices/{deviceId}/name   | PATCH      | Actualiza el nombre visible de un dispositivo.             | `deviceId` (path)                                 | `{ name }`                | Dispositivo actualizado.                  | Permite modificar la identificación visual del dispositivo para facilitar su reconocimiento dentro de un espacio monitoreado.                                      |
+| /api/v1/devices                   | GET        | Obtiene los dispositivos asociados a un espacio.           | `spaceId` (query), `page` (query), `size` (query) | —                         | Lista paginada de dispositivos.           | Permite visualizar todos los dispositivos Clair instalados en un espacio determinado y gestionar su estado de monitoreo.                                           |
+| /api/v1/devices/{deviceId}/status | GET        | Obtiene el estado actual de un dispositivo.                | `deviceId` (path)                                 | —                         | `{ deviceId, status, lastSeenAt }`        | Permite verificar si el dispositivo se encuentra conectado y transmitiendo datos ambientales correctamente a la plataforma.                                        |
+
+
+**Device Commands:** Maneja las instrucciones y consulta de las mismas sobre un dispositivo Clair
+
+| endpoint                                        | verbo http | descripción                                         | parámetros                            | request body        | response body                   | explicación                                                                                                                                                                           |
+|-------------------------------------------------|------------|-----------------------------------------------------|---------------------------------------|---------------------|---------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/devices/{deviceId}/commands             | POST       | Crea un comando para un dispositivo específico.     | `deviceId` (path)                     | `{ type, payload }` | Datos del comando creado.       | Permite enviar instrucciones a un dispositivo Clair para modificar su comportamiento operativo, como cambiar de estado, aplicar configuraciones o ejecutar acciones de mantenimiento. |
+| /api/v1/devices/{deviceId}/commands/{commandId} | GET        | Obtiene la información de un comando específico.    | `deviceId` (path), `commandId` (path) | —                   | Datos detallados del comando.   | Permite verificar el estado de ejecución de una instrucción enviada a un dispositivo, incluyendo si fue procesada correctamente o si ocurrió algún error.                             |
+| /api/v1/devices/{deviceId}/commands/latest      | GET        | Obtiene el último comando enviado a un dispositivo. | `deviceId` (path)                     | —                   | Datos del comando más reciente. | Permite consultar la última instrucción enviada al dispositivo para conocer su estado actual de procesamiento y validar que la acción solicitada haya sido recibida.                  |
+
+
+**Device Thresholds:** Limites que el usuario puede configurar a su preferencia sobre las métricas (PM2.5, CO₂, temperatura o humedad)
+
+| endpoint                                       | verbo http | descripción                                                  | parámetros                         | request body                 | response body                   | explicación                                                                                                                                                                               |
+|------------------------------------------------|------------|--------------------------------------------------------------|------------------------------------|------------------------------|---------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/devices/{deviceId}/thresholds          | GET        | Obtiene todos los umbrales configurados para un dispositivo. | `deviceId` (path)                  | —                            | Lista de umbrales configurados. | Permite consultar los límites establecidos para las métricas ambientales monitoreadas por el dispositivo, como PM2.5, CO₂, temperatura y humedad.                                         |
+| /api/v1/devices/{deviceId}/thresholds          | POST       | Crea un nuevo umbral para una métrica específica.            | `deviceId` (path)                  | `{ metric, value, enabled }` | Datos del umbral creado.        | Permite definir valores máximos aceptables para una métrica ambiental, de modo que Clair pueda detectar condiciones potencialmente perjudiciales y generar alertas cuando sean superadas. |
+| /api/v1/devices/{deviceId}/thresholds          | PUT        | Actualiza un umbral existente para una métrica específica.   | `deviceId` (path)                  | `{ metric, value, enabled }` | Datos del umbral actualizado.   | Permite ajustar los criterios de monitoreo según las necesidades del ambiente, modificando los valores que activan alertas de calidad del aire.                                           |
+| /api/v1/devices/{deviceId}/thresholds/{metric} | DELETE     | Elimina el umbral configurado para una métrica específica.   | `deviceId` (path), `metric` (path) | —                            | —                               | Permite retirar una regla de monitoreo para que las mediciones de esa métrica ya no generen alertas basadas en límites configurados por el usuario.                                       |
+
+
+**Spaces:** Representación de los ambientes físicos donde se ubica un dispositivo Clair
+
+| endpoint                      | verbo http | descripción                                        | parámetros               | request body | response body                   | explicación                                                                                                                                  |
+|-------------------------------|------------|----------------------------------------------------|--------------------------|--------------|---------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/spaces                | GET        | Obtiene los espacios asociados a una organización. | `organizationId` (query) | —            | Lista de espacios registrados.  | Permite visualizar todos los ambientes monitoreados dentro de una organización para gestionar la calidad del aire en diferentes ubicaciones. |
+| /api/v1/spaces                | POST       | Crea un nuevo espacio.                             | `organizationId` (query) | `{ name }`   | Datos del espacio creado.       | Permite registrar un nuevo ambiente que será monitoreado por dispositivos Clair para el seguimiento de las condiciones ambientales.          |
+| /api/v1/spaces/{spaceId}      | GET        | Obtiene la información de un espacio específico.   | `spaceId` (path)         | —            | Datos detallados del espacio.   | Permite consultar la información de un ambiente monitoreado y su relación con la organización a la que pertenece.                            |
+| /api/v1/spaces/{spaceId}      | DELETE     | Elimina un espacio registrado.                     | `spaceId` (path)         | —            | —                               | Permite remover un ambiente de la plataforma cuando ya no requiere monitoreo, siempre que no tenga dispositivos asociados.                   |
+| /api/v1/spaces/{spaceId}      | PATCH      | Actualiza el nombre de un espacio.                 | `spaceId` (path)         | `{ name }`   | Datos actualizados del espacio. | Permite modificar la identificación de un ambiente monitoreado para reflejar cambios en su uso o ubicación.                                  |
+| /api/v1/spaces/{spaceId}/name | PATCH      | Actualiza el nombre de un espacio.                 | `spaceId` (path)         | `{ name }`   | Datos actualizados del espacio. | Permite cambiar el nombre visible de un ambiente dentro de la plataforma para facilitar su administración.                                   |
+
+
+**Organizations:** Representación del local o entidad donde se encuentran diversos dispositivos Clair en Spaces diferentes
+
+| endpoint                                    | verbo http | descripción                                                  | parámetros              | request body | response body                          | explicación                                                                                                                                         |
+|---------------------------------------------|------------|--------------------------------------------------------------|-------------------------|--------------|----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/organizations                       | GET        | Obtiene las organizaciones asociadas al usuario autenticado. | —                       | —            | Lista de organizaciones registradas.   | Permite visualizar las organizaciones que administra el usuario y desde las cuales se gestionan los espacios y dispositivos de monitoreo ambiental. |
+| /api/v1/organizations                       | POST       | Crea una nueva organización.                                 | —                       | `{ name }`   | Datos de la organización creada.       | Permite registrar una nueva organización dentro de Clair para centralizar la gestión de espacios, dispositivos y métricas de calidad del aire.      |
+| /api/v1/organizations/{organizationId}      | GET        | Obtiene la información de una organización específica.       | `organizationId` (path) | —            | Datos detallados de la organización.   | Permite consultar la información de una organización y acceder a su estructura de monitoreo ambiental.                                              |
+| /api/v1/organizations/{organizationId}      | DELETE     | Elimina una organización registrada.                         | `organizationId` (path) | —            | —                                      | Permite remover una organización de la plataforma cuando ya no requiere monitoreo, siempre que no existan recursos asociados que dependan de ella.  |
+| /api/v1/organizations/{organizationId}      | PATCH      | Actualiza el nombre de una organización.                     | `organizationId` (path) | `{ name }`   | Datos actualizados de la organización. | Permite modificar la identificación de una organización para reflejar cambios administrativos o de denominación.                                    |
+| /api/v1/organizations/{organizationId}/name | PATCH      | Actualiza el nombre de una organización.                     | `organizationId` (path) | `{ name }`   | Datos actualizados de la organización. | Permite cambiar el nombre visible de una organización dentro de la plataforma Clair.                                                                |
+
+
+**Analytics:** Transforma mediciones en indicadores, tendencias e información sobre un Space
+
+| endpoint                                    | verbo http | descripción                                                        | parámetros                                                                  | request body | response body                                                | explicación                                                                                                                                                                                                                                      |
+|---------------------------------------------|------------|--------------------------------------------------------------------|-----------------------------------------------------------------------------|--------------|--------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/analytics/devices/{deviceId}/trends | GET        | Obtiene datos históricos de tendencias para un dispositivo.        | `deviceId` (path), `period` (query), `startDate` (query), `endDate` (query) | —            | Serie temporal de mediciones ambientales.                    | Permite visualizar la evolución de indicadores como AQI, PM2.5, CO₂, temperatura y humedad a lo largo del tiempo para identificar patrones, variaciones y posibles problemas recurrentes en la calidad del aire.                                 |
+| /api/v1/analytics/devices/{deviceId}/live   | GET        | Obtiene indicadores clave de desempeño (KPIs) para un dispositivo. | `deviceId` (path), `period` (query), `startDate` (query), `endDate` (query) | —            | Métricas agregadas y estado actual del ambiente monitoreado. | Permite consultar un resumen de las condiciones ambientales de un espacio, incluyendo el índice de calidad del aire (AQI), promedios de CO₂, PM2.5, temperatura y humedad, así como las variaciones porcentuales respecto a periodos anteriores. |
+
+
+**Evaluations:** Registros de telemetría registrada por un Device
+
+| endpoint                                      | verbo http | descripción                                                        | parámetros                                        | request body | response body                              | explicación                                                                                                                                                                                                                  |
+|-----------------------------------------------|------------|--------------------------------------------------------------------|---------------------------------------------------|--------------|--------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/evaluations/devices/{deviceId}        | GET        | Obtiene el historial de registros de telemetría de un dispositivo. | `deviceId` (path), `page` (query), `size` (query) | —            | Lista paginada de registros de telemetría. | Permite consultar las mediciones históricas capturadas por un dispositivo Clair, incluyendo indicadores de calidad del aire, material particulado, condiciones ambientales, conectividad y estado operativo del dispositivo. |
+| /api/v1/evaluations/devices/{deviceId}/latest | GET        | Obtiene el registro de telemetría más reciente de un dispositivo.  | `deviceId` (path)                                 | —            | Último registro de telemetría almacenado.  | Permite conocer las condiciones ambientales más recientes detectadas por el dispositivo, así como su estado de funcionamiento y conectividad en tiempo real.                                                                 |
+
+
+**Alerts:** Notifica amenazas en la calidad del aire del ambiente detectadas por un Device
+
+| endpoint                                      | verbo http | descripción                                                  | parámetros                                                          | request body | response body                                        | explicación                                                                                                                                                                                                    |
+|-----------------------------------------------|------------|--------------------------------------------------------------|---------------------------------------------------------------------|--------------|------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/spaces/{spaceId}/alerts               | GET        | Obtiene las alertas registradas para un espacio específico.  | `spaceId` (path), `page` (query), `size` (query), `status` (query)  | —            | Lista paginada de alertas.                           | Permite consultar los eventos generados cuando las mediciones ambientales de los dispositivos instalados en un espacio superan los umbrales configurados para métricas como PM2.5, CO₂, temperatura o humedad. |
+| /api/v1/spaces/{spaceId}/alerts/daily-summary | GET        | Obtiene un resumen diario de alertas para un espacio.        | `spaceId` (path), `days` (query)                                    | —            | Lista de fechas con cantidad de alertas registradas. | Permite analizar la frecuencia de incidentes relacionados con la calidad del aire y detectar tendencias o periodos con mayor ocurrencia de alertas ambientales.                                                |
+| /api/v1/devices/{deviceId}/alerts             | GET        | Obtiene las alertas generadas por un dispositivo específico. | `deviceId` (path), `page` (query), `size` (query), `status` (query) | —            | Lista paginada de alertas del dispositivo.           | Permite identificar qué dispositivo detectó una condición ambiental anómala y revisar el historial de eventos asociados a sus mediciones.                                                                      |
+
+
+**Subscriptions:** Gestiona los planes de suscripción y los procesos de pago asociados a Clair.
+
+| endpoint                                 | verbo http | descripción                                                  | parámetros      | request body                                | response body                                 | explicación                                                                                                                                                                                |
+|------------------------------------------|------------|--------------------------------------------------------------|-----------------|---------------------------------------------|-----------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/subscriptions/payment-intent     | POST       | Crea una intención de pago mediante Stripe.                  | —               | `userId`, `amount`, `currency`, `returnUrl` | Información de la intención de pago generada. | Permite iniciar el proceso de pago para la contratación o renovación de servicios premium dentro de Clair, preparando la transacción que será procesada por Stripe.                        |
+| /api/v1/subscriptions/checkout-session   | POST       | Crea una sesión de pago en Stripe.                           | —               | `userId`, `amount`, `currency`, `returnUrl` | Información de la sesión de pago creada.      | Permite redirigir al usuario a una experiencia de pago segura para completar la suscripción a planes premium y habilitar funcionalidades avanzadas de monitoreo ambiental.                 |
+| /api/v1/subscriptions/downgrade/{userId} | POST       | Cambia el plan de un usuario a FREEMIUM.                     | `userId` (path) | —                                           | Confirmación de la operación.                 | Permite cancelar los beneficios premium y regresar al plan gratuito, ajustando el acceso del usuario a las funcionalidades disponibles dentro de Clair.                                    |
+| /api/v1/subscriptions/user/{userId}      | GET        | Obtiene el historial de suscripciones y pagos de un usuario. | `userId` (path) | —                                           | Lista de suscripciones registradas.           | Permite consultar las transacciones y suscripciones realizadas por el usuario, facilitando el seguimiento de pagos, renovaciones y estados de facturación asociados a la plataforma.       |
+| /api/v1/subscriptions/plans/{userId}     | GET        | Obtiene el plan actual de un usuario.                        | `userId` (path) | —                                           | Información del plan y estado de suscripción. | Permite verificar si el usuario dispone de un plan FREEMIUM o PREMIUM, determinando el acceso a funcionalidades avanzadas relacionadas con el monitoreo y análisis de la calidad del aire. |
+
+
+**Webhooks:** Procesa eventos enviados por Stripe para sincronizar el estado de pagos y suscripciones dentro de Clair.
+
+| endpoint                | verbo http | descripción                                 | parámetros                  | request body                     | response body            | explicación                                                                                                                                                                                                                                  |
+|-------------------------|------------|---------------------------------------------|-----------------------------|----------------------------------|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/webhooks/stripe | POST       | Recibe eventos webhook enviados por Stripe. | `Stripe-Signature` (header) | Evento enviado por Stripe (JSON) | Mensaje de confirmación. | Permite que Clair reciba notificaciones automáticas cuando ocurre un evento de pago o suscripción en Stripe, asegurando que el estado de las membresías Premium se mantenga sincronizado con la plataforma de pagos sin intervención manual. |
+
 
 #### 6.2.2.8. Software Deployment Evidence for Sprint Review.
 
