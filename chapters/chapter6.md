@@ -1032,6 +1032,28 @@ A continuación se presentan las métricas de colaboración y la actividad de de
   <img src="https://imgur.com/sYCM0ZC.png" width="500">
 </p>
 
+4. **Edge service**
+
+Durante el Sprint 2, el equipo colaboró activamente en el diseño y la implementación de la Edge Station construida con Python y Flask. Se logró establecer la autenticación de dispositivos perimetrales de forma segura, estructurar las rutas para la recepción local de telemetría de manera distribuida y coordinar el mecanismo de sincronización de datos con los servicios en la nube en caso de pérdida de conexión.
+
+<p align="center">
+  <img src="https://imgur.com/insvBgt.png" width="500">
+</p>
+<p align="center">
+  <img src="https://imgur.com/SB1Krqx.png" width="500">
+</p>
+
+5. **Embedded**
+
+La colaboración para la aplicación embebida se centró en el desarrollo cooperativo del firmware en C++ para las tarjetas de simulación y físicas basadas en ESP32. Se integraron de manera fluida las librerías para la lectura en tiempo real de los sensores ambientales (CO₂, PM2.5, temperatura y humedad), la lógica de renderizado dinámico en pantallas OLED y las alertas visuales mediante la activación automática de actuadores LED basados en umbrales específicos de calidad del aire.
+
+<p align="center">
+  <img src="https://imgur.com/OySKcVh.png" width="500">
+</p>
+<p align="center">
+  <img src="https://imgur.com/GKW2Mns.png" width="500">
+</p>
+
 ### 6.2.3. Sprint 3
 
 #### 6.2.3.1. Sprint Planning 3.
