@@ -951,7 +951,6 @@ Para la aplicación web en Angular, el proceso de construcción se simplificó a
 <p align="center">
   <img src="https://imgur.com/zPq9hhb.png" alt="Vercel Web App Deployment" width="700">
 </p>
-
 **2. Web Service**
 A diferencia de los entornos tradicionales, para los servicios web de Clair Core no se emplea Docker. En su lugar, el despliegue se realiza de forma nativa aprovechando el ecosistema de **Nix** y **NixOS** para la administración declarativa del sistema y del entorno. El tráfico web externo y las solicitudes son gestionadas y redirigidas utilizando **Caddy** como servidor web y proxy inverso, configurado directamente en la declaración de NixOS. Esto permite la asignación segura de dominios a los puertos internos de la API (`clair-api`), además de resolver automáticamente la seguridad mediante HTTPS. A continuación se presenta la configuración declarativa de NixOS empleada:
 
@@ -998,8 +997,40 @@ Para la aplicación móvil de Clair desarrollada en Flutter, se implementó el s
 <p align="center">
   <img src="https://imgur.com/mIrwg5J.png" alt="Firebase App Distribution - Mobile Application" width="700">
 </p>
-
 #### 6.2.2.9. Team Collaboration Insights during Sprint.
+
+1. **Web application**
+
+Durante el Sprint 2, el equipo de frontend colaboró de forma continua e integrada en la implementación de los dashboards de analítica de calidad del aire y la gestión de organizaciones, asegurando un flujo de trabajo optimizado mediante el uso de Bun para compilaciones rápidas.
+
+<p align="center">
+  <img src="https://imgur.com/Q0KqTiz.png" width="500">
+</p>
+<p align="center">
+  <img src="https://imgur.com/R6ZxFO5.png" width="500">
+</p>
+
+2. **Web services**
+
+La colaboración en el desarrollo del backend se centró en los contextos core (Devices, Spaces, Organizations y Analytics) de la API de Spring Boot, logrando un entorno de desarrollo reproducible con Nix y realizando integraciones seguras en el servidor NixOS.
+
+<p align="center">
+  <img src="https://imgur.com/gexgt3G.png" width="500">
+</p>
+<p align="center">
+  <img src="https://imgur.com/p2Ui7X9.png" width="500">
+</p>
+
+3. **Mobile application**
+
+A continuación se presentan las métricas de colaboración y la actividad de desarrollo en el repositorio de la aplicación móvil (desarrollada en Flutter) durante este sprint:
+
+<p align="center">
+  <img src="https://imgur.com/BJz5p5E.png" width="500">
+</p>
+<p align="center">
+  <img src="https://imgur.com/sYCM0ZC.png" width="500">
+</p>
 
 ### 6.2.3. Sprint 3
 
