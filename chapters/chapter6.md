@@ -42,6 +42,8 @@ Esta sección establece el ecosistema de herramientas y servicios seleccionados 
 | **Angular CLI** | Web Development | Herramienta de línea de comandos para la creación y gestión de la aplicación web. | https://angular.io/cli |
 | **Material Design 3** | UI Framework | Librería de componentes y tokens de diseño para la interfaz de la web app. | https://m3.material.io/ |
 | **Dart DevTools** | Debugging | Conjunto de herramientas para el perfilado y depuración de la app en Flutter. | https://dart.dev/tools/dart-devtools |
+| **Caddy** | Web Server \& Reverse Proxy | Servidor web con HTTPS automático usado como proxy inverso para enrutar el tráfico de los servicios web. | https://caddyserver.com/ |
+| **Cloudflare** | DNS \& Security | Plataforma de DNS, seguridad de red y proxy inverso para proteger y acelerar la entrega de las aplicaciones. | https://www.cloudflare.com/ |
 
 ### 6.1.2. Source Code Management.
 
@@ -490,7 +492,7 @@ En esta sección se resume los procesos realizados en relación con el Deploymen
 
 Para el despliegue de la Landing Page, se creó una cuenta en **Vercel** y se configuró el proyecto vinculado al repositorio de GitHub (`Vanana-Desarrollo-de-Soluciones-IOT/site`). Se configuró el dominio personalizado y se establecieron las variables de entorno necesarias para la internacionalización (i18n). La Landing Page fue desplegada como sitio estático, aprovechando la infraestructura global de CDN de Vercel para garantizar baja latencia y alta disponibilidad. El sitio incluye múltiples **Call-to-Action (CTA)** estratégicamente ubicados para guiar a los visitantes hacia el registro.
 
-**URL de producción:** https://clair-psi.vercel.app/
+**URL de producción:** https://site-beige-mu.vercel.app/
 
 <p align="center">
  <img src="https://imgur.com/MgnEBBK.png">
@@ -503,6 +505,7 @@ Para la Web Application desarrollada en Angular, se creó un proyecto en **Verce
 <p align="center">
  <img src="https://imgur.com/IhiWayd.png">
 </p>
+**URL de producción:** https://clair-ui.vercel.app/
 
 **3. Web Services**
 
@@ -515,27 +518,6 @@ Los servicios incluyen la integración con dos proveedores externos configurados
 <p align="center">
  <img src="https://imgur.com/rHOetSh.png">
 </p>
-
-2. **Web application**
-
-   La Web Application desarrollada en Angular ha sido desplegada en Vercel, aprovechando su infraestructura global de CDN para la distribución de la Single Page Application (SPA). Esto garantiza baja latencia y alta disponibilidad para los usuarios que acceden a la plataforma web.
-
-   **URL de producción:** https://clair-ui.vercel.app/
-
-   <p align="center">
-    <img src="https://imgur.com/IhiWayd.png">
-   </p>
-
-3. **Web services**
-
-   Los Web Services implementados durante este sprint comprenden el módulo de Identity and Access Management (IAM) y el contexto de Billing, desplegados en un servidor Contabo. Estos servicios incluyen la integración con dos proveedores externos: Google OAuth2 para autenticación de usuarios y Resend para el envío de notificaciones por correo electrónico. La exposición segura de los servicios hacia internet se realiza mediante Cloudflare Tunnel, el cual establece un túnel seguro y encriptado sin necesidad de exponer directamente la dirección IP pública del servidor, protegiendo así la infraestructura backend.
-
-   <p align="center">
-    <img src="https://imgur.com/rHOetSh.png">
-   </p>
-
-
-
 
 #### 6.2.1.9. Team Collaboration Insights during Sprint.
 
@@ -955,8 +937,67 @@ En el sprint 2 se completó en su totalidad la implementación de Clair Core, a 
 |-------------------------|------------|---------------------------------------------|-----------------------------|----------------------------------|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | /api/v1/webhooks/stripe | POST       | Recibe eventos webhook enviados por Stripe. | `Stripe-Signature` (header) | Evento enviado por Stripe (JSON) | Mensaje de confirmación. | Permite que Clair reciba notificaciones automáticas cuando ocurre un evento de pago o suscripción en Stripe, asegurando que el estado de las membresías Premium se mantenga sincronizado con la plataforma de pagos sin intervención manual. |
 
-
 #### 6.2.2.8. Software Deployment Evidence for Sprint Review.
+
+En esta sección se resumen los procesos realizados en relación con el Deployment durante el Sprint 2. Durante esta iteración, se consolidaron los procesos de empaquetamiento y despliegue del servidor utilizando **NixOS** (una distribución Linux declarativa) y **Nix** para la gestión del entorno. Este ecosistema garantiza que la infraestructura del servidor de producción y los artefactos generados sean consistentes, inmutables y estén completamente libres de discrepancias de entorno.
+
+Para asegurar un despliegue exitoso y libre de fallos provocados por diferencias de software o configuraciones de sistema incompatibles, el equipo adoptó **NixOS** como el sistema operativo principal para alojar los servicios del backend. **NixOS** es una distribución de Linux revolucionaria construida sobre el gestor de paquetes Nix, en la cual todo el estado del sistema operativo —incluyendo el kernel, servicios del sistema, archivos de configuración y paquetes, se define de manera declarativa y centralizada. Esto garantiza que la infraestructura de producción sea inmutable, totalmente reproducible mediante código y admita reversiones (*rollbacks*) seguras e instantáneas ante fallos.
+
+Complementariamente, se utiliza el entorno reproducible de Nix a través de un archivo `shell.nix` para desarrollo. Este archivo especifica las versiones exactas de herramientas esenciales como **JDK 25**, **Maven** y **stripe-cli**. De este modo, el runtime local del equipo de desarrollo coincide de manera idéntica con el entorno de producción en **NixOS**. Esto elimina por completo el clásico conflicto de *"funciona en mi máquina"*, permitiendo que el backend compile y se ejecute nativamente sobre el sistema operativo NixOS sin requerir la sobrecarga de virtualización que introduce Docker.
+
+**1. Web Application**
+Para la aplicación web en Angular, el proceso de construcción se simplificó al máximo utilizando **Bun** (`bun run build`), el cual permitió compilar de manera ultra rápida los activos estáticos y flujos SPA de la interfaz. Estos archivos estáticos listos para producción son distribuidos globalmente a través de **Vercel**, integrando los dashboards de analítica de calidad del aire y la gestión de organizaciones de este Sprint.
+
+<p align="center">
+  <img src="https://imgur.com/zPq9hhb.png" alt="Vercel Web App Deployment" width="700">
+</p>
+
+**2. Web Service**
+A diferencia de los entornos tradicionales, para los servicios web de Clair Core no se emplea Docker. En su lugar, el despliegue se realiza de forma nativa aprovechando el ecosistema de **Nix** y **NixOS** para la administración declarativa del sistema y del entorno. El tráfico web externo y las solicitudes son gestionadas y redirigidas utilizando **Caddy** como servidor web y proxy inverso, configurado directamente en la declaración de NixOS. Esto permite la asignación segura de dominios a los puertos internos de la API (`clair-api`), además de resolver automáticamente la seguridad mediante HTTPS. A continuación se presenta la configuración declarativa de NixOS empleada:
+
+```
+{ pkgs, ... }:
+
+let
+  ports = {
+    caddy = "8088";
+    clair-api = "8081";
+    clair-edge = "5000";
+  };
+in
+{
+  services.caddy = {
+    enable = true;
+    configFile = pkgs.writeText "Caddyfile" ''
+      :${ports.caddy} {
+        @api host clair-api.giks.net
+        handle @api {
+          reverse_proxy 127.0.0.1:${ports.clair-api}
+        }
+
+        @edge host clair-edge.giks.net
+        handle @edge {
+          reverse_proxy 127.0.0.1:${ports.clair-edge}
+        }
+
+        respond "not found" 404
+      }
+    '';
+  };
+}
+```
+
+**Configuración y Estado del Servidor VPS con NixOS:**
+<p align="center">
+  <img src="https://imgur.com/xAjvwmM.png" alt="NixOS VPS Backend Deployment" width="700">
+</p>
+
+**3. Mobile Application**
+Para la aplicación móvil de Clair desarrollada en Flutter, se implementó el sistema de distribución de compilaciones de prueba a través de **Firebase App Distribution**. Esto permitió al equipo generar binarios rápidos (como el archivo APK para dispositivos Android) y compartirlos de manera segura con los desarrolladores y evaluadores del proyecto para validar los flujos de telemetría y alertas en tiempo real. 
+
+<p align="center">
+  <img src="https://imgur.com/mIrwg5J.png" alt="Firebase App Distribution - Mobile Application" width="700">
+</p>
 
 #### 6.2.2.9. Team Collaboration Insights during Sprint.
 
