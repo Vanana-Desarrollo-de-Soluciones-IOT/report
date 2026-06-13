@@ -1125,6 +1125,51 @@ La colaboración para la aplicación embebida se centró en el desarrollo cooper
 
 ### 6.3.1. Diseño de Entrevistas.
 
+**Segmento A: Home User**
+
+*Perfil: Personas que utilizarán la aplicación móvil o web para monitorear el aire en su hogar.*
+
+**1. Creación de Espacios (Set-up en la App)**
+
+- ¿Cómo esperarías estructurar las diferentes áreas de tu casa dentro de la aplicación (por ejemplo, "Mi Casa" > "Sala", "Dormitorio")?
+- En la aplicación utilizamos el término "Espacio" para referirnos a las habitaciones. ¿Este término te resulta claro y natural para tu hogar, o preferirías llamarlo de otra forma (como "Habitación" o "Cuarto")?
+- ¿Qué pasos intuitivos intentarías seguir en la app para registrar tu casa por primera vez?
+
+**2. Agregar Dispositivo (Onboarding Virtual / Simulado)**
+
+- *(Contexto para el usuario: "En esta prueba, no tenemos un dispositivo físico, sino un simulador virtual que generará los datos de tu aire").*
+- Al momento de vincular este "sensor virtual" a tu cuenta en la aplicación, ¿el proceso de registro te pareció claro o hubo algún paso confuso?
+- Si el simulador perdiera conexión con nuestra plataforma y dejara de enviar datos, ¿qué tipo de advertencia visual o notificación esperarías ver en tu celular para darte cuenta de la desconexión?
+- Al finalizar el proceso de agregar el dispositivo en la app, ¿qué mensaje o pantalla específica te daría la tranquilidad de que el emparejamiento fue exitoso y ya puedes ver los datos?
+
+**3. Visualización y Acciones (Dashboard)**
+
+- Al abrir la aplicación, ¿cuál es el primer dato, gráfica o color que buscas para saber rápidamente si el aire de tu casa es seguro?
+- Si la aplicación te muestra que tu sala tiene "CO2: 800 ppm" proveniente del simulador, ¿comprendes qué significa esa métrica? ¿Cómo te gustaría que la app te explique si ese nivel es saludable o perjudicial?
+- Si la gráfica muestra que la calidad del aire está empeorando progresivamente, ¿qué opciones de acción o notificaciones esperarías que la aplicación te sugiera en ese momento?
+
+**Segmento B: Facility Admin**
+
+*Perfil: Personal de TI, mantenimiento o recursos humanos que utiliza principalmente la web-app para gestionar múltiples áreas.*
+
+**1. Gestión de Organización y Jerarquía (Set-up en Web-App)**
+
+- Si tuvieras que gestionar digitalmente múltiples locales (ejemplo: la sede central y 2 sucursales), ¿cómo esperarías que la plataforma web te permita estructurar y visualizar estos distintos edificios y sus respectivos pisos/salas?
+- Para tu entorno corporativo, ¿los términos "Organización" y "Espacio" en la interfaz se ajustan a la nomenclatura que utilizan internamente en tu empresa?
+- ¿Cómo te imaginas el flujo dentro de la plataforma web para invitar a otros miembros de tu equipo (ej. técnicos) y asignarles permisos de visualización?
+
+**2. Despliegue de Dispositivos (Proyección de Escalamiento)**
+
+- Actualmente estamos vinculando un prototipo simulado. Proyectándonos a cuando sean dispositivos reales, si tuvieras que registrar 5 sensores nuevos en la plataforma web, ¿cómo esperarías que sea el proceso para no tener que agregarlos manualmente uno por uno?
+- ¿En qué momento del uso de la plataforma te resulta más eficiente etiquetar y asignar un dispositivo a su sala correspondiente: al momento de crearlo en el sistema o posteriormente desde un panel de administración?
+- Al monitorear la lista de dispositivos en la web-app, ¿qué información técnica del sensor (ej. estado de conexión, última lectura, tiempo en línea) necesitas ver a simple vista en la tabla principal?
+
+**3. Monitoreo y Reportes (Analytics)**
+
+- Cuando abres el panel de control general (dashboard), ¿qué métrica, gráfica o sistema de colores te permitiría identificar de inmediato qué sala específica del edificio requiere atención por mala calidad del aire?
+- Pensando en auditorías internas o reportes de salud ocupacional, ¿con qué frecuencia descargarías los datos históricos y qué formato o filtros (fechas, promedios) considerarías indispensables en la plataforma web?
+- Si el sistema detecta (a través del simulador actual) que el nivel de PM2.5 supera el umbral permitido en una sala de reuniones, ¿qué tipo de automatización o alerta esperas de la web-app (ej. un correo automático a mantenimiento, una alerta visual prioritaria)?
+
 ### 6.3.2. Registro de Entrevistas.
 
 ### 6.3.3. Evaluaciones según heurísticas.
