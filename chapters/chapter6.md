@@ -855,6 +855,40 @@ Durante el desarrollo del Sprint 2, el equipo concentró sus esfuerzos en consol
 
 #### 6.2.2.5. Testing Suite Evidence for Sprint Review.
 
+En esta sección se presenta la evidencia del conjunto de pruebas automatizadas diseñadas e implementadas para asegurar la calidad, fiabilidad y correcto funcionamiento de los servicios desarrollados durante el presente Sprint. La estrategia de aseguramiento de calidad (Testing Suite) aplicada en el repositorio principal (`clair-core`) abarca dos enfoques complementarios: pruebas de aceptación basadas en comportamiento (Behavior-Driven Development o BDD) y pruebas unitarias (Unit Tests) exhaustivas para validar la lógica interna de los diferentes módulos.
+
+Por un lado, bajo el enfoque BDD, se elaboraron archivos `.feature` utilizando el lenguaje Gherkin apoyados por el framework Cucumber. Estas pruebas se centran en validar los criterios de aceptación del Bounded Context de **Identity and Access Management (IAM)**, asegurando que los flujos críticos de cara al usuario, tales como el registro de nuevas cuentas, la verificación de correos electrónicos y el inicio de sesión, cumplan con los requerimientos de negocio esperados.
+
+Por otro lado, se ha desarrollado un robusto conjunto de **Unit Tests** que garantizan la integridad técnica a nivel de código. Estas pruebas validan el comportamiento aislado de entidades, objetos de valor (value objects), comandos, consultas (queries), servicios de dominio y controladores REST. La cobertura de estas pruebas unitarias se extiende a través de múltiples Bounded Contexts críticos de la plataforma, incluyendo:
+
+- **IAM:** Validación de registro, filtros de autenticación JWT y flujos de integración con Google OAuth.
+- **Devices:** Verificación de los servicios de comandos y consultas para el control, presencia y gestión de umbrales de los sensores.
+- **Analytics & Evaluation:** Comprobación del cálculo correcto del Air Quality Index (AQI), servicios de agregación de datos y la evaluación de la telemetría entrante.
+- **Notifications & Billing:** Aseguramiento de los servicios de envío de correos, gestión de notificaciones y fachadas de suscripción.
+
+A continuación, se detalla la estructura y contenido de las pruebas diseñadas, junto con la tabla de control de versiones. Esta tabla documenta de manera trazable los *commits* y ramas (`branches`) correspondientes a los avances de *testing* integrados en el repositorio del proyecto durante la iteración.
+
+| Repository                                     | Branch                            | Commit Id | Commit Message                                               | Commit Message Body                                          | Commited on (Date) |
+| ---------------------------------------------- | --------------------------------- | --------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------ |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | test/Testing-Suite                | c26f0e0   | test(iam): configure BDD environment and step definitions    | Set up Cucumber dependencies in pom.xml and implement step definitions for IAM bounded context tests | 13/05/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | test/Testing-Suite                | 3ea2e69   | test(iam): add BDD scenario for US01 Register a new account  | Implement cucumber feature file for US01 to validate new account registration | 13/05/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | test/Testing-Suite                | f027fe4   | test(iam): add BDD scenario for US02 Verify email address    | Implement cucumber feature file for US02 to validate email verification process | 13/05/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | test/Testing-Suite                | 946de87   | test(iam): add BDD scenario for US03 Log in                  | Implement cucumber feature file for US03 to validate user login and session establishment | 13/05/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-iam              | 1f642e4   | Add unit tests for user registration, authentication, and Google OAuth integration | Add comprehensive unit tests for IAM entities, commands, queries, value objects, services, and controllers | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-iam              | e07f4b4   | test: refactor tests to use setup methods and improve event verification | Refactor IAM tests to use setup methods and improve event verification | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-iam              | 94857cf   | test: set user ID for existing user in Google authentication test | Set user ID for existing user in Google authentication test scenario | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-iam              | 5bdfba6   | test: add unit tests for Google token verification and JWT authentication filter | Add unit tests for Google token verification and JWT authentication filter | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-iam              | c62f2c2   | test: update mock annotations to use MockitoBean for improved test configuration | Update mock annotations to use MockitoBean for improved test configuration | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-iam              | 7c38322   | test: refactor user creation in tests to use rehydrate method and improve clarity | Refactor user creation in tests to use rehydrate method and improve clarity | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-devices          | 276e358   | feat: add unit test                                          | Add unit tests for DeviceCommandServiceImpl, DeviceQueryServiceImpl, commands, queries, and value objects | 05/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-devices          | a243a67   | feat: add unit test                                          | Add unit tests for DeviceControlCommandServiceImpl, DevicePresenceCommandServiceImpl, DeviceThresholdCommandServiceImpl, and other application services | 05/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-devices          | c49fb08   | feat: add unit tests for command and query classes           | Add unit tests for command and query classes in device bounded context | 05/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/test-analytics            | 84057c6   | test: add unit tests for AirQualityIndex and Analytics controllers | Add unit tests for AQI calculation, aggregation services, and REST controllers | 05/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-evaluaiton-test-bc    | 9a3c67a   | Add unit tests for telemetry evaluation and related services | Add unit tests for telemetry evaluation commands, entities, queries, value objects, and controllers | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-notifications-testing | 84784eb   | feat: add unit tests for notification services and related entities | Add unit tests for EmailCommandServiceImpl, notification entities, queries, and controllers | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-notifications-testing | 735d23b   | feat: add TokenQueryService mock to NotificationControllerTest | Add mock configuration for TokenQueryService in NotificationControllerTest | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-unit-test-billing     | d48fa98   | feat: add unit tests for BillingContextFacadeImpl and SubscriptionCommandServiceImpl | Add unit tests for billing context facade and subscription command services | 06/06/2026         |
+
 #### 6.2.2.6. Execution Evidence for Sprint Review.
 
 **Clair UI (Wep App)**
