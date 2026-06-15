@@ -1172,6 +1172,15 @@ La colaboración para la aplicación embebida se centró en el desarrollo cooper
 
 ### 6.3.2. Registro de Entrevistas.
 
+
+
+| Segmento objetivo                                                                                       | Personas preocupadas por la calidad del aire en el hogar                                                                                                                                                                                                                                                                                                                                                                                 | Video                                                                   |
+|---------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| Viviana Rivera<br /><img src="../assets/entrevistas/vi1.png" alt="segmento 2 entrevista 1" width="500"> | **Datos Demográficos:** <br/>Es una señora de 64 años de edad, reside en Santiago de Surco con su pareja y su unico hijo.<br/><br/>**Ocupación y Background:** <br/>Se dedica de manera independiente a la traduccion junto a su esposo y ofrecen sus servicios a compañias cliente<br/><br/>**Tecnología y Canales:** <br/>Trabaja diariamente con una laptop y utiliza frecuentemente su smartphone para consumir contenido multimedia | URL: https://413rsr4.s.gy/QYoLFm<br />Inicio: 0:00:00<br />Fin: 0:08:36 |
+| Damian Hager<br /><img src="../assets/entrevistas/vi2.png" alt="segmento 2 entrevista 1" width="500">   | **Datos Demográficos:** <br/>Señor de 58 años, reside en Santiago de Surco con su esposa e hijo.<br/><br/>**Ocupación y Background:** <br/>Al igual que su esposa, se dedica a la traduccion de manera independiente<br/><br/>**Tecnología y Canales:** <br/>Esta familiarizado en el uso de PC de sobremesa y laptops, usa su celular solo para lo necesario                                                                            | URL: https://413rsr4.s.gy/lganeS<br />Inicio: 0:00:00<br />Fin: 0:10:01 |
+
+
+
 ### 6.3.3. Evaluaciones según heurísticas.
 
 ## 6.4. Video About-the-Product.
