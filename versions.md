@@ -95,6 +95,7 @@ Neil Curipaco Huayllani desarrolló los User Personas y la User Task Matrix para
 <p align="center">
  <img src="https://imgur.com/uKOh4vF.png" width="500">
 </p>
+
 2. **TB1**
 
 Para la elaboración del avance del Sprint 1 del proyecto **Clair**, el equipo continuó la organización colaborativa mediante el repositorio de GitHub, distribuciendo las tareas técnicas entre los integrantes según las áreas de especialización. Neil Curipaco Huayllani definió los General Style Guidelines y la Information Architecture, realizó la Software Development Environment Configuration estableciendo todas las herramientas del ecosistema, y estableció la Source Code Style Guide & Conventions. Además, completó Sprint Planning 1 y Sprint Backlog 1, y desarrolló las secciones 6.2.1.4 (Development Evidence) y Aspect Leaders and Collaborators consolidando las evidencias del Sprint 1.
@@ -112,4 +113,25 @@ Fabrizio Alessandro Contreras Peralta elaboró, revisó y corrigió las user sto
 </p>
 <p align="center">
  <img src="https://imgur.com/ZNPs9x7.png" width="500">
+</p>
+
+3. **AV2**
+
+Para la elaboración del avance del Sprint 2 del proyecto **Clair**, el equipo continuó la organización colaborativa mediante el repositorio de GitHub, distribuyendo las tareas técnicas entre los integrantes según las áreas de especialización y la matriz de colaboración (LACX) definida.
+
+Dante Mateo Aleman Romano lideró la documentación de la arquitectura C4 y el diseño táctico DDD a nivel de código para los 17 Bounded Contexts en todas sus capas, y completó el diseño de bases de datos PostgreSQL del backend monolítico modular. Asimismo, actualizó la tabla de configuración de herramientas (Software Development Environment Configuration) y el índice general en content.md.
+
+Josue Paiva se encargó de documentar los endpoints de servicios de los Sprints 1 y 2, registrar los videos explicativos de navegación y ejecución de las apps web y móvil, y liderar la validación con la realización y registro de dos entrevistas al segmento objetivo de dueños de hogar.
+
+Neil Curipaco Huayllani corrigió el product backlog, estructuró el Sprint Planning 2 y el Sprint Backlog 2 en Trello, actualizó las historias de usuario y consolidó la evidencia de desarrollo y el Testing Suite con pruebas unitarias y de aceptación (BDD).
+
+Ian Macavilca Quispe desarrolló y documentó los diagramas de clases para el sistema físico embebido en ESP32 para complementar el diseño físico y táctico de hardware.
+
+Fabrizio Alessandro Contreras Peralta colaboró activamente en la revisión de historias de usuario, la validación y el desarrollo de vistas y componentes interactivos para los dashboards de Clair UI.
+
+<p align="center">
+  <img src="https://imgur.com/pbPgR6l.png" width="500">
+</p>
+<p align="center">
+  <img src="https://imgur.com/3pUu3zG.png" width="500">
 </p>

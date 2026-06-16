@@ -1,6 +1,9 @@
 # Contenido
 
+[**Student Outcome**](student-outcome.md)
+
 [**Capítulo I: Introducción**](chapters/chapter1.md)
+
   - [1.1. Startup Profile](chapters/chapter1.md#11-startup-profile)
       - [1.1.1. Descripción de la Startup](chapters/chapter1.md#111-descripción-de-la-startup)
       - [1.1.2. Perfiles de integrantes del equipo](chapters/chapter1.md#112-perfiles-de-integrantes-del-equipo)
@@ -278,10 +281,12 @@
           - [6.2.4.7. Services Documentation Evidence for Sprint Review](chapters/chapter6.md#6247-services-documentation-evidence-for-sprint-review)
           - [6.2.4.8. Software Deployment Evidence for Sprint Review](chapters/chapter6.md#6248-software-deployment-evidence-for-sprint-review)
           - [6.2.4.9. Team Collaboration Insights during Sprint](chapters/chapter6.md#6249-team-collaboration-insights-during-sprint)
+          
 
 [**Conclusiones y recomendaciones**](conclusions.md)
 
-[**Student Outcome**](student-outcome.md)
+- [Conclusiones](conclusions.md#conclusiones)
+- [Recomendaciones](conclusions.md#recomendaciones)
 
 [**Bibliografía**](chapters/bibliografía.md)
 
