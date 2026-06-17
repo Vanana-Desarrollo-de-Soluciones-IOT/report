@@ -1159,50 +1159,72 @@ La colaboración para la aplicación embebida se centró en el desarrollo cooper
 
 ### 6.3.1. Diseño de Entrevistas.
 
-**Segmento A: Home User**
+Segmento Objetivo 1: Administradores de Establecimientos Públicos y Privados
 
-*Perfil: Personas que utilizarán la aplicación móvil o web para monitorear el aire en su hogar.*
+Landing Page — Elementos a Validar
 
-**1. Creación de Espacios (Set-up en la App)**
+| #    | Sección del Landing Page | Pregunta asociada |
+| ---- | ------------------------ | ----------------- |
+| 1    | Propuesta de Valor (Multi-local) | Si tuvieras que gestionar digitalmente múltiples locales (ejemplo: la sede central y 2 sucursales), ¿cómo esperarías que la plataforma web te permita estructurar y visualizar estos distintos edificios y sus respectivos pisos/salas? |
+| 2    | Nomenclatura del Producto | Para tu entorno corporativo, ¿los términos "Organización" y "Espacio" en la interfaz se ajustan a la nomenclatura que utilizan internamente en tu empresa? |
 
-- ¿Cómo esperarías estructurar las diferentes áreas de tu casa dentro de la aplicación (por ejemplo, "Mi Casa" > "Sala", "Dormitorio")?
-- En la aplicación utilizamos el término "Espacio" para referirnos a las habitaciones. ¿Este término te resulta claro y natural para tu hogar, o preferirías llamarlo de otra forma (como "Habitación" o "Cuarto")?
-- ¿Qué pasos intuitivos intentarías seguir en la app para registrar tu casa por primera vez?
+Aplicación web — Elementos a Validar
 
-**2. Agregar Dispositivo (Onboarding Virtual / Simulado)**
+| #    | Pantalla / Módulo | Pregunta asociada |
+| ---- | ----------------- | ----------------- |
+| 1    | Configuración de Organización (Set-up) | ¿Cómo te imaginas el flujo dentro de la plataforma web para invitar a otros miembros de tu equipo (ej. técnicos) y asignarles permisos de visualización? |
+| 2    | Despliegue de Dispositivos (Escalamiento) | Proyectándonos a cuando sean dispositivos reales, si tuvieras que registrar 5 sensores nuevos en la plataforma web, ¿cómo esperarías que sea el proceso para no tener que agregarlos manualmente uno por uno? |
+| 3    | Panel de Administración de Sensores | ¿En qué momento del uso de la plataforma te resulta más eficiente etiquetar y asignar un dispositivo a su sala correspondiente: al momento de crearlo en el sistema o posteriormente desde un panel de administración? |
+| 4    | Tabla de Dispositivos | Al monitorear la lista de dispositivos en la web-app, ¿qué información técnica del sensor (ej. estado de conexión, última lectura, tiempo en línea) necesitas ver a simple vista en la tabla principal? |
+| 5    | Dashboard (Monitoreo General) | Cuando abres el panel de control general (dashboard), ¿qué métrica, gráfica o sistema de colores te permitiría identificar de inmediato qué sala específica del edificio requiere atención por mala calidad del aire? |
+| 6    | Reportes e Históricos (Analytics) | Pensando en auditorías internas o reportes de salud ocupacional, ¿con qué frecuencia descargarías los datos históricos y qué formato o filtros (fechas, promedios) considerarías indispensables en la plataforma web? |
+| 7    | Reglas y Alertas de Sensor (Rules Builder) | Si el sistema detecta que el nivel de PM2.5 supera el umbral permitido en una sala de reuniones, ¿qué tipo de automatización o alerta esperas de la web-app (ej. un correo automático a mantenimiento, una alerta visual prioritaria)? |
 
-- *(Contexto para el usuario: "En esta prueba, no tenemos un dispositivo físico, sino un simulador virtual que generará los datos de tu aire").*
-- Al momento de vincular este "sensor virtual" a tu cuenta en la aplicación, ¿el proceso de registro te pareció claro o hubo algún paso confuso?
-- Si el simulador perdiera conexión con nuestra plataforma y dejara de enviar datos, ¿qué tipo de advertencia visual o notificación esperarías ver en tu celular para darte cuenta de la desconexión?
-- Al finalizar el proceso de agregar el dispositivo en la app, ¿qué mensaje o pantalla específica te daría la tranquilidad de que el emparejamiento fue exitoso y ya puedes ver los datos?
+Aplicación movil — Elementos a Validar
 
-**3. Visualización y Acciones (Dashboard)**
+| #    | Pantalla / Módulo | Pregunta asociada |
+| ---- | ----------------- | ----------------- |
+| 1    | Pantalla de Alertas / Notificaciones | En la aplicación móvil, ¿cómo esperarías que se notifiquen y visualicen de forma inmediata las alertas críticas de los sensores para facilitar una respuesta rápida del equipo técnico o de mantenimiento? |
 
-- Al abrir la aplicación, ¿cuál es el primer dato, gráfica o color que buscas para saber rápidamente si el aire de tu casa es seguro?
-- Si la aplicación te muestra que tu sala tiene "CO2: 800 ppm" proveniente del simulador, ¿comprendes qué significa esa métrica? ¿Cómo te gustaría que la app te explique si ese nivel es saludable o perjudicial?
-- Si la gráfica muestra que la calidad del aire está empeorando progresivamente, ¿qué opciones de acción o notificaciones esperarías que la aplicación te sugiera en ese momento?
+User Flows a Validar
 
-**Segmento B: Facility Admin**
+| #    | Nombre del User Flow | Descripción del flujo |
+| ---- | -------------------- | --------------------- |
+| 1    | Gestión de alertas y acciones correctivas (Web/Mobile) | El administrador recibe una alerta por niveles de CO2/PM2.5 fuera de rango en un área específica y activa una respuesta correctiva preconfigurada para garantizar la productividad y salud. |
+| 2    | Generación y gestión de reportes de cumplimiento (Web) | El administrador accede a Reports, define el rango de fechas y zonas, y descarga reportes históricos de calidad de aire para auditorías de salud ocupacional o cumplimiento de regulaciones. |
 
-*Perfil: Personal de TI, mantenimiento o recursos humanos que utiliza principalmente la web-app para gestionar múltiples áreas.*
+Segmento Objetivo 2: Personas preocupadas por la calidad del aire en el hogar
 
-**1. Gestión de Organización y Jerarquía (Set-up en Web-App)**
+Landing Page — Elementos a Validar
 
-- Si tuvieras que gestionar digitalmente múltiples locales (ejemplo: la sede central y 2 sucursales), ¿cómo esperarías que la plataforma web te permita estructurar y visualizar estos distintos edificios y sus respectivos pisos/salas?
-- Para tu entorno corporativo, ¿los términos "Organización" y "Espacio" en la interfaz se ajustan a la nomenclatura que utilizan internamente en tu empresa?
-- ¿Cómo te imaginas el flujo dentro de la plataforma web para invitar a otros miembros de tu equipo (ej. técnicos) y asignarles permisos de visualización?
+| #    | Sección del Landing Page | Pregunta asociada |
+| ---- | ------------------------ | ----------------- |
+| 1    | Nomenclatura del Producto | En la aplicación utilizamos el término "Espacio" para referirnos a las habitaciones. ¿Este término te resulta claro y natural para tu hogar, o preferirías llamarlo de otra forma (como "Habitación" o "Cuarto")? |
 
-**2. Despliegue de Dispositivos (Proyección de Escalamiento)**
+Aplicación web — Elementos a Validar
 
-- Actualmente estamos vinculando un prototipo simulado. Proyectándonos a cuando sean dispositivos reales, si tuvieras que registrar 5 sensores nuevos en la plataforma web, ¿cómo esperarías que sea el proceso para no tener que agregarlos manualmente uno por uno?
-- ¿En qué momento del uso de la plataforma te resulta más eficiente etiquetar y asignar un dispositivo a su sala correspondiente: al momento de crearlo en el sistema o posteriormente desde un panel de administración?
-- Al monitorear la lista de dispositivos en la web-app, ¿qué información técnica del sensor (ej. estado de conexión, última lectura, tiempo en línea) necesitas ver a simple vista en la tabla principal?
+| #    | Pantalla / Módulo | Pregunta asociada |
+| ---- | ----------------- | ----------------- |
+| 1    | Configuración de Umbrales (Rules Builder) | Si la gráfica muestra que la calidad del aire está empeorando progresivamente, ¿qué opciones de acción o notificaciones esperarías que la aplicación te sugiera en ese momento configurar desde la plataforma web? |
 
-**3. Monitoreo y Reportes (Analytics)**
+Aplicación movil — Elementos a Validar
 
-- Cuando abres el panel de control general (dashboard), ¿qué métrica, gráfica o sistema de colores te permitiría identificar de inmediato qué sala específica del edificio requiere atención por mala calidad del aire?
-- Pensando en auditorías internas o reportes de salud ocupacional, ¿con qué frecuencia descargarías los datos históricos y qué formato o filtros (fechas, promedios) considerarías indispensables en la plataforma web?
-- Si el sistema detecta (a través del simulador actual) que el nivel de PM2.5 supera el umbral permitido en una sala de reuniones, ¿qué tipo de automatización o alerta esperas de la web-app (ej. un correo automático a mantenimiento, una alerta visual prioritaria)?
+| #    | Pantalla / Módulo | Pregunta asociada |
+| ---- | ----------------- | ----------------- |
+| 1    | Configuración de Áreas (Set-up) | ¿Cómo esperarías estructurar las diferentes áreas de tu casa dentro de la aplicación (por ejemplo, "Mi Casa" > "Sala", "Dormitorio")? |
+| 2    | Registro Inicial (Onboarding) | ¿Qué pasos intuitivos intentarías seguir en la app para registrar tu casa por primera vez? |
+| 3    | Registro de Dispositivo / Vinculación | Al momento de vincular este "sensor virtual" a tu cuenta en la aplicación, ¿el proceso de registro te pareció claro o hubo algún paso confuso? |
+| 4    | Notificaciones de Estado (Desconexión) | Si el simulador perdiera conexión con nuestra plataforma y dejara de enviar datos, ¿qué tipo de advertencia visual o notificación esperarías ver en tu celular para darte cuenta de la desconexión? |
+| 5    | Pantalla de Éxito de Emparejamiento | Al finalizar el proceso de agregar el dispositivo en la app, ¿qué mensaje o pantalla específica te daría la tranquilidad de que el emparejamiento fue exitoso y ya puedes ver los datos? |
+| 6    | Dashboard (Visualización del Aire) | Al abrir la aplicación, ¿cuál es el primer dato, gráfica o color que buscas para saber rápidamente si el aire de tu casa es seguro? |
+| 7    | Explicación de Métricas (Dashboard) | Si la aplicación te muestra que tu sala tiene "CO2: 800 ppm" proveniente del simulador, ¿comprendes qué significa esa métrica? ¿Cómo te gustaría que la app te explique si ese nivel es saludable o perjudicial? |
+
+User Flows a Validar
+
+| #    | Nombre del User Flow | Descripción del flujo |
+| ---- | -------------------- | --------------------- |
+| 1    | Verificación de calidad del aire (Refugio seguro) (Mobile) | El usuario accede al Dashboard móvil para validar en tiempo real los indicadores de calidad del aire interior (AQI y sensores) y verificar que su hogar es un entorno respirable seguro. |
+| 2    | Configuración de umbrales personalizados (Rules Builder) (Web) | El usuario crea reglas y alertas personalizadas basadas en síntomas o alergias (rinitis, asma) en la Web App, recibiendo notificaciones preventivas en su celular ante anomalías ambientales. |
 
 ### 6.3.2. Registro de Entrevistas.
 
