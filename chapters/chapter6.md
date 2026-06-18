@@ -1242,6 +1242,18 @@ User Flows a Validar
 
 ### 6.3.3. Evaluaciones según heurísticas.
 
+Las evaluaciones heurísticas se realizarán en base al siguiente cuadro de calificación de severidad. Cada hallazgo identificado se clasificará según su impacto para priorizar su corrección.
+
+| Nivel | Descripción |
+| --- | --- |
+| 1 | Problema superficial: puede ser fácilmente superado por el usuario o ocurre con muy poca frecuencia. No necesita ser arreglado a no ser que exista disponibilidad de tiempo. |
+| 2 | Problema menor: puede ocurrir un poco más frecuentemente o es un poco más difícil de superar para el usuario. Se le debería asignar una prioridad baja de cara al siguiente releasе. |
+| 3 | Problema mayor: ocurre frecuentemente o los usuarios no son capaces de resolverlo. Es importante que sea corregido y se le debe asignar una prioridad alta. |
+| 4 | Problema muy grave: un error de gran impacto que impide al usuario continuar con el uso de la herramienta. Es imperativo que sea corregido antes del lanzamiento. |
+
+- Segmento 1: Administradores de Establecimientos Públicos y Privados.
+- Segmento 2: Personas preocupadas por la calidad del aire en el hogar.
+
 ## 6.4. Video About-the-Product.
 
 El video About-the-Product es una herramienta de comunicación audiovisual diseñada para presentar la propuesta de valor, el modelo de negocio y el funcionamiento de la solución Clair. Este recurso audiovisual está dirigido a dos audiencias principales:
