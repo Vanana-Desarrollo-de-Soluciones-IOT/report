@@ -1233,12 +1233,13 @@ User Flows a Validar
 | **Angela Cabrera**<br />![](https://i.imgur.com/pAwxorp.png)                                                                  | **Datos Demográficos:** <br/>Mujer de 35 años de edad, reside en el distrito de Jesús María, Lima, y vive sola.<br/><br/>**Ocupación y Background:** <br/>Es gerente de una empresa. Tiene un background técnico que le permite gestionar herramientas digitales y comprender la estructura de organizaciones y espacios dentro de la plataforma.<br/><br/>**Resumen:**<br/>Entiende que el dispositivo calibra la calidad del aire (CO2, limpieza). Para la gestión de múltiples locales, espera que la plataforma se estructure por organización y luego por espacios (sala de conferencias, recepción), con un dispositivo por espacio. En el dashboard, le gustaría que al seleccionar su organización le liste todos los espacios y muestre un dashboard general, no solo uno por espacio. Para invitar miembros, espera un botón de agregar donde pueda seleccionar empleados previamente registrados. Sobre calidad de aire, conoce los datos de PM2.5, CO2, temperatura y humedad. Para auditorías, descargaría datos históricos una vez al año como mínimo; para su propio uso, mensualmente. Espera alertas sobre humedad y CO2. En la app móvil, le interesa principalmente las notificaciones en tiempo real para recibir alertas lo más pronto posible.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | URL: https://bit.ly/4xI4vDB<br/>Inicio: 0:25:44<br/>Fin: 0:37:39 |
 | **Luis Herrera**<br /><img src="../assets/entrevistas/segmento 2 entrevista 5.png" alt="segmento 2 entrevista 5" width="500"> | **Datos Demográficos:**<br/>Hombre de 25 años de edad, reside en el distrito de San Borja, Lima, y trabaja como administrador de edificios en el Edificio Quadra.<br/><br/>**Ocupación y Background:**<br/>Se desempeña como administrador de edificios y supervisa la gestión de 13 departamentos distribuidos en un edificio de aproximadamente cinco pisos, además de dos niveles de estacionamiento. Tiene experiencia en la administración de espacios comunes y en la atención de incidencias relacionadas con el mantenimiento y operación del edificio.<br/><br/>**Resumen:**<br/>Comprende rápidamente el propósito de la plataforma y la identifica como una herramienta para monitorear la calidad del aire mediante dispositivos instalados en distintos espacios. Considera importante que la configuración inicial sea sencilla, especialmente el proceso de instalación y vinculación de dispositivos. Valora positivamente la estructura basada en organizaciones y espacios, ya que le permite asociar sensores a áreas específicas del edificio.<br/>Durante la navegación, sugirió que los indicadores principales, como CO2, temperatura y humedad, sean más visibles dentro del dashboard y que exista una vista consolidada que permita monitorear todos los espacios desde una sola pantalla. También comentó que la representación visual del dispositivo podría generar confusión al parecer una cámara.<br/>La funcionalidad que considera más útil son las alertas en tiempo real, ya que le permitirían detectar rápidamente situaciones fuera de los umbrales establecidos. Mostró interés en conocer cómo se reciben las notificaciones y destacó la importancia de recibirlas directamente en el celular. Además, sugirió incorporar alertas de batería para evitar que los dispositivos dejen de funcionar sin ser detectados.<br/>Respecto a la interfaz, espera contar con una versión completamente en español para facilitar su uso. En términos generales, percibe la solución como útil y fácil de adoptar, siempre que la instalación de los dispositivos sea simple y el mantenimiento requerido sea mínimo. Indicó que utilizaría la plataforma con alta probabilidad si estas condiciones se cumplen. | URL: https://bit.ly/4xI4vDB<br/>Inicio: 0:37:39<br/>Fin: 0:45:48 |
 | ![](https://i.imgur.com/RIxq5mt.png)                                                                                           | **Datos Demográficos:** <br/>Mujer de 20 años de edad, emprendedora y vive sola.<br/><br/>**Ocupación y Background:** <br/>Tiene su local de uñas y trabaja de manera independiente.<br/><br/>**Resumen:**<br/>Comprende que el dispositivo monitorea la calidad del aire para asegurar un ambiente saludable en su negocio. Valora la simplicidad en la configuración de espacios y dispositivos. Sugiere que el dashboard sea intuitivo y que permita visualizar rápidamente el estado de la calidad del aire con un sistema de colores sencillo (semáforo). Le gustaría recibir alertas en su celular ante cambios significativos en los niveles de CO2 para poder tomar medidas rápidas como ventilar el local. Considera que la plataforma es una solución útil y accesible para su tipo de negocio pequeño.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | URL: https://bit.ly/4xI4vDB<br/>Inicio: 0:45:48<br/>Fin: 0:54:40 |
+| ![](https://i.imgur.com/RIxq5mt.png)                                                                                           | **Datos Demográficos:** <br/>Mujer de 20 años de edad, emprendedora y vive sola.<br/><br/>**Ocupación y Background:** <br/>Tiene su local de uñas y trabaja de manera independiente.<br/><br/>**Resumen:**<br/>Comprende que el dispositivo monitorea la calidad del aire para asegurar un ambiente saludable en su negocio. Valora la simplicidad en la configuración de espacios y dispositivos. Sugiere que el dashboard sea intuitivo y que permita visualizar rápidamente el estado de la calidad del aire con un sistema de colores sencillo (semáforo). Le gustaría recibir alertas en su celular ante cambios significativos en los niveles de CO2 para poder tomar medidas rápidas como ventilar el local. Considera que la plataforma es una solución útil y accesible para su tipo de negocio pequeño.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | URL: https://bit.ly/4xI4vDB<br/>Inicio: 0:45:48<br/>Fin: 0:54:40 |
 
 | Segmento objetivo                                                                                       | Personas preocupadas por la calidad del aire en el hogar                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Video                                                                   |
 | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | Viviana Rivera<br /><img src="../assets/entrevistas/vi1.png" alt="segmento 2 entrevista 1" width="500"> | **Datos Demográficos:** <br/>Es una señora de 64 años de edad, reside en Santiago de Surco con su pareja y su unico hijo.<br/><br/>**Ocupación y Background:** <br/>Se dedica de manera independiente a la traduccion junto a su esposo y ofrecen sus servicios a compañias cliente<br/><br/>**Tecnología y Canales:** <br/>Trabaja diariamente con una laptop y utiliza frecuentemente su smartphone para consumir contenido multimedia<br/><br/>**Resumen:**<br/>Entiende que el sistema monitorea la calidad del aire en el hogar. Para estructurar las áreas, prefiere una jerarquía sencilla como "Mi Casa" > "Habitación/Sala", señalando que el término "Habitación" le resulta más familiar que "Espacio". Considera que el proceso de onboarding virtual para vincular el sensor simulado es directo, y sugiere una pantalla final con un mensaje explícito como "Sensor del Hogar Conectado Correctamente". Ante una desconexión, esperaría una alerta en su celular y un indicador gris de "Desconectado". Al abrir la app, busca un sistema de colores tipo semáforo; indica que la cifra "800 ppm" de CO2 no le es familiar, por lo que valora que la aplicación use colores descriptivos (como amarillo) y explicaciones simples. Espera recomendaciones del sistema como abrir ventanas cuando el aire decae. | URL: https://bit.ly/4xI4vDB<br/>Inicio: 0:00:00<br/>Fin: 0:08:26 |
 | Damian Hager<br /><img src="../assets/entrevistas/vi2.png" alt="segmento 2 entrevista 1" width="500">   | **Datos Demográficos:** <br/>Señor de 58 años, reside en Santiago de Surco con su esposa e hijo.<br/><br/>**Ocupación y Background:** <br/>Al igual que su esposa, se dedica a la traduccion de manera independiente<br/><br/>**Tecnología y Canales:** <br/>Esta familiarizado en el uso de PC de sobremesa y laptops, usa su celular solo para lo necesario<br/><br/>**Resumen:**<br/>Comprende el propósito de medir la calidad del aire. Organizaría su casa dividiéndola en "Cuartos" o "Habitaciones" (dormitorio principal, sala, cocina). Le parece claro el onboarding y la vinculación simulada, sugiriendo un botón visible de "Finalizar" que lleve directo al panel una vez emparejado. Si el dispositivo pierde señal, prefiere ver un ícono visual parpadeante de advertencia rojo directamente en el widget del espacio afectado. Al ingresar al dashboard, busca la barra de color principal de calidad del aire (AQI). Sobre la métrica de CO2 a 800 ppm, sugiere acompañarla de una leyenda breve que aclare el rango óptimo (ej. "Saludable por debajo de 1000 ppm"). Si los indicadores empeoran, esperaría notificaciones push preventivas y sugerencias directas sobre ventilación de las áreas.                                                                                                      | URL: https://bit.ly/4xI4vDB<br/>Inicio: 0:08:26<br/>Fin: 0:18:37 |
-| **Shirley Jurado<br />**<br />![](https://i.imgur.com/2J8G75Q.png)                                      | **Datos Demográficos:** <br/>Mujer de 30 años de edad, reside en el distrito de Miraflores, Lima, y vive con su pareja.<br/><br/>**Ocupación y Background:** <br/>Es profesional independiente en el área de marketing digital. Está familiarizada con el uso de aplicaciones móviles y plataformas web para la gestión de proyectos.<br/><br/>**Resumen:**<br/>Entiende que el producto mide la calidad del aire. Organizaría su casa como una organización y dentro de ella crearía espacios (sala, dormitorio, cocina). El término "espacio" le resulta claro y natural. El proceso de vinculación del dispositivo le pareció claro e intuitivo, y esperaría un mensaje de "emparejado" o "conectado". Al abrir la app, busca el color verde para saber si el aire es seguro; se fija primero en la temperatura y luego en el CO2. Si ve un nivel de CO2 elevado (800 ppm), le gustaría que la app lo relacione con colores (amarillo) y un mensaje indicando que el nivel está elevado. Espera que la app sugiera acciones como abrir ventanas cuando la calidad empeora. En la app móvil, entiende las analíticas, organizaciones y espacios, comprende las alertas de niveles altos de CO2 y valora el historial de alertas de los últimos 30 días.                                                                    | URL: https://bit.ly/4xI4vDB<br/>Inicio: 0:18:37<br/>Fin: 0:25:44 |
+| **Shirley Jurado<br />**<br />![](https://i.imgur.com/2J8G75Q.png)                                      | **Datos Demográficos:** <br/>Mujer de 30 años de edad, reside en el distrito de Miraflores, Lima, y vive con su pareja.<br/><br/>**Ocupación y Background:** <br/>Es profesional independiente en el área de marketing digital. Está familiarizada con el uso de aplicaciones móviles y plataformas web para la gestión de proyectos.<br/><br/>**Resumen:**<br/>Entiende que el producto mide la calidad del aire. Organizaría su casa como una organización y dentro de ella crearía espacios (sala, dormitorio, cocina). El término "espacio" le resulta claro y natural. El proceso de vinculación del dispositivo le pareció claro e intuitivo, y esperaría un mensaje de "emparejado" o "conectado".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | URL: https://bit.ly/4xI4vDB<br/>Inicio: 0:18:37<br/>Fin: 0:25:44 |
 
 ### 6.3.3. Evaluaciones según heurísticas.
 
@@ -1260,20 +1261,20 @@ Usability – Inclusive Design – Information Architecture
 
 Datos del curso
 
-| Campo      | Valor                           |
-| ---------- | ------------------------------- |
-| Carrera    | Ingeniería de Software          |
-| Curso      | Desarrollo de Soluciones IoT    |
-| Sección    | *(código de la sección)*        |
-| Profesores | Todos                           |
-| Auditor    | *(nombre del grupo)*            |
-| Cliente(s) | *(nombre de los participantes)* |
+| Campo      | Valor                                          |
+| ---------- | ---------------------------------------------- |
+| Carrera    | Ingeniería de Software                         |
+| Curso      | Desarrollo de Soluciones IoT                   |
+| Sección    | 1ASI0572                                       |
+| Profesores | Marco Antonio Leon Baca                        |
+| Auditor    | Vanana                                         |
+| Cliente(s) | Angela Cabrera, Luis Herrera, Valentina Dumont |
 
 Site o App a evaluar
 
 | Campo     | Valor             |
 | --------- | ----------------- |
-| App/Sitio | *(Nombre de App)* |
+| App/Sitio | Clair Landing Page, Aplicación Web y Aplicación Móvil |
 
 Tareas a evaluar
 
@@ -1281,24 +1282,38 @@ Incluidas en el alcance
 
 | N°   | Tarea                            |
 | ---- | -------------------------------- |
-| 1    | Registro de un usuario nuevo     |
-| 2    | Publicación de un post           |
-| 3    | Búsqueda de un paquete turístico |
-| 4    | Reserva de un viaje              |
-| 5    | Cancelación de una reserva       |
-| 6    | Agregar ítems a un pedido        |
-| 7    | Pago de un paquete turístico     |
-| 8    | Etc.                             |
+| 1    | Monitoreo general de múltiples locales (Dashboard consolidado) |
+| 2    | Configuración de la estructura organizacional (Organización y Espacios) |
+| 3    | Registro y vinculación de dispositivos IoT (Clair Alpha) |
+| 4    | Configuración de reglas de alertas y umbrales personalizados (Rules Builder) |
+| 5    | Descarga de reportes históricos de calidad de aire (Analytics) |
+| 6    | Invitación de colaboradores y asignación de permisos |
+| 7    | Recepción y gestión de notificaciones push en tiempo real (Mobile app) |
 
 No incluidas en esta versión
 
 | N°   | Tarea                                           |
 | ---- | ----------------------------------------------- |
-| 1    | Compartir reservas entre usuarios               |
-| 2    | Presentar ofertas de último minuto              |
-| 3    | Administrar puntos del programa de fidelización |
-| 4    | Guardar "alerta de paquetes"                    |
-| 5    | Etc.                                            |
+| 1    | Registro masivo de dispositivos por lote (Bulk Onboarding) |
+| 2    | Control y automatización directa sobre actuadores de sistemas HVAC comerciales |
+| 3    | Envío automático programado de reportes de calidad del aire por correo electrónico |
+| 4    | Gestión de roles avanzados con permisos granulares y personalizados |
+| 5    | Historial de auditoría para registrar modificaciones de configuraciones |
+
+**Matriz de Evaluación Heurística - Segmento 1**
+
+| Heurística | Hallazgo / Problema Identificado | Severidad | Propuesta de Solución / Recomendación |
+| --- | --- | :---: | --- |
+| **1. Visibility of system status** | Si un dispositivo pierde conexión, el usuario no se entera fácilmente en el dashboard de forma visual antes de entrar a la sección técnica. | 2 | Agregar un estado claro en la tarjeta principal de cada espacio ("Online" en verde / "Offline" en gris o rojo parpadeante). |
+| **2. Match between system and the real world** | El modelo visual del dispositivo de sensado parece una cámara en la interfaz, lo cual genera susceptibilidad y desconfianza en los colaboradores. | 3 | Cambiar la ilustración/icono por una silueta abstracta o un sensor de aire clásico y añadir aclaraciones en el onboarding. |
+| **3. User control and freedom** | No se cuenta con una opción de deshacer o revertir inmediatamente la eliminación accidental de un espacio u organización, obligando a reconfigurar todo. | 2 | Implementar un historial de papelera temporal o confirmación de deshacer al eliminar un espacio. |
+| **4. Consistency and standards** | Las métricas técnicas de CO2 e indicadores no especifican los rangos óptimos de manera estandarizada y familiar para el usuario común. | 2 | Incorporar un sistema de colores tipo semáforo y una leyenda breve con los límites saludables de CO2 (ej. menor a 1000 ppm). |
+| **5. Error prevention** | La falta de una advertencia previa o validación de rango antes de guardar umbrales críticamente bajos de calidad de aire en el Rules Builder. | 2 | Implementar validaciones en tiempo real para evitar ingresar valores imposibles o peligrosos en los umbrales. |
+| **6. Recognition rather than recall** | Los administradores de múltiples locales deben ingresar uno a uno para ver el estado del aire en vez de tener un resumen global consolidado. | 3 | Diseñar una vista consolidada de inicio que muestre una cuadrícula con todos los locales, sus espacios y alertas activas principales. |
+| **7. Flexibility and efficiency of use** | No existe opción para registrar múltiples sensores a la vez (por ejemplo, para 13 departamentos), lo que ralentiza el despliegue a gran escala. | 2 | Implementar una función de importación masiva por lote o emparejamiento secuencial rápido desde la web-app. |
+| **8. Aesthetic and minimalist design** | El dashboard de visualización muestra demasiados metadatos técnicos redundantes del hardware (IP, MAC, Firmware) en primer plano. | 1 | Reubicar los metadatos técnicos en una pestaña de detalles avanzados y priorizar el tamaño de los indicadores de aire. |
+| **9. Help users recognize, diagnose, and recover from errors** | Ante niveles críticos de CO2, la app web muestra un aviso de alerta pero no proporciona recomendaciones de acción (como ventilar o abrir ventanas). | 2 | Incluir mensajes de recomendación contextuales específicos e inmediatos junto a la notificación de alerta. |
+| **10. Help and documentation** | Ausencia de una sección de ayuda, preguntas frecuentes (FAQs) o guías rápidas integradas para resolver problemas de emparejamiento del hardware. | 2 | Diseñar una pestaña de "Ayuda y Soporte" con las guías de instalación y resolución de problemas comunes de conexión. |
 
 - Segmento 2: Personas preocupadas por la calidad del aire en el hogar.
 
@@ -1313,16 +1328,16 @@ Datos del curso
 | ---------- | ------------------------------- |
 | Carrera    | Ingeniería de Software          |
 | Curso      | Desarrollo de Soluciones IoT    |
-| Sección    | *(código de la sección)*        |
-| Profesores | Todos                           |
-| Auditor    | *(nombre del grupo)*            |
-| Cliente(s) | *(nombre de los participantes)* |
+| Sección    | 1ASI0572                        |
+| Profesores | Marco Antonio Leon Baca         |
+| Auditor    | Vanana                          |
+| Cliente(s) | Viviana Rivera, Damian Hager, Shirley Jurado |
 
 Site o App a evaluar
 
 | Campo     | Valor             |
 | --------- | ----------------- |
-| App/Sitio | *(Nombre de App)* |
+| App/Sitio | Clair Landing Page, Aplicación Web y Aplicación Móvil |
 
 Tareas a evaluar
 
@@ -1330,24 +1345,38 @@ Incluidas en el alcance
 
 | N°   | Tarea                            |
 | ---- | -------------------------------- |
-| 1    | Registro de un usuario nuevo     |
-| 2    | Publicación de un post           |
-| 3    | Búsqueda de un paquete turístico |
-| 4    | Reserva de un viaje              |
-| 5    | Cancelación de una reserva       |
-| 6    | Agregar ítems a un pedido        |
-| 7    | Pago de un paquete turístico     |
-| 8    | Etc.                             |
+| 1    | Monitoreo del estado del aire en el hogar (Dashboard móvil) |
+| 2    | Proceso de onboarding y emparejamiento guiado del dispositivo |
+| 3    | Configuración de habitaciones/cuartos del hogar |
+| 4    | Recepción de notificaciones push de umbrales en el smartphone |
+| 5    | Configuración de reglas y sugerencias preventivas ante picos de CO2 |
+| 6    | Comprensión de explicaciones y métricas ambientales en pantalla |
+| 7    | Visualización del historial de alertas de los últimos 30 días |
 
 No incluidas en esta versión
 
 | N°   | Tarea                                           |
 | ---- | ----------------------------------------------- |
-| 1    | Compartir reservas entre usuarios               |
-| 2    | Presentar ofertas de último minuto              |
-| 3    | Administrar puntos del programa de fidelización |
-| 4    | Guardar "alerta de paquetes"                    |
-| 5    | Etc.                                            |
+| 1    | Integración directa con asistentes inteligentes del hogar (Alexa, Google Home, Apple HomeKit) |
+| 2    | Reportes clínicos avanzados descargables en PDF para compartir con neumólogos o alergólogos |
+| 3    | Automatización de electrodomésticos inteligentes de terceros (purificadores de aire) |
+| 4    | Modo offline completo de la aplicación móvil (requiere conexión activa) |
+| 5    | Geolocalización de sensores para alertas climáticas externas automáticas |
+
+**Matriz de Evaluación Heurística - Segmento 2**
+
+| Heurística | Hallazgo / Problema Identificado | Severidad | Propuesta de Solución / Recomendación |
+| --- | --- | :---: | --- |
+| **1. Visibility of system status** | Al finalizar el proceso de vinculación del sensor virtual, la interfaz no proporciona una pantalla clara que certifique que el emparejamiento fue exitoso. | 2 | Mostrar una pantalla final de éxito con un mensaje amigable como "Sensor de Hogar Conectado Correctamente". |
+| **2. Match between system and the real world** | La aplicación utiliza el término técnico "Espacios" en lugar de palabras familiares del ámbito doméstico como "Habitación", "Cuarto" o "Sala". | 2 | Adaptar la interfaz para el segmento hogar reemplazando "Espacio" por nombres de habitaciones personalizables. |
+| **3. User control and freedom** | Si el usuario agrega por error una habitación o dispositivo, no hay un botón directo y visible de retroceder o cancelar durante el flujo, forzando a completar el asistente. | 2 | Añadir controles estándar de retroceso ("Atrás") y de salida ("Cancelar") visibles en la barra superior del flujo de configuración. |
+| **4. Consistency and standards** | El sistema muestra el nivel de CO2 en formato numérico bruto "800 ppm" sin explicar si es un nivel saludable mediante colores (semáforo) o etiquetas comprensibles. | 3 | Acompañar el valor numérico de una barra de color semáforo y una etiqueta explicativa clara (ej. "Excelente", "Ventilación recomendada"). |
+| **5. Error prevention** | Falta de un paso de confirmación de guardado de los límites de temperatura y humedad en el panel de configuración móvil, lo que genera cambios accidentales al deslizar el dedo. | 2 | Implementar un retardo de confirmación o un botón explícito de "Aplicar Cambios" para evitar deslizamientos erróneos. |
+| **6. Recognition rather than recall** | El usuario debe recordar el significado de las siglas de métricas como "PM2.5" y "AQI" al navegar por el historial, debido a que no cuentan con etiquetas explicativas accesibles. | 2 | Añadir botones de información flotante (tooltip) que al tocarlos desplieguen una definición rápida e intuitiva del indicador. |
+| **7. Flexibility and efficiency of use** | No existe un panel de atajos en la pantalla de inicio móvil para encender/apagar rápidamente las notificaciones de un cuarto específico. | 2 | Incorporar interruptores (switches) rápidos de alerta en la vista general del dashboard del hogar. |
+| **8. Aesthetic and minimalist design** | La pantalla principal del dashboard móvil satura visualmente al usuario del hogar con gráficas de datos temporales muy complejas en lugar de priorizar un indicador de estado general limpio. | 2 | Simplificar la vista principal del dashboard centrándose en el estado consolidado del hogar con una paleta de colores minimalista y armónica. |
+| **9. Help users recognize, diagnose, and recover from errors** | Ante la desconexión del sensor perimetral, la app móvil muestra un indicador gris pero no ofrece instrucciones paso a paso para reconectarlo o solucionar problemas del Wi-Fi. | 2 | Incorporar sugerencias automatizadas directas (ej. "Se sugiere revisar el enrutador de red o reubicar el dispositivo"). |
+| **10. Help and documentation** | Ausencia de guías rápidas explicativas o tutorial inicial interactivo para la correcta ubicación del sensor dentro de las habitaciones del hogar para evitar lecturas falsas. | 2 | Diseñar una guía interactiva dentro del menú de ayuda sobre las mejores prácticas de ubicación física de sensores de aire. |
 
 ## 6.4. Video About-the-Product.
 
