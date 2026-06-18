@@ -21,7 +21,7 @@ Cirkit Designer. (s. f.). *Online circuit design and prototyping platform for Io
 
 # Anexos
 
-- Entrevista: https://goo.su/KKwEhz4
+- Entrevistas: https://goo.su/KKwEhz4
 - Big Picture Event Storming: https://bit.ly/3QwYkAS
 - Candidate Context Discovery: https://imgur.com/a/OX5FnV6
 - Backlog en Trello: https://sl1nk.com/r2diehi
@@ -40,3 +40,4 @@ Cirkit Designer. (s. f.). *Online circuit design and prototyping platform for Io
 - Prototype Web App Navigation Video: https://bit.ly/3Q84l7g
 - Prototype Mobile App Navigation Video: https://bit.ly/43bBBh7
 - About the Product: https://bit.ly/4olR1cf
+- Validation Interviews Video: https://bit.ly/4xI4vDB
