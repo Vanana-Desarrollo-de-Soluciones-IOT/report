@@ -69,16 +69,12 @@ Este flujo gestiona la creación de nuevas identidades en la plataforma. El sist
 
 Describe el proceso de validación de credenciales para usuarios existentes. Una vez autenticado, el sistema inicia una sesión segura y otorga los permisos necesarios según el rol asignado (**Home User** o **Facility Admin**).
 
-
-
 <p align="center">
  <img src="https://i.imgur.com/jvEigtT.png" width="700">
 </p>
 **3. Trial and Subscription Lifecycle**
 
 Gestiona el estado de la cuenta del usuario, desde la activación del período de prueba de 30 días hasta la transición a planes suscritos, controlando el acceso a las funciónes premium del ecosistema.
-
-
 
 <p align="center">
  <img src="https://i.imgur.com/7wSa5xs.png" width="700">
@@ -87,16 +83,12 @@ Gestiona el estado de la cuenta del usuario, desde la activación del período d
 
 Representa el flujo financiero donde se procesan las transacciones de suscripción. El sistema valida el método de pago y confirma el resultado de la operación para actualizar el nivel de servicio del cliente.
 
-
-
 <p align="center">
  <img src="https://i.imgur.com/1dgJLHX.png" width="700">
 </p>
 **5. Facility and Space Setup**
 
 Flujo orientado principalmente al Facility Admin para la estructuración lógica de sus establecimientos. Permite segmentar el local en zonas específicas para una monitorización más precisa y organizada.
-
-
 
 <p align="center">
  <img src="https://i.imgur.com/PopJW9Q.png" width="700">
@@ -105,8 +97,6 @@ Flujo orientado principalmente al Facility Admin para la estructuración lógica
 
 Es el proceso técnico de vinculación de hardware. Incluye la lectura del código único del sensor Clair y su registro en la base de datos de la plataforma para comenzar la transmisión de datos.
 
-
-
 <p align="center">
  <img src="https://i.imgur.com/FDUiEL9.png" width="700">
 </p>
@@ -114,16 +104,12 @@ Es el proceso técnico de vinculación de hardware. Incluye la lectura del códi
 
 Permite a los usuarios definir los parámetros de seguridad para $CO_2$ y partículas. Este flujo establece los límites que el motor de reglas utilizará para evaluar la calidad del aire de forma personalizada.
 
-
-
 <p align="center">
  <img src="https://i.imgur.com/dEGlvX9.png" width="700">
 </p>
 **8. Telemetry Ingestion and Validation**
 
 Gestiona la recepción de datos y valida su integridad. Incluye almacenamiento local (Offline) cuando se pierde la conexión, permitiendo la sincronización automática por lotes al restablecerse el internet para evitar brechas en el historial de calidad del aire.
-
-
 
 <p align="center">
  <img src="https://i.imgur.com/R7wW3kx.png" width="700">
@@ -178,7 +164,6 @@ Esta vista muestra el workflow para el registro y activación de usuarios, desta
 <p align="center">
 <img src="../assets/domain-message-flows/DMF2.jpg" alt="c4-container" width="700">
 </p>
-
 
 Esta vista detalla el proceso de Login e Inicio de Sesión, ilustrando cómo el sistema organiza la autenticación y la autorización mediante un componente central de IAM. El flujo comienza cuando el usuario proporciona sus credenciales a través de la Website, la cual delega la validación y la asignación de permisos por rol al IAM para garantizar un control de acceso seguro y centralizado. Una vez autenticado, el estado de la sesión se persiste en el Internal Storage, permitiendo que el usuario consulte servicios especializados como la Air Quality Evaluation en tiempo real, cuyas interacciones son registradas por el módulo de Analytics & Reporting para auditoría y análisis posterior.
 
@@ -434,1036 +419,2491 @@ El tablero completo del Bounded Context Canvases. puede visualizarse en el sigui
 
 ### 4.1.2. Context Mapping.
 
-Con el Context Mapping se presentan las relaciónes entre los bounded contexts identificados de manera gráfica y estructurada.
+El **Context Mapping** (Mapa de Contextos) es una herramienta estratégica de Domain-Driven Design (DDD) que define visual y conceptualmente cómo interactúan los diferentes *Bounded Contexts* (Contextos Acotados) de la solución Clair. Nos permite identificar los límites de responsabilidades, el tipo de relación técnica y organizativa entre los equipos, y cómo fluye la información a través del sistema.
 
-<img src="../assets/context-mapping/contextMap.png" alt="context-map" width="700">
+Para la elaboración de nuestros mapas de contextos, el equipo realizó sesiones de debate técnico analizando la información de los Bounded Contexts y el EventStorming. Durante este proceso, evaluamos el diseño técnico respondiendo a preguntas estratégicas para analizar alternativas de acoplamiento y cohesión:
+*   **¿Qué pasaría si aislamos las capacidades principales (core capabilities) y movemos las otras a un contexto aparte?** Evaluamos separar el motor de evaluación de calidad del aire (`Evaluation`) del procesamiento de alertas físicas (`Alerting`). Decidimos mantenerlos separados para que el motor de evaluación sea puramente analítico y el de alertas sea reactivo/operativo, evitando sobrecargar un solo módulo.
+*   **¿Qué pasaría si creamos un servicio compartido (Shared Service) o Shared Kernel para reducir la duplicación?** Consideramos duplicar las entidades de usuario en cada subsistema para darles total independencia. Sin embargo, para no ensuciar la base de datos con información redundante de perfiles y sesiones, decidimos implementar un `Shared Kernel` y un módulo `IAM` como proveedor Upstream general. Esto centraliza la autenticación pero usa Capas Anticorrupción (ACL) en los consumidores para mitigar el acoplamiento.
+*   **¿Qué pasaría si movemos la capacidad de notificaciones dentro de Alerting?** Analizamos fusionar `Notifications` con `Alerting`. No obstante, determinamos que `Notifications` debe ser un contexto genérico que pueda servir a otros módulos en el futuro (como facturación o marketing), por lo que lo mantuvimos independiente y consumiendo eventos de alerta a través de un canal intermedio.
 
-Las relaciónes Published Language (PL) se utilizan entre Edge Station y Air Quality Evaluation, y desde este último hacia Alerting & Response y Analytics & Reporting, porque en estos puntos del sistema se intercambia información ya estructurada del dominio, 
-como telemetría procesada, estados del aire o eventos de umbrales
+**Discusión de alternativas:** Evaluamos una alternativa monolítica donde todos los contextos compartían la misma base de datos sin ACLs (patrón Shared Database), lo cual agilizaba el desarrollo inicial pero creaba un fuerte acoplamiento. Al final, optamos por la aproximación actual basada en Upstream/Downstream con ACLs y Shared Kernels delimitados por plataforma (Web, Mobile, Edge). Esta aproximación garantiza la máxima independencia de despliegue para cada producto de la solución Clair y protege la integridad de los modelos de dominio individuales.
 
-Las relaciónes Customer–Supplier (CUS → SUP) se presentan entre Embedded App y Edge Station, así como entre Alerting & Response y Notifications y Analytics & Reporting y Notifications, 
-porque existe una dependencia directa donde un contexto necesita que otro ejecute una función específica.
+Para entender las relaciones descritas en los diagramas, se utilizan los siguientes patrones estándar:
+*   **Upstream (U) / Downstream (D):** Define la dirección de la dependencia. El contexto *Upstream* (U) es el proveedor y el *Downstream* (D) es el cliente. Si el Upstream cambia, el Downstream se ve afectado.
+*   **ACL (Anti-Corruption Layer / Capa Anticorrupción):** Una capa de traducción implementada por el Downstream para evitar que el modelo de datos del Upstream contamine o ensucie su propio modelo de dominio.
+*   **Shared Kernel (SK) / Núcleo Compartido:** Un conjunto de código, bases de datos o librerías que dos o más contextos comparten de mutuo acuerdo. Cualquier cambio en el Shared Kernel requiere la coordinación de ambos equipos.
 
+A continuación se detallan las relaciones y el flujo de diseño para cada producto de la solución:
+
+#### 4.1.2.1. Context Mapping - Web services (Backend).
+
+El backend es el motor central de la solución Clair, donde se orquestan los procesos de negocio más complejos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/context-mapping/backend/backend-context-mapping/context-mapping.svg" alt="Context Mapping - Web Services" width="800">
+</p>
+
+**Análisis Detallado de Relaciones:**
+
+1.  **El rol de Device como Proveedor Central (Upstream -> Downstream con ACL):**
+    *   `Device` provee información a `Alerting`, `Analytics`, `Evaluation` y `Notifications`.
+    *   **¿Por qué con ACL?** Cada uno de estos contextos de negocio consume datos del sensor, pero tiene su propio modelo conceptual (por ejemplo, `Evaluation` se enfoca en umbrales de salud, mientras que `Analytics` se enfoca en series de tiempo históricas). Las ACL aseguran que un cambio en la estructura interna de los dispositivos no rompa estos módulos individuales.
+2.  **Gestión de Suscripciones y Facturación (Billing):**
+    *   `Billing` es *Upstream* de `Device` y `Analytics`. Esto controla qué dispositivos se pueden activar o qué cantidad de reportes históricos se pueden generar según el plan del usuario (gratuito o de pago).
+3.  **Seguridad y Acceso (IAM):**
+    *   `IAM` provee datos de identidad a `Billing` (para asociar pagos a usuarios) y a `Notifications` (para obtener correos y tokens de notificación).
+4.  **Shared Kernel (SK):**
+    *   Todos los contextos del backend (`IAM`, `Device`, `Alerting`, `Analytics`, `Billing`, `Evaluation`, `Notifications`) comparten un `Shared Kernel` que contiene las clases base del dominio, eventos de integración comunes y utilidades de infraestructura transversal.
+
+#### 4.1.2.2. Context Mapping - Web application (Frontend).
+
+Representa la aplicación web desarrollada en Angular, encargada de la visualización y administración para los usuarios administradores del sistema (Facility Admins).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/context-mapping/frontend/frontend-context-mapping/context-mapping.svg" alt="Context Mapping - Web Application" width="800">
+</p>
+
+**Análisis Detallado de Relaciones:**
+
+1.  **Módulos de Negocio en la Interfaz (Upstream -> Downstream con ACL):**
+    *   `Device` expone sus datos a `Alerting` y `Analytics` a nivel de UI a través de servicios de frontend dedicados con traductores propios (ACL) para estructurar componentes visuales independientes.
+    *   `Evaluation` alimenta visualmente a `Analytics` (por ejemplo, mostrando gráficas de alertas cruzadas con el estado del aire).
+2.  **IAM como Eje Transversal en el Cliente:**
+    *   `IAM` es *Upstream* directo de `Analytics`, `Billing` y el `Shared Kernel` del frontend. La sesión activa del usuario y sus permisos de rol (Guardas de Angular) determinan qué partes de la interfaz y qué componentes compartidos se renderizan.
+3.  **Shared Kernel en Frontend:**
+    *   `Alerting`, `Analytics`, `Device` e `IAM` interactúan con el `Shared Kernel` (que aloja layouts comunes, componentes visuales reutilizables como botones y selectores, y configuraciones de interceptores HTTP).
+
+#### 4.1.2.3. Context Mapping - Mobile application.
+
+Corresponde a la aplicación móvil desarrollada en Flutter, diseñada para el usuario final (Home User) para consultar la calidad del aire en tiempo real y recibir alertas inmediatas.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/context-mapping/mobile/mobile-context-mapping/context-mapping.svg" alt="Context Mapping - Mobile Application" width="800">
+</p>
+
+**Análisis Detallado de Relaciones:**
+
+1.  **Dependencias en Dispositivos Móviles (Upstream -> Downstream con ACL):**
+    *   `Alerts` y `Analytics` actúan como *Upstream* de `Devices` con ACL. En la aplicación móvil, los listados de dispositivos se enriquecen dinámicamente con alertas y resúmenes analíticos rápidos.
+    *   `Devices` provee información directamente al módulo de `Evaluation` para mostrar estados del aire en tiempo real usando ACL para mapear los colores de advertencia específicos del UI.
+2.  **Infraestructura Base Compartida (Core Infrastructure y Shared Kernel):**
+    *   Existe un contexto de **Core Infrastructure** que funciona como el Shared Kernel a bajo nivel técnico para todos los módulos (IAM, Devices, Alerts, Analytics, Evaluation, Notifications y Shared). Contiene el cliente HTTP de Flutter, base de datos local (SQLite/Hive) y configuraciones del dispositivo móvil.
+    *   El **Shared Kernel (Shared)** provee componentes visuales nativos de Flutter (Widgets, loaders, diálogos) comunes para la mayoría de los módulos.
+
+#### 4.1.2.4. Context Mapping - Edge services.
+
+Corresponde a la estación Edge de Clair desarrollada en Flask/Python, encargada del procesamiento intermedio en local, controlando los sensores físicos y actuadores antes de enviar la información a la nube.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/context-mapping/edge/edge-context-mapping/context-mapping.svg" alt="Context Mapping - Edge Services" width="800">
+</p>
+
+**Análisis Detallado de Relaciones:**
+
+1.  **IAM local como Consumidor de Seguridad (Upstream -> Downstream con ACL):**
+    *   En este entorno offline o de borde, los contextos de `Device` (el hardware del hub), `Alerting` (las reglas de activación del relé físico) y `Provisioning` (la vinculación del hardware al Edge) actúan como *Upstream* de `IAM`.
+    *   **¿Por qué esta dirección?** El IAM local necesita validar y autenticar las peticiones internas de estos componentes de hardware para garantizar que ningún dispositivo no autorizado tome el control del Edge o de los actuadores (ventanas, extractores). Se utiliza ACL para aislar las librerías criptográficas de seguridad del negocio del hardware.
+2.  **Shared Kernel en Edge:**
+    *   `IAM`, `Device`, `Alerting` y `Provisioning` comparten un `Shared Kernel` ligero que incluye los modelos de comunicación de sockets, serialización JSON nativa y middlewares de logging del sistema operativo local.
 
 ### 4.1.3. Software Architecture.
 
+
 #### 4.1.3.1. Software Architecture System Landscape Diagram.
 
-El System Landscape Diagram presenta la vista más amplia de la solución Vanana, ubicando a Clair dentro de su ecosistema tecnológico y mostrando cómo se relacióna con actores externos, plataformas de soporte y componentes operativos del dominio. Esta perspectiva permite identificar claramente los límites del sistema, las integraciones críticas y el flujo de valor entre usuarios, servicios cloud, capa edge y dispositivos IoT.
+El diagrama de **System Landscape** (Panorama del Sistema) proporciona una vista de alto nivel de todo el ecosistema de software de Vanana. A diferencia de un diagrama de contexto tradicional enfocado en un solo sistema, este diagrama representa un mapa global donde todos los sistemas de software (internos y externos) y los usuarios se muestran como pares (*peers*) dentro del entorno organizacional.
 
-<img src="../assets/c4-diagrams/landscape/VananaSystemLandscape-dark.svg" alt="system-landscape" width="900">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/landscape/VananaSystemLandscape-dark.svg" alt="Vanana System Landscape Diagram" width="850">
+</p>
 
-En esta vista se evidencia que Vanana opera como una arquitectura distribuida: la experiencia de usuario se articula en interfaces web y móviles, la lógica de negocio se concentra en servicios backend desacoplados por bounded contexts, y la operación en campo se sostiene mediante Embedded App y Edge Station. Además, el landscape deja explícita la dependencia de servicios externos como autenticación, pagos y notificaciones, lo cual facilita analizar riesgos de integración, puntos de escalabilidad y decisiones de evolución arquitectónica.
+**Descripción Detallada del Ecosistema:**
+
+1.  **Usuarios y Actores del Sistema:**
+    *   **Facility Admin (Administrador de Instalaciones):** Es el operador responsable de gestionar múltiples espacios y monitorear los sensores de calidad del aire en establecimientos comerciales. Interactúa directamente con la plataforma Vanana, autenticándose a través de redes sociales (Google) y administrando sus planes de pago en Stripe.
+    *   **Home User (Usuario del Hogar):** Es el cliente residencial que monitorea la calidad del aire de su hogar. Al igual que el administrador, hace uso del login social (Google) y gestiona su suscripción premium en Stripe.
+
+2.  **Sistemas Internos de Vanana:**
+    *   **Vanana Platform:** Es el núcleo tecnológico centralizado que recibe, procesa y expone la información de telemetría, administrando los flujos de automatización de actuadores en base a los umbrales de contaminación.
+    *   **Clair Hardware:** Comprende el conjunto físico de sensores IOT (capturadores de telemetría de $CO_2$, material particulado PM2.5 y temperatura) y actuadores (ventanas inteligentes, extractores) instalados en los espacios de los usuarios.
+
+3.  **Sistemas Externos Integrados (Pares de Servicios):**
+    *   **Google OAuth2:** Servicio externo utilizado por la plataforma para proveer autenticación federada, segura y ágil mediante OpenID Connect.
+    *   **Stripe:** Pasarela externa encargada del procesamiento financiero de suscripciones y facturas electrónicas de los clientes.
+    *   **Resend:** Plataforma externa de entrega de correos electrónicos transaccionales (como reportes semanales e informes de salud).
+    *   **OneSignal:** Proveedor externo que gestiona el envío de notificaciones push a los dispositivos móviles de los usuarios en tiempo real ante alertas críticas de calidad del aire.
+
+Este diagrama demuestra que la plataforma de Vanana no opera de forma aislada, sino que colabora dinámicamente con una suite de servicios especializados para ofrecer resiliencia, escalabilidad y una experiencia de usuario integral.
 
 #### 4.1.3.2. Software Architecture Context Level Diagrams.
 
-El diagrama de contexto presenta una vista de alto nivel del ecosistema de Clair dentro de la plataforma Vanana, identificando a los actores principales y a los sistemas externos que interactúan con la solución. En esta representacion se observa como **Home User** y **Facility Admin** se relaciónan con la plataforma para monitorear la calidad del aire, administrar dispositivos y consultar información operativa, mientras que servicios externos como **Google OAuth2**, **Stripe** y **Resend** complementan funciónes de autenticación, facturación y comunicación transaccional. Asimismo, el diagrama evidencia que Vanana actúa como el núcleo de coordinación entre usuarios, hardware fisico y proveedores externos, delimitando claramente la frontera del sistema y sus dependencias estratégicas.
+El diagrama de contexto de sistema (System Context Diagram) representa el nivel de abstracción más alto de la arquitectura C4 para la plataforma **Vanana**. Este modelo delimita las fronteras del sistema de software principal, identificando sus interacciones directas con los actores y con los sistemas externos integrados en el ecosistema.
 
-<img src="../assets/c4-diagrams/VananaContext-dark.png" alt="c4-context">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/context/VananaContext-dark.svg" alt="Vanana System Context Diagram" width="850">
+</p>
 
-#### 4.1.3.2. Software Architecture Container Level Diagrams.
+Las interacciones clave representadas en el diagrama de contexto son las siguientes:
 
-El diagrama de contenedores descompone la plataforma Vanana en sus principales unidades de ejecución y responsabilidades técnicas, permitiendo comprender como se distribuyen las funciónes entre interfaces de usuario, servicios backend, almacenamiento de datos y componentes IoT. En esta vista se identifican la **Landing Page**, la **Web App**, la **Mobile App**, el **API Gateway**, la **Platform API**, las bases de datos **PostgreSQL** y **Redis**, asi como los componentes de borde conformados por la **Embedded Application** y la **Edge Station Application**. Esta representacion permite evidenciar la separacion entre experiencia de usuario, lógica de negocio, persistencia y procesamiento distribuido, mostrando ademas las principales relaciónes de comunicación entre nube, edge y hardware.
+*   **Actores del Sistema:**
+    *   **Home User y Facility Admin:** Interactúan directamente con la plataforma para la monitorización ambiental de sus respectivos entornos (hogares y locales comerciales). Ambos perfiles delegan la autenticación de sus credenciales al sistema externo de **Google** y la gestión de planes y transacciones monetarias al servicio de **Stripe**.
+*   **Dispositivos de Hardware (Clair Hardware):**
+    *   Los sensores y actuadores físicos establecen una comunicación bidireccional con la plataforma central, transmitiendo datos de telemetría de calidad del aire (CO2, material particulado y temperatura) y ejecutando comandos automáticos de ventilación en respuesta a las evaluaciones ambientales.
+*   **Servicios Externos de Soporte:**
+    *   **Google OAuth2:** Provee el servicio de autenticación federada y validación de identidad.
+    *   **Stripe:** Administra los flujos de cobro, procesamiento de pagos y el ciclo de vida de las suscripciones.
+    *   **OneSignal:** Recibe peticiones de la plataforma para despachar notificaciones push a los dispositivos móviles de los usuarios.
+    *   **Resend:** Gestiona el envío de correos electrónicos transaccionales con alertas críticas y reportes de analítica periódica.
 
-<img src="../assets/c4-diagrams/VananaContainers-dark.png" alt="c4-container">
 
-#### 4.1.3.3. Software Architecture Deployment Diagrams.
+#### 4.1.3.3. Software Architecture Container Level Diagrams.
 
-El diagrama de despliegue muestra la distribución física y tecnológica de los principales contenedores del sistema en su entorno operativo. A traves de esta vista se observa como las aplicaciónes frontend se alojan en servicios especializados de publicacion web, como la plataforma backend se apoya en servicios gestionados para API, persistencia y cache, y como la capa IoT se distribuye entre el dispositivo embebido y el edge station local. Esta perspectiva resulta especialmente importante porque evidencia que Clair no funcióna como un sistema puramente centralizado, sino como una arquitectura distribuida donde cloud, edge y hardware cooperan para sostener monitoreo en tiempo real, resiliencia operativa y sincronizacion de datos.
+El **Container Diagram** (Diagrama de Contenedores) representa el Nivel 2 del modelo C4. Este diagrama detalla la composición interna de **Vanana Platform**, ilustrando cómo se distribuyen las responsabilidades del sistema entre los diferentes componentes ejecutables (aplicaciones web, móviles, bases de datos, brokers de mensajería y firmware embebido), especificando las tecnologías seleccionadas y los protocolos de comunicación utilizados.
 
-<img src="../assets/c4-diagrams/deploy/deploy.svg" alt="deploy-diagram">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/VananaContainers-dark.svg" alt="Vanana Containers Diagram" width="850">
+</p>
 
-## 4.2. Tactical-Level Domain-Driven Design
+**Descripción de Contenedores y Decisiones Tecnológicas:**
 
-### 4.2.3. Bounded Context: Identity & Access
+*   **Aplicaciones Cliente (Frontend):**
+    *   **Landing Page (HTML / CSS / JavaScript):** Sitio web estático público que presenta la propuesta de valor de la plataforma.
+    *   **Single Page Application (SPA - Angular):** Aplicación web autenticada que permite a los administradores de instalaciones (Facility Admins) configurar espacios físicos, definir umbrales de alerta y visualizar paneles analíticos de calidad de aire en tiempo real.
+    *   **Mobile App (Flutter):** Aplicación móvil multiplataforma orientada al usuario del hogar (Home User) para el monitoreo ágil y la recepción de notificaciones de alerta inmediata.
+*   **Capa de Servicios de Backend:**
+    *   **API Gateway (Spring Cloud Gateway / Java):** Punto único de entrada al backend encargado de la seguridad perimetral, balanceo de carga y enrutamiento de peticiones.
+    *   **Platform API (Spring Boot / Java 25):** Núcleo de servicios empresariales que implementa las reglas de negocio críticas, incluyendo IAM, gestión de locales, e ingesta y evaluación de telemetría.
+*   **Capa de Mensajería y Desacoplamiento:**
+    *   **Kafka Message Broker (Apache Kafka):** Broker de mensajería asíncrono que desacopla la ingesta masiva de datos en el Edge del procesamiento interno de la plataforma, garantizando tolerancia a fallos y alta escalabilidad.
+*   **Bases de Datos de la Plataforma:**
+    *   **Platform PostgreSQL Database:** Almacenamiento relacional principal para entidades transaccionales (instalaciones, dispositivos asociados, históricos y preferencias).
+    *   **Platform Redis Database:** Almacenamiento clave-valor en memoria utilizado para la gestión rápida de sesiones activas, tokens de seguridad temporales y control de tasas de peticiones (rate limiting).
+*   **Capa IoT (Edge y Dispositivos Embebidos):**
+    *   **Clair Embedded Application (Firmware Embebido):** Corre directamente sobre el microcontrolador físico del sensor. Mide los niveles ambientales y transmite los payloads localmente.
+    *   **Clair Edge Station Application (Flask / Python):** Estación local que actúa como pasarela (Gateway local) para coordinar múltiples sensores Clair. Almacena temporalmente los datos en una **Edge SQLite Database** para garantizar la continuidad operativa ante pérdidas de conexión a Internet (sincronización offline).
 
-El Bounded Context Identity \& Access concentra las capacidades relaciónadas con autenticación, autorización y administración del acceso a la plataforma. Su objetivo es asegurar que cada usuario sea identificado correctamente, que sus sesiónes sean gestionadas de manera segura y que los permisos asignados permitan controlar el acceso a funciónalidades de acuerdo con su rol dentro del sistema.
+**Protocolos y Mecanismos de Comunicación:**
+
+*   **REST/HTTPS (JSON):** Utilizado para la comunicación síncrona entre las aplicaciones de cliente (Angular, Flutter, Edge Station) y el backend a través del API Gateway.
+*   **Kafka Wire Protocol (TCP):** Utilizado para el envío asíncrono de lotes de telemetría desde la estación Edge hacia el broker de mensajería en la nube.
+*   **JDBC/SQL:** Conexión nativa de base de datos para la persistencia transaccional entre Spring Boot y PostgreSQL.
+*   **Redis Protocol (RESP):** Utilizado para operaciones de caché de baja latencia.
+
+#### 4.1.3.4. Software Architecture Deployment Diagrams.
+
+El **Deployment Diagram** (Diagrama de Despliegue) ilustra la distribución de las instancias de software y bases de datos sobre la infraestructura física y virtual correspondiente al entorno de **Desarrollo (Development)**. Este modelo permite identificar la topología de red, los entornos de ejecución y los límites de la infraestructura del sistema.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/deploy/Development-dark.svg" alt="Vanana Development Deployment Diagram" width="850">
+</p>
+
+**Descripción de Nodos de Despliegue e Infraestructura:**
+
+*   **Vanana Cloud (Entorno Linux / Docker):**
+    Representa la nube privada de desarrollo montada sobre servidores Linux ejecutando contenedores Docker para aislar y escalar los servicios:
+    *   **Backend Container:** Aloja la máquina virtual de Java (JVM Eclipse Temurin - JDK 25) ejecutando la instancia de la aplicación `Platform API`. Dentro de este nodo también se despliegan de forma independiente los contenedores del `API Gateway` y del broker de mensajería asíncrona `Kafka Message Broker`.
+    *   **Database Server Container:** Contenedor Docker dedicado al motor de base de datos relacional `PostgreSQL 16` que corre la instancia de base de datos `PostgreSQL Database`.
+    *   **Redis Container:** Contenedor Docker dedicado al motor en memoria `Redis` para la caché activa.
+*   **Vercel (Static Website Hosting):**
+    Servicio PaaS externo en la nube que aloja de manera redundante las aplicaciones de cliente frontend:
+    *   **Landing Page Container:** Aloja el servidor web estático para la Landing Page pública.
+    *   **Web App Container:** Aloja el empaquetado Angular que sirve la `Single Page Application (SPA)`.
+*   **Mobile Device (Android / iOS):**
+    Representa los dispositivos físicos móviles de los usuarios que ejecutan el contenedor cliente de la `Mobile App` en Flutter.
+*   **Edge Station (Physical Hardware):**
+    Representa la estación o puerta de enlace local física (por ejemplo, una Raspberry Pi) configurada en los establecimientos para coordinar los sensores y correr localmente la aplicación de Python/Flask.
+*   **Embedded Device (Physical Hardware):**
+    Representa el hardware del microcontrolador físico Clair que corre el firmware compilado en C++ (`Embedded App`).
+*   **External Services (Servicios SaaS de terceros):**
+    Nodo lógico externo que agrupa los servicios en la nube de terceros: `Google OAuth2` para identidades, `Stripe` para pagos, `OneSignal` para mensajería push, y `Resend` para entrega de correos electrónicos.
+
+**Flujos y Protocolos de Comunicación en el Despliegue:**
+
+*   **REST/HTTPS (JSON):** Utilizado entre los navegadores de clientes, dispositivos móviles y el API Gateway en la nube.
+*   **OneSignal SDK:** Utilizado para coordinar las llamadas de notificaciones móviles directamente desde la plataforma y las aplicaciones móviles.
+*   **Kafka Wire Protocol (TCP):** Utilizado para el envío asíncrono y bidireccional de streams de telemetría y comandos entre la estación Edge física y el contenedor de Kafka en la nube.
+*   **GPIO/I2C:** Interfaz física de bajo nivel utilizada por el microcontrolador embebido para recopilar lecturas directas del hardware del sensor de aire.
+
+## 4.2. Tactical-Level Domain-Driven Design - Web Services
+
+En esta sección se detalla el diseño táctico basado en Domain-Driven Design (DDD) para el contenedor central de servicios web de la plataforma Vanana (Platform API). El backend se construye sobre una arquitectura modular estructurada por Bounded Contexts independientes, lo que permite que cada área de negocio mantenga su consistencia y evolucione sin afectar directamente a los demás componentes del sistema.
+
+**Arquitectura de Componentes de la API del Backend (Platform API)**
+
+El contenedor **Platform API** (desarrollado en Spring Boot y Java 25) agrupa de forma modular los contextos acotados de IAM, Billing, Device & Space Management, Air Quality Evaluation, Alerting & Response, Analytics y Notifications. El siguiente diagrama de componentes a nivel de contenedor muestra la descomposición general de la API, detallando cómo interactúan estos bloques estructurales principales y cómo se delegan las responsabilidades:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/backend/components/PlatformApiComponents-dark.svg" alt="Platform API General Component Diagram" width="850">
+</p>
+
+A nivel de diseño táctico, cada uno de los contextos acotados dentro del backend sigue una arquitectura limpia (Clean Architecture) dividida en cuatro capas bien definidas:
+1.  **Interfaces/Presentation Layer:** Compuesto por controladores REST que exponen los endpoints públicos y adaptadores de entrada encargados de recibir peticiones externas y serializarlas.
+2.  **Application Layer:** Contiene los servicios de aplicación, casos de uso del sistema, y la lógica de enrutamiento y orquestación de comandos y consultas (*Commands/Queries*).
+3.  **Domain Layer:** Representa el núcleo del sistema, libre de dependencias tecnológicas. Contiene las entidades base, agregados (*Aggregates*), objetos de valor (*Value Objects*), servicios de dominio e interfaces de repositorios (puertos).
+4.  **Infrastructure Layer:** Implementa los adaptadores de salida necesarios para la persistencia de datos (conectando a PostgreSQL o Redis), la comunicación externa con APIs de terceros (Stripe, Google, Resend) y el encolamiento de eventos de integración en Kafka.
+
+La comunicación interna entre contextos acotados dentro de la misma API se realiza de manera desacoplada a través de fachadas lógicas (*Facades*), o mediante la publicación y consumo asíncrono de eventos de integración a través del bus de datos de Apache Kafka, evitando el acoplamiento directo de base de datos.
+
+### 4.2.1. Bounded Context: Identity & Access (IAM)
+
+El contexto acotado de **Identity & Access Management (IAM)** gestiona el registro de nuevos usuarios, la autenticación segura, el control de acceso basado en roles y el inicio de sesión federado (Google OAuth2). Asegura que los recursos de la plataforma Vanana estén protegidos y que solo los usuarios autorizados puedan interactuar con los sensores y actuadores.
+
+**Diccionario de Clases del Contexto IAM**
+
+A continuación, se detallan las clases principales identificadas para este contexto, clasificadas por capa de arquitectura:
+
+| Nombre de la Clase | Capa | Propósito / Responsabilidad | Atributos Principales | Métodos Clave | Relaciones de Asociación / Dependencia |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **User** | Dominio | Representa la entidad de usuario en la plataforma. Actúa como raíz de agregado (*Aggregate Root*). | `id` (UUID), `email` (EmailAddress), `password` (Password), `status` (UserStatus), `googleUserId` (GoogleUserId) | `confirm()`, `linkGoogleAccount(googleUserId)` | Contiene `EmailAddress` y `Password`. |
+| **TokenSession** | Dominio | Representa una sesión activa de JWT emitida para un usuario específico. | `jti` (TokenJti), `userId` (UserId), `refreshToken` (String), `tokenType` (TokenType), `expiresAt` (Instant) | `invalidate()` | Contiene `UserId`. |
+| **RegistrationSession** | Dominio | Entidad temporal que mantiene el estado de registro de un usuario pendiente de confirmación. | `id` (RegistrationSessionId), `email` (EmailAddress), `password` (Password), `verificationCode` (VerificationCode), `expiresAt` (Instant) | *N/A* | Contiene `EmailAddress`, `Password` y `VerificationCode`. |
+| **EmailAddress** | Dominio | Objeto de Valor (*Value Object*) que encapsula la lógica de validación del correo electrónico. | `value` (String) | *N/A* | Composición en `User` y `RegistrationSession`. |
+| **Password** | Dominio | Objeto de Valor que maneja el hash encriptado de la contraseña. | `encryptedValue` (String) | *N/A* | Composición en `User` y `RegistrationSession`. |
+| **VerificationCode** | Dominio | Objeto de Valor que representa el código de 6 dígitos enviado por email. | `value` (String) | *N/A* | Composición en `RegistrationSession`. |
+| **UserRepository** | Dominio | Interfaz (Puerto) que define los métodos de persistencia del Agregado `User`. | *N/A* | `save()`, `findById()`, `findByEmail()`, `findByGoogleUserId()` | Utilizado por `UserCommandServiceImpl` e `UserQueryServiceImpl`. |
+| **TokenSessionRepository** | Dominio | Interfaz (Puerto) para gestionar el ciclo de vida de persistencia rápida de `TokenSession`. | *N/A* | `save()`, `findByJti()`, `deleteByJti()` | Utilizado por `TokenCommandServiceImpl` y `TokenQueryServiceImpl`. |
+| **GoogleTokenVerifier** | Dominio | Interfaz (Servicio de Dominio) para verificar tokens de identidad emitidos por Google. | *N/A* | `verify(idToken)` | Utilizado por `GoogleAuthenticationCommandServiceImpl`. |
+| **AuthenticationController** | Interfaz | Controlador REST de entrada para flujos de autenticación local. | `userCommandService`, `tokenCommandService` | `signUp()`, `confirmSignUp()`, `signIn()`, `refreshToken()`, `signOut()` | Depende de `UserCommandServiceImpl` y `TokenCommandServiceImpl`. |
+| **GoogleOAuthController** | Interfaz | Controlador REST para manejar la redirección y el callback de Google OAuth2. | `googleOAuthStateManager`, `googleOAuthCallbackApplicationService` | `redirectToGoogle()`, `handleCallback()` | Depende de `GoogleOAuthCallbackApplicationService`. |
+| **UserCommandServiceImpl** | Aplicación | Servicio de aplicación que orquesta el registro inicial y la confirmación mediante código. | `userRepository`, `registrationSessionRepository`, `asyncNotificationService` | `handle(InitiateRegistrationCommand)`, `handle(ConfirmRegistrationCommand)` | Usa `UserRepository`, `RegistrationSessionRepository` y `AsyncNotificationService`. |
+| **TokenCommandServiceImpl** | Aplicación | Servicio de aplicación para la creación, rotación e invalidación de tokens JWT. | `tokenSessionRepository`, `userRepository`, `jwtTokenEncoder` | `handle(CreateTokenSessionCommand)`, `handle(RotateRefreshTokenCommand)`, `handle(InvalidateTokenSessionCommand)` | Usa `TokenSessionRepository`, `UserRepository` y `JwtTokenEncoder`. |
+| **JpaUserRepository** | Infraestructura | Adaptador concreto de persistencia relacional que interactúa con PostgreSQL mediante JPA. | *N/A* | `findByEmail()`, `existsByEmail()` | Implementa `UserRepository`. |
+| **RedisTokenSessionRepository** | Infraestructura | Adaptador concreto para almacenar y verificar sesiones de tokens de forma rápida en caché Redis. | `redisTemplate`, `objectMapper` | `save()`, `findByJti()`, `deleteByJti()`, `revokeAllTokensForUser()` | Implementa `TokenSessionRepository`. |
+
+#### 4.2.1.1. Domain Layer
+
+La capa de dominio de IAM contiene las reglas fundamentales de negocio independientes de cualquier infraestructura. Define las entidades críticas del ciclo de vida de usuario y las abstracciones de persistencia (puertos).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/iam-bc/domain-layer.svg" alt="IAM Domain Layer Class Diagram" width="750">
+</p>
+
+*   **Entities y Aggregates:** `User` actúa como la raíz de agregado que mantiene la identidad de la persona y sus vinculaciones externas (como Google). `TokenSession` es la entidad que administra la sesión del usuario a nivel de tokens JWT, permitiendo su revocación inmediata (`invalidate()`). `RegistrationSession` resguarda de manera temporal la contraseña encriptada y el código de verificación del flujo de registro.
+*   **Value Objects:** `EmailAddress`, `Password` y `VerificationCode` encapsulan las restricciones estructurales y aseguran la validez y encapsulamiento de los datos del dominio desde el momento de su instanciación.
+*   **Ports (Interfaces):** `UserRepository`, `TokenSessionRepository` y `RegistrationSessionRepository` definen las operaciones lógicas de almacenamiento sin depender de tecnologías específicas como JPA o Redis.
+
+#### 4.2.1.2. Interface Layer
+
+La capa de interfaz expone las API REST del contexto acotado, traduciendo las peticiones JSON HTTP externas en comandos de aplicación fuertemente tipados.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/iam-bc/interfaces-layer.svg" alt="IAM Interface Layer Class Diagram" width="750">
+</p>
+
+*   **AuthenticationController:** Expone endpoints HTTP estándar para el registro local (`signUp`), confirmación vía código por correo (`confirmSignUp`), inicio de sesión (`signIn`), renovación de tokens (`refreshToken`) y cierre de sesión (`signOut`).
+*   **GoogleOAuthController:** Administra el flujo federado de OpenID Connect. Redirecciona al usuario al servidor de autorización de Google y recibe el código de autorización en el endpoint de callback para autenticar la sesión.
+*   **UserController:** Controlador simple que recupera los datos del perfil del usuario autenticado en base a la sesión de seguridad actual.
+
+#### 4.2.1.3. Application Layer
+
+Esta capa actúa como el orquestador principal del contexto acotado. Implementa los casos de uso definidos del sistema, interactuando con las interfaces de dominio y coordinando el flujo de las transacciones sin contener lógica de negocio directa.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/iam-bc/application-layer.svg" alt="IAM Application Layer Class Diagram" width="750">
+</p>
+
+*   **Command Handlers:** `UserCommandServiceImpl` implementa la lógica para iniciar el registro enviando un código de confirmación asíncrono (`InitiateRegistrationCommand`) y para validar el código y persistir definitivamente al usuario en el sistema (`ConfirmRegistrationCommand`).
+*   **TokenCommandServiceImpl:** Orquesta las transacciones relacionadas con la sesión de tokens, controlando la persistencia de las firmas de tokens de refresco y su rotación segura para mitigar ataques de replay.
+*   **GoogleOAuthCallbackApplicationService:** Orquesta el flujo de inicio de sesión social. Convierte el código de Google en un perfil de usuario verificado y delega la creación de tokens en el servicio de tokens de la aplicación.
+*   **AsyncNotificationService (Port):** Interfaz que permite al servicio de aplicación delegar el envío de correos electrónicos a un sistema de mensajería asíncrono o un proveedor de correo externo sin acoplarse directamente a este.
+
+#### 4.2.1.4. Infrastructure Layer
+
+La capa de infraestructura implementa las interfaces de dominio (puertos) y provee los adaptadores concretos para interactuar con bases de datos relacionales, almacenamiento en memoria cache Redis, servicios OAuth2 y generadores de tokens criptográficos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/iam-bc/infrastructure-layer.svg" alt="IAM Infrastructure Layer Class Diagram" width="750">
+</p>
+
+*   **Adaptadores de Persistencia:** `JpaUserRepository` utiliza Spring Data JPA y Hibernate para persistir usuarios en la base de datos central PostgreSQL. Para las sesiones de tokens y registro temporal de alta volatilidad, `RedisTokenSessionRepository` y `RedisRegistrationSessionRepository` encapsulan el acceso mediante `StringRedisTemplate`, configurando tiempos de expiración automáticos (TTL).
+*   **GoogleTokenVerifierImpl:** Adaptador que consume las librerías cliente de Google para validar de forma criptográfica la autenticidad del ID Token recibido durante el flujo de OAuth2.
+*   **JwtTokenEncoder:** Clase de infraestructura encargada de firmar algoritmos criptográficos HMAC-SHA256 para generar los Access Tokens (de corta duración) y Refresh Tokens (de larga duración).
+
+#### 4.2.1.5. Bounded Context Software Architecture Component Level Diagrams
+
+Dentro del contenedor **Platform API**, el contexto acotado de **IAM** se organiza internamente siguiendo el patrón de arquitectura hexagonal estructurada en las cuatro capas tácticas (Interfaces, Application, Domain e Infrastructure).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/backend/components/contexts/IamLayers-dark.svg" alt="IAM Layer Components Diagram" width="850">
+</p>
+
+*   **IAM Interfaces (Component):** Recibe las solicitudes HTTP/HTTPS provenientes del API Gateway y las delega al servicio correspondiente en la capa de aplicación. Utiliza Spring Security para interceptar peticiones y validar los JWT de acceso de forma perimetral.
+*   **IAM Application (Component):** Orquesta los casos de uso llamando a los modelos de dominio. Envía eventos e interactúa con el componente de infraestructura.
+*   **IAM Domain (Component):** Mantiene los modelos enriquecidos de dominio y define las interfaces que actúan como contratos de persistencia.
+*   **IAM Infrastructure (Component):** Implementa las interfaces de repositorio de dominio mediante tecnologías específicas (Spring Data JPA conectando a la base de datos relacional PostgreSQL, e integraciones con Redis y el SDK de Google).
+
+#### 4.2.1.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.1.6.1. Bounded Context Domain Layer Class Diagrams
+
+A continuación, se detalla el diagrama de clases unificado de la capa de dominio del contexto acotado IAM, mostrando todas sus entidades, value objects, repositorios y firmas de métodos con visibilidad explícita:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/iam-bc/unified.svg" alt="Unified IAM Domain Class Diagram" width="850">
+</p>
+
+##### 4.2.1.6.2. Bounded Context Database Design Diagram
+
+Dado que la arquitectura del backend sigue un enfoque de monolito modular, todos los Bounded Contexts comparten una única base de datos relacional PostgreSQL. El siguiente diagrama presenta el diseño completo de la base de datos, incluyendo las tablas, columnas, tipos de datos, constraints (primary keys, foreign keys) y las relaciones entre tablas que permiten la persistencia de información para el contexto de **IAM** junto con los demás contextos del sistema.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/database/database.png" alt="Bounded Context Database Design Diagram - IAM" width="850">
+</p>
+
+Las tablas principales asociadas a este contexto son `users`, que almacena las credenciales y datos de autenticación OAuth2/OIDC de los usuarios del sistema.
+
+### 4.2.2. Bounded Context: Billing
+
+El contexto acotado de **Billing** es responsable de administrar el modelo de monetización de la plataforma. Controla las pasarelas de pago, los límites operativos impuestos a los usuarios según su plan (Freemium o Premium) y el procesamiento de suscripciones mensuales, integrándose de forma directa con la API externa de Stripe.
+
+**Diccionario de Clases del Contexto Billing**
+
+A continuación, se detallan las clases principales identificadas para este contexto, clasificadas por capa de arquitectura:
+
+| Nombre de la Clase | Capa | Propósito / Responsabilidad | Atributos Principales | Métodos Clave | Relaciones de Asociación / Dependencia |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **UserPlan** | Dominio | Entidad raíz que define el plan de suscripción asignado a un usuario y sus fechas de vigencia. | `id` (UUID), `userId` (UserId), `planType` (PlanType), `startDate` (LocalDate), `endDate` (LocalDate) | `upgradeToPremium()`, `downgradeToFreemium()`, `isPremiumExpired()` | Contiene `UserId` y `PlanType`. |
+| **PaymentRecord** | Dominio | Entidad que registra el historial de cobros y transacciones de los usuarios. | `id` (UUID), `userId` (UserId), `amount` (Money), `status` (PaymentStatus), `stripePaymentIntentId` (String) | `markAsCompleted()` | Contiene `UserId`, `Money` y `PaymentStatus`. |
+| **PaymentGateway** | Dominio | Interfaz (Puerto) que define los métodos de interacción con pasarelas de cobro externas. | *N/A* | `createCheckoutSession()`, `createPaymentIntent()` | Implementado por `StripePaymentGatewayAdapter`. |
+| **UserPlanRepository** | Dominio | Interfaz de repositorio para persistir y consultar el plan de un usuario. | *N/A* | `save()`, `findByUserId()` | Utilizado por los servicios de comando y consulta de suscripciones. |
+| **PaymentRecordRepository** | Dominio | Interfaz de repositorio para persistir transacciones financieras. | *N/A* | `save()`, `findByStripePaymentIntentId()`, `findByUserId()` | Utilizado por los servicios de comando y consulta de suscripciones. |
+| **SubscriptionController** | Interfaz | Controlador REST que expone endpoints para iniciar checkouts, degradar cuentas y ver planes activos. | `subscriptionCommandService`, `subscriptionQueryService` | `createCheckoutSession()`, `getSubscriptionsByUserId()`, `downgradeToFreemium()` | Depende de `SubscriptionCommandServiceImpl` y `SubscriptionQueryServiceImpl`. |
+| **StripeWebhookController** | Interfaz | Controlador de entrada que procesa eventos asíncronos enviados por webhooks de Stripe. | `subscriptionCommandService`, `stripeWebhookSecret` | `handleWebhook()` | Depende de `SubscriptionCommandServiceImpl`. |
+| **BillingContextFacade** | Interfaz | Fachada expuesta para que otros contextos consulten límites de negocio (suscripción activa del usuario). | *N/A* | `getMaxOrganizations()`, `getMaxSpaces()`, `getMaxDevices()` | Implementado por `BillingContextFacadeImpl`. |
+| **SubscriptionCommandServiceImpl** | Aplicación | Servicio de aplicación que procesa comandos para actualizar suscripciones y registrar pagos exitosos. | `paymentGateway`, `paymentRecordRepository`, `userPlanRepository` | `handle(CreateCheckoutSessionCommand)`, `handle(FulfillSubscriptionCommand)` | Usa `PaymentGateway`, `PaymentRecordRepository` y `UserPlanRepository`. |
+| **SubscriptionQueryServiceImpl** | Aplicación | Servicio de aplicación para consultar registros de pago e historial de planes activos. | `userPlanRepository`, `paymentRecordRepository` | `handle(GetSubscriptionByIdQuery)`, `resolveUserPlan()` | Usa `UserPlanRepository` y `PaymentRecordRepository`. |
+| **StripePaymentGatewayAdapter** | Infraestructura | Adaptador que implementa el puerto `PaymentGateway` utilizando el SDK de Stripe. | `stripeApiKey` | `createCheckoutSession()`, `createPaymentIntent()` | Implementa `PaymentGateway`. |
+| **JpaUserPlanRepository** | Infraestructura | Adaptador JPA que implementa `UserPlanRepository` para almacenar planes en PostgreSQL. | *N/A* | *N/A* | Implementa `UserPlanRepository`. |
+
+---
+
+#### 4.2.2.1. Domain Layer
+
+La capa de dominio de Billing resguarda la consistencia del modelo de monetización y límites de la plataforma.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/billing-bc/domain-layer.svg" alt="Billing Domain Layer Class Diagram" width="750">
+</p>
+
+*   **Entities y Aggregates:** `UserPlan` mantiene las reglas de upgrade/downgrade temporal, determinando si el periodo de cobro ha expirado. `PaymentRecord` almacena el estado de cada pago (`PENDING`, `COMPLETED`, `FAILED`).
+*   **Value Objects:** `Money` encapsula el monto y divisa de transacciones, mientras que `UserId` e `PlanType` regulan tipados y accesos.
+*   **Ports:** `PaymentGateway` abstrae la lógica del cobro para no depender directamente de las librerías de Stripe a nivel de dominio.
+
+#### 4.2.2.2. Interface Layer
+
+Se encarga de recibir peticiones de cobro web y registrar webhooks provenientes de la pasarela de pagos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/billing-bc/interfaces-layer.svg" alt="Billing Interface Layer Class Diagram" width="750">
+</p>
+
+*   **SubscriptionController:** Permite a los clientes iniciar la pasarela de checkout redirigiendo al portal de Stripe.
+*   **StripeWebhookController:** Endpoint de escucha perimetral que recibe y valida firmas HMAC de Stripe para autorizar el cobro y aprovisionar el plan del usuario de forma asíncrona.
+*   **BillingContextFacade:** Puerto expuesto internamente que permite a contextos externos (como Device Management) consultar los límites del plan (`getMaxDevices()`) para denegar emparejamientos si el plan del usuario es Freemium y ya alcanzó su cupo.
+
+#### 4.2.2.3. Application Layer
+
+Orquesta el aprovisionamiento de suscripciones y la recepción segura de pagos en la plataforma.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/billing-bc/application-layer.svg" alt="Billing Application Layer Class Diagram" width="750">
+</p>
+
+*   **Command Handlers:** `SubscriptionCommandServiceImpl` maneja la creación de intenciones de cobro y finaliza la activación del plan Premium cuando recibe el evento de pago aprobado.
+*   **Event Handlers:** `UserRegisteredEventHandler` escucha el evento de integración `UserRegisteredEvent` (del contexto IAM) para asignarle inmediatamente un `UserPlan` en plan `FREEMIUM` al nuevo usuario.
+*   **SubscriptionPaidEventHandler:** Transforma el webhook recibido en una confirmación interna de negocio para desbloquear funciones Premium.
+
+#### 4.2.2.4. Infrastructure Layer
+
+Provee la comunicación externa con Stripe y la persistencia de datos financieros.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/billing-bc/infrastructure-layer.svg" alt="Billing Infrastructure Layer Class Diagram" width="750">
+</p>
+
+*   **StripePaymentGatewayAdapter:** Consume el API externo de Stripe para generar enlaces de pago de manera dinámica.
+*   **Adaptadores de base de datos:** `JpaUserPlanRepository` y `JpaPaymentRecordRepository` realizan la persistencia relacional en PostgreSQL para garantizar transacciones ACID.
+
+#### 4.2.2.5. Bounded Context Software Architecture Component Level Diagrams
+
+A nivel de contenedores en la API principal, el contexto de Billing descompone sus responsabilidades a través de componentes en capas:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/backend/components/contexts/BillingLayers-dark.svg" alt="Billing Layer Components Diagram" width="850">
+</p>
+
+*   **Billing Interfaces (Component):** Expone los controladores de checkout y recepción de webhooks de Stripe.
+*   **Billing Application (Component):** Orquesta los comandos de creación de cobros y escucha de registros de usuarios.
+*   **Billing Domain (Component):** Contiene el modelo lógico de cobro y límites del plan de usuario.
+*   **Billing Infrastructure (Component):** Implementa la integración técnica con el SDK de Stripe y la base de datos PostgreSQL.
+
+#### 4.2.2.6. Bounded Context Software Architecture Code Level Diagrams
+
+##### 4.2.2.6.1. Bounded Context Domain Layer Class Diagrams
+
+El siguiente diagrama detalla la capa de dominio de Billing de forma unificada con sus correspondientes firmas, enumeraciones y multiplicidad:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/billing-bc/unified.svg" alt="Unified Billing Domain Class Diagram" width="850">
+</p>
+
+##### 4.2.2.6.2. Bounded Context Database Design Diagram
+
+Dado que la arquitectura del backend sigue un enfoque de monolito modular, todos los Bounded Contexts comparten una única base de datos relacional PostgreSQL. El siguiente diagrama presenta el diseño completo de la base de datos, incluyendo las tablas, columnas, tipos de datos, constraints (primary keys, foreign keys) y las relaciones entre tablas que permiten la persistencia de información para el contexto de **Billing** junto con los demás contextos del sistema.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/database/database.png" alt="Bounded Context Database Design Diagram - Billing" width="850">
+</p>
+
+Las tablas principales asociadas a este contexto son `user_plan`, que registra el tipo de suscripción (Freemium o Premium) y las fechas de vigencia, y `payment_record`, que almacena el historial de transacciones procesadas a través de Stripe.
+
+### 4.2.3. Bounded Context: Device & Space Management
+
+El contexto acotado de **Device & Space Management** gestiona el inventario de hardware y la organización espacial lógica de la plataforma. Permite registrar dispositivos de sensores (`Device`), asignar ubicaciones organizacionales (`Organization` y `Space`), controlar las vinculaciones físicas (`DeviceAssignment`), registrar comandos enviados al hardware (`DeviceCommand`) y definir los umbrales personalizados de alerta por dispositivo.
+
+**Diccionario de Clases del Contexto Device & Space Management**
+
+A continuación, se detallan las clases principales identificadas para este contexto, clasificadas por capa de arquitectura:
+
+| Nombre de la Clase | Capa | Propósito / Responsabilidad | Atributos Principales | Métodos Clave | Relaciones de Asociación / Dependencia |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Device** | Dominio | Representa el sensor físico registrado en el sistema global. | `id` (UUID), `serialNumber` (String), `name` (String), `hardwareId` (HardwareId), `apiKey` (ApiKey) | `rotateApiKey()`, `updateName()` | Contiene `HardwareId` y `ApiKey`. |
+| **DeviceAssignment** | Dominio | Entidad que modela el emparejamiento físico de un sensor a un espacio y usuario específico. | `id` (UUID), `device` (Device), `ownerUserId` (UserId), `spaceId` (UUID), `status` (DeviceStatus), `claimToken` (ClaimToken) | `claimToSpace()`, `markOnline()`, `markOffline()` | Contiene `Device`. |
+| **DeviceCommand** | Dominio | Entidad que almacena el historial y estado de comandos enviados a un actuador. | `id` (UUID), `deviceId` (UUID), `commandType` (String), `payload` (String), `status` (String) | `acknowledge()` | Vinculado a `Device` por ID. |
+| **Organization** | Dominio | Representa la agrupación lógica superior (empresa o cuenta principal) para locales comerciales. | `id` (UUID), `name` (String), `ownerUserId` (UserId) | `updateName()` | Vinculado a `UserId`. |
+| **Space** | Dominio | Representa un espacio o zona física específica asociada a una organización (ej: "Sala A"). | `id` (UUID), `name` (String), `organizationId` (UUID) | `updateName()` | Asociado a `Organization` por ID. |
+| **DeviceRepository** | Dominio | Interfaz de persistencia para el inventario de sensores registrados. | *N/A* | `save()`, `findById()`, `findByHardwareId()` | Utilizado por `DeviceCommandServiceImpl`. |
+| **DeviceAssignmentRepository** | Dominio | Interfaz de persistencia para los emparejamientos y estados de conexión en tiempo real. | *N/A* | `save()`, `findByDeviceId()`, `findBySpaceId()` | Utilizado por los servicios de comando de dispositivos y espacios. |
+| **DeviceController** | Interfaz | Controlador REST para emparejar, reclamar, listar y renombrar dispositivos sensores. | `deviceCommandService`, `deviceQueryService` | `pairDevice()`, `claimDevice()`, `getDevices()` | Depende de los servicios de aplicación de dispositivos. |
+| **DeviceCommandController** | Interfaz | Controlador REST que permite emitir acciones o comandos manuales hacia los actuadores. | `deviceControlCommandService` | `createDeviceCommand()`, `getDeviceCommand()` | Depende de `DeviceControlCommandServiceImpl`. |
+| **DeviceThresholdController** | Interfaz | Controlador REST para registrar y eliminar los umbrales de advertencia específicos de métricas de aire. | `thresholdCommandService` | `writeThreshold()`, `removeThreshold()` | Depende de `DeviceThresholdCommandServiceImpl`. |
+| **OrganizationController** | Interfaz | Controlador REST para crear, renombrar y eliminar organizaciones. | `organizationCommandService` | `createOrganization()`, `updateOrganizationName()` | Depende de `OrganizationCommandServiceImpl`. |
+| **SpaceController** | Interfaz | Controlador REST para crear y administrar los espacios de monitoreo. | `spaceCommandService` | `createSpace()`, `updateSpaceName()` | Depende de `SpaceCommandServiceImpl`. |
+| **DeviceCommandServiceImpl** | Aplicación | Servicio de aplicación para el aprovisionamiento, vinculación y desvinculación de hardware Clair. | `deviceRepository`, `deviceAssignmentRepository`, `spaceRepository`, `publisher` | `handle(PairDeviceCommand)`, `handle(ClaimDeviceCommand)` | Usa repositorios y publica eventos vía Kafka. |
+| **DeviceControlCommandServiceImpl** | Aplicación | Servicio para emitir comandos y despachar colas de acciones pendientes hacia los sensores. | `deviceCommandRepository`, `publisher` | `handle(CreateDeviceCommandCommand)` | Usa `DeviceCommandRepository` y Kafka. |
+| **ProvisioningDevicesChangedKafkaPublisher** | Infraestructura | Adaptador para publicar eventos de integración de cambio de dispositivos en Apache Kafka. | `kafkaTemplate` | `publish()` | Implementa el puerto de mensajería para eventos de aprovisionamiento. |
+| **JpaDeviceRepository** | Infraestructura | Adaptador JPA que implementa `DeviceRepository` para la base de datos PostgreSQL. | *N/A* | `findByHardwareId()` | Implementa `DeviceRepository`. |
+
+---
 
 #### 4.2.3.1. Domain Layer
 
-La capa de dominio del Bounded Context Identity \& Access concentra las reglas de negocio vinculadas a la identidad digital de los usuarios, la autenticación, la autorización y el ciclo de vida de las sesiónes. Su propósito es preservar la coherencia del modelo mediante conceptos del dominio que no dependan de decisiones tecnicas de almacenamiento, frameworks o mecanismos de integracion externos.
+La capa de dominio define el inventario físico y la jerarquía organizacional del sistema.
 
-Dentro de Clair, este contexto resulta esencial porque define quién puede ingresar al sistema, bajo qué condiciones puede hacerlo y a qué capacidades puede acceder una vez autenticado. A partir de esta capa se distinguen los dos roles principales identificados en el dominio: **Home User** y **Facility Admin**, ambos con alcances funciónales distintos sobre facilities, spaces, devices, alerting y analytics.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/device-bc/domain-layer.svg" alt="Device Domain Layer Class Diagram" width="750">
+</p>
 
-| Elemento del dominio | Descripción |
-| --- | --- |
-| User | Representa a la persona registrada en la plataforma y concentra su identidad, estado de cuenta, proveedor de autenticación y roles asignados. |
-| Role | Representa la categoria de acceso del usuario dentro del sistema, permitiendo distinguir responsabilidades y privilegios. |
-| Permission | Define una capacidad autorizada dentro de la plataforma, utilizada para hacer cumplir reglas de acceso por alcance. |
-| Session | Representa una sesión autenticada vigente, asociada a un usuario y a un periodo de validez. |
-| Refresh Token | Representa la credencial de renovación de sesión utilizada para emitir nuevos access tokens bajo una politica de rotacion. |
-| Auth Provider | Representa el origen de autenticación del usuario, ya sea local mediante credenciales o federado mediante Google OAuth2. |
-
-El agregado principal de esta capa es **User**, ya que desde esta raiz se gobiernan decisiones como el estado de la cuenta, la vinculación con un proveedor de autenticación, la asignación de roles y la posibilidad de iniciar o revocar sesiónes. De forma complementaria, el modelo contempla objetos de valor como `Email`, `PasswordHash`, `UserId`, `RoleName` y `AccessToken`, los cuales encapsulan formato, validez y consistencia semántica sin exponer logica accidental al resto del sistema.
-
-Las reglas de negocio mas relevantes de este contexto son las siguientes:
-
-| Regla de negocio | Descripción |
-| --- | --- |
-| Unicidad de identidad | No puede existir más de una cuenta activa asociada al mismo correo electrónico. |
-| Verificacion previa | Las cuentas registradas por email y password deben verificar su correo antes de acceder a funciónalidades protegidas. |
-| Roles obligatorios | Todo usuario autenticado debe poseer al menos un rol valido dentro del sistema. |
-| Sesión válida | Ninguna operación protegida puede ejecutarse sin una sesión vigente o un token de acceso valido. |
-| Rotacion de credenciales | Cada uso valido del refresh token invalida la credencial anterior y genera una nueva. |
-| Revocacion inmediata | La desactivación de la cuenta o el cierre de sesión deben invalidar las sesiónes activas relaciónadas. |
-
-Estas reglas permiten sostener la integridad del modelo y alinean el bounded context con los requerimientos funciónales `FR-IAM-01`, `FR-IAM-02`, `FR-IAM-03` y `FR-IAM-04`, asi como con los requerimientos no funciónales de seguridad relaciónados con expiración, revocacion y control de acceso.
-
-En terminos de comportamiento, el dominio produce eventos que reflejan transiciones significativas dentro del ciclo de identidad y acceso. Entre los principales se encuentran `UserRegistered`, `UserEmailVerified`, `UserLoggedIn`, `SessionStarted`, `SessionRefreshed`, `SessionRevoked`, `AccountDeactivated` y `RoleAssigned`. Estos eventos no solo documentan cambios relevantes del estado interno, sino que tambien permiten propagar información hacia otros procesos del sistema, como auditoría, notificaciones de seguridad o trazabilidad operativa.
-
-En conjunto, la capa de dominio de Identity \& Access define el lenguaje central con el que Clair modela la confianza digital de sus usuarios. Gracias a ello, la plataforma puede controlar de manera consistente quién ingresa, cómo se valida su identidad y bajo que permisos interactúa con el resto de bounded contexts.
+*   **Entities y Aggregates:** `Device` es el agregado de hardware. `DeviceAssignment` es la raíz de agregado que controla si un dispositivo está online/offline y en qué espacio físico y usuario está asignado. `DeviceCommand` controla el ciclo de vida de confirmación de órdenes. `Organization` y `Space` estructuran la geografía física de los sensores.
+*   **Value Objects:** `HardwareId` (ID físico MAC/serie) y `ApiKey` (clave criptográfica de comunicación del sensor).
+*   **Ports:** Interfaces de repositorio (`DeviceRepository`, `DeviceAssignmentRepository`, `DeviceCommandRepository`, `OrganizationRepository`, `SpaceRepository`).
 
 #### 4.2.3.2. Interface Layer
 
-La capa de interfaz del Bounded Context Identity \& Access expone las capacidades del dominio hacia los consumidores externos del sistema, principalmente la Landing Page, la Web App y la Mobile App. Su responsabilidad consiste en recibir solicitudes, validarlas, transformarlas en comandos o consultas y delegar su ejecución a la capa de aplicación, manteniendo separada la logica de presentacion de las reglas de negocio.
+Provee la interfaz REST para la gestión física del hardware y la estructuración espacial.
 
-En esta capa se ubican los controladores HTTP, los objetos de transferencia de datos, los mecanismos de validacion de entrada y los filtros de seguridad necesarios para proteger los recursos del sistema. Desde la perspectiva del usuario, esta es la puerta de entrada a los procesos de registro, autenticación, verificación de cuenta, renovación de sesión y cierre de sesión.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/device-bc/interfaces-layer.svg" alt="Device Interface Layer Class Diagram" width="750">
+</p>
 
-| Endpoint u operación | Tipo de acceso | Propósito |
-| --- | --- | --- |
-| `POST /auth/register` | Publico | Registrar un nuevo usuario mediante email y password. |
-| `POST /auth/login` | Publico | Autenticar al usuario y emitir credenciales de acceso. |
-| `POST /auth/verify-email` | Publico | Confirmar la identidad del usuario mediante un token o codigo de verificacion. |
-| `POST /auth/refresh` | Publico controlado | Renovar la sesión usando un refresh token valido y no reutilizado. |
-| `POST /auth/logout` | Protegido | Revocar la sesión actual o invalidar el refresh token asociado. |
-| `POST /auth/oauth/google` | Publico | Iniciar o resolver el flujo de autenticación federada con Google. |
-| `GET /auth/me` | Protegido | Recuperar la información del usuario autenticado actual. |
-| `PATCH /users/{id}/deactivate` | Protegido | Desactivar una cuenta y revocar sus sesiónes activas, sujeto a permisos. |
-
-Para estandarizar la comunicación con los clientes, la capa utiliza DTOs como `RegisterRequest`, `LoginRequest`, `VerifyEmailRequest`, `RefreshTokenRequest`, `AuthResponse` y `UserProfileResponse`. Estos contratos reducen el acoplamiento entre clientes y dominio, y permiten mantener respuestas coherentes en todos los canales de acceso.
-
-Las validaciones iniciales realizadas en esta capa se enfocan en asegurar integridad sintactica antes de ejecutar casos de uso. Entre ellas se incluyen la validación del formato del correo electrónico, la presencia de campos obligatorios, la verificacion de una longitud minima de password y la comprobación de que los tokens enviados por el cliente tengan una estructura aceptable. Cuando una solicitud no cumple estas condiciones, la interfaz responde con códigos como `400 Bad Request`, `401 Unauthorized`, `403 Forbidden` o `409 Conflict`, segun corresponda.
-
-Adicionalmente, esta capa incorpora mecanismos de seguridad transversal para distinguir endpoints publicos de endpoints protegidos. Los recursos sensibles requieren JWT valido en cada solicitud, mientras que los endpoints de autenticación publica se complementan con controles de rate limiting y manejo uniforme de errores para prevenir abuso, enumeración de cuentas y fuerza bruta sobre el login.
-
-Por tanto, la Interface Layer del contexto IAM cumple un rol de mediacion: conecta a los distintos clientes del sistema con los procesos internos de identidad y acceso, manteniendo contratos claros, validaciones tempranas y una frontera consistente entre el exterior y la logica del negocio.
+*   **DeviceController:** Registra y empareja dispositivos en el sistema.
+*   **DeviceThresholdController:** Endpoint para configurar los límites seguros de las lecturas.
+*   **OrganizationController y SpaceController:** API para configurar la estructura de locales y áreas.
 
 #### 4.2.3.3. Application Layer
 
-La capa de aplicación del Bounded Context Identity \& Access se encarga de orquestar los casos de uso que materializan los procesos de autenticación y autorización definidos por el negocio. A diferencia de la capa de dominio, aqui no se concentran las reglas fundamentales, sino la coordinación entre entidades, repositorios, politicas, servicios externos y eventos necesarios para ejecutar cada flujo de manera consistente.
+Orquesta los flujos de configuración del entorno e ingesta/acciones del hardware.
 
-Los principales casos de uso identificados para este contexto son los siguientes:
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/device-bc/application-layer.svg" alt="Device Application Layer Class Diagram" width="750">
+</p>
 
-| Caso de uso | Descripción |
-| --- | --- |
-| RegisterUser | Registra un usuario nuevo, valida unicidad de correo y activa el flujo de verificacion correspondiente. |
-| VerifyEmail | Confirma la cuenta del usuario y habilita su acceso a recursos protegidos. |
-| LoginUser | Valida credenciales o identidad federada, crea una sesión y emite tokens. |
-| RefreshSession | Renueva la sesión autenticada mediante rotacion de refresh token. |
-| LogoutUser | Revoca la sesión actual y evita el reuso de credenciales invalidadas. |
-| DeactivateAccount | Cambia el estado de la cuenta y fuerza la revocacion de todas las sesiónes activas. |
-| AssignRoleToUser | Asigna o modifica el rol del usuario de acuerdo con permisos autorizados. |
-| AuthenticateWithGoogle | Interpreta la respuesta del proveedor externo y la traduce al modelo interno del sistema. |
-
-Cada uno de estos casos de uso puede implementarse mediante servicios de aplicación especializados, tales como `RegistrationAppService`, `AuthenticationAppService`, `SessionAppService`, `AccessControlAppService` y `FederatedIdentityAppService`. Estos servicios reciben comandos provenientes de la capa de interfaz, consultan o persisten estado mediante repositorios abstractos y, finalmente, publican eventos relevantes del dominio.
-
-Por ejemplo, en el flujo de registro el servicio de aplicación recibe los datos del usuario, consulta si el email ya existe, solicita al dominio la creacion de la nueva identidad, persiste el resultado y genera el evento `UserRegistered`. En el flujo de login, el servicio valida las credenciales, comprueba el estado de la cuenta, crea la sesión, emite access token y refresh token, y registra los eventos `UserLoggedIn` y `SessionStarted`. De forma similar, el proceso `RefreshSession` verifica que el refresh token no haya expirado ni sido reutilizado, invalida el anterior y emite un nuevo conjunto de credenciales.
-
-Esta capa también es responsable de aplicar decisiones operativas como manejo transaccional, idempotencia en operaciónes sensibles, control de errores de negocio y trazabilidad entre comandos y resultados. Gracias a esta coordinacion, el contexto IAM puede mantener un flujo robusto de autenticación sin desplazar responsabilidades hacia la interfaz ni contaminar el dominio con detalles de infraestructura.
-
-En terminos arquitectónicos, la Application Layer actúa como un puente entre las intenciones del usuario y el núcleo del negocio. Su valor radica en convertir acciones externas, como registrarse o iniciar sesión, en ejecuciónes consistentes, auditables y alineadas con las políticas de seguridad de Clair.
+*   **DeviceCommandServiceImpl:** Coordina el emparejamiento seguro de dispositivos, validando las existencias de espacio y publicando en Kafka los cambios de asignación.
+*   **DeviceControlCommandServiceImpl:** Administra el envío y despacho de comandos asíncronos para activar extractores o ventanas de ventilación inteligentes.
+*   **SpaceCommandServiceImpl:** Orquesta el ciclo de vida del local, verificando a través del servicio externo `BillingContextFacade` (comunicación inter-contexto) si el plan del usuario tiene permisos para crear nuevos espacios.
 
 #### 4.2.3.4. Infrastructure Layer
 
-La capa de infraestructura del Bounded Context Identity \& Access implementa los mecanismos técnicos que permiten materializar las necesidades del dominio y de la capa de aplicación en el entorno real de ejecución. Aqui se concretan la persistencia de datos, la gestión de sesiónes, la emision y validacion de tokens, la integracion con Google OAuth2 y los servicios auxiliares requeridos por el proceso de autenticación.
+Proporciona persistencia SQL relacional para la configuración e integra mensajería Kafka.
 
-De acuerdo con la arquitectura definida para Clair, este contexto se apoya principalmente en **PostgreSQL** para la persistencia estructurada de usuarios, roles y permisos; en **Redis** para la gestión de sesiónes, refresh tokens y datos efimeros de seguridad; y en **Google OAuth2** como proveedor externo de identidad federada. Ademas, emplea JWT como mecanismo de autenticación stateless para solicitudes protegidas.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/device-bc/infrastructure-layer.svg" alt="Device Infrastructure Layer Class Diagram" width="750">
+</p>
 
-| Recurso de infraestructura | Responsabilidad |
-| --- | --- |
-| PostgreSQL | Persistir usuarios, roles, permisos y relaciónes de autorización. |
-| Redis | Almacenar sesiónes activas, refresh tokens, codigos temporales y estados de revocacion. |
-| Google OAuth2 | Validar identidades externas y permitir el inicio de sesión federado. |
-| JWT Provider | Generar, firmar y validar access tokens y refresh tokens. |
-| Password Encoder | Hashear y verificar contraseñas de forma segura. |
-
-En esta capa se ubican los adaptadores concretos que implementan los puertos definidos por la aplicación y el dominio. Entre ellos se encuentran repositorios de usuarios y roles para PostgreSQL, repositorios de sesiónes o tokens para Redis, un adaptador de autenticación federada para Google y un proveedor criptografico para la emision de JWT. Estos componentes permiten desacoplar las reglas del negocio de las decisiones tecnicas de persistencia o integracion.
-
-Desde la perspectiva del almacenamiento, las estructuras mínimas consideradas en este contexto incluyen tablas como `users`, `roles`, `permissions`, `user_roles` y `role_permissions`, asi como mecanismos temporales para `verification_tokens` y `refresh_tokens`. Esta organizacion soporta tanto la autenticación local como la autorización basada en roles, manteniendo trazabilidad suficiente para auditoría y control de acceso.
-
-La infraestructura tambien incorpora preocupaciones operativas clave para el cumplimiento de los requerimientos no funciónales del sistema. Entre ellas destacan el cifrado en transito bajo TLS 1.2 o superior, la expiración acotada de access tokens, la rotacion obligatoria de refresh tokens, la revocacion temprana de sesiónes, el rate limiting sobre endpoints de autenticación y el registro de eventos sensibles como login exitoso, login fallido, logout y desactivación de cuenta.
-
-Por ello, la Infrastructure Layer no solo sostiene tecnicamente el funciónamiento del contexto IAM, sino que tambien traduce los objetivos de seguridad y confiabilidad de Clair en mecanismos verificables. Gracias a esta capa, los procesos de identidad y acceso pueden operar con persistencia consistente, integracion externa controlada y soporte para auditoría, observabilidad y escalabilidad.
+*   **Adaptadores de Persistencia:** Repositorios Spring Data JPA que implementan los puertos de dominio para PostgreSQL.
+*   **Kafka Publishers:** Adaptadores `ProvisioningDevicesChangedKafkaPublisher` y `DeviceCommandsPendingKafkaPublisher` que formatean y transmiten los payloads hacia las colas correspondientes de Apache Kafka.
 
 #### 4.2.3.5. Bounded Context Software Architecture Component Level Diagrams
 
-En esta sección se presenta el Component Diagram del Bounded Context Identity \& Access. Aunque la Platform API se despliega como un unico container backend, internamente este bounded context se organiza en componentes con responsabilidades bien definidas, siguiendo una separacion por capas que facilita mantenibilidad, trazabilidad y claridad del dominio.
+Organización de capas de componentes en el contenedor principal de la API para Device & Space Management:
 
-<img src="../assets/c4-diagrams/IamLayers-dark.png" alt="IAM Component Diagram">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/backend/components/contexts/DeviceSpaceLayers-dark.svg" alt="Device & Space Layer Components Diagram" width="850">
+</p>
 
-El diagrama muestra la descomposicion interna del bounded context IAM en los componentes **Interfaces**, **Application**, **Domain** e **Infrastructure**, asi como sus relaciónes con los recursos externos necesarios para su operación, como PostgreSQL, Redis y Google OAuth2. Esta vista permite identificar cómo las solicitudes ingresan por la capa de interfaz, son orquestadas por la capa de aplicación, resueltas por las reglas del dominio y finalmente soportadas por adaptadores e integraciones de infraestructura.
+*   **DeviceSpace Interfaces (Component):** Expone las API HTTP REST para la manipulación de la organización y emparejamiento de hardware.
+*   **DeviceSpace Application (Component):** Orquesta los casos de uso llamando al dominio y disparando publicadores.
+*   **DeviceSpace Domain (Component):** Aloja las reglas de asignación y jerarquías lógicas de espacios.
+*   **DeviceSpace Infrastructure (Component):** Implementa el acceso físico a las tablas relacionales y el encolamiento de eventos en Kafka.
 
 #### 4.2.3.6. Bounded Context Software Architecture Code Level Diagrams
 
-En esta sección se presentan los diagramas de mayor detalle del Bounded Context Identity \& Access, enfocados en la representacion del modelo de clases del dominio y del esquema de persistencia asociado. Estas vistas permiten observar con mayor precision como se estructuran los conceptos principales del contexto y como se traducen a una base de datos que soporte autenticación, autorización y gestión de sesiónes.
-
 ##### 4.2.3.6.1. Bounded Context Domain Layer Class Diagrams
 
-El siguiente diagrama de clases describe los principales objetos del dominio del contexto IAM, incluyendo usuarios, roles, permisos, sesiónes y objetos de valor relaciónados con identidad y credenciales.
+El diagrama unificado de dominio para Device & Space Management define la estructura táctica y relaciones:
 
-<img src="../assets/c4-diagrams/code/iam-domain-class.svg" alt="IAM Domain Class Diagram">
-
-Esta vista permite comprender como el modelo de dominio organiza la identidad del usuario, la asignación de privilegios y la administracion del ciclo de vida de las sesiónes, manteniendo separadas las responsabilidades entre entidades y objetos de valor.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/device-bc/unified.svg" alt="Unified Device Domain Class Diagram" width="850">
+</p>
 
 ##### 4.2.3.6.2. Bounded Context Database Design Diagram
 
-El siguiente diagrama presenta el diseño de base de datos que soporta el Bounded Context Identity \& Access, incluyendo las estructuras necesarias para usuarios, roles, permisos, sesiónes y tokens de verificacion.
+Dado que la arquitectura del backend sigue un enfoque de monolito modular, todos los Bounded Contexts comparten una única base de datos relacional PostgreSQL. El siguiente diagrama presenta el diseño completo de la base de datos, incluyendo las tablas, columnas, tipos de datos, constraints (primary keys, foreign keys) y las relaciones entre tablas que permiten la persistencia de información para el contexto de **Device & Space Management** junto con los demás contextos del sistema.
 
-<img src="../assets/c4-diagrams/code/iam-db.svg" alt="IAM Database Diagram">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/database/database.png" alt="Bounded Context Database Design Diagram - Device and Space Management" width="850">
+</p>
 
-Este esquema refleja como las decisiones del dominio se materializan en una estructura persistente capaz de sostener autenticación segura, control de acceso por roles y trazabilidad sobre el estado de las sesiónes.
+Las tablas principales asociadas a este contexto son `devices`, que almacena el inventario de sensores registrados; `organizations` y `spaces`, que definen la jerarquía organizacional; `device_assignments` y `device_assignment_configuration`, que gestionan la vinculación de dispositivos a espacios y sus configuraciones de umbrales; y `device_commands`, que registra los comandos enviados al hardware.
 
-### 4.2.4. Bounded Context: Billing
+### 4.2.4. Bounded Context: Air Quality Evaluation
 
-El Bounded Context Billing agrupa la lógica de negocio vinculada a planes, suscripciones, checkout, pagos e invoices. Su responsabilidad es gobernar el ciclo comercial de los usuarios dentro de Clair, permitiendo distinguir entre capacidades freemium y premium, asi como mantener trazabilidad sobre la activacion, cambio o desactivación de beneficios asociados a la suscripcion.
+El contexto acotado de **Air Quality Evaluation** es el encargado de procesar, analizar y almacenar la telemetría en tiempo real recibida desde los sensores físicos. Realiza la validación de integridad técnica de los datos y la posterior evaluación de las métricas ambientales de salubridad ($CO_2$, material particulado, temperatura y humedad) contra los umbrales configurados para cada espacio.
+
+**Diccionario de Clases del Contexto Air Quality Evaluation**
+
+A continuación, se detallan las clases principales identificadas para este contexto, clasificadas por capa de arquitectura:
+
+| Nombre de la Clase | Capa | Propósito / Responsabilidad | Atributos Principales | Métodos Clave | Relaciones de Asociación / Dependencia |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **TelemetryEvaluation** | Dominio | Entidad raíz del agregado que consolida los datos ambientales de un sensor e indica su estado de salud general. | `id` (UUID), `deviceId` (DeviceId), `airQuality` (AirQuality), `particulateMatter` (ParticulateMatter), `connectivity` (Connectivity), `location` (Location) | *N/A* | Contiene `DeviceId`, `AirQuality`, `ParticulateMatter`, `Connectivity` y `Location`. |
+| **DeviceId** | Dominio | Objeto de Valor (*Value Object*) que tipa de manera fuerte el identificador único del sensor. | `value` (UUID) | *N/A* | Composición en `TelemetryEvaluation`. |
+| **AirQuality** | Dominio | Objeto de Valor que encapsula los niveles medidos de dióxido de carbono, temperatura y humedad. | `co2` (Double), `temperature` (Double), `humidity` (Double) | *N/A* | Composición en `TelemetryEvaluation`. |
+| **ParticulateMatter** | Dominio | Objeto de Valor que agrupa la densidad medida de polvo y partículas suspendidas. | `pm1_0` (Double), `pm2_5` (Double), `pm10` (Double) | *N/A* | Composición en `TelemetryEvaluation`. |
+| **Connectivity** | Dominio | Objeto de Valor que almacena datos de diagnóstico del hardware (señal, red, estado). | `status` (String), `network` (String), `signalStrength` (Double) | *N/A* | Composición en `TelemetryEvaluation`. |
+| **Location** | Dominio | Objeto de Valor que identifica la localización geográfica del dispositivo reportado. | `country` (String) | *N/A* | Composición en `TelemetryEvaluation`. |
+| **TelemetryEvaluationRepository** | Dominio | Interfaz (Puerto) que define los métodos de persistencia para el histórico de evaluaciones ambientales. | *N/A* | `save()`, `findByDeviceId()`, `findFirstByDeviceIdValueOrderByRecordedAtDesc()` | Utilizado por los servicios de comando y consulta de telemetría. |
+| **TelemetryEvaluationController** | Interfaz | Controlador REST para solicitar evaluaciones manuales y obtener históricos o la última lectura de un dispositivo. | `telemetryEvaluationQueryService`, `telemetryEvaluationCommandService` | `evaluateTelemetry()`, `getLatestEvaluationByDevice()` | Depende de `TelemetryEvaluationCommandServiceImpl` y `TelemetryEvaluationQueryServiceImpl`. |
+| **EvaluationContextFacade** | Interfaz | Fachada expuesta para que otros contextos consulten históricos agregados (como el módulo de Analytics). | *N/A* | `getLatestEvaluationRecordedAt()`, `getHourlyTelemetryAggregation()` | Implementado por `EvaluationContextFacadeImpl`. |
+| **TelemetryEvaluationCommandServiceImpl** | Aplicación | Servicio de aplicación que procesa el comando de ingesta, evalúa los umbrales y guarda el registro. | `telemetryEvaluationRepository` | `handle(EvaluateTelemetryCommand)` | Usa `TelemetryEvaluationRepository` para persistir la evaluación. |
+| **TelemetryEvaluationQueryServiceImpl** | Aplicación | Servicio de aplicación para consultar evaluaciones históricas de forma paginada o el último registro recibido. | `telemetryEvaluationRepository` | `handle(GetEvaluationsByDeviceQuery)`, `handle(GetLatestEvaluationByDeviceQuery)` | Usa `TelemetryEvaluationRepository`. |
+| **TelemetryRecordedKafkaConsumer** | Aplicación | Consumidor (Listener) de Kafka que procesa asíncronamente los mensajes de telemetría e inicia la evaluación. | `telemetryEvaluationCommandService`, `externalDeviceService` | `consume()` | Recibe datos crudos, resuelve el ID mediante `ExternalDeviceService` y delega a `TelemetryEvaluationCommandService`. |
+| **ExternalDeviceService** | Aplicación | Interfaz (Puerto de comunicación inter-contexto) para validar la existencia y pertenencia de un dispositivo. | *N/A* | `findDeviceIdByHardwareId()`, `isDeviceOwnedByUser()` | Consumido por el controlador y el consumidor Kafka. |
+| **JpaTelemetryEvaluationRepository** | Infraestructura | Adaptador JPA que implementa `TelemetryEvaluationRepository` para PostgreSQL. | *N/A* | *N/A* | Implementa `TelemetryEvaluationRepository`. |
+
+---
 
 #### 4.2.4.1. Domain Layer
 
-La capa de dominio del Bounded Context Billing concentra las reglas de negocio relaciónadas con planes, suscripciones, cobros, facturación y control de beneficios asociados al modelo comercial de Clair. Su objetivo es representar de manera explicita como se gestiona el acceso a funciónalidades premium, como se inicia o termina una suscripcion y bajo qué condiciones un usuario conserva, pierde o modifica sus beneficios dentro de la plataforma.
+La capa de dominio modela las especificaciones físicas de calidad del aire y la integridad de las lecturas ambientales.
 
-Este contexto tiene especial relevancia porque conecta la propuesta de valor del producto con su sostenibilidad operativa. A nivel del negocio, Clair distingue entre un **Freemium Plan**, orientado a monitoreo básico y acceso limitado al historial, y un **Premium Plan**, que habilita capacidades avanzadas como multiples dispositivos, reportes historicos completos y digests periodicos. En consecuencia, Billing no solo administra estados de pago, sino que tambien define las reglas que condicionan el acceso a funciónalidades segun la suscripcion vigente.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/evaluation-bc/domain-layer.svg" alt="Evaluation Domain Layer Class Diagram" width="750">
+</p>
 
-| Elemento del dominio | Descripción |
-| --- | --- |
-| Subscription | Representa la relación activa o inactiva entre un usuario y un plan comercial. |
-| Plan | Define las características, límites y beneficios asociados a una modalidad de servicio. |
-| Checkout Session | Representa el proceso temporal de cobro iniciado antes de confirmar un pago. |
-| Invoice | Representa la evidencia de una transacción económica o ciclo de facturación. |
-| Payment Outcome | Representa el resultado del intento de cobro, ya sea exitoso o fallido. |
-| Trial Period | Representa el periodo inicial de uso gratuito con acceso ampliado por tiempo limitado. |
-
-El agregado central de este bounded context es **Subscription**, ya que desde esta raiz se gobiernan decisiones como el plan contratado, su estado actual, la fecha de inicio, la expiración del trial, la renovación, la cancelación y el impacto funciónal de estos cambios sobre el resto del sistema. Como apoyo semantico, el modelo puede incorporar objetos de valor como `PlanId`, `SubscriptionStatus`, `BillingPeriod`, `Money`, `InvoiceId` y `CheckoutSessionId`, todos enfocados en expresar conceptos del negocio con consistencia.
-
-Las reglas de negocio principales de la capa de dominio son las siguientes:
-
-| Regla de negocio | Descripción |
-| --- | --- |
-| Trial inicial | Todo usuario nuevo elegible puede iniciar un período de prueba de 30 dias con acceso temporal a capacidades premium. |
-| Downgrade automatico | Cuando el trial expira sin activacion de pago, la cuenta debe regresar automaticamente al plan Freemium. |
-| Activación por pago válido | Una suscripcion premium solo puede activarse cuando el resultado del cobro ha sido confirmado por el proveedor de pagos. |
-| Persistencia del estado de facturación | Todo cambio en la suscripcion debe quedar reflejado en un estado consistente y auditable. |
-| Restriccion de beneficios | Las funciónalidades premium solo pueden ser consumidas mientras la suscripcion se encuentre activa. |
-| Cancelación controlada | La desactivación de una suscripcion debe reflejarse en la perdida de beneficios avanzados sin comprometer el acceso basico del usuario. |
-
-Estas reglas vinculan directamente este bounded context con los requerimientos funciónales `FR-BILL-01`, `FR-BILL-02`, `FR-BILL-03` y `FR-BILL-04`, ya que el dominio de Billing es el encargado de formalizar como se otorgan o restringen las capacidades comerciales del sistema.
-
-En terminos de comportamiento, la capa de dominio produce eventos significativos tales como `SubscriptionTrialStarted`, `CheckoutSessionCreated`, `PaymentConfirmed`, `PaymentFailed`, `SubscriptionActivated`, `PlanChanged`, `SubscriptionDeactivated` e `InvoiceIssued`. Cada uno de estos eventos documenta una transición relevante del estado comercial del usuario y permite mantener trazabilidad sobre decisiones económicas que afectan su experiencia dentro de Clair.
-
-En conjunto, la Domain Layer de Billing define la logica central del modelo de monetizacion de Clair. Gracias a esta capa, la plataforma puede gobernar de forma consistente la relación entre usuario, plan y beneficios, asegurando que la experiencia comercial responda a reglas claras, auditables y alineadas con la propuesta de negocio.
+*   **Entities y Aggregates:** `TelemetryEvaluation` representa el agregado principal que encapsula el estado físico del aire medido en un punto temporal específico.
+*   **Value Objects:** `AirQuality` (parámetros de gases y ambiente), `ParticulateMatter` (concentración de polvo PM1.0, PM2.5, PM10), `Connectivity` (diagnóstico de señal), `Location` (país de reporte) y `DeviceId`.
+*   **Ports:** `TelemetryEvaluationRepository` es el puerto de repositorio para guardar y recuperar mediciones.
 
 #### 4.2.4.2. Interface Layer
 
-La capa de interfaz del Bounded Context Billing expone al exterior los procesos vinculados a suscripciones, checkout, consulta de planes, estado de facturación y administracion del ciclo comercial del usuario. Su responsabilidad es recibir solicitudes provenientes de la Landing Page, la Web App y la Mobile App, validarlas y delegarlas a la capa de aplicación mediante contratos claros y consistentes.
+Provee los endpoints HTTP y fachadas internas para consultar las evaluaciones y estados ambientales.
 
-Desde la experiencia de usuario, esta capa representa el punto de contacto con las operaciónes comerciales del sistema. A traves de ella, el usuario puede consultar diferencias entre planes, iniciar un trial, crear una sesión de pago, verificar el estado de su suscripcion y conocer si conserva acceso a funciónalidades premium.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/evaluation-bc/interfaces-layer.svg" alt="Evaluation Interface Layer Class Diagram" width="750">
+</p>
 
-| Endpoint u operación | Tipo de acceso | Propósito |
-| --- | --- | --- |
-| `GET /billing/plans` | Publico | Consultar el catalogo de planes disponibles y sus beneficios. |
-| `GET /billing/subscription` | Protegido | Recuperar el estado actual de la suscripcion del usuario autenticado. |
-| `POST /billing/trial/start` | Protegido | Iniciar el período de prueba para un usuario elegible. |
-| `POST /billing/checkout-session` | Protegido | Crear una sesión de cobro para contratar o cambiar un plan. |
-| `POST /billing/webhooks/stripe` | Externo controlado | Recibir eventos de Stripe relaciónados con pago, renovacion o cancelacion. |
-| `PATCH /billing/subscription/cancel` | Protegido | Solicitar la cancelacion de la suscripcion activa. |
-| `GET /billing/invoices` | Protegido | Consultar el historial de comprobantes o transacciones del usuario. |
-
-La capa utiliza DTOs como `PlanResponse`, `SubscriptionStatusResponse`, `StartTrialRequest`, `CheckoutSessionRequest`, `CheckoutSessionResponse` y `InvoiceSummaryResponse`, con el fin de desacoplar la representacion externa del estado interno del dominio. Este enfoque permite exponer información comercial de forma comprensible y uniforme tanto para clientes web como mobile.
-
-Las validaciones de entrada en esta capa verifican condiciones como autenticación vigente, elegibilidad del usuario para iniciar trial, consistencia del plan solicitado, presencia de identificadores requeridos y autenticidad de los eventos webhook enviados por Stripe. De igual manera, la interfaz debe responder con codigos HTTP apropiados cuando una operación no es valida, por ejemplo `400 Bad Request` para solicitudes mal formadas, `401 Unauthorized` para intentos sin autenticación, `403 Forbidden` para acciones no permitidas y `409 Conflict` cuando una transicion comercial entra en conflicto con el estado actual de la suscripcion.
-
-Ademas, esta capa diferencia claramente entre endpoints de consulta, operaciónes comerciales iniciadas por el usuario y callbacks provenientes del proveedor externo. Los webhooks de Stripe constituyen una frontera especial, ya que deben ser autenticados y procesados de forma segura para impedir actualizaciones fraudulentas sobre el estado de facturación.
-
-En consecuencia, la Interface Layer del contexto Billing actúa como un canal controlado entre los clientes del sistema y la logica comercial interna, asegurando contratos estables, validaciones tempranas y trazabilidad sobre las operaciónes que modifican la suscripcion del usuario.
+*   **TelemetryEvaluationController:** Expone endpoints RESTful para obtener la telemetría en tiempo real de un dispositivo o su histórico paginado de evaluaciones.
+*   **EvaluationContextFacade:** Fachada de comunicación interna utilizada por el contexto acotado de Analytics & Reporting para recuperar consolidados de telemetría horaria sin acoplarse a los repositorios de este contexto.
 
 #### 4.2.4.3. Application Layer
 
-La capa de aplicación del Bounded Context Billing orquesta los casos de uso relaciónados con el ciclo comercial del usuario, desde el inicio del trial hasta la activacion, renovacion, cambio o cancelacion de la suscripcion. Su propósito es coordinar entidades del dominio, repositorios, integraciones externas y publicacion de eventos, garantizando que cada transaccion comercial se ejecute de forma consistente.
+Orquesta la ingesta de eventos de telemetría y ejecuta los flujos de consulta ambiental.
 
-Los casos de uso principales identificados para este contexto son los siguientes:
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/evaluation-bc/application-layer.svg" alt="Evaluation Application Layer Class Diagram" width="750">
+</p>
 
-| Caso de uso | Descripción |
-| --- | --- |
-| StartTrialSubscription | Inicia el período de prueba para usuarios elegibles y registra su vigencia. |
-| CreateCheckoutSession | Crea una sesión de cobro con el proveedor externo para contratar o cambiar un plan. |
-| ConfirmPaymentOutcome | Procesa el resultado del pago y actualiza el estado de la suscripcion. |
-| ActivateSubscription | Marca la suscripcion como activa una vez confirmado el cobro. |
-| ChangePlan | Gestiona la transicion entre planes respetando reglas comerciales vigentes. |
-| CancelSubscription | Cancela la suscripcion y ajusta el acceso a beneficios premium. |
-| ExpireTrialAndDowngrade | Detecta el fin del trial y ejecuta la degradacion automatica al plan Freemium. |
-| GetSubscriptionStatus | Recupera el estado comercial actual del usuario para consumo por otros contextos o interfaces. |
-
-Estos procesos pueden implementarse mediante servicios de aplicación como `SubscriptionAppService`, `CheckoutAppService`, `PaymentWebhookAppService`, `InvoiceAppService` y `PlanManagementAppService`. Cada servicio recibe comandos o eventos externos, coordina validaciones de estado y persiste el resultado utilizando los puertos apropiados del contexto.
-
-Por ejemplo, en el caso de uso `CreateCheckoutSession`, la aplicación recibe el plan objetivo, verifica que el usuario tenga permiso para contratarlo, solicita a la infraestructura la creacion de la sesión en Stripe, registra la referencia correspondiente y devuelve al cliente la información necesaria para continuar con el pago. En `ConfirmPaymentOutcome`, la aplicación interpreta el webhook recibido, valida su autenticidad, localiza la suscripcion asociada, actualiza su estado y emite eventos como `PaymentConfirmed` o `PaymentFailed`. Del mismo modo, `ExpireTrialAndDowngrade` puede ejecutarse como un proceso programado que revise trials vencidos y restablezca automaticamente los limites del plan Freemium.
-
-La capa de aplicación tambien cumple una función clave de coordinacion con otros bounded contexts. En particular, el resultado de Billing impacta sobre Analytics, Device \& Space Management y otras capacidades premium, ya que determina si el usuario puede acceder a historicos extendidos, multiples dispositivos o reportes avanzados. Por ello, esta capa debe exponer un estado comercial confiable y actualizado que pueda ser consultado por otros procesos del sistema.
-
-En sintesis, la Application Layer de Billing transforma intenciones comerciales en ejecuciónes concretas, controladas y trazables. Su papel es asegurar que cada decision vinculada a suscripciones y pagos quede respaldada por una secuencia consistente de validacion, persistencia, integracion externa y actualizacion del estado funciónal del usuario.
+*   **TelemetryRecordedKafkaConsumer (Event Handler):** Suscriptor de Kafka que escucha de forma reactiva y no bloqueante los eventos del bus de mensajería asíncrona cuando un sensor Clair reporta telemetría.
+*   **TelemetryEvaluationCommandServiceImpl:** Recibe el comando de validación, realiza los cálculos de salubridad y guarda la evaluación en base a los umbrales configurados.
+*   **ExternalDeviceService (Port):** Puerto para interactuar de forma segura con el contexto de `Device Management` y validar la existencia y propietario de los sensores.
 
 #### 4.2.4.4. Infrastructure Layer
 
-La capa de infraestructura del Bounded Context Billing implementa los componentes técnicos necesarios para soportar la persistencia de planes y suscripciones, la integracion con Stripe, el registro de invoices y el procesamiento seguro de eventos externos asociados al cobro. Esta capa traduce las necesidades del dominio comercial en mecanismos concretos de almacenamiento, comunicación e interoperabilidad.
+Provee el acceso físico al motor de series temporales/PostgreSQL.
 
-Conforme al modelo arquitectonico definido para Clair, Billing se apoya principalmente en **PostgreSQL** para la persistencia de planes, suscripciones, invoices y estados de facturación, asi como en **Stripe** como plataforma externa de procesamiento de pagos, checkout y notificacion de resultados. La infraestructura de este contexto tambien puede apoyarse en componentes compartidos del sistema para logging, auditoría, configuración segura y manejo de credenciales.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/evaluation-bc/infrastructure-layer.svg" alt="Evaluation Infrastructure Layer Class Diagram" width="750">
+</p>
 
-| Recurso de infraestructura | Responsabilidad |
-| --- | --- |
-| PostgreSQL | Persistir planes, suscripciones, historiales de facturación y relaciónes con el usuario. |
-| Stripe API | Crear checkout sessions, gestionar renovaciones y comunicar resultados de pago. |
-| Webhook Handler | Recibir y validar eventos externos enviados por Stripe. |
-| Billing Repository Adapter | Implementar el acceso persistente a suscripciones, planes e invoices. |
-| Audit and Logging Components | Registrar cambios de estado comercial, errores de cobro y eventos relevantes para trazabilidad. |
-
-Entre los adaptadores técnicos de esta capa se encuentran repositorios para `Subscription`, `Plan` e `Invoice`, asi como un `StripePaymentAdapter` responsable de encapsular la creacion de checkout sessions, la verificacion de resultados de pago y el tratamiento de respuestas del proveedor externo. Este desacoplamiento permite que la logica del negocio se mantenga independiente del SDK o protocolo concreto utilizado por Stripe.
-
-Desde la perspectiva del almacenamiento, las estructuras mínimas de este contexto incluyen tablas como `plans`, `subscriptions`, `checkout_sessions`, `invoices` y posiblemente `billing_events`, con el objetivo de conservar trazabilidad suficiente sobre intentos de cobro, activaciones, cambios de plan, cancelaciones y degradaciones automaticas. Esta persistencia resulta especialmente importante para auditoría, soporte al usuario y consistencia frente a reintentos o eventos externos asincronos.
-
-La capa de infraestructura tambien debe contemplar medidas operativas para garantizar la integridad del proceso de facturación. Entre ellas destacan la validacion criptografica de webhooks, el manejo idempotente de eventos de pago, la proteccion segura de claves y secretos de Stripe, la observabilidad sobre fallos de integracion y la capacidad de reintentar operaciónes no concluidas sin duplicar efectos comerciales sobre la suscripcion.
-
-Por ello, la Infrastructure Layer de Billing constituye el soporte tecnico que vuelve operativo el modelo de monetizacion de Clair. Gracias a esta capa, la plataforma puede conectar su logica comercial con un proveedor de pagos real, persistir el estado economico del usuario y asegurar que cada cambio en la suscripcion sea confiable, verificable y coherente con la experiencia ofrecida por el producto.
+*   **JpaTelemetryEvaluationRepository:** Adaptador que traduce las consultas y escrituras del dominio en sentencias SQL a través de Spring Data JPA sobre PostgreSQL.
 
 #### 4.2.4.5. Bounded Context Software Architecture Component Level Diagrams
 
-En esta sección se presenta el Component Diagram del Bounded Context Billing. El objetivo de esta vista es evidenciar como las responsabilidades comerciales del sistema se distribuyen en componentes internos, manteniendo separadas las decisiones del dominio de las preocupaciones de integracion con el proveedor de pagos y la persistencia del estado de facturación.
+Dentro del backend de Platform API, las capas tácticas de Air Quality Evaluation se representan bajo los siguientes componentes organizados:
 
-<img src="../assets/c4-diagrams/BillingLayers-dark.png" alt="Billing Component Diagram">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/backend/components/contexts/AirQualityLayers-dark.svg" alt="Air Quality Layer Components Diagram" width="850">
+</p>
 
-El diagrama representa la organizacion del bounded context Billing en componentes **Interfaces**, **Application**, **Domain** e **Infrastructure**, junto con sus dependencias hacia PostgreSQL y Stripe. A traves de esta descomposicion se observa como la capa de interfaz recibe solicitudes de planes y checkout, la capa de aplicación coordina casos de uso comerciales, el dominio define las reglas de suscripcion y facturación, y la infraestructura implementa la persistencia e integracion con el proveedor de pagos.
+*   **AirQuality Interfaces (Component):** Expone las API HTTP y la Fachada interna de consulta del aire.
+*   **AirQuality Application (Component):** Procesa de forma reactiva los eventos procedentes de Kafka y ejecuta comandos de persistencia.
+*   **AirQuality Domain (Component):** Modela la estructura lógica de los gases y partículas finas.
+*   **AirQuality Infrastructure (Component):** Implementa el repositorio conectándose a PostgreSQL para almacenar el histórico ambiental.
 
 #### 4.2.4.6. Bounded Context Software Architecture Code Level Diagrams
 
-En esta sección se presentan los diagramas de nivel codigo del Bounded Context Billing. Estas vistas complementan el componente arquitectonico mostrando, por un lado, las clases principales del dominio comercial y, por otro, el diseño de persistencia requerido para planes, suscripciones, checkout sessions e invoices.
-
 ##### 4.2.4.6.1. Bounded Context Domain Layer Class Diagrams
 
-El siguiente diagrama de clases representa los conceptos centrales del dominio de Billing, tales como plan, suscripcion, sesión de checkout e invoice.
+El diagrama unificado de clases del dominio para Air Quality Evaluation define los atributos y métodos completos:
 
-<img src="../assets/c4-diagrams/code/billing-domain-class.svg" alt="Billing Domain Class Diagram">
-
-Esta representacion permite observar como se estructura el modelo comercial del sistema y como se relaciónan los objetos que gobiernan el ciclo de vida de la suscripcion del usuario.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/evaluation-bc/unified.svg" alt="Unified Air Quality Domain Class Diagram" width="850">
+</p>
 
 ##### 4.2.4.6.2. Bounded Context Database Design Diagram
 
-El siguiente diagrama presenta el diseño de base de datos del Bounded Context Billing, incluyendo las tablas necesarias para planes, suscripciones, eventos de facturación, sesiónes de checkout e invoices.
+Dado que la arquitectura del backend sigue un enfoque de monolito modular, todos los Bounded Contexts comparten una única base de datos relacional PostgreSQL. El siguiente diagrama presenta el diseño completo de la base de datos, incluyendo las tablas, columnas, tipos de datos, constraints (primary keys, foreign keys) y las relaciones entre tablas que permiten la persistencia de información para el contexto de **Air Quality Evaluation** junto con los demás contextos del sistema.
 
-<img src="../assets/c4-diagrams/code/billing-db.svg" alt="Billing Database Diagram">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/database/database.png" alt="Bounded Context Database Design Diagram - Air Quality Evaluation" width="850">
+</p>
 
-Gracias a esta vista se aprecia como la logica comercial del dominio se traduce a una estructura persistente trazable, capaz de registrar activaciones, cambios de plan, pagos y cancelaciones.
+Las tablas principales asociadas a este contexto son `telemetry_evaluations`, que almacena las lecturas de telemetría procesadas incluyendo métricas de calidad del aire (CO₂, temperatura, humedad, material particulado PM1.0, PM2.5 y PM10), estado de conectividad y salud del dispositivo.
 
-### 4.2.5. Bounded Context: Device & Space Management
+### 4.2.5. Bounded Context: Alerting & Response
 
-El Bounded Context Device \& Space Management modela la estructura fisica sobre la cual opera Clair, representando facilities, spaces, dispositivos y configuraciónes de thresholds. Este contexto permite traducir el entorno real del usuario al sistema digital, estableciendo la base organizacional necesaria para interpretar telemetria, generar alertas y construir analitica contextualizada.
+El contexto acotado de **Alerting & Response** es responsable del ciclo de vida de los incidentes de calidad del aire. Evalúa de forma continua la telemetría recibida contra los umbrales específicos de seguridad, dispara alertas ante transgresiones de límites de contaminantes, gestiona el acuse de recibo de los operadores y despacha comandos de respuesta hacia los dispositivos inteligentes de forma autónoma.
+
+**Diccionario de Clases del Contexto Alerting & Response**
+
+A continuación, se detallan las clases principales identificadas para este contexto, clasificadas por capa de arquitectura:
+
+| Nombre de la Clase | Capa | Propósito / Responsabilidad | Atributos Principales | Métodos Clave | Relaciones de Asociación / Dependencia |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Alert** | Dominio | Entidad raíz del agregado que modela el ciclo de vida de un incidente ambiental (abierto, reconocido, cerrado). | `id` (UUID), `deviceId` (UUID), `spaceId` (UUID), `metric` (MetricType), `thresholdValue` (BigDecimal), `actualValue` (BigDecimal), `message` (String), `status` (AlertStatus), `severity` (AlertSeverity), `occurredAt` (Instant), `resolvedAt` (Instant) | `acknowledge()`, `resolve(resolvedAt)` | Contiene `MetricType`, `AlertStatus` y `AlertSeverity`. |
+| **MetricType** | Dominio | Enumeración que define las métricas propensas a generar alertas. | *N/A* | *N/A* | Composición en `Alert`. |
+| **AlertSeverity** | Dominio | Enumeración que indica la gravedad de la alerta (Low, Warning, Critical). | *N/A* | *N/A* | Composición en `Alert`. |
+| **AlertStatus** | Dominio | Enumeración para controlar el estado de atención del incidente (Active, Acknowledged, Resolved). | *N/A* | *N/A* | Composición en `Alert`. |
+| **AlertRepository** | Dominio | Interfaz (Puerto) que define los métodos de persistencia para las alertas. | *N/A* | `save()`, `findById()`, `findFirstByDeviceIdAndMetricAndStatusIn()` | Utilizado por los servicios de aplicación de alertas. |
+| **AlertController** | Interfaz | Controlador REST para consultar alertas de dispositivos, espacios y obtener resúmenes. | `alertQueryService` | `getAlertsByDevice()`, `getAlertsBySpace()`, `getDailySummary()` | Depende de `AlertQueryServiceImpl`. |
+| **AlertingContextFacade** | Interfaz | Fachada interna expuesta para que otros contextos consulten detalles específicos de incidentes. | *N/A* | `findAlertDetailsById()` | Implementado por `AlertingContextFacadeImpl`. |
+| **AlertCommandServiceImpl** | Aplicación | Servicio de aplicación para evaluar telemetría, generar incidentes o resolverlos automáticamente. | `alertRepository`, `externalThresholdService`, `externalDeviceService`, `publisher` | `handle(EvaluateTelemetryForAlertsCommand)` | Usa `AlertRepository`, puertos externos de consulta y publica en Kafka. |
+| **AlertQueryServiceImpl** | Aplicación | Servicio de consulta para obtener historiales de incidentes filtrados y resúmenes diarios. | `alertRepository`, `externalDeviceService` | `handle(GetAlertsByDeviceQuery)`, `handle(GetAlertsByOwnerQuery)` | Usa `AlertRepository` y `ExternalAlertingDeviceService`. |
+| **AlertingTelemetryRecordedKafkaConsumer** | Aplicación | Consumidor asíncrono de Kafka que procesa lecturas reportadas para gatillar la detección de alertas. | `alertCommandService` | `consume()` | Delega a `AlertCommandServiceImpl` la evaluación del payload recibido. |
+| **ExternalAlertingDeviceService** | Aplicación | Interfaz (Puerto de comunicación inter-contexto) para obtener nombres y localizaciones del hardware. | *N/A* | `fetchSpaceIdByDeviceId()`, `fetchDeviceNameByDeviceId()` | Utilizado por `AlertCommandServiceImpl`. |
+| **ExternalAlertingThresholdService** | Aplicación | Interfaz (Puerto de comunicación inter-contexto) para obtener los umbrales habilitados por sensor. | *N/A* | `fetchEnabledThresholdsByDeviceId()` | Utilizado por `AlertCommandServiceImpl`. |
+| **JpaAlertRepository** | Infraestructura | Adaptador JPA que implementa `AlertRepository` para almacenar alertas en PostgreSQL. | *N/A* | *N/A* | Implementa `AlertRepository`. |
+| **AlertIncidentsChangedKafkaPublisher** | Infraestructura | Adaptador que publica eventos de integración de cambio de estado de alertas en Apache Kafka. | `kafkaTemplate` | `publish()` | Publica eventos consumidos por otros contextos (como notificaciones). |
 
 #### 4.2.5.1. Domain Layer
 
-La capa de dominio del Bounded Context Device \& Space Management modela la estructura fisica y operativa sobre la cual funcióna Clair. Su responsabilidad es representar facilities, spaces, devices y las relaciónes de pertenencia, ubicacion, asignación y configuración inicial que permiten traducir el entorno real del usuario al modelo digital de la plataforma.
+La capa de dominio gestiona la lógica del ciclo de vida de los incidentes y las reglas de severidad del aire.
 
-Este contexto es fundamental porque proporciona el marco organizacional donde luego actuan Air Quality Evaluation, Alerting \& Response y Analytics. Sin una estructura consistente de establecimientos, espacios y dispositivos, el sistema no podria determinar donde se origina una lectura, a que usuario pertenece un sensor ni bajo que umbrales debe evaluarse su comportamiento.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/alerting-bc/domain-layer.svg" alt="Alerting Domain Layer Class Diagram" width="750">
+</p>
 
-| Elemento del dominio | Descripción |
-| --- | --- |
-| Facility | Representa el establecimiento principal administrado por un usuario, ya sea un hogar, oficina o local comercial. |
-| Space | Representa un ambiente o zona especifica dentro de una facility. |
-| Device | Representa el sensor Clair registrado formalmente en la plataforma. |
-| Device Assignment | Representa la vinculación operativa entre un dispositivo y un espacio concreto. |
-| Threshold Profile | Representa el conjunto de umbrales aplicables a un dispositivo o a una facility. |
-| Device Status | Representa el estado operaciónal del sensor, por ejemplo online, offline o anomalous. |
-
-El agregado principal de este bounded context puede centrarse en **Facility**, dado que desde esta raiz se organizan spaces, ownership y politicas generales de configuración, mientras que **Device** constituye un agregado complementario orientado al control de identidad, registro y asignación del sensor. Como objetos de valor, el modelo puede incluir `FacilityId`, `SpaceId`, `DeviceId`, `Location`, `Floor`, `AreaType` y `ThresholdValue`, con el fin de encapsular significado de negocio y evitar inconsistencias en la representacion.
-
-Las reglas de negocio esenciales de esta capa incluyen la obligatoriedad de que cada device pertenezca a un usuario valido, que un dispositivo solo pueda estar asignado a un space a la vez, que la metadata de ubicacion sea consistente con la facility seleccionada y que los thresholds por defecto o personalizados puedan aplicarse sin romper la trazabilidad de configuración. Asimismo, el dominio debe reconocer eventos como `FacilityCreated`, `SpaceCreated`, `DevicePaired`, `DeviceRegistered`, `DeviceAssignedToSpace`, `DeviceOffline`, `DeviceReconnected`, `DefaultThresholdsApplied` y `CustomThresholdsUpdated`.
-
-En consecuencia, la Domain Layer de Device \& Space Management establece la representacion estructural del mundo fisico dentro de Clair. Gracias a esta capa, la plataforma puede saber que dispositivos existen, donde estan ubicados y bajo que configuración deben operar antes de que la telemetria sea evaluada por los contextos analiticos y de respuesta.
+*   **Entities y Aggregates:** `Alert` actúa como agregado que encapsula los datos puntuales del incidente, implementando los métodos de negocio `acknowledge()` (acuse de recibo humano) y `resolve()` (cierre técnico de la alerta).
+*   **Value Objects / Enums:** Enums `MetricType` (CO2, PM2.5, temperatura, humedad), `AlertStatus` y `AlertSeverity`.
+*   **Ports:** `AlertRepository` define el contrato para almacenar y consultar alertas activas de sensores.
 
 #### 4.2.5.2. Interface Layer
 
-La capa de interfaz del Bounded Context Device \& Space Management expone los procesos mediante los cuales los usuarios crean facilities, definen spaces, registran dispositivos, configuran metadata de ubicacion y ajustan thresholds. Su objetivo es recibir solicitudes desde la Web App y la Mobile App, validarlas y transferirlas a la capa de aplicación mediante contratos estables y entendibles.
+Expone las APIs para la consulta de incidentes y provee fachadas para la interacción inter-contextos.
 
-Desde la perspectiva del usuario, esta capa es la encargada de materializar la construccion del entorno monitoreado. Aqui se inicia el onboarding de dispositivos y se definen las condiciones iniciales que determinan como se interpretaran las lecturas de cada sensor.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/alerting-bc/interfaces-layer.svg" alt="Alerting Interface Layer Class Diagram" width="750">
+</p>
 
-| Endpoint u operación | Tipo de acceso | Propósito |
-| --- | --- | --- |
-| `POST /facilities` | Protegido | Crear una nueva facility asociada al usuario autenticado. |
-| `POST /facilities/{id}/spaces` | Protegido | Crear un nuevo space dentro de una facility existente. |
-| `POST /devices/pair` | Protegido | Registrar el emparejamiento inicial del dispositivo con la cuenta del usuario. |
-| `POST /devices/register` | Protegido | Dar de alta formalmente un sensor dentro del sistema. |
-| `PATCH /devices/{id}/location` | Protegido | Configurar o actualizar la metadata de ubicacion del dispositivo. |
-| `PATCH /devices/{id}/thresholds` | Protegido | Configurar umbrales personalizados para un dispositivo. |
-| `PATCH /facilities/{id}/thresholds/default` | Protegido | Configurar umbrales por defecto para nuevos dispositivos de la facility. |
-| `GET /devices/{id}` | Protegido | Consultar el estado, espacio asignado y configuración del dispositivo. |
-
-La interfaz utiliza DTOs como `CreateFacilityRequest`, `CreateSpaceRequest`, `RegisterDeviceRequest`, `AssignDeviceRequest`, `ThresholdSetupRequest` y `DeviceDetailsResponse`, los cuales desacoplan la comunicación externa de la representacion interna del dominio. Esta separacion facilita ademas la evolucion de clientes web y mobile sin comprometer la consistencia del modelo.
-
-Las validaciones principales de esta capa incluyen comprobar que el usuario autenticado sea propietario o administrador de la facility objetivo, que el dispositivo no este ya registrado por otro usuario, que los identificadores recibidos sean validos y que los thresholds configurados se encuentren dentro de rangos aceptables para el dominio. Gracias a estas verificaciones tempranas, se evita que solicitudes invalidas o inconsistentes alcancen la lógica de negocio profunda.
-
-En sintesis, la Interface Layer de Device \& Space Management actúa como la frontera que transforma acciones de administracion fisica en operaciónes digitales controladas. Su aporte principal es permitir que los usuarios definan la estructura del espacio monitoreado de manera segura, consistente y alineada con el modelo de dominio.
+*   **AlertController:** Controlador REST para listar alertas e incidentes históricos o activos por local o dispositivo.
+*   **AlertingContextFacade:** Fachada de comunicación directa utilizada para que otros contextos de la aplicación consulten la gravedad de un incidente específico de forma rápida.
 
 #### 4.2.5.3. Application Layer
 
-La capa de aplicación del Bounded Context Device \& Space Management coordina los casos de uso asociados al alta, configuración y organizacion de facilities, spaces y devices. Su función es orquestar la ejecución de comandos, consultar repositorios, aplicar politicas del dominio y garantizar que los cambios estructurales se reflejen de manera consistente en toda la plataforma.
+Orquesta la evaluación reactiva de las lecturas físicas e inicia el despacho de notificaciones de incidentes.
 
-| Caso de uso | Descripción |
-| --- | --- |
-| CreateFacility | Registra una nueva facility y la vincula con su propietario o administrador. |
-| CreateSpace | Crea un nuevo ambiente dentro de una facility existente. |
-| PairDevice | Registra el primer acercamiento operativo entre el dispositivo fisico y la cuenta del usuario. |
-| RegisterDevice | Formaliza el alta del sensor en el sistema con un identificador persistente. |
-| AssignDeviceToSpace | Vincula un dispositivo registrado a un espacio especifico. |
-| SetupDeviceLocation | Define metadata de ubicacion como piso, tipo de ambiente o nombre del room. |
-| ApplyDefaultThresholds | Aplica configuración base de thresholds a nuevos dispositivos. |
-| UpdateCustomThresholds | Ajusta umbrales personalizados segun necesidades concretas del usuario. |
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/alerting-bc/application-layer.svg" alt="Alerting Application Layer Class Diagram" width="750">
+</p>
 
-Estos casos de uso pueden implementarse a traves de servicios como `FacilityAppService`, `SpaceAppService`, `DeviceRegistrationAppService` y `ThresholdManagementAppService`. Cada uno coordina validaciones de ownership, consistencia de ubicacion, estado del dispositivo y compatibilidad de configuración antes de persistir el resultado.
-
-Por ejemplo, `RegisterDevice` debe verificar que el sensor no se encuentre previamente asociado a otra cuenta, generar el identificador persistente y dejar trazabilidad del evento de primera conexion. `AssignDeviceToSpace` necesita comprobar que el space pertenece a una facility administrada por el usuario y que el dispositivo se encuentra en estado apto para ser asignado. De manera similar, `UpdateCustomThresholds` debe validar que los nuevos limites no contradigan restricciones del dominio y que queden correctamente asociados al dispositivo o facility correspondiente.
-
-La capa de aplicación también es responsable de emitir eventos de dominio que luego seran consumidos por otros bounded contexts. En particular, los resultados de este contexto son necesarios para Air Quality Evaluation, ya que toda lectura debe asociarse a un device y a un espacio concreto antes de poder interpretarse. De este modo, Device \& Space Management no solo administra estructura, sino que habilita semánticamente al resto del sistema.
-
-En conjunto, la Application Layer de este contexto convierte operaciónes de administracion de activos y espacios en transacciones coherentes, persistentes y trazables. Su valor reside en garantizar que el mapa digital del entorno monitorizado permanezca alineado con la realidad operativa del usuario.
+*   **AlertingTelemetryRecordedKafkaConsumer:** Listener asíncrono que procesa las lecturas de telemetría emitidas en el broker.
+*   **AlertCommandServiceImpl:** Resuelve el caso de uso central: analiza la lectura recibida contra los umbrales configurados (obtenidos mediante `ExternalAlertingThresholdService`). Si hay transgresión y no existe una alerta activa para esa métrica, crea un nuevo incidente `Alert` y publica un evento `AlertIncidentChangedIntegrationEvent` en Kafka.
+*   **Ports de consulta:** `ExternalAlertingDeviceService` y `ExternalAlertingThresholdService` resuelven datos de otros contextos de forma desacoplada.
 
 #### 4.2.5.4. Infrastructure Layer
 
-La capa de infraestructura del Bounded Context Device \& Space Management implementa la persistencia y los adaptadores técnicos requeridos para registrar facilities, spaces, devices y configuraciónes de thresholds. En esta capa se concretan repositorios, mecanismos de almacenamiento y servicios auxiliares necesarios para sostener la estructura fisica modelada por el dominio.
+Provee almacenamiento relacional SQL y control del encolamiento de eventos de incidentes.
 
-Conforme al modelo arquitectonico de Clair, este contexto se apoya principalmente en **PostgreSQL** como base de datos operativa para facilities, spaces, dispositivos y estados de ownership. Asimismo, puede integrar adaptadores para eventos de conectividad provenientes del dispositivo o del edge, de forma que el estado operaciónal del sensor quede sincronizado con su representacion persistida en la plataforma.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/alerting-bc/infrastructure-layer.svg" alt="Alerting Infrastructure Layer Class Diagram" width="750">
+</p>
 
-| Recurso de infraestructura | Responsabilidad |
-| --- | --- |
-| PostgreSQL | Persistir facilities, spaces, devices, relaciónes de asignación y thresholds. |
-| Device Repository Adapter | Implementar acceso a datos para registro y consulta de sensores. |
-| Facility Repository Adapter | Implementar acceso a datos para facilities y ownership. |
-| Threshold Persistence Adapter | Persistir configuraciónes por defecto y personalizadas. |
-| Connectivity Event Adapter | Procesar eventos como offline, reconnection o cambios de estado del dispositivo. |
-
-Las estructuras mínimas de almacenamiento pueden incluir tablas como `facilities`, `spaces`, `devices`, `device_assignments`, `device_status_history` y `threshold_profiles`. Esta organizacion permite conservar trazabilidad sobre altas, reasignaciónes, configuraciónes y cambios operativos del sensor a lo largo del tiempo.
-
-La infraestructura de este contexto tambien debe contemplar mecanismos de auditoría, validacion de integridad referencial y observabilidad sobre fallos de registro o sincronizacion. Todo ello resulta especialmente importante porque un error en esta capa puede impactar directamente en la interpretacion posterior de la telemetria, afectando alertas, dashboards y reportes historicos.
-
-Por ello, la Infrastructure Layer de Device \& Space Management convierte el modelo estructural del dominio en un soporte tecnico estable y trazable. Gracias a esta capa, Clair puede conservar de forma consistente la representacion digital de su red de sensores y espacios monitorizados.
+*   **JpaAlertRepository:** Adaptador concreto que persiste los registros de incidentes en PostgreSQL.
+*   **AlertIncidentsChangedKafkaPublisher:** Adaptador que despacha los eventos de integración de alertas abiertas/resueltas a colas de Apache Kafka.
 
 #### 4.2.5.5. Bounded Context Software Architecture Component Level Diagrams
 
-En esta sección se presenta el Component Diagram del Bounded Context Device \& Space Management. Esta vista permite comprender como el sistema organiza internamente la gestion de facilities, spaces, dispositivos y thresholds, separando responsabilidades funciónales y tecnicas dentro del mismo container backend.
+Estructuración de componentes internos para Alerting & Response en el contenedor principal de la API:
 
-<img src="../assets/c4-diagrams/DeviceSpaceLayers-dark.png" alt="Device and Space Management Component Diagram">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/backend/components/contexts/AlertingLayers-dark.svg" alt="Alerting Layer Components Diagram" width="850">
+</p>
 
-El diagrama muestra la descomposicion del bounded context en los componentes **Interfaces**, **Application**, **Domain** e **Infrastructure**, asi como su relación con la base de datos principal de la plataforma. A partir de esta estructura se aprecia como las operaciónes de registro de dispositivos, asignación a espacios y configuración de umbrales recorren una secuencia ordenada desde la recepcion de solicitudes hasta la persistencia de su estado operativo.
+*   **Alerting Interfaces (Component):** Expone las API HTTP REST para la auditoría y gestión de alertas.
+*   **Alerting Application (Component):** Consume lecturas e inicia la evaluación y despacho de eventos de incidentes.
+*   **Alerting Domain (Component):** Define las reglas lógicas de incidentes y estados de severidad.
+*   **Alerting Infrastructure (Component):** Conecta a PostgreSQL para almacenamiento y encola avisos en el broker de Kafka.
 
 #### 4.2.5.6. Bounded Context Software Architecture Code Level Diagrams
 
-En esta sección se presentan los diagramas de detalle del Bounded Context Device \& Space Management, mostrando tanto la estructura de clases del dominio como el diseño de base de datos que soporta facilities, spaces, devices y thresholds.
-
 ##### 4.2.5.6.1. Bounded Context Domain Layer Class Diagrams
 
-El siguiente diagrama de clases representa los objetos principales del dominio vinculados a establecimientos, espacios, dispositivos y perfiles de umbrales.
+El diagrama unificado de dominio para Alerting & Response define las propiedades completas del agregado:
 
-<img src="../assets/c4-diagrams/code/device-space-domain-class.svg" alt="Device and Space Domain Class Diagram">
-
-Esta vista permite identificar las relaciónes estructurales entre facility, space y device, asi como la forma en que se modelan la asignación operativa y la configuración inicial del monitoreo.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/alerting-bc/unified.svg" alt="Unified Alerting Domain Class Diagram" width="850">
+</p>
 
 ##### 4.2.5.6.2. Bounded Context Database Design Diagram
 
-El siguiente diagrama muestra el diseño de base de datos asociado al Bounded Context Device \& Space Management.
+Dado que la arquitectura del backend sigue un enfoque de monolito modular, todos los Bounded Contexts comparten una única base de datos relacional PostgreSQL. El siguiente diagrama presenta el diseño completo de la base de datos, incluyendo las tablas, columnas, tipos de datos, constraints (primary keys, foreign keys) y las relaciones entre tablas que permiten la persistencia de información para el contexto de **Alerting & Response** junto con los demás contextos del sistema.
 
-<img src="../assets/c4-diagrams/code/device-space-db.svg" alt="Device and Space Database Diagram">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/database/database.png" alt="Bounded Context Database Design Diagram - Alerting and Response" width="850">
+</p>
 
-El esquema refleja como la estructura fisica del entorno monitoreado se representa en persistencia, manteniendo trazabilidad sobre establecimientos, espacios, dispositivos, thresholds y cambios de estado.
+Las tablas principales asociadas a este contexto son `alerts`, que registra los incidentes de calidad del aire con su severidad, estado, valores actuales y umbrales transgredidos, vinculándose mediante foreign keys a `devices` y `spaces`.
 
-### 4.2.6. Bounded Context: Air Quality Evaluation
+### 4.2.6. Bounded Context: Analytics & Reporting
 
-El Bounded Context Air Quality Evaluation concentra la logica encargada de recibir, validar y procesar la telemetria ambiental proveniente de los dispositivos Clair. Su finalidad es convertir lecturas crudas en estados significativos del aire interior, calculando el indice de calidad del aire, detectando superaciones de thresholds e identificando condiciones anomalias que requieran atencion o exclusion del proceso normal de evaluacion.
+El contexto acotado de **Analytics & Reporting** se encarga de estructurar el análisis retrospectivo del aire, consolidar métricas de telemetría en series temporales agregadas (diarias y mensuales), y generar los reportes de salubridad y dashboards interactivos. Utiliza técnicas de Server-Sent Events (SSE) para servir telemetría en tiempo real y programadores de tareas en segundo plano (*schedulers*) para consolidar reportes históricos.
+
+**Diccionario de Clases del Contexto Analytics & Reporting**
+
+A continuación, se detallan las clases principales identificadas para este contexto, clasificadas por capa de arquitectura:
+
+| Nombre de la Clase | Capa | Propósito / Responsabilidad | Atributos Principales | Métodos Clave | Relaciones de Asociación / Dependencia |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **DeviceAnalyticsSnapshot** | Dominio | Entidad que almacena promedios ambientales calculados para un sensor en una ventana temporal (ej: 1 hora). | `id` (UUID), `deviceId` (DeviceId), `timeWindowStart` (Instant), `averageCo2` (Double), `calculatedAqi` (AirQualityIndex) | *N/A* | Contiene `DeviceId` y `AirQualityIndex`. |
+| **DeviceDailySummary** | Dominio | Entidad raíz del agregado para reportes históricos consolidados de un día. | `id` (UUID), `deviceId` (DeviceId), `summaryDate` (LocalDate), `co2` (MetricStats), `pm2_5` (MetricStats), `averageAqi` (Integer) | *N/A* | Contiene `DeviceId`, `MetricStats` y `AqiCategoryBreakdown`. |
+| **DeviceMonthlySummary** | Dominio | Entidad raíz del agregado para consolidados históricos por mes. | `id` (UUID), `deviceId` (DeviceId), `summaryMonth` (LocalDate), `daysCovered` (int) | *N/A* | Contiene `DeviceId` y `MetricStats`. |
+| **MetricStats** | Dominio | Objeto de Valor (*Value Object*) que agrupa estadísticas mínimas, máximas y promedio de una métrica. | `avg` (Double), `min` (Double), `max` (Double) | *N/A* | Composición en los resúmenes diario y mensual. |
+| **AqiCategoryBreakdown** | Dominio | Objeto de Valor que segmenta la cantidad de horas en que el aire estuvo en cada estado de riesgo. | `good` (Long), `moderate` (Long), `hazardous` (Long) | `plus()`, `dominant()` | Composición en los resúmenes diario y mensual. |
+| **AirQualityIndex** | Dominio | Objeto de Valor que encapsula la escala y categoría oficial de AQI (Índice de Calidad del Aire). | `value` (Double), `category` (AqiCategory) | *N/A* | Composición en `DeviceAnalyticsSnapshot`. |
+| **AqiCalculationDomainService** | Dominio | Servicio de Dominio que implementa las fórmulas oficiales EPA para calcular el nivel de AQI. | *N/A* | `calculateAqi(pm2_5, co2)` | Utilizado por los generadores de reportes y schedulers. |
+| **DeviceAnalyticsSnapshotRepository** | Dominio | Interfaz de repositorio para almacenar y recuperar snapshots temporales. | *N/A* | `save()`, `findByDeviceIdAndTimeWindowStartBetween()` | Utilizado por servicios de consulta de tendencias. |
+| **AnalyticsController** | Interfaz | Controlador REST para servir streams en tiempo real vía SSE e históricos de tendencias. | `kpiDashboardMetricsQueryService`, `analyticsSseService` | `getLiveMetrics()`, `streamLiveMetrics()`, `getTrends()` | Depende de los servicios de aplicación del dashboard. |
+| **ReportController** | Interfaz | Controlador REST que exporta los resúmenes en formato de reportes diarios y mensuales. | `dailyReportQueryService`, `externalBillingService` | `getDailyReport()`, `getMonthlyReport()` | Valida permisos llamando a `ExternalBillingService`. |
+| **KpiLiveMetricsCommandServiceImpl** | Aplicación | Servicio de aplicación que procesa la telemetría en caliente, refresca la caché y transmite vía SSE. | `kpiLiveMetricsCache`, `analyticsSseService` | `handle(ProcessTelemetryAnalyticCommand)` | Actualiza la caché y activa difusión SSE. |
+| **DailyReportAggregationService** | Aplicación | Generador programado por lotes que procesa lecturas diarias anteriores para emitir reportes históricos. | `dailySummaryRepository`, `aqiCalculationDomainService` | `aggregatePreviousDay()` | Ejecuta agregación SQL masiva e inserta reportes en PostgreSQL. |
+| **TelemetryAnalyticKafkaConsumer** | Aplicación | Consumidor de Kafka que escucha la telemetría recibida para actualizar de forma asíncrona la caché KPI. | `kpiLiveMetricsCommandService` | `consume()` | Transmite datos al procesador de métricas en vivo. |
+| **ExternalBillingService** | Aplicación | Interfaz (Puerto de comunicación inter-contexto) para validar límites del plan antes de servir reportes. | *N/A* | `canAccessMonthlyReports()` | Consumido por el `ReportController`. |
+| **DeviceDailySummaryRepository** | Infraestructura | Puerto (Interfaz de persistencia relacional) para guardar y buscar reportes de resumen diario. | *N/A* | `findByDeviceIdAndDate()`, `existsByDeviceIdAndDate()` | Implementado en la capa de infraestructura. |
 
 #### 4.2.6.1. Domain Layer
 
-La capa de dominio del Bounded Context Air Quality Evaluation concentra las reglas de negocio relaciónadas con la ingesta, validacion e interpretacion de la telemetria ambiental. Su objetivo es transformar lecturas crudas de CO2, PM2.5, humedad y temperatura en estados comprensibles del ambiente, tales como indice de calidad del aire, superacion de thresholds o deteccion de anomalias del sensor.
+La capa de dominio de Analytics implementa las estructuras estadísticas y cálculos matemáticos para reportes y AQI.
 
-Este contexto constituye el núcleo analitico de Clair, ya que es el responsable de convertir datos en conocimiento accionable. A partir de sus decisiones se alimentan los dashboards de tiempo real, se disparan alertas criticas y se construyen insumos para analitica historica y recomendaciones correctivas.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/analytics-bc/domain-layer.svg" alt="Analytics Domain Layer Class Diagram" width="750">
+</p>
 
-| Elemento del dominio | Descripción |
-| --- | --- |
-| Telemetry Batch | Representa un conjunto de lecturas recibidas desde el dispositivo o el edge. |
-| Reading | Representa una medicion individual de una variable ambiental en un instante de tiempo. |
-| Air Quality Index | Representa el valor compuesto que sintetiza el estado del aire interior. |
-| Air Quality State | Representa la clasificacion semántica del ambiente segun el indice y thresholds vigentes. |
-| Threshold Evaluation | Representa el resultado de contrastar una lectura con sus limites permitidos. |
-| Sensor Anomaly | Representa una condicion atipica o inconsistente que invalida la confianza en una lectura. |
-
-El dominio de este contexto debe asegurar que cada reading tenga identidad temporal, metrica, valor y procedencia validos antes de ser utilizada. Asimismo, debe mantener invariantes como la no duplicacion de lecturas, la exclusividad de una evaluacion por reading idempotente y la separacion entre datos validos y datos marcados como anomalos. Entre los eventos de dominio principales se encuentran `TelemetryBatchReceived`, `InvalidReadingRejected`, `ReadingPersistedInTimeSeries`, `AirQualityIndexCalculated`, `AirQualityStateChanged`, `CO2ThresholdSurpassed`, `PMThresholdSurpassed`, `HumidityDiscomfortDetected`, `ThermalDiscomfortDetected` y `SensorAnomalyDetected`.
-
-Las reglas de negocio esenciales incluyen la validacion de rangos admisibles, el calculo del AQI con base en las metricas disponibles, la comparacion independiente de cada metrica contra sus thresholds y la deteccion de condiciones que deban ser excluidas del proceso normal de evaluacion. Este comportamiento se encuentra alineado con `FR-AQE-01`, `FR-AQE-02`, `FR-AQE-03` y `FR-AQE-04`, ya que define como Clair interpreta y expone la calidad del aire en tiempo real.
-
-En consecuencia, la Domain Layer de Air Quality Evaluation convierte telemetria bruta en estado ambiental significativo. Gracias a esta capa, el sistema puede razonar sobre riesgo, confort y calidad del aire de manera consistente y accionable.
+*   **Entities y Aggregates:** `DeviceDailySummary` y `DeviceMonthlySummary` son los agregados a largo plazo que consolidan el historial de calidad del aire. `DeviceAnalyticsSnapshot` es la entidad utilizada para agrupar lecturas en micro-ventanas de análisis.
+*   **Value Objects:** `MetricStats` (mín/máx/promedio), `AqiCategoryBreakdown` (distribución de riesgo diario), `AirQualityIndex` e `DeviceId`.
+*   **Domain Services:** `AqiCalculationDomainService` (calcula el índice oficial de calidad del aire), `MetricsAggregationDomainService` (funciones estadísticas de agregación) y `TrendAnalysisDomainService` (análisis de variación de contaminantes).
 
 #### 4.2.6.2. Interface Layer
 
-La capa de interfaz del Bounded Context Air Quality Evaluation expone los procesos mediante los cuales la plataforma recibe telemetria, consulta estados del aire y entrega resultados de evaluacion a consumidores internos o externos. Su responsabilidad es aceptar entradas de datos desde el edge o el gateway, validarlas en un nivel preliminar y permitir la consulta de resultados hacia la Web App, la Mobile App y otros bounded contexts.
+Provee interfaces para la visualización en vivo de métricas y la descarga de resúmenes estructurados.
 
-| Endpoint u operación | Tipo de acceso | Propósito |
-| --- | --- | --- |
-| `POST /telemetry/ingest` | Sistema a sistema | Recibir lecturas o lotes de telemetria desde edge o dispositivos autorizados. |
-| `GET /air-quality/devices/{id}/current` | Protegido | Consultar el estado actual del aire asociado a un dispositivo. |
-| `GET /air-quality/spaces/{id}/current` | Protegido | Consultar el estado ambiental actual de un espacio. |
-| `GET /air-quality/devices/{id}/history-preview` | Protegido | Recuperar una vista acotada del historial reciente para dashboard. |
-| `POST /air-quality/evaluate` | Interno controlado | Forzar o disparar un proceso de evaluacion sobre lecturas pendientes. |
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/analytics-bc/interfaces-layer.svg" alt="Analytics Interface Layer Class Diagram" width="750">
+</p>
 
-La interfaz emplea DTOs como `TelemetryIngestionRequest`, `ReadingDto`, `AirQualityStateResponse` y `MetricSnapshotResponse`, de modo que las lecturas y resultados puedan intercambiarse sin acoplar a los clientes o productores con la estructura interna del dominio. Las validaciones iniciales comprueban formato, identidad del dispositivo, timestamp, integridad del lote y consistencia minima de las metricas antes de que la capa de aplicación procese la información.
-
-Adicionalmente, esta capa diferencia entre operaciónes de ingestion y operaciónes de consulta. Las primeras requieren autenticación tecnica y mecanismos de control sobre origen y frecuencia de envio; las segundas requieren permisos funciónales, ya que la información ambiental puede estar restringida al propietario del dispositivo o al administrador de la facility correspondiente.
-
-Por ello, la Interface Layer de Air Quality Evaluation constituye la puerta de entrada y salida del conocimiento ambiental del sistema. Su rol es garantizar que la telemetria ingrese con forma valida y que los resultados de la evaluacion se expongan de manera clara, consistente y segura.
+*   **AnalyticsController:** Provee endpoints tradicionales para consultar métricas, así como conexiones asíncronas persistentes basadas en Server-Sent Events (SSE) a través de `SseEmitter` para empujar lecturas en vivo a las aplicaciones cliente sin sobrecargar el servidor.
+*   **AnalyticsOverviewController:** Consolida los indicadores de salud y estados de conexión para la vista del panel principal.
+*   **ReportController:** Expone la obtención de reportes diarios y mensuales, validando la autorización mediante llamadas desacopladas.
 
 #### 4.2.6.3. Application Layer
 
-La capa de aplicación del Bounded Context Air Quality Evaluation orquesta la secuencia completa de recepcion, validacion, persistencia y evaluacion de la telemetria. Su tarea principal es coordinar los componentes que convierten lecturas entrantes en estados ambientales persistidos y eventos de negocio reutilizables por otros contextos.
+Orquesta los flujos de analítica en tiempo real y el procesamiento diferido de reportes por lotes (*batch*).
 
-| Caso de uso | Descripción |
-| --- | --- |
-| IngestTelemetryBatch | Recibe un lote de lecturas y coordina su validacion inicial. |
-| ValidateReading | Determina si una lectura puede aceptarse o debe ser rechazada o marcada como anomala. |
-| PersistReading | Almacena la lectura valida en el repositorio de series temporales. |
-| CalculateAirQualityIndex | Calcula el indice compuesto de calidad del aire a partir de las metricas disponibles. |
-| EvaluateThresholds | Contrasta cada metrica con los thresholds configurados. |
-| UpdateAirQualityState | Actualiza el estado semantico del ambiente cuando corresponde. |
-| DetectSensorAnomaly | Identifica patrones anormales y marca datos para exclusion. |
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/analytics-bc/application-layer.svg" alt="Analytics Application Layer Class Diagram" width="750">
+</p>
 
-Estos casos de uso pueden implementarse mediante servicios como `TelemetryIngestionAppService`, `AirQualityComputationAppService`, `ThresholdEvaluationAppService` y `SensorHealthAppService`. Cada servicio coordina repositorios, reglas de dominio y publicacion de eventos, manteniendo idempotencia y trazabilidad sobre cada reading procesado.
-
-Un flujo representativo de esta capa comienza con `IngestTelemetryBatch`, que recibe un conjunto de lecturas provenientes del edge. Luego, `ValidateReading` revisa formato, rangos y duplicidad, mientras `PersistReading` almacena los datos aceptados. Posteriormente, `CalculateAirQualityIndex` obtiene el AQI correspondiente y `EvaluateThresholds` determina si alguna metrica supera su limite permitido. Finalmente, `UpdateAirQualityState` refleja el nuevo estado del aire y, si corresponde, se publican eventos consumidos por Alerting \& Response y Analytics.
-
-La capa de aplicación también es responsable de controlar retencion, downsampling y coherencia temporal entre lecturas, en linea con los requerimientos de persistencia historica del proyecto. Por esta razon, su aporte no se limita a evaluar el presente, sino que tambien prepara información confiable para explotacion futura.
-
-En conjunto, la Application Layer de Air Quality Evaluation convierte el flujo continuo de telemetria en decisiones operativas concretas. Gracias a esta coordinacion, Clair puede reaccionar en tiempo real y mantener una base historica confiable para sus analisis posteriores.
+*   **KpiLiveMetricsCommandServiceImpl:** Recibe eventos de Kafka en caliente, actualiza un caché rápido en memoria `KpiLiveMetricsCache` y transmite la información vía SSE.
+*   **Daily/Monthly Report Aggregation Service:** Tareas del sistema que leen de forma asíncrona datos del día/mes anterior para consolidar métricas transaccionales masivas.
+*   **SnapshotAggregationScheduler:** Componente temporizado que ejecuta periódicamente promedios de telemetría y los guarda en base de datos.
 
 #### 4.2.6.4. Infrastructure Layer
 
-La capa de infraestructura del Bounded Context Air Quality Evaluation implementa los componentes técnicos necesarios para recibir, almacenar y procesar telemetria ambiental. En ella se concretan los adaptadores de ingreso de datos, los mecanismos de persistencia para series temporales y los servicios auxiliares necesarios para sostener calculos y consultas de estado.
+Implementa la persistencia a largo plazo para agregados analíticos.
 
-Conforme al modelo definido en Clair, esta capa se apoya en **PostgreSQL** para persistencia de evaluaciones y resumentes operativos, aunque el requerimiento de series temporales tambien sugiere una estructura especializada o un esquema optimizado para almacenamiento historico de lecturas. Asimismo, interactúa con productores externos como el edge station a traves de API o mecanismos de sincronizacion definidos por la arquitectura.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/analytics-bc/infrastructure-layer.svg" alt="Analytics Infrastructure Layer Class Diagram" width="750">
+</p>
 
-| Recurso de infraestructura | Responsabilidad |
-| --- | --- |
-| Telemetry Ingestion Adapter | Recibir lotes de lecturas desde edge o gateway. |
-| Time-Series Persistence Adapter | Almacenar readings y snapshots historicos. |
-| Air Quality Repository Adapter | Persistir AQI calculado y estados ambientales. |
-| Threshold Config Reader | Recuperar thresholds vigentes desde Device \& Space Management o almacenamiento compartido. |
-| Monitoring and Logging Components | Registrar volumen de ingestion, rechazos, anomalias y fallos de procesamiento. |
-
-Las estructuras persistentes de este contexto pueden incluir tablas o colecciones como `telemetry_readings`, `air_quality_states`, `aqi_snapshots`, `threshold_breaches` y `sensor_anomalies`. Esta organizacion permite conservar tanto la materia prima analitica como los resultados calculados que luego seran consumidos por interfaces y otros bounded contexts.
-
-La infraestructura debe contemplar ademas preocupaciones no funciónales importantes, como baja latencia de ingestion, manejo idempotente de lecturas repetidas, retencion diferenciada entre datos crudos y promedios horarios, asi como trazabilidad suficiente para auditoría y depuracion del pipeline de telemetria. Todo ello es crucial para cumplir las metas de rendimiento y confiabilidad establecidas por el proyecto.
-
-Por ello, la Infrastructure Layer de Air Quality Evaluation constituye la base tecnica que vuelve sostenible el procesamiento ambiental en tiempo real. Gracias a esta capa, Clair puede operar con un flujo continuo de datos, preservando consistencia, velocidad y disponibilidad sobre la información del aire interior.
+*   **Adaptadores de Repositorio:** `JpaDeviceAnalyticsSnapshotRepository`, `DeviceDailySummaryRepository` y `DeviceMonthlySummaryRepository` implementan los puertos de dominio persistiendo en PostgreSQL.
 
 #### 4.2.6.5. Bounded Context Software Architecture Component Level Diagrams
 
-En esta sección se presenta el Component Diagram del Bounded Context Air Quality Evaluation. El propósito del diagrama es mostrar como se organiza internamente la logica responsable de recibir telemetria, calcular el indice de calidad del aire, evaluar thresholds y generar estados ambientales significativos para el resto de la plataforma.
+Organización de capas de componentes en el contenedor principal de la API para Analytics & Reporting:
 
-<img src="../assets/c4-diagrams/AirQualityLayers-dark.png" alt="Air Quality Evaluation Component Diagram">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/backend/components/contexts/AnalyticsLayers-dark.svg" alt="Analytics Layer Components Diagram" width="850">
+</p>
 
-El diagrama evidencia la separacion del bounded context en los componentes **Interfaces**, **Application**, **Domain** e **Infrastructure**, asi como su vinculación con la persistencia de datos operativos. Esta representacion permite entender como las lecturas ingresan al sistema, son procesadas por la capa de aplicación, evaluadas mediante reglas del dominio y almacenadas para su posterior explotacion por alertas, dashboards y reportes historicos.
+*   **Analytics Interfaces (Component):** Expone las API HTTP REST y gestiona las conexiones abiertas para streams SSE.
+*   **Analytics Application (Component):** Orquesta los schedulers, consume del bus de Kafka y escribe en memoria caché.
+*   **Analytics Domain (Component):** Modela las fórmulas oficiales de AQI y agregaciones estadísticas.
+*   **Analytics Infrastructure (Component):** Persiste los reportes e históricos de snapshots en las tablas relacionales de PostgreSQL.
 
 #### 4.2.6.6. Bounded Context Software Architecture Code Level Diagrams
 
-En esta sección se presentan los diagramas de nivel codigo del Bounded Context Air Quality Evaluation. Estas vistas profundizan en el modelo encargado de procesar telemetria ambiental y en la estructura persistente que respalda lecturas, estados de calidad del aire y deteccion de anomalias.
-
 ##### 4.2.6.6.1. Bounded Context Domain Layer Class Diagrams
 
-El siguiente diagrama de clases representa los principales conceptos del dominio relaciónados con lecturas, lotes de telemetria, indice de calidad del aire, evaluacion de thresholds y anomalias del sensor.
+El diagrama unificado de dominio para Analytics & Reporting define la estructura táctica y las firmas completas del contexto:
 
-<img src="../assets/c4-diagrams/code/airquality-domain-class.svg" alt="Air Quality Domain Class Diagram">
-
-Esta vista permite entender como el bounded context organiza la información ambiental y como articula el paso desde lecturas crudas hasta estados significativos del aire interior.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/analytics-bc/unified.svg" alt="Unified Analytics Domain Class Diagram" width="850">
+</p>
 
 ##### 4.2.6.6.2. Bounded Context Database Design Diagram
 
-El siguiente diagrama presenta el diseño de base de datos del Bounded Context Air Quality Evaluation.
+Dado que la arquitectura del backend sigue un enfoque de monolito modular, todos los Bounded Contexts comparten una única base de datos relacional PostgreSQL. El siguiente diagrama presenta el diseño completo de la base de datos, incluyendo las tablas, columnas, tipos de datos, constraints (primary keys, foreign keys) y las relaciones entre tablas que permiten la persistencia de información para el contexto de **Analytics & Reporting** junto con los demás contextos del sistema.
 
-<img src="../assets/c4-diagrams/code/airquality-db.svg" alt="Air Quality Database Diagram">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/database/database.png" alt="Bounded Context Database Design Diagram - Analytics and Reporting" width="850">
+</p>
 
-El esquema muestra las estructuras requeridas para almacenar telemetria, snapshots de AQI, superaciones de thresholds y anomalias, preservando trazabilidad sobre el procesamiento ambiental del sistema.
+Las tablas principales asociadas a este contexto son `device_analytics_snapshots`, que almacena los snapshots agregados de telemetría por ventana temporal, incluyendo promedios de CO₂, humedad, PM2.5, temperatura y la categoría AQI calculada para cada dispositivo.
 
-### 4.2.7. Bounded Context: Alerting & Response
+### 4.2.7. Bounded Context: Notifications
 
-El Bounded Context Alerting \& Response se encarga de transformar condiciones ambientales criticas en mecanismos de reaccion operativa dentro del sistema. Su alcance comprende la generacion de alertas, la prevencion de fatiga de notificaciones, el seguimiento de acciones correctivas y la eventual activacion automatica de respuestas sobre dispositivos o sistemas auxiliares cuando la configuración lo permite.
+El contexto acotado de **Notifications** unifica el envío de mensajes a los usuarios a través de múltiples canales, incluyendo correos electrónicos transaccionales y notificaciones push en dispositivos móviles. Actúa como un módulo puramente utilitario y reactivo que responde a eventos disparados por otros contextos de la aplicación (como alertas críticas o códigos de registro).
+
+**Diccionario de Clases del Contexto Notifications**
+
+A continuación, se detallan las clases principales identificadas para este contexto, clasificadas por capa de arquitectura:
+
+| Nombre de la Clase | Capa | Propósito / Responsabilidad | Atributos Principales | Métodos Clave | Relaciones de Asociación / Dependencia |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **EmailLog** | Dominio | Entidad que registra el historial, estado y errores de los envíos de correos electrónicos. | `id` (UUID), `recipient` (EmailRecipient), `subject` (EmailSubject), `content` (EmailContent), `status` (String), `sentAt` (Instant) | *N/A* | Contiene `EmailRecipient`, `EmailSubject` y `EmailContent`. |
+| **PushNotificationLog** | Dominio | Entidad que registra las notificaciones push despachadas a los dispositivos de los usuarios. | `id` (UUID), `userId` (UUID), `title` (String), `message` (String), `status` (String), `sentAt` (Instant), `externalId` (String) | *N/A* | Vinculado a `UserId` por ID. |
+| **EmailDeliveryService** | Dominio | Interfaz (Puerto) que define la firma técnica para despachar correos electrónicos. | *N/A* | `send()` | Implementado por `SmtpEmailService` o adaptadores externos. |
+| **PushNotificationDeliveryService** | Dominio | Interfaz (Puerto) que define el envío de alertas push directas al smartphone. | *N/A* | `sendPush()` | Implementado por `OneSignalPushNotificationService`. |
+| **EmailRecipient** | Dominio | Objeto de Valor (*Value Object*) para encapsular la dirección de correo destinataria. | `value` (String) | *N/A* | Composición en `EmailLog`. |
+| **EmailSubject** | Dominio | Objeto de Valor que encapsula el asunto o título del correo. | `value` (String) | *N/A* | Composición en `EmailLog`. |
+| **EmailContent** | Dominio | Objeto de Valor para el cuerpo y formato del correo. | `value` (String) | *N/A* | Composición en `EmailLog`. |
+| **EmailLogRepository** | Dominio | Interfaz de persistencia para auditar el historial de emails enviados. | *N/A* | `save()` | Utilizado por `EmailCommandServiceImpl`. |
+| **PushNotificationLogRepository** | Dominio | Interfaz de persistencia para auditar las alertas push. | *N/A* | `save()` | Utilizado por `AlertIncidentChangedKafkaConsumer`. |
+| **NotificationController** | Interfaz | Controlador REST utilitario para realizar tests rápidos de conectividad y envíos. | *N/A* | `testEmail()` | Depende de `EmailCommandServiceImpl`. |
+| **NotificationsContextFacade** | Interfaz | Fachada expuesta internamente para ordenar envíos rápidos de emails de verificación. | *N/A* | `sendVerificationCode()` | Implementado por `NotificationsContextFacadeImpl`. |
+| **EmailCommandServiceImpl** | Aplicación | Servicio de aplicación que procesa comandos de envío de correos (código, bienvenida). | `emailDeliveryService`, `emailLogRepository` | `handle(SendVerificationCodeCommand)`, `handle(SendWelcomeEmailCommand)` | Usa `EmailDeliveryService` y `EmailLogRepository`. |
+| **AlertIncidentChangedKafkaConsumer** | Aplicación | Consumidor asíncrono de Kafka que escucha cambios en incidentes de alertas para despachar notificaciones push. | `pushNotificationDeliveryService`, `externalDeviceService`, `externalAlertingService` | `consume()` | Resuelve detalles de hardware e incidentes y envía push a través del SDK. |
+| **SmtpEmailService** | Infraestructura | Adaptador concreto que despacha correos utilizando SMTP local o servidor de correo de Spring. | `mailSender` | `send()` | Implementa `EmailDeliveryService`. |
+| **OneSignalPushNotificationService** | Infraestructura | Adaptador que implementa `PushNotificationDeliveryService` utilizando la API de OneSignal. | `oneSignalApiKey` | `sendPush()` | Implementa `PushNotificationDeliveryService`. |
 
 #### 4.2.7.1. Domain Layer
 
-La capa de dominio del Bounded Context Alerting \& Response modela las reglas de negocio que gobiernan la generacion de alertas, la prevencion de fatiga de notificaciones, el seguimiento de acciones correctivas y la ejecución manual o automatica de respuestas ante condiciones de riesgo ambiental. Su objetivo es transformar eventos criticos del contexto de evaluacion en acciones significativas para el usuario y el entorno monitoreado.
+La capa de dominio de Notifications contiene los modelos para auditoría de entrega de mensajes y los puertos de infraestructura.
 
-Este contexto tiene un rol clave dentro de Clair porque conecta el conocimiento ambiental con la reaccion operativa. No basta con detectar que el aire se encuentra en malas condiciones; el sistema debe decidir cuando alertar, a quién notificar, con que frecuencia insistir y que accion recomendar o ejecutar para corregir la situacion.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/notifications-bc/domain-layer.svg" alt="Notifications Domain Layer Class Diagram" width="750">
+</p>
 
-| Elemento del dominio | Descripción |
-| --- | --- |
-| Critical Alert | Representa una alerta generada por una condicion de riesgo o discomfort relevante. |
-| Alert Reminder | Representa un recordatorio emitido cuando la condicion persiste sin resolución. |
-| Corrective Action | Representa la accion recomendada o registrada para mejorar el ambiente. |
-| Auto Corrective Action | Representa una actuacion automatica ejecutada por el sistema ante reglas predefinidas. |
-| Alert Cooldown | Representa la ventana de supresion utilizada para evitar alert fatigue. |
-| Escalation Policy | Representa la regla que determina a quién se notifica cuando un evento persiste o se repite. |
-
-Las reglas de negocio principales de esta capa incluyen la emision de alertas solo cuando una condicion supera los thresholds definidos, la supresion temporal de alertas repetidas para la misma metrica y dispositivo, el registro obligatorio de acciones correctivas asociadas a incidentes relevantes y la posibilidad de activar respuestas automaticas solo cuando exista configuración valida para ello. Adicionalmente, el dominio debe contemplar eventos como `CriticalAlertGenerated`, `PushNotificationSent`, `EmailNotificationSent`, `AlertAcknowledged`, `AlertReminderIssued`, `CorrectiveActionRecommended`, `AutomaticCorrectiveActionTriggered`, `CorrectiveActionRecorded`, `CorrectiveActionCompleted` y `AlertResolved`.
-
-En este bounded context, el agregado principal puede concentrarse en **Critical Alert**, ya que desde esta raiz se coordinan el estado de la alerta, la secuencia de recordatorios, la asociacion con acciones correctivas y el cierre del incidente. Como soporte conceptual, el dominio puede emplear objetos de valor como `AlertSeverity`, `CooldownWindow`, `ActionType`, `ReminderCount` y `EscalationTarget`.
-
-En sintesis, la Domain Layer de Alerting \& Response define como Clair reacciona frente a un ambiente riesgoso. Gracias a esta capa, el sistema puede convertir la deteccion tecnica del problema en una estrategia de intervencion ordenada, oportuna y alineada con la experiencia del usuario.
+*   **Entities y Aggregates:** `EmailLog` (auditoría de correos enviados, registrando errores si fallan) y `PushNotificationLog` (auditoría de notificaciones móviles con su respectivo ID externo del proveedor).
+*   **Value Objects:** `EmailRecipient` (correo destinatario), `EmailSubject` y `EmailContent`.
+*   **Ports:** Interfaces de servicios técnicos (`EmailDeliveryService`, `PushNotificationDeliveryService`) e interfaces de repositorio (`EmailLogRepository`, `PushNotificationLogRepository`).
 
 #### 4.2.7.2. Interface Layer
 
-La capa de interfaz del Bounded Context Alerting \& Response expone las operaciónes relaciónadas con consulta de alertas, confirmacion de recepcion, registro de acciones correctivas, configuración de modos automáticos y seguimiento del estado del incidente. Su responsabilidad es mediar entre los usuarios, otros bounded contexts y la logica de respuesta contenida en el dominio.
+Expone las fachadas internas del sistema para delegar envíos de forma rápida.
 
-| Endpoint u operación | Tipo de acceso | Propósito |
-| --- | --- | --- |
-| `GET /alerts` | Protegido | Consultar alertas activas o historicas del usuario o facility. |
-| `GET /alerts/{id}` | Protegido | Recuperar el detalle de una alerta critica especifica. |
-| `POST /alerts/{id}/acknowledge` | Protegido | Confirmar recepcion o atencion inicial de la alerta. |
-| `POST /alerts/{id}/corrective-actions` | Protegido | Registrar una accion correctiva manual asociada al incidente. |
-| `PATCH /alerts/{id}/resolve` | Protegido | Marcar la alerta como resuelta cuando el ambiente vuelve a estado seguro. |
-| `PATCH /devices/{id}/smart-alarm` | Protegido | Activar o desactivar el modo de respuesta automatica para un dispositivo. |
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/notifications-bc/interfaces-layer.svg" alt="Notifications Interface Layer Class Diagram" width="750">
+</p>
 
-La interfaz utiliza contratos como `AlertSummaryResponse`, `AlertDetailResponse`, `AcknowledgeAlertRequest`, `CorrectiveActionRequest` y `SmartAlarmSettingsRequest`. Estos DTOs permiten comunicar incidentes y decisiones operativas de manera comprensible para clientes web y mobile, sin exponer la complejidad interna del dominio.
-
-Entre sus validaciones principales se encuentran la comprobacion de ownership o autoridad del actor, la existencia de la alerta objetivo, la validez del tipo de accion correctiva seleccionado y la verificacion de que una alerta solo pueda marcarse como resuelta cuando exista evidencia de normalizacion o cierre administrativo valido.
-
-Por tanto, la Interface Layer de Alerting \& Response actúa como la puerta de acceso al ciclo de respuesta frente a incidentes ambientales. Su mision es permitir que usuarios y sistemas interactuen con las alertas de forma controlada, trazable y coherente con las reglas del negocio.
+*   **NotificationController:** Endpoint REST utilitario de prueba.
+*   **NotificationsContextFacade:** Fachada de comunicación directa que permite al contexto de IAM gatillar el envío de códigos de confirmación de forma síncrona sin acoplarse a SMTP.
 
 #### 4.2.7.3. Application Layer
 
-La capa de aplicación del Bounded Context Alerting \& Response coordina la generacion de alertas, la emision de recordatorios, la recomendacion de acciones correctivas y la ejecución de respuestas automaticas cuando las condiciones del dominio lo permiten. Su responsabilidad es orquestar el paso desde eventos ambientales criticos hacia acciones concretas notificadas o ejecutadas.
+Orquesta los flujos de mensajería y procesa los eventos procedentes del bus asíncrono.
 
-| Caso de uso | Descripción |
-| --- | --- |
-| GenerateCriticalAlert | Crea una alerta a partir de un threshold breach recibido desde Air Quality Evaluation. |
-| NotifyAffectedUsers | Solicita el envio de notificaciones a los usuarios suscritos al espacio afectado. |
-| ApplyCooldownPolicy | Evalua si corresponde emitir o suprimir alertas repetidas. |
-| AcknowledgeAlert | Registra la recepcion de la alerta por parte del usuario. |
-| RecommendCorrectiveAction | Selecciona una accion sugerida acorde al tipo de incidente. |
-| TriggerAutomaticCorrectiveAction | Ejecuta una respuesta automatica cuando existe configuración valida. |
-| RecordCorrectiveAction | Registra la intervencion manual o automatica realizada sobre el incidente. |
-| ResolveAlert | Cierra la alerta una vez corregida o estabilizada la condicion. |
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/notifications-bc/application-layer.svg" alt="Notifications Application Layer Class Diagram" width="750">
+</p>
 
-Estos flujos pueden implementarse mediante servicios como `AlertGenerationAppService`, `AlertEscalationAppService`, `CorrectiveActionAppService` y `AutoResponseAppService`. Su labor consiste en evaluar el contexto del incidente, coordinar persistencia, activar notificaciones, consultar configuraciónes de dispositivos inteligentes y mantener la trazabilidad completa del ciclo de vida de la alerta.
-
-Por ejemplo, `GenerateCriticalAlert` recibe un evento de superacion de threshold, verifica si existe una alerta previa dentro de la ventana de cooldown, y de ser necesario crea un nuevo incidente. Luego, `NotifyAffectedUsers` delega la entrega al bounded context Notifications. Si la configuración del dispositivo habilita una respuesta automatica, `TriggerAutomaticCorrectiveAction` coordina con la infraestructura o con el Edge Station para activar un HVAC Controller o un Smart Window Actuator. Finalmente, `RecordCorrectiveAction` y `ResolveAlert` consolidan el cierre operativo del evento.
-
-La Application Layer de este contexto tambien debe contemplar reglas de escalamiento y fatiga de alertas, de modo que la insistencia en las notificaciones no degrade la experiencia del usuario ni reduzca la efectividad del sistema.
-
-En conjunto, esta capa transforma riesgos ambientales en reacciones concretas y gobernables. Gracias a ella, Clair no se limita a detectar problemas, sino que acompaña su resolución mediante una secuencia organizada de alerta, accion y cierre.
+*   **AlertIncidentChangedKafkaConsumer:** Listener asíncrono que reacciona de forma inmediata a los eventos de incidentes modificados. Cuando una alerta crítica es detectada, consulta al contexto de dispositivo (`ExternalDeviceService`) para obtener al propietario y despacha la notificación push.
+*   **EmailCommandServiceImpl:** Recibe comandos para formatear plantillas de correos electrónicos transaccionales y delega la transmisión física al servicio de entrega.
 
 #### 4.2.7.4. Infrastructure Layer
 
-La capa de infraestructura del Bounded Context Alerting \& Response implementa la persistencia de alertas, la integracion con sistemas de entrega de notificaciones y los adaptadores necesarios para ejecutar o coordinar respuestas correctivas. Su función es materializar la logica de respuesta definida por el dominio y la aplicación en componentes técnicos verificables.
+Conecta la aplicación a servidores de correo electrónico y servicios externos de mensajería push.
 
-| Recurso de infraestructura | Responsabilidad |
-| --- | --- |
-| PostgreSQL | Persistir alertas, recordatorios, estados del incidente y acciones correctivas. |
-| Alert Repository Adapter | Implementar acceso persistente a incidentes y su historial. |
-| Notification Request Adapter | Traducir alertas a solicitudes de entrega hacia el bounded context Notifications. |
-| Device Command Adapter | Encapsular el envio de comandos hacia edge o dispositivos inteligentes. |
-| Scheduling Components | Gestionar ventanas de cooldown, recordatorios y verificaciones periodicas. |
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/notifications-bc/infrastructure-layer.svg" alt="Notifications Infrastructure Layer Class Diagram" width="750">
+</p>
 
-Las estructuras persistentes de este contexto pueden incluir tablas como `critical_alerts`, `alert_reminders`, `corrective_actions`, `auto_response_settings` y `alert_escalations`. Esta base permite conservar un historial completo del incidente y de las decisiones operativas tomadas por el sistema o por los usuarios.
-
-Adicionalmente, la infraestructura debe contemplar mecanismos de temporizacion, idempotencia frente a eventos repetidos, registros auditables y observabilidad sobre entregas fallidas o respuestas automaticas no ejecutadas. Estas capacidades son indispensables para sostener la confiabilidad del sistema en escenarios donde una reaccion tardia o incorrecta puede impactar negativamente en la experiencia del usuario.
-
-Por ello, la Infrastructure Layer de Alerting \& Response constituye el soporte tecnico de la capacidad reactiva de Clair. Gracias a ella, las alertas y acciones correctivas pueden pasar del modelo conceptual a una operación concreta, trazable y coordinada con el resto de la plataforma.
+*   **SmtpEmailService:** Adaptador SMTP estándar.
+*   **OneSignalPushNotificationService:** Adaptador que realiza peticiones HTTP seguras al API de OneSignal para encolar alertas push móviles.
+*   **Repositorios JPA:** Adaptadores Spring Data JPA para la persistencia del log histórico en PostgreSQL.
 
 #### 4.2.7.5. Bounded Context Software Architecture Component Level Diagrams
 
-En esta sección se presenta el Component Diagram del Bounded Context Alerting \& Response. Esta vista describe la descomposicion interna de la logica de alertas y respuestas correctivas, mostrando como se articulan los componentes encargados de generar incidentes, coordinar acciones y sostener la reaccion operativa del sistema frente a condiciones de riesgo.
+Organización de componentes en el Platform API para el contexto acotado de Notifications:
 
-<img src="../assets/c4-diagrams/AlertingLayers-dark.png" alt="Alerting and Response Component Diagram">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/backend/components/contexts/NotificationsLayers-dark.svg" alt="Notifications Layer Components Diagram" width="850">
+</p>
 
-El diagrama organiza el bounded context en componentes **Interfaces**, **Application**, **Domain** e **Infrastructure**, vinculados a la persistencia de alertas y a la coordinacion de acciones y entregas asociadas. Gracias a esta vista es posible identificar como un evento critico proveniente de la evaluacion ambiental se transforma en una alerta formal, una recomendacion correctiva o una respuesta automatica segun las reglas y configuraciónes vigentes.
+*   **Notifications Interfaces (Component):** Expone las interfaces REST y fachadas de llamadas internas.
+*   **Notifications Application (Component):** Procesa eventos de incidentes de Kafka y formatea los templates de emails.
+*   **Notifications Domain (Component):** Modela el estado lógicos de envíos de alertas y correos.
+*   **Notifications Infrastructure (Component):** Implementa el cliente SMTP, la integración HTTP de OneSignal y la persistencia JPA a PostgreSQL.
 
 #### 4.2.7.6. Bounded Context Software Architecture Code Level Diagrams
 
-En esta sección se presentan los diagramas de nivel codigo del Bounded Context Alerting \& Response. El objetivo es mostrar con mayor detalle los objetos que intervienen en el ciclo de vida de una alerta y el diseño de persistencia que soporta recordatorios, acciones correctivas y configuraciónes de respuesta automatica.
-
 ##### 4.2.7.6.1. Bounded Context Domain Layer Class Diagrams
 
-El siguiente diagrama de clases representa los principales elementos del dominio de alertas, tales como critical alert, reminder, corrective action y cooldown policy.
+El diagrama de clases unificado del dominio de Notifications muestra todas sus entidades, value objects y métodos con visibilidad explícita:
 
-<img src="../assets/c4-diagrams/code/alertingresponse-domain-class.svg" alt="Alerting and Response Domain Class Diagram">
-
-Esta representacion permite observar como se modelan las relaciónes entre la alerta principal, sus recordatorios, las acciones correctivas asociadas y las politicas que regulan la frecuencia de reaccion del sistema.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/backend/notifications-bc/unified.svg" alt="Unified Notifications Domain Class Diagram" width="850">
+</p>
 
 ##### 4.2.7.6.2. Bounded Context Database Design Diagram
 
-El siguiente diagrama muestra el diseño de base de datos del Bounded Context Alerting \& Response.
+Dado que la arquitectura del backend sigue un enfoque de monolito modular, todos los Bounded Contexts comparten una única base de datos relacional PostgreSQL. El siguiente diagrama presenta el diseño completo de la base de datos, incluyendo las tablas, columnas, tipos de datos, constraints (primary keys, foreign keys) y las relaciones entre tablas que permiten la persistencia de información para el contexto de **Notifications** junto con los demás contextos del sistema.
 
-<img src="../assets/c4-diagrams/code/alertingresponse-db.svg" alt="Alerting and Response Database Diagram">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/database/database.png" alt="Bounded Context Database Design Diagram - Notifications" width="850">
+</p>
 
-El esquema refleja las estructuras necesarias para almacenar incidentes, recordatorios, acciones correctivas y configuraciónes de respuesta, asegurando trazabilidad completa sobre el proceso de reaccion ante eventos criticos.
+Las tablas principales asociadas a este contexto son `email_logs`, que registra el historial de correos electrónicos transaccionales enviados, y `push_notification_logs`, que almacena las notificaciones push despachadas a los usuarios, vinculándose mediante foreign keys a `alerts` y `users`.
 
-### 4.2.8. Bounded Context: Analytics & Reporting
+## 4.3. Tactical-Level Domain-Driven Design - Web application
 
-El Bounded Context Analytics \& Reporting agrupa las capacidades orientadas al analisis historico del comportamiento ambiental, la generacion de digests periodicos y la construccion de insights accionables para usuarios y administradores. Este contexto extiende el valor del sistema mas alla del monitoreo en tiempo real, permitiendo comprender tendencias, comparar periodos y respaldar decisiones operativas con evidencia acumulada.
+El frontend de Clair está desarrollado bajo el framework Angular, organizando sus módulos mediante la separación estricta en cuatro capas siguiendo las directrices de Domain-Driven Design (DDD) táctico. Esta arquitectura promueve el desacoplamiento de la interfaz gráfica y los mecanismos de red del negocio principal de la aplicación.
 
-#### 4.2.8.1. Domain Layer
+**Arquitectura de Componentes de la Aplicación Web (Angular Frontend)**
 
-La capa de dominio del Bounded Context Analytics \& Reporting concentra las reglas de negocio relaciónadas con agregacion historica, generacion de digests, construccion de reportes y formulacion de insights accionables a partir del comportamiento ambiental acumulado. Su objetivo es transformar datos ya evaluados en conocimiento longitudinal que ayude a entender tendencias, comparar periodos y mejorar la toma de decisiones.
+A continuación se detalla el diagrama C4 de nivel de Componentes para la aplicación web de Clair, ilustrando la organización interna de los Bounded Contexts y cómo interactúan las capas de interfaces, aplicación, dominio e infraestructura:
 
-Este contexto se diferencia de Air Quality Evaluation porque no se centra en el estado instantaneo del aire, sino en su interpretacion historica. Aqui se modelan conceptos como tendencia, resumen semanal, recomendacion de ventilacion y restricciones de acceso segun plan comercial.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/frontend/WebAppComponents-dark.svg" alt="Web Application Component Architecture Diagram" width="850">
+</p>
 
-| Elemento del dominio | Descripción |
-| --- | --- |
-| Historical Aggregate | Representa una consolidacion de lecturas o estados sobre una ventana temporal. |
-| Digest Report | Representa un resumen periodico generado para un usuario o facility. |
-| Trend Insight | Representa una observacion derivada del comportamiento historico de una o varias metricas. |
-| Ventilation Recommendation | Representa la mejor franja horaria sugerida para ventilar segun patrones pasados. |
-| Report Access Policy | Representa la regla que determina si un usuario puede ver historial completo o solo preview. |
+*   **Interfaces Layer (Componente de Presentación):** Contiene los componentes visuales de Angular (Pages, Cards, Tables, Modals) que se encargan de renderizar la interfaz y capturar eventos del usuario, además de mappers/transformadores locales e interceptores HTTP que inyectan el token JWT de forma transparente.
+*   **Application Layer (Componente de Aplicación):** Orquesta los flujos de control de los casos de uso a través de la implementación de servicios de comandos (`CommandServiceImpl`) y consultas (`QueryServiceImpl`). No contiene lógica de negocio directa, sino que delega la ejecución de reglas al dominio y gestiona transacciones y transformaciones.
+*   **Domain Layer (Componente de Dominio):** Representa el núcleo del negocio. Aquí se ubican las interfaces de servicios de comandos/consultas, los contratos de pasarela (`Gateway Interfaces`), entidades de dominio, enums y value objects puros. Esta capa es agnóstica de frameworks o librerías externas.
+*   **Infrastructure Layer (Componente de Infraestructura):** Implementa los adaptadores concretos definidos en la capa de dominio. Esto incluye pasarelas HTTP (`HttpGateways`) encargadas de consumir la API REST del backend mediante el `HttpClient` de Angular y el almacenamiento persistente en el cliente mediante el uso de LocalStorage.
 
-Las reglas de dominio principales incluyen la generacion periodica de resumentes diarios, semanales o mensuales, la identificacion del mejor horario de ventilacion, la consolidacion de acciones correctivas y frecuencia de alertas por zona, asi como la restriccion del historial extendido para usuarios sin suscripcion premium. Los eventos relevantes en este contexto incluyen `HistoricalDataAggregated`, `DailyDigestGenerated`, `WeeklyDigestGenerated`, `MonthlyReportGenerated`, `BestVentilationHourIdentified` y `HistoricDataPreviewBlocked`.
+### 4.3.1. Bounded Context: Identity & Access Management (IAM)
 
-En consecuencia, la Domain Layer de Analytics \& Reporting define como Clair convierte el registro historico de la calidad del aire en información de valor estrategico. Gracias a esta capa, el sistema puede ofrecer una lectura mas profunda del comportamiento ambiental y no solo una reaccion al instante.
+#### 4.3.1.1. Domain Layer
 
-#### 4.2.8.2. Interface Layer
+Define las reglas de negocio principales, entidades, value objects e interfaces de servicio para la autenticación y autorización de usuarios.
 
-La capa de interfaz del Bounded Context Analytics \& Reporting expone consultas historicas, reportes agregados, tendencias y recomendaciones para usuarios y administradores. Su responsabilidad es poner a disposicion estos resultados mediante endpoints comprensibles y consistentes con las restricciones comerciales y de acceso del sistema.
+*   **AuthCommandService (Interface):** Interfaz que define las operaciones de comando para iniciar sesión, registrarse y confirmar cuentas.
+*   **AuthQueryService (Interface):** Interfaz que define la verificación de tokens y consultas del estado de sesión.
+*   **AuthGateway (Interface):** Contrato que modela las interacciones de autenticación contra APIs externas.
+*   **TokenStorageGateway (Interface):** Contrato encargado de abstraer el guardado, recuperación y eliminación de tokens de sesión (Access y Refresh tokens).
+*   **SignInCommand / SignUpCommand (Value Objects):** Objetos de valor inmutables que encapsulan las credenciales del usuario.
 
-| Endpoint u operación | Tipo de acceso | Propósito |
-| --- | --- | --- |
-| `GET /analytics/devices/{id}/history` | Protegido | Consultar historial ambiental de un dispositivo dentro del rango permitido. |
-| `GET /analytics/spaces/{id}/trends` | Protegido | Recuperar tendencias historicas de un espacio especifico. |
-| `GET /analytics/digests/daily` | Protegido | Consultar o disparar la obtencion del digest diario del usuario. |
-| `GET /analytics/digests/weekly` | Protegido | Consultar resumen semanal del usuario o facility. |
-| `GET /analytics/reports/monthly` | Protegido | Recuperar reporte mensual para usuarios premium. |
-| `GET /analytics/recommendations/ventilation-best-hour` | Protegido | Consultar la mejor hora de ventilacion estimada. |
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/iam_bc_class_diagram/domain-iam.svg" alt="Frontend IAM Domain Layer Class Diagram" width="750">
+</p>
 
-La interfaz debe validar permisos de acceso sobre los dispositivos y spaces consultados, comprobar las restricciones del plan comercial del usuario y devolver respuestas adecuadas cuando el historial completo no este disponible. Para ello puede apoyarse en DTOs como `HistoricalSeriesResponse`, `TrendInsightResponse`, `DigestReportResponse` y `VentilationRecommendationResponse`.
+#### 4.3.1.2. Interface Layer
 
-En sintesis, la Interface Layer de Analytics \& Reporting permite que el conocimiento historico del sistema llegue de forma clara a los distintos clientes, respetando ownership, niveles de acceso y capacidades del plan contratado.
+Se encarga de la interacción directa con el usuario, controlando el ciclo de vida de los formularios y las peticiones salientes mediante interceptores.
 
-#### 4.2.8.3. Application Layer
+*   **LoginPageComponent:** Componente Angular que procesa el formulario de login y maneja los eventos `onSignIn()` y `onSignInWithGoogle()`.
+*   **RegisterPageComponent:** Componente Angular para el registro de nuevos usuarios en la plataforma.
+*   **ConfirmPageComponent:** Componente para validar el código de verificación enviado por correo electrónico.
+*   **AuthInterceptor:** Interceptor HTTP de Angular que recupera el token de acceso actual desde `TokenStorageGateway` y lo inyecta automáticamente en la cabecera `Authorization` de todas las peticiones salientes.
 
-La capa de aplicación del Bounded Context Analytics \& Reporting coordina la agregacion de datos, la generacion de digests y la construccion de reportes historicos. Su función es articular repositorios analiticos, politicas de acceso y calculos de tendencia para ofrecer resultados consistentes y reutilizables por la interfaz o por otros procesos de negocio.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/iam_bc_class_diagram/interfaces-iam.svg" alt="Frontend IAM Interface Layer Class Diagram" width="750">
+</p>
 
-| Caso de uso | Descripción |
-| --- | --- |
-| AggregateHistoricalData | Consolida lecturas y estados en ventanas temporales aptas para analisis. |
-| GenerateDailyDigest | Construye el resumen diario para Home Users. |
-| GenerateWeeklyDigest | Construye el resumen semanal para Facility Admins o facilities completas. |
-| GenerateMonthlyReport | Produce el reporte mensual para usuarios con plan premium. |
-| IdentifyBestVentilationHour | Determina la franja horaria mas favorable para ventilar un espacio. |
-| EnforceHistoricAccessPolicy | Verifica si el usuario puede consultar historial completo o solo una vista limitada. |
+#### 4.3.1.3. Application Layer
 
-Estos casos de uso pueden materializarse mediante servicios como `AnalyticsAggregationAppService`, `DigestGenerationAppService`, `TrendAnalysisAppService` y `HistoricalAccessAppService`. Cada servicio coordina consultas a datos historicos, aplica reglas comerciales provenientes de Billing y estructura salidas listas para consumo por la interfaz o por el bounded context Notifications.
+Orquesta los casos de uso específicos del contexto de autenticación, interactuando con los contratos definidos en el dominio.
 
-Por ejemplo, `GenerateWeeklyDigest` puede combinar datos de estados ambientales, numero de alertas, acciones correctivas registradas y distribucion por zonas para construir una vision ejecutiva del comportamiento de una facility. Del mismo modo, `EnforceHistoricAccessPolicy` determina si un usuario freemium recibe un preview con paywall o una consulta completa sobre largos periodos de tiempo.
+*   **AuthCommandServiceImpl:** Implementación del servicio de comandos de autenticación. Coordina la validación, la llamada a la pasarela de autenticación (`AuthGateway`), y el almacenamiento seguro de los tokens.
+*   **AuthQueryServiceImpl:** Implementación del servicio de consultas encargado de verificar los tokens JWT.
 
-La Application Layer de Analytics \& Reporting, por tanto, convierte acumulaciones de datos en reportes con valor de negocio. Su papel es sostener una analitica interpretable, util y coherente con la oferta funciónal de Clair.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/iam_bc_class_diagram/application-iam.svg" alt="Frontend IAM Application Layer Class Diagram" width="750">
+</p>
 
-#### 4.2.8.4. Infrastructure Layer
+#### 4.3.1.4. Infrastructure Layer
 
-La capa de infraestructura del Bounded Context Analytics \& Reporting implementa los componentes técnicos necesarios para almacenar agregados, consultar historicos, generar reportes y sostener procesos periodicos de consolidacion. Su función es traducir la necesidad de analitica prolongada en un soporte eficiente y confiable.
+Proporciona la implementación concreta de los contratos del dominio a través del consumo de servicios web e interacción con la memoria persistente del navegador.
 
-| Recurso de infraestructura | Responsabilidad |
-| --- | --- |
-| Analytics Repository Adapter | Persistir agregados historicos, snapshots y datasets de reporte. |
-| Reporting Storage | Conservar resultados de digests y reportes generados. |
-| Scheduled Jobs | Ejecutar consolidaciones, downsampling y generacion periodica de resumentes. |
-| Query Optimization Components | Facilitar consultas historicas sobre rangos amplios de tiempo. |
-| Audit and Logging Components | Registrar generacion de reportes, bloqueos por plan y fallos de agregacion. |
+*   **AuthHttpGateway:** Adaptador que realiza las llamadas HTTP usando Angular `HttpClient` hacia el servicio IAM de la API de Clair.
+*   **LocalTokenStorageGateway:** Implementación concreta encargada de guardar y leer los tokens usando la API de `LocalStorage` del navegador.
+*   **AuthResponseResource:** Recurso DTO que modela el cuerpo de respuesta de la API que incluye el accessToken y refreshToken.
 
-Las estructuras persistentes pueden incluir `historical_aggregates`, `daily_digests`, `weekly_digests`, `monthly_reports`, `trend_snapshots` y `ventilation_recommendations`. Estas estructuras permiten desacoplar consultas analiticas pesadas de la operación transaccional en tiempo real.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/iam_bc_class_diagram/infrastructure-iam.svg" alt="Frontend IAM Infrastructure Layer Class Diagram" width="750">
+</p>
 
-La infraestructura de este contexto debe prestar especial atencion a retencion, optimizacion de consultas y procesamiento batch, pues la analitica historica involucra rangos amplios de datos y requiere tiempos de respuesta razonables para no degradar la experiencia del usuario.
+#### 4.3.1.5. Bounded Context Software Architecture Code Level Diagrams
 
-Por ello, la Infrastructure Layer de Analytics \& Reporting constituye la base tecnica que hace viable el analisis de largo plazo dentro de Clair. Gracias a esta capa, los historicos pueden convertirse en insights y reportes sostenibles a escala.
+El diagrama de clases unificado del contexto acotado de Identity & Access Management (IAM) muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
 
-#### 4.2.8.5. Bounded Context Software Architecture Component Level Diagrams
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/iam_bc_class_diagram/diagram.svg" alt="Unified Web App IAM Class Diagram" width="850">
+</p>
 
-En esta sección se presenta el Component Diagram del Bounded Context Analytics \& Reporting. El objetivo es exponer la estructura interna que soporta la agregacion historica, la generacion de digests periodicos y la construccion de insights para usuarios y administradores.
+### 4.3.2. Bounded Context: Billing
 
-<img src="../assets/c4-diagrams/AnalyticsLayers-dark.png" alt="Analytics and Reporting Component Diagram">
+#### 4.3.2.1. Domain Layer
 
-El diagrama muestra la descomposicion del bounded context en los componentes **Interfaces**, **Application**, **Domain** e **Infrastructure**, articulados con los mecanismos de almacenamiento de agregados y reportes. Esta vista permite comprender como el sistema transforma información historica en resumentes, tendencias y recomendaciones accionables alineadas con el plan comercial y las necesidades del usuario.
+Define las entidades financieras, planes y contratos de servicios para la suscripción a Clair Premium.
 
-#### 4.2.8.6. Bounded Context Software Architecture Code Level Diagrams
+*   **UserPlan (Entity):** Entidad que representa la suscripción activa del usuario con su respectivo `UserId` y `PlanType`.
+*   **PaymentIntent (Entity):** Modela la intención de pago generada por Stripe (`clientSecret`).
+*   **PlanType (Enum):** Enumerador de planes soportados por la aplicación (`FREE`, `PREMIUM`).
+*   **BillingCommandService / BillingQueryService (Interfaces):** Contratos del dominio para ejecutar pagos y consultar claves o planes de usuario.
+*   **BillingGateway (Interface):** Contrato para el envío de datos de pago e integración del checkout.
 
-En esta sección se presentan los diagramas de detalle del Bounded Context Analytics \& Reporting. Estas vistas muestran como se modelan los agregados historicos, digests e insights, y como estos conceptos se proyectan sobre una estructura persistente orientada al analisis longitudinal del comportamiento ambiental.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/billing_bc_class_diagram/domain-billing.svg" alt="Frontend Billing Domain Layer Class Diagram" width="750">
+</p>
 
-##### 4.2.8.6.1. Bounded Context Domain Layer Class Diagrams
+#### 4.3.2.2. Interface Layer
 
-El siguiente diagrama de clases representa los conceptos centrales del dominio analitico, incluyendo agregados historicos, digests, insights y recomendaciones de ventilacion.
+Contiene los componentes visuales interactivos y los servicios de transformación de datos para los flujos de pago.
 
-<img src="../assets/c4-diagrams/code/analytics-domain-class.svg" alt="Analytics Domain Class Diagram">
+*   **SelectPlanComponent:** Vista de selección de planes (Free vs Premium).
+*   **PremiumCheckoutComponent:** Componente que controla el proceso de pago, interactúa con Stripe Elements y despacha la confirmación de la transacción.
+*   **PaymentModalComponent:** Modal interactivo encargado de instanciar de forma segura las pasarelas del lado del cliente.
+*   **BillingTransform (Service):** Servicio encargado de mapear los datos JSON de la infraestructura (`PaymentIntentResource`) a los modelos del dominio (`PaymentIntent`).
 
-Esta vista permite comprender como el sistema organiza el conocimiento historico para convertir datos acumulados en resumentes periodicos y recomendaciones accionables.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/billing_bc_class_diagram/interfaces-billing.svg" alt="Frontend Billing Interface Layer Class Diagram" width="750">
+</p>
 
-##### 4.2.8.6.2. Bounded Context Database Design Diagram
+#### 4.3.2.3. Application Layer
 
-El siguiente diagrama muestra el diseño de base de datos del Bounded Context Analytics \& Reporting.
+Encapsula la lógica de orquestación para la generación de intentos de pago e información del plan asignado.
 
-<img src="../assets/c4-diagrams/code/analytics-db.svg" alt="Analytics Database Diagram">
+*   **BillingCommandServiceImpl:** Implementa la orquestación necesaria para el inicio del proceso de facturación creando un `PaymentIntent` a través del gateway.
+*   **BillingQueryServiceImpl:** Maneja las consultas de planes activos y obtención segura de credenciales de plataformas terceras (Stripe Public Key).
 
-La estructura presentada respalda la generacion de agregados, digests y reportes, facilitando consultas historicas eficientes y una explotacion analitica consistente.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/billing_bc_class_diagram/application-billing.svg" alt="Frontend Billing Application Layer Class Diagram" width="750">
+</p>
 
-### 4.2.9. Bounded Context: Notifications
+---
 
-El Bounded Context Notifications centraliza la gestion de templates, solicitudes de entrega, preferencias de canal e historial de mensajes emitidos por la plataforma. Su finalidad es proporcionar una capacidad transversal de comunicación que permita a otros bounded contexts informar eventos relevantes, como verificaciones de cuenta, alertas criticas o reportes periodicos, manteniendo consistencia y trazabilidad sobre cada envio.
+#### 4.3.2.4. Infrastructure Layer
 
-#### 4.2.9.1. Domain Layer
+Implementa las pasarelas de red utilizando la infraestructura Angular HTTP para comunicarse con el servidor y Stripe.
 
-La capa de dominio del Bounded Context Notifications modela la gestion de plantillas, solicitudes de entrega, canales de comunicación y trazabilidad de notificaciones emitidas por la plataforma. Su responsabilidad es asegurar que los mensajes generados por otros bounded contexts puedan entregarse de forma consistente, rastreable y alineada con las preferencias del usuario.
+*   **BillingHttpGateway:** Implementa `BillingGateway` conectando la aplicación con el backend de Clair y recuperando las claves necesarias de Stripe.
+*   **PaymentIntentResource:** DTO que define la estructura JSON de la intención de pago recibida de la API.
 
-Este contexto no decide cuando existe una alerta o cuando se genera un digest; su labor es encargarse del ciclo de vida de la comunicación resultante. Por ello, constituye una capacidad de apoyo transversal para IAM, Alerting \& Response y Analytics \& Reporting.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/billing_bc_class_diagram/infrastructure-billing.svg" alt="Frontend Billing Infrastructure Layer Class Diagram" width="750">
+</p>
 
-| Elemento del dominio | Descripción |
-| --- | --- |
-| Notification Template | Representa la estructura reusable de un mensaje. |
-| Delivery Request | Representa una solicitud concreta de envio a uno o varios destinatarios. |
-| Delivery Channel | Representa el medio utilizado para comunicar, por ejemplo email o push. |
-| Notification History | Representa el registro trazable de notificaciones enviadas, fallidas o pendientes. |
-| User Preference | Representa la configuración del usuario respecto a canal o frecuencia deseada. |
+#### 4.3.2.5. Bounded Context Software Architecture Code Level Diagrams
 
-Las reglas de dominio incluyen respetar preferencias configuradas, registrar el resultado de cada entrega, soportar mensajes transaccionales y de alerta, y mantener historial suficiente para auditoría y seguimiento. Entre los eventos significativos se encuentran `NotificationRequested`, `NotificationDispatched`, `EmailNotificationSent`, `PushNotificationSent`, `NotificationDeliveryFailed` y `NotificationRetried`.
+El diagrama de clases unificado del contexto acotado de Billing muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
 
-En conjunto, la Domain Layer de Notifications define como Clair entiende y gobierna su comunicación saliente. Gracias a esta capa, el sistema puede tratar los mensajes no como simples efectos secundarios, sino como objetos de negocio con trazabilidad y reglas propias.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/billing_bc_class_diagram/diagram.svg" alt="Unified Web App Billing Class Diagram" width="850">
+</p>
 
-#### 4.2.9.2. Interface Layer
+---
 
-La capa de interfaz del Bounded Context Notifications expone operaciónes relaciónadas con consulta de historial, gestion de templates y configuración de preferencias. Asimismo, actúa como punto de recepcion para solicitudes internas de envio provenientes de otros bounded contexts.
+### 4.3.3. Bounded Context: Devices & Space Management
 
-| Endpoint u operación | Tipo de acceso | Propósito |
-| --- | --- | --- |
-| `GET /notifications/history` | Protegido | Consultar historial de mensajes enviados al usuario. |
-| `PATCH /notifications/preferences` | Protegido | Configurar canales y frecuencia de notificacion. |
-| `GET /notifications/templates` | Protegido administrativo | Consultar templates disponibles para administracion. |
-| `POST /notifications/send` | Interno controlado | Registrar una solicitud de envio desde otro bounded context. |
+#### 4.3.3.1. Domain Layer
 
-La interfaz se apoya en contratos como `NotificationHistoryResponse`, `NotificationPreferenceRequest`, `NotificationTemplateResponse` y `DeliveryRequestDto`. Sus validaciones se enfocan en verificar identidad del solicitante, validez del canal, existencia de destinatarios y consistencia de los datos necesarios para componer el mensaje.
+Define la estructura organizativa de la solución y las identidades de negocio de los sensores, actuadores y espacios.
 
-De este modo, la Interface Layer de Notifications habilita una comunicación ordenada entre la logica del negocio que desea comunicar algo y la capacidad especializada que se encarga de entregarlo.
+*   **Organization (Entity):** Entidad que representa la organización dueña del espacio.
+*   **Space (Entity):** Entidad que modela un entorno físico específico (oficina, sala, etc.).
+*   **Device (Entity):** Modela el sensor físico y su estado actual (`serialNumber`, `hardwareId`, `status`).
+*   **DeviceCommandService (Interface):** Contrato para manejar los comandos de emparejamiento (`PairDevice`) e inscripción (`ClaimDevice`).
+*   **DeviceThresholdCommandService (Interface):** Contrato para actualizar la configuración de umbrales en un sensor específico.
+*   **DeviceGateway (Interface):** Contrato para comunicarse con servicios de hardware y backend de control.
 
-#### 4.2.9.3. Application Layer
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/devices_bc_class_diagram/domain-devices.svg" alt="Frontend Devices Domain Layer Class Diagram" width="750">
+</p>
 
-La capa de aplicación del Bounded Context Notifications coordina la seleccion de template, la resolución de destinatarios, la evaluacion de preferencias y el despacho de mensajes a traves de los canales disponibles. Su objetivo es convertir una solicitud de notificacion en una entrega concreta y trazable.
+#### 4.3.3.2. Interface Layer
 
-| Caso de uso | Descripción |
-| --- | --- |
-| RequestNotificationDelivery | Registrar una solicitud de envio proveniente de otro contexto. |
-| ResolveRecipients | Determinar destinatarios efectivos y preferencias aplicables. |
-| RenderTemplate | Construir el contenido final del mensaje a partir de una plantilla y datos de contexto. |
-| DispatchNotification | Enviar el mensaje por el canal correspondiente. |
-| RecordDeliveryOutcome | Persistir si la entrega fue exitosa, fallida o reintentada. |
+Contiene los componentes y mappers que exponen la configuración y el listado de dispositivos asignados a los espacios.
 
-Estos casos de uso pueden implementarse mediante servicios como `NotificationAppService`, `TemplateRenderingAppService`, `DeliveryRoutingAppService` y `NotificationHistoryAppService`. La coordinación entre ellos permite desacoplar la intencion de comunicar de la tecnologia concreta de entrega.
+*   **SpaceDevicesPage:** Página Angular que muestra los dispositivos de un espacio y permite reclamar uno nuevo mediante `onClaimDevice()`.
+*   **DeviceTransform:** Servicio encargado de mapear y formatear las respuestas de la API (`DeviceResource`) hacia las entidades de negocio (`Device`).
+*   **DeviceContextFacade (Facade):** Fachada expuesta para permitir que otros Bounded Contexts consulten datos rápidos de un dispositivo de manera desacoplada.
 
-Por ello, la Application Layer de Notifications convierte solicitudes abstractas de comunicación en mensajes emitidos con contenido, canal y trazabilidad adecuados para cada usuario y contexto de negocio.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/devices_bc_class_diagram/interfaces-devices.svg" alt="Frontend Devices Interface Layer Class Diagram" width="750">
+</p>
 
-#### 4.2.9.4. Infrastructure Layer
+#### 4.3.3.3. Application Layer
 
-La capa de infraestructura del Bounded Context Notifications implementa la persistencia de templates e historial, asi como la integracion con proveedores externos de entrega. De acuerdo con la arquitectura de Clair, este contexto se apoya en **PostgreSQL** para trazabilidad y en **Resend** como plataforma externa para email transaccional.
+Orquesta los casos de uso para aprovisionamiento, emparejamiento de hardware y establecimiento de umbrales físicos del dispositivo.
 
-| Recurso de infraestructura | Responsabilidad |
-| --- | --- |
-| PostgreSQL | Persistir templates, solicitudes de envio e historial de entregas. |
-| Resend API | Ejecutar el envio de correos transaccionales y de alerta. |
-| Delivery Repository Adapter | Registrar resultados de envio y estados de notificacion. |
-| Template Storage Adapter | Recuperar plantillas y variables necesarias para renderizado. |
+*   **DeviceCommandServiceImpl:** Implementa y gestiona el registro de organizaciones y el proceso de reclamo de dispositivos (`handleClaimDevice`).
+*   **DeviceQueryServiceImpl:** Orquesta las consultas para listar los sensores pertenecientes a una sala específica.
+*   **DeviceThresholdCommandServiceImpl:** Gestiona la creación y modificación de umbrales recomendados por sensor.
+*   **DeviceThresholdQueryServiceImpl:** Obtiene las configuraciones de alerta recomendadas de calidad de aire para un dispositivo determinado.
 
-Las estructuras principales pueden incluir `notification_templates`, `delivery_requests`, `notification_history` y `user_notification_preferences`. La infraestructura tambien debe soportar reintentos controlados, logging de fallos y observabilidad sobre el porcentaje de entrega, especialmente en notificaciones criticas.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/devices_bc_class_diagram/application-devices.svg" alt="Frontend Devices Application Layer Class Diagram" width="750">
+</p>
 
-En consecuencia, la Infrastructure Layer de Notifications hace operativa la capacidad comunicaciónal de Clair, conectando las decisiones del negocio con un proveedor real de entrega y preservando evidencia completa del resultado de cada envio.
+#### 4.3.3.4. Infrastructure Layer
 
-#### 4.2.9.5. Bounded Context Software Architecture Component Level Diagrams
+Proporciona la conectividad física de red con el API de Clair e implementa los adaptadores HTTP.
 
-En esta sección se presenta el Component Diagram del Bounded Context Notifications. Esta representacion permite identificar como la capacidad transversal de comunicación del sistema se estructura internamente para gestionar templates, solicitudes de entrega, preferencias de canal e historial de mensajes enviados.
+*   **DeviceHttpGateway:** Adaptador que implementa la pasarela de dispositivos (`DeviceGateway`) usando el cliente HTTP de Angular para persistir cambios y emparejar.
+*   **DeviceThresholdHttpGateway:** Adaptador específico encargado del canal de comunicación de umbrales de alerta del hardware.
+*   **DeviceResource:** DTO que modela el JSON enviado/recibido para dispositivos en la API de Clair.
 
-<img src="../assets/c4-diagrams/NotificationsLayers-dark.png" alt="Notifications Component Diagram">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/devices_bc_class_diagram/infrastructure-devices.svg" alt="Frontend Devices Infrastructure Layer Class Diagram" width="750">
+</p>
 
-El diagrama organiza el bounded context en componentes **Interfaces**, **Application**, **Domain** e **Infrastructure**, junto con sus dependencias de persistencia y entrega externa. A traves de esta vista se observa como una solicitud de notificacion originada por otro contexto es recibida, procesada, renderizada y despachada mediante los canales configurados, conservando ademas la trazabilidad del resultado de cada envio.
+#### 4.3.3.5. Bounded Context Software Architecture Code Level Diagrams
 
-#### 4.2.9.6. Bounded Context Software Architecture Code Level Diagrams
+El diagrama de clases unificado del contexto acotado de Device & Space Management muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
 
-En esta sección se presentan los diagramas de mayor detalle del Bounded Context Notifications. Estas vistas permiten comprender la estructura de clases encargada de templates, delivery requests, historial y preferencias, asi como su correspondiente diseño de persistencia.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/devices_bc_class_diagram/diagram.svg" alt="Unified Web App Devices Class Diagram" width="850">
+</p>
 
-##### 4.2.9.6.1. Bounded Context Domain Layer Class Diagrams
+---
 
-El siguiente diagrama de clases representa los principales objetos del dominio de notificaciones, como templates, solicitudes de envio, historial de entregas y preferencias del usuario.
+### 4.3.4. Bounded Context: Air Quality Evaluation
 
-<img src="../assets/c4-diagrams/code/notifications-domain-class.svg" alt="Notifications Domain Class Diagram">
+#### 4.3.4.1. Domain Layer
 
-Esta vista describe como el sistema organiza la capacidad comunicaciónal de forma reutilizable, trazable y alineada con distintos canales de entrega.
+Modeliza la lógica y las métricas de evaluación ambiental del aire, procesando el estado de salubridad y la telemetría histórica.
 
-##### 4.2.9.6.2. Bounded Context Database Design Diagram
+*   **TelemetryEvaluation (Entity):** Representa el resultado detallado del análisis de calidad del aire para un dispositivo, consolidando métricas como material particulado (`ParticulateMatter`), calidad general (`AirQuality`), conectividad (`Connectivity`), y estado general de salud del ambiente (`healthStatus`).
+*   **TelemetryEvaluationCommandService / TelemetryEvaluationQueryService (Interfaces):** Contratos del dominio para despachar solicitudes de evaluación y consultar históricos de mediciones.
+*   **TelemetryEvaluationGateway (Interface):** Contrato que especifica el envío de telemetría a evaluar y la recuperación de reportes agregados.
+*   **EvaluateTelemetryCommand / GetEvaluationsByDeviceQuery (Value Objects):** Comandos y consultas inmutables que encapsulan parámetros de dispositivo y paginación.
 
-El siguiente diagrama presenta el diseño de base de datos del Bounded Context Notifications.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/evaluation_bc_class_diagram/domain-evaluation.svg" alt="Frontend Evaluation Domain Layer Class Diagram" width="750">
+</p>
 
-<img src="../assets/c4-diagrams/code/notifications-db.svg" alt="Notifications Database Diagram">
+#### 4.3.4.2. Interface Layer
 
-El esquema soporta templates, solicitudes de entrega, historial de mensajes y preferencias de canal, permitiendo trazabilidad completa sobre la comunicación emitida por la plataforma.
+Contiene las interfaces y transformadores que comunican el contexto de evaluación de telemetría con el resto de la aplicación y componentes visuales.
 
-### 4.2.10. Bounded Context: Embedded App
+*   **EvaluationContextFacade (Facade):** Fachada de integración que permite a otros módulos del frontend consultar rápidamente la última lectura o estado de telemetría de un dispositivo sin acoplarse a los detalles del módulo de evaluación.
+*   **TelemetryEvaluationTransform / EvaluateTelemetryTransform (Services):** Servicios mappers de Angular que traducen recursos JSON crudos de la infraestructura a entidades y comandos limpios de negocio.
 
-El Bounded Context Embedded App representa la logica de software que se ejecuta directamente sobre el dispositivo Clair. Su responsabilidad es controlar la captura local de lecturas, aplicar validaciones basicas de seguridad y consistencia, y publicar telemetria hacia la capa edge o local, garantizando que el sensor opere de manera estable y confiable desde el origen.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/evaluation_bc_class_diagram/interfaces-evaluation.svg" alt="Frontend Evaluation Interface Layer Class Diagram" width="750">
+</p>
 
-#### 4.2.10.1. Domain Layer
+#### 4.3.4.3. Application Layer
 
-La capa de dominio del Bounded Context Embedded App modela las reglas internas que gobiernan el comportamiento del dispositivo fisico Clair. Su responsabilidad es representar la captura local de lecturas, las validaciones de seguridad del sensor y la ejecución controlada de acciones directas sobre el hardware.
+Encapsula los servicios encargados de la coordinación de la lógica de evaluación en tiempo real y consultas del histórico de sensores.
 
-Dentro de este contexto, el dispositivo no es solo un emisor pasivo de datos; es un actor que debe decidir si una lectura es aceptable, cuando publicar telemetria y como reaccionar localmente ante comandos o condiciones de riesgo.
+*   **TelemetryEvaluationCommandServiceImpl:** Orquesta el flujo de evaluación enviando nuevas cargas de telemetría a procesar junto con la firma del API Key.
+*   **TelemetryEvaluationQueryServiceImpl:** Implementa la lógica para retornar listados paginados de telemetrías y la consulta en tiempo real del último estado reportado.
+*   **EvaluationContextFacadeImpl:** Implementación de la fachada que delega al servicio de consultas para exponer la información de manera limpia a otros bounded contexts frontend.
 
-| Elemento del dominio | Descripción |
-| --- | --- |
-| Sensor Reading | Representa la medicion obtenida directamente desde el hardware. |
-| Device State | Representa el estado operativo interno del dispositivo. |
-| Telemetry Payload | Representa la estructura de datos lista para ser publicada al edge station. |
-| Safety Rule | Representa una regla local de validacion o proteccion del dispositivo. |
-| Local Command | Representa una instruccion recibida para actuar sobre el hardware o su configuración. |
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/evaluation_bc_class_diagram/application-evaluation.svg" alt="Frontend Evaluation Application Layer Class Diagram" width="750">
+</p>
 
-Las reglas de dominio incluyen validar rangos seguros, prevenir transiciones inconsistentes del estado interno, asegurar que la telemetria publicada tenga estructura valida y permitir acciones locales solo bajo condiciones aceptables. Eventos como `LocalTelemetryCaptured`, `TelemetryValidated`, `TelemetryPublished`, `LocalCommandReceived` y `SafeDeviceActionApplied` reflejan el comportamiento de esta capa.
+#### 4.3.4.4. Infrastructure Layer
 
-En conjunto, la Domain Layer de Embedded App define la logica operativa minima del sensor en campo, permitiendo que la captura de datos y la reaccion local se mantengan controladas incluso antes de llegar a la nube.
+Proporciona los clientes HTTP y adaptadores que se conectan con los endpoints de evaluación ambiental en el Platform API.
 
-#### 4.2.10.2. Interface Layer
+*   **TelemetryEvaluationHttpGateway:** Implementación de `TelemetryEvaluationGateway` usando `HttpClient` de Angular para persistir telemetrías y leer evaluaciones estructuradas.
+*   **TelemetryEvaluationResource / EvaluateTelemetryResource:** DTOs que modelan la estructura JSON para la entrada de datos brutos del sensor y la salida enriquecida con los umbrales e indicadores calculados.
 
-La capa de interfaz del Bounded Context Embedded App expone los puntos de entrada internos del firmware, principalmente para recibir ticks de medicion, comandos locales o solicitudes de configuración. Su responsabilidad es traducir señales fisicas o mensajes de control en invocaciones comprensibles para la capa de aplicación.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/evaluation_bc_class_diagram/infrastructure-evaluation.svg" alt="Frontend Evaluation Infrastructure Layer Class Diagram" width="750">
+</p>
 
-Esta interfaz no se manifiesta como una API publica tradicional, sino como controladores internos vinculados al ciclo de lectura del hardware, al bus local o a la comunicación con el edge.
+#### 4.3.4.5. Bounded Context Software Architecture Code Level Diagrams
 
-En consecuencia, la Interface Layer del Embedded App actúa como la frontera entre el mundo fisico del sensor y la logica del dispositivo, asegurando que eventos de hardware y comandos entren al sistema embebido con una estructura interpretable.
+El diagrama de clases unificado del contexto acotado de Air Quality Evaluation muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
 
-#### 4.2.10.3. Application Layer
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/evaluation_bc_class_diagram/diagram.svg" alt="Unified Web App Evaluation Class Diagram" width="850">
+</p>
 
-La capa de aplicación del Bounded Context Embedded App coordina la captura de lecturas, su validacion, el ensamblado del payload de telemetria y la ejecución de comandos locales. Su objetivo es transformar interacciones del hardware en operaciónes internas coherentes y listas para ser publicadas hacia el edge station.
+### 4.3.5. Bounded Context: Alerting & Response
 
-| Caso de uso | Descripción |
-| --- | --- |
-| CaptureTelemetry | Obtener mediciones desde los sensores fisicos. |
-| ValidateTelemetry | Verificar que las lecturas cumplan reglas de seguridad y rango. |
-| PublishTelemetry | Enviar la telemetria validada hacia el edge station. |
-| ApplyLocalCommand | Ejecutar comandos de configuración o respuesta sobre el dispositivo. |
+#### 4.3.5.1. Domain Layer
 
-Esta capa puede implementarse con servicios como `EmbeddedTelemetryService` y coordinadores ligeros del firmware que orquestan el acceso a IO, el dominio y la publicacion de datos. Gracias a ello, el dispositivo mantiene un flujo ordenado entre medicion, validacion y comunicación.
+Define las entidades y contratos para el procesamiento y catalogación de incidentes críticos y alertas ambientales.
 
-Por ello, la Application Layer del Embedded App convierte señales fisicas del entorno en información digital util y segura para el resto del ecosistema Clair.
+*   **Alert (Entity):** Entidad principal que representa un incidente de seguridad ambiental. Contiene severidad (`AlertSeverity`), estado, mensaje e indicador temporal (`timestamp`).
+*   **AlertSeverity (Enum):** Gravedad del incidente (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`).
+*   **AlertQueryService (Interface):** Interfaz para consultar los incidentes y resúmenes diarios de alertas.
+*   **AlertGateway (Interface):** Contrato para recuperar alertas desde la persistencia externa.
+*   **GetAlertsQuery (Value Object):** Query que encapsula los parámetros de paginación para la lista de alertas.
 
-#### 4.2.10.4. Infrastructure Layer
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/alerting_bc_class_diagram/domain-alerting.svg" alt="Frontend Alerting Domain Layer Class Diagram" width="750">
+</p>
 
-La capa de infraestructura del Bounded Context Embedded App implementa el acceso directo al hardware y a los mecanismos de comunicación del sensor. De acuerdo con el modelo C4, esta capa contempla adaptadores de IO para **GPIO/I2C/UART** y capacidades locales de publicacion por **BLE/Wi-Fi**.
+#### 4.3.5.2. Interface Layer
 
-| Recurso de infraestructura | Responsabilidad |
-| --- | --- |
-| GPIO/I2C/UART Adapter | Leer datos de sensores y ejecutar acciones sobre actuadores o periféricos. |
-| BLE/Wi-Fi Publisher | Publicar telemetria y recibir comandos de comunicación local. |
-| Local State Cache | Conservar estado operativo minimo del dispositivo. |
+Contiene los componentes y fachadas de integración visual para desplegar las alertas en la interfaz de usuario.
 
-La infraestructura de este contexto debe priorizar robustez, bajo consumo de recursos y tolerancia a condiciones transitorias del entorno fisico. Gracias a esta capa, el firmware puede interactuar con el hardware real y sostener el flujo de datos hacia el edge.
+*   **AlertsPageComponent:** Componente Angular contenedor que inicializa la carga de alertas activas del sistema.
+*   **AlertCardComponent:** Componente visual reutilizable para mostrar detalles rápidos de una alerta específica.
+*   **AlertTableComponent:** Tabla estructurada que renderiza colecciones de alertas con soporte para filtros de severidad y paginación.
+*   **AlertTransform (Service):** Servicio encargado de traducir los registros crudos de respuesta JSON (`AlertResponseResource`) a la entidad `Alert`.
+*   **AlertingContextFacade (Facade):** Fachada que expone métodos para que otros contextos consulten alertas activas por dispositivo.
 
-#### 4.2.10.5. Bounded Context Software Architecture Component Level Diagrams
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/alerting_bc_class_diagram/interfaces-alerting.svg" alt="Frontend Alerting Interface Layer Class Diagram" width="750">
+</p>
 
-En esta sección se presenta el Component Diagram del Bounded Context Embedded App. A diferencia de los bounded contexts cloud, esta vista describe la descomposicion interna del software embebido que corre directamente sobre el dispositivo Clair, enfatizando el flujo local entre captura de lecturas, validacion y publicacion de telemetria.
+#### 4.3.5.3. Application Layer
 
-<img src="../assets/c4-diagrams/EmbeddedAppComponents-dark.png" alt="Embedded App Component Diagram">
+Encapsula los servicios encargados de la orquestación para consultar la telemetría fuera de rango e incidentes generados.
 
-El diagrama muestra componentes como **Embedded Controller**, **Embedded Telemetry Service**, **Embedded Domain Model** y **Embedded IO Adapter**, permitiendo distinguir claramente el ingreso de comandos, la orquestacion de lecturas, la aplicación de reglas locales y la interaccion directa con el hardware y los mecanismos de comunicación. Esta vista justifica la separacion interna del firmware a pesar de ejecutarse sobre una plataforma de recursos limitados.
+*   **AlertQueryServiceImpl:** Servicio de aplicación que implementa la orquestación para recuperar alertas paginadas o generar resúmenes analíticos rápidos del día.
+*   **AlertingContextFacadeImpl:** Implementación concreta de la fachada para el consumo de datos de alertas por otros módulos frontend.
 
-#### 4.2.10.6. Bounded Context Software Architecture Code Level Diagrams
+    }
+}
 
-En esta sección se presentan los diagramas de nivel codigo del Bounded Context Embedded App. Estas vistas detallan la estructura del modelo local del dispositivo y la forma en que este puede apoyarse en persistencia ligera para sostener estado runtime, buffer de lecturas y registro de comandos.
+class AlertQueryService
+class AlertingContextFacade
+class AlertGateway
+class AlertTransform
+class GetAlertsQuery
 
-##### 4.2.10.6.1. Bounded Context Domain Layer Class Diagrams
+AlertQueryServiceImpl ..|> AlertQueryService : implements
+AlertingContextFacadeImpl ..|> AlertingContextFacade : implements
+AlertQueryServiceImpl --> AlertGateway : uses
+AlertQueryServiceImpl --> AlertTransform : uses
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/alerting_bc_class_diagram/application-alerting.svg" alt="Frontend Alerting Application Layer Class Diagram" width="750">
+</p>
 
-El siguiente diagrama de clases representa los principales conceptos del dominio embebido, como sensor reading, device state, telemetry payload, safety rule y local command.
+---
 
-<img src="../assets/c4-diagrams/code/embedded-domain-class.svg" alt="Embedded App Domain Class Diagram">
+#### 4.3.5.4. Infrastructure Layer
 
-Esta vista permite comprender como el firmware estructura internamente la captura de lecturas, la aplicación de reglas de seguridad y la preparacion de la telemetria antes de su publicacion hacia el edge.
+Proporciona los clientes HTTP adaptados a la API REST de alertas del Platform API.
 
-##### 4.2.10.6.2. Bounded Context Database Design Diagram
+*   **AlertHttpGateway:** Adaptador que implementa `AlertGateway` usando el cliente HTTP de Angular para realizar consultas paginadas e interactuar con la persistencia.
+*   **AlertResponseResource:** DTO que modela el recurso JSON de respuesta de una alerta de la API.
 
-El siguiente diagrama muestra una propuesta de persistencia ligera para el Bounded Context Embedded App.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/alerting_bc_class_diagram/infrastructure-alerting.svg" alt="Frontend Alerting Infrastructure Layer Class Diagram" width="750">
+</p>
 
-<img src="../assets/c4-diagrams/code/embedded-db.svg" alt="Embedded App Database Diagram">
+#### 4.3.5.5. Bounded Context Software Architecture Code Level Diagrams
 
-Aunque el componente embebido opera con recursos limitados, esta estructura permite conservar estado local, buffer temporal de lecturas y trazabilidad minima sobre comandos ejecutados en el dispositivo.
+El diagrama de clases unificado del contexto acotado de Alerting & Response muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
 
-### 4.2.11. Bounded Context: Edge Station
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/alerting_bc_class_diagram/diagram.svg" alt="Unified Web App Alerting Class Diagram" width="850">
+</p>
 
-El Bounded Context Edge Station modela la aplicación intermedia que opera localmente entre los dispositivos embebidos y la plataforma cloud. Su propósito es recibir telemetria, almacenarla temporalmente, sincronizarla con la nube y despachar comandos remotos hacia los sensores, aportando resiliencia operativa y soporte para escenarios offline-first dentro de la arquitectura distribuida de Clair.
+---
 
-#### 4.2.11.1. Domain Layer
+### 4.3.6. Bounded Context: Analytics & Reporting
 
-La capa de dominio del Bounded Context Edge Station modela las reglas de negocio locales que permiten recibir telemetria desde uno o varios dispositivos, deduplicarla, almacenarla temporalmente y sincronizarla con la nube. Su objetivo es sostener un comportamiento offline-first que preserve continuidad operativa incluso cuando la conectividad externa es limitada o intermitente.
+#### 4.3.6.1. Domain Layer
 
-| Elemento del dominio | Descripción |
-| --- | --- |
-| Local Telemetry Record | Representa una lectura recibida y almacenada temporalmente en el edge. |
-| Sync Queue | Representa la cola local de elementos pendientes de sincronizacion. |
-| Retry Window | Representa la politica local de reintento ante fallos de conectividad. |
-| Command Dispatch | Representa el enrutamiento de comandos hacia dispositivos embebidos. |
-| Sync Checkpoint | Representa la marca de avance de la sincronizacion con la nube. |
+Define la representación lógica de las tendencias temporales y las métricas resumidas que consumen los dashboards de Clair.
 
-Las reglas principales de este dominio incluyen evitar duplicidad de registros, conservar lecturas durante periodos de desconexion, sincronizar por lotes cuando la conectividad se recupera y despachar comandos solo a los dispositivos correctos dentro de la red local. Eventos como `TelemetryBuffered`, `OfflineReadingsSynchronized`, `SyncRetried`, `RemoteCommandReceived` y `CommandDispatchedToDevice` expresan el comportamiento de esta capa.
+*   **Trend (Entity):** Modela el comportamiento histórico de una métrica física a lo largo del tiempo (marcas temporales, valores leídos y tipo de métrica).
+*   **AnalyticsOverview (Entity):** Estructura consolidada que expone el Índice de Calidad del Aire (ICA/AQI) promedio y el contador de incidentes activos para el dashboard general.
+*   **AnalyticsQueryService / AnalyticsOverviewQueryService (Interfaces):** Contratos para las búsquedas de series temporales y visualización de paneles agregados.
+*   **AnalyticsGateway (Interface):** Contrato que abstrae el origen de datos históricos y analíticos.
 
-En consecuencia, la Domain Layer de Edge Station define la inteligencia local que conecta el mundo embebido con la plataforma cloud sin depender de conectividad perfecta en todo momento.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/analytics_bc_class_diagram/domain-analytics.svg" alt="Frontend Analytics Domain Layer Class Diagram" width="750">
+</p>
 
-#### 4.2.11.2. Interface Layer
+#### 4.3.6.2. Interface Layer
 
-La capa de interfaz del Bounded Context Edge Station expone endpoints o controladores locales para ingestion de telemetria, consulta operativa y recepcion de comandos remotos. Su responsabilidad es mediar entre dispositivos embebidos, operadores on-site y la sincronizacion con la plataforma.
+Contiene los controladores de gráficos e indicadores interactivos para el análisis retrospectivo en la interfaz de usuario.
 
-En este contexto, la interfaz puede materializarse mediante controladores Flask y adaptadores MQTT o HTTP que reciben mensajes del sensor y solicitudes desde el API Gateway. Estos puntos de entrada permiten que el edge funcióne como nodo intermedio de coordinacion local.
+*   **AnalyticsPageComponent:** Componente Angular para el análisis avanzado y filtrado de series de telemetría.
+*   **OverviewPageComponent:** Componente principal que sirve como panel de control resumen del establecimiento monitoreado.
+*   **TrendChartCardComponent:** Tarjeta visual que dibuja y renderiza gráficos interactivos de líneas basados en las tendencias de `Trend`.
+*   **AqiGaugeCardComponent:** Indicador visual tipo velocímetro para mostrar de manera instantánea el nivel de AQI calculado.
+*   **AnalyticsTransform (Service):** Servicio encargado de traducir los datos agregados a los modelos de dominio.
+*   **AnalyticsContextFacade (Facade):** Fachada de integración para que otros contextos recuperen las métricas rápidas de los dashboards.
 
-Por ello, la Interface Layer del Edge Station constituye la frontera de comunicación entre la red local de dispositivos y los servicios cloud de Clair.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/analytics_bc_class_diagram/interfaces-analytics.svg" alt="Frontend Analytics Interface Layer Class Diagram" width="750">
+</p>
 
-#### 4.2.11.3. Application Layer
+#### 4.3.6.3. Application Layer
 
-La capa de aplicación del Bounded Context Edge Station coordina la ingestion local, la deduplicacion, el almacenamiento temporal, la sincronizacion con la nube y el despacho de comandos hacia dispositivos embebidos. Su función es orquestar el intercambio de información entre el mundo local y el entorno cloud sin perder consistencia.
+Orquesta los flujos de consulta de series históricas y agregaciones requeridos por los componentes visuales.
 
-| Caso de uso | Descripción |
-| --- | --- |
-| IngestLocalTelemetry | Recibir telemetria desde embedded devices y prepararla para persistencia. |
-| DeduplicateTelemetry | Detectar y descartar registros repetidos. |
-| BufferOfflineReadings | Conservar lecturas localmente mientras no exista conectividad externa. |
-| SynchronizeWithCloud | Enviar lotes pendientes hacia la plataforma cuando la conexion lo permita. |
-| ReceiveRemoteCommand | Aceptar comandos enviados desde la nube al edge station. |
-| DispatchCommandToDevice | Enrutar comandos hacia el embedded app correspondiente. |
+*   **AnalyticsQueryServiceImpl:** Implementación del servicio de aplicación que gestiona la recuperación de tendencias históricas de los sensores.
+*   **AnalyticsOverviewQueryServiceImpl:** Orquesta el cálculo y agregación rápidos de alertas y calidad de aire para construir el resumen global.
+*   **AnalyticsContextFacadeImpl:** Implementación concreta de la fachada expuesta hacia el exterior del módulo analítico.
 
-Estos flujos pueden implementarse mediante servicios como `EdgeProcessingService` y `EdgeSyncService`, definidos ya en el modelo arquitectonico. Su coordinacion es clave para sostener la promesa de resiliencia operativa del sistema.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/analytics_bc_class_diagram/application-analytics.svg" alt="Frontend Analytics Application Layer Class Diagram" width="750">
+</p>
 
-En sintesis, la Application Layer del Edge Station asegura que Clair siga capturando, almacenando y enviando datos de forma confiable aun en escenarios de conectividad imperfecta.
+---
 
-#### 4.2.11.4. Infrastructure Layer
+#### 4.3.6.4. Infrastructure Layer
 
-La capa de infraestructura del Bounded Context Edge Station implementa los mecanismos técnicos que permiten operar como gateway local. Conforme al modelo del sistema, esta capa utiliza **Flask** como superficie de control local, **SQLite** para persistencia temporal y **MQTT + HTTPS** para comunicación con dispositivos embebidos y con la nube.
+Adaptadores que conectan con la base de datos de telemetrías agregadas a través de la API REST de Clair.
 
-| Recurso de infraestructura | Responsabilidad |
-| --- | --- |
-| Flask Controller Adapter | Exponer endpoints locales para operación y sincronizacion. |
-| MQTT Adapter | Recibir telemetria desde embedded devices y despachar comandos locales. |
-| HTTPS Sync Adapter | Enviar información consolidada al API Gateway y recibir comandos remotos. |
-| SQLite | Almacenar snapshots, colas locales y checkpoints de sincronizacion. |
+*   **AnalyticsHttpGateway:** Adapter concreto que implementa `AnalyticsGateway` consumiendo los recursos analíticos mediante Angular `HttpClient`.
+*   **TrendsResource / AnalyticsOverviewResource:** DTOs que mapean los JSON de respuestas estructuradas con tendencias y totales.
 
-Las estructuras persistentes de este contexto pueden incluir `local_telemetry`, `sync_queue`, `command_queue` y `sync_checkpoints`. La infraestructura debe priorizar tolerancia a fallos, reintentos, persistencia ligera y capacidad de recuperacion tras reinicios o interrupciones de conectividad.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/analytics_bc_class_diagram/infrastructure-analytics.svg" alt="Frontend Analytics Infrastructure Layer Class Diagram" width="750">
+</p>
 
-Por ello, la Infrastructure Layer del Edge Station constituye el soporte tecnico que hace viable la operación distribuida y offline-first de Clair, actuando como el puente estable entre sensores de campo y la plataforma cloud.
+#### 4.3.6.5. Bounded Context Software Architecture Code Level Diagrams
 
-#### 4.2.11.5. Bounded Context Software Architecture Component Level Diagrams
+El diagrama de clases unificado del contexto acotado de Analytics & Reporting muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
 
-En esta sección se presenta el Component Diagram del Bounded Context Edge Station. Su finalidad es mostrar la descomposicion interna de la aplicación edge que opera como intermediaria entre los dispositivos embebidos y la plataforma cloud, soportando ingestion local, sincronizacion offline-first y despacho de comandos.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/analytics_bc_class_diagram/diagram.svg" alt="Unified Web App Analytics Class Diagram" width="850">
+</p>
 
-<img src="../assets/c4-diagrams/EdgeStationComponents-dark.png" alt="Edge Station Component Diagram">
+---
 
-El diagrama describe componentes como **Edge Controller**, **Edge Processing Service**, **Edge Sync Service**, **Edge Domain Model** y **Edge IO Adapter**, junto con su relación con SQLite, MQTT y HTTPS. Esta vista permite entender como el edge recibe telemetria local, la valida, la almacena temporalmente y posteriormente la sincroniza con la nube, manteniendo resiliencia ante fallos de conectividad.
+### 4.3.7. Bounded Context: Notifications
 
-#### 4.2.11.6. Bounded Context Software Architecture Code Level Diagrams
+#### 4.3.7.1. Domain Layer
 
-En esta sección se presentan los diagramas de nivel codigo del Bounded Context Edge Station. Estas vistas profundizan en la estructura del modelo local de sincronizacion y en el diseño de persistencia que soporta colas, checkpoints y despacho de comandos en escenarios offline-first.
+Define la estructura de logs de auditoría de mensajes enviados y los contratos para recuperar el historial de notificaciones.
 
-##### 4.2.11.6.1. Bounded Context Domain Layer Class Diagrams
+*   **PushNotificationLog (Entity):** Entidad de dominio que representa una notificación enviada (identificador, título, cuerpo del mensaje, y fecha de despacho `sentAt`).
+*   **NotificationQueryService (Interface):** Contrato para el control del caso de uso de lectura del historial de notificaciones.
+*   **NotificationGateway (Interface):** Contrato que abstrae las llamadas de infraestructura para recuperar el listado.
+*   **GetPushNotificationsQuery (Value Object):** Query inmutable que encapsula las opciones de paginación para la lista de notificaciones.
 
-El siguiente diagrama de clases representa los principales conceptos del dominio edge, como local telemetry record, sync queue, retry window, sync checkpoint y command dispatch.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/notifications_bc_class_diagram/domain-notifications.svg" alt="Frontend Notifications Domain Layer Class Diagram" width="750">
+</p>
 
-<img src="../assets/c4-diagrams/code/edge-domain-class.svg" alt="Edge Station Domain Class Diagram">
+#### 4.3.7.2. Interface Layer
 
-Esta vista permite entender como el nodo edge organiza la recepcion de telemetria, la deduplicacion local, la sincronizacion diferida con la nube y el enrutamiento de comandos hacia los dispositivos embebidos.
+Contiene los adaptadores y fachadas que permiten a otras partes de la UI interactuar con la bandeja de entrada de notificaciones push.
 
-##### 4.2.11.6.2. Bounded Context Database Design Diagram
+*   **NotificationsContextFacade (Facade):** Fachada que expone el método `getPushNotifications(page, size)` permitiendo un desacoplamiento directo con otros módulos de la app web.
+*   **PushNotificationTransform (Service):** Servicio encargado de transformar DTOs de infraestructura (`PushNotificationLogResource`) a entidades del negocio (`PushNotificationLog`).
 
-El siguiente diagrama presenta el diseño de base de datos local del Bounded Context Edge Station.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/notifications_bc_class_diagram/interfaces-notifications.svg" alt="Frontend Notifications Interface Layer Class Diagram" width="750">
+</p>
 
-<img src="../assets/c4-diagrams/code/edge-db.svg" alt="Edge Station Database Diagram">
+#### 4.3.7.3. Application Layer
 
-El esquema refleja una persistencia orientada a telemetria temporal, colas de sincronizacion, despacho de comandos y checkpoints de avance, reforzando la resiliencia operativa del sistema ante conectividad intermitente.
+Encapsula la orquestación para recuperar los mensajes push del usuario autenticado.
+
+*   **NotificationQueryServiceImpl:** Servicio de aplicación que delega en el gateway para consultar y transformar la colección de alertas enviadas.
+*   **NotificationsContextFacadeImpl:** Fachada concreta que orquesta la llamada asíncrona hacia el servicio de consultas de aplicación.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/notifications_bc_class_diagram/application-notifications.svg" alt="Frontend Notifications Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.3.7.4. Infrastructure Layer
+
+Adaptadores que consultan el historial de notificaciones registrado en el servidor de Clair.
+
+*   **NotificationHttpGateway:** Implementación concreta del gateway utilizando `HttpClient` de Angular para obtener el log.
+*   **PushNotificationLogResource:** DTO que mapea el recurso JSON del log de notificaciones desde el API backend.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/notifications_bc_class_diagram/infrastructure-notifications.svg" alt="Frontend Notifications Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.3.7.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Notifications muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/frontend/notifications_bc_class_diagram/diagram.svg" alt="Unified Web App Notifications Class Diagram" width="850">
+</p>
+
+---
+
+
+## 4.4. Tactical-Level Domain-Driven Design -  Mobile application
+
+La aplicación móvil se ha desarrollado utilizando Flutter y sigue los principios del Diseño Guiado por el Dominio (DDD) estructurado bajo una arquitectura limpia adaptada para dispositivos móviles. Esto garantiza una separación clara de responsabilidades, facilitando el mantenimiento y testeo de la lógica de negocio independientemente de los detalles del framework UI o la persistencia local. A continuación, se detallan los contextos acotados implementados en el aplicativo móvil:
+
+**Arquitectura de Componentes de la Aplicación Móvil (Flutter Mobile App)**
+
+A continuación se detalla el diagrama C4 de nivel de Componentes para la aplicación móvil de Clair, ilustrando la organización interna de los Bounded Contexts y cómo interactúan las capas de interfaces, aplicación, dominio e infraestructura en Flutter:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/mobile/MobileAppComponents-dark.svg" alt="Mobile Application Component Architecture Diagram" width="850">
+</p>
+
+*   **Interfaces Layer (Capa de Interfaces/Presentación):** Contiene las vistas móviles (Widgets, Screens, Buttons, Forms), servicios de control de UI (Cubit / BLoC Presenters) y los estados asociados que administran la interacción reactiva con el usuario.
+*   **Application Layer (Capa de Aplicación):** Implementa la orquestación de casos de uso (servicios de aplicación, mapeo de consultas y comandos). Recibe flujos del presenter y delega la lógica y consulta al dominio y a las pasarelas.
+*   **Domain Layer (Capa de Dominio):** El corazón puro del negocio móvil. Contiene las entidades, value objects, interfaces de repositorios/gateways, contratos de servicios de comandos y consultas que operan agnósticos al framework de Flutter.
+*   **Infrastructure Layer (Capa de Infraestructura):** Encargada de interactuar con el entorno físico e interfaces de comunicación. Contiene las pasarelas HTTP (usando `Dio`), persistencia local en memoria o base de datos móvil (Secure Storage, Hive o SQLite) y el kernel de infraestructura local.
+
+### 4.4.1. Bounded Context: Identity & Access Management (IAM)
+
+#### 4.4.1.1. Domain Layer
+
+Define los contratos de negocio puros, comandos y consultas que modelan las reglas de registro y acceso de usuarios de la aplicación móvil.
+
+*   **AuthenticationCommandService (Interface):** Interfaz del dominio que declara las firmas para iniciar registro, confirmar, iniciar sesión (tradicional/Google), cerrar sesión y refrescar tokens.
+*   **AuthenticationQueryService (Interface):** Interfaz para consultar los datos del usuario autenticado en la sesión activa.
+*   **InitiateRegistrationCommand / ConfirmRegistrationCommand / SignInCommand (Value Objects):** Comandos inmutables que encapsulan las credenciales y datos requeridos para los casos de uso correspondientes.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/iam_class_diagram/domain-layer.svg" alt="Mobile IAM Domain Layer Class Diagram" width="750">
+</p>
+
+#### 4.4.1.2. Interface Layer
+
+Implementa la gestión de estado reactiva en Flutter mediante el patrón **BLoC / Cubit**, capturando eventos de UI y exponiendo estados al árbol de widgets.
+
+*   **LoginCubit:** Controla el estado del formulario de login y despacha peticiones de acceso tradicional o autenticación mediante Google.
+*   **RegisterCubit:** Cubit encargado de gestionar la entrada de datos para la creación de cuentas de usuario.
+*   **ConfirmRegistrationCubit:** Controla la interfaz de ingreso del código OTP para completar el alta del usuario.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/iam_class_diagram/interfaces-layer.svg" alt="Mobile IAM Interface Layer Class Diagram" width="750">
+</p>
+
+#### 4.4.1.3. Application Layer
+
+Orquesta los flujos de autenticación e interactúa de forma desacoplada con el dominio, las pasarelas de red y persistencia local del dispositivo móvil.
+
+*   **AuthenticationCommandServiceImpl:** Coordina las transacciones de registro e inicio de sesión. Gestiona el guardado seguro de JWTs en base a las respuestas de la pasarela y la manipulación de estados de sesión.
+*   **AuthenticationQueryServiceImpl:** Orquesta la recuperación asíncrona de los datos del perfil del usuario activo.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/iam_class_diagram/application-layer.svg" alt="Mobile IAM Application Layer Class Diagram" width="750">
+</p>
+
+#### 4.4.1.4. Infrastructure Layer
+
+Proporciona los adaptadores concretos para la persistencia del almacenamiento local y la comunicación de red con el API de Clair mediante clientes HTTP.
+
+*   **AuthenticationGateway (Interface) / AuthenticationHttpGateway:** Define y realiza las llamadas HTTP usando la librería `Dio` para consumir los endpoints de registro, sesión y refresco.
+*   **TokenLocalStorage:** Administra de forma persistente y segura los tokens en el dispositivo utilizando almacenamiento local.
+*   **RegistrationSessionLocalStorage:** Almacena temporalmente el ID de sesión del registro mientras se completa la verificación por OTP.
+*   **GoogleIdTokenProvider (Interface) / GoogleSignInIdTokenProvider:** Adaptador que envuelve la integración nativa con el plugin de terceros `google_sign_in` para obtener el ID Token.
+*   **AuthSession:** Singleton reactivo en memoria que guarda el estado de autenticación actual del usuario.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/iam_class_diagram/infrastructure-layer.svg" alt="Mobile IAM Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.4.1.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Identity & Access Management (IAM) muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/iam_class_diagram/unified.svg" alt="Unified Mobile IAM Class Diagram" width="850">
+</p>
+
+### 4.4.2. Bounded Context: Device & Space Management
+
+#### 4.4.2.1. Domain Layer
+
+Define la representación de lectura de dispositivos (`Read Models`), identificadores de negocio y los contratos de servicios de telemetría y aprovisionamiento.
+
+*   **DeviceReadModel:** Modelo de lectura optimizado para vistas que representa el estado consolidado de un sensor o extractor.
+*   **DevicesCommandService / DevicesQueryService (Interfaces):** Contratos del dominio para manejar acciones de emparejamiento, renombrado, desvinculación y listado de dispositivos.
+*   **DeviceId / DeviceName (Value Objects):** Envolturas tipadas inmutables para la identidad y nombres de dispositivos.
+*   **PairDeviceCommand / GetDeviceByIdQuery (Value Objects):** DTOs que encapsulan parámetros de llamadas de comandos y consultas.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/devices_class_diagram/domain-layer.svg" alt="Mobile Devices Domain Layer Class Diagram" width="750">
+</p>
+
+#### 4.4.2.2. Interface Layer
+
+Maneja los estados reactivos de la vista de detalle de sensores utilizando BLoC/Cubit y expone ViewModels adaptados a las necesidades de la UI de Flutter.
+
+*   **DeviceDetailCubit:** Cubit encargado de orquestar la carga inicial del dispositivo, modificación de nombres, desvinculación física, y apagado o encendido.
+*   **DeviceDetailState:** Representación inmutable del estado visual que detalla la carga de telemetrías y errores.
+*   **DeviceDetailViewModel:** Modelo de vista adaptado que expone datos consolidados sobre potencia, conectividad (dBm), salud general (%) y umbrales activos del sensor.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/devices_class_diagram/interfaces-layer.svg" alt="Mobile Devices Interface Layer Class Diagram" width="750">
+</p>
+
+#### 4.4.2.3. Application Layer
+
+Orquesta los casos de uso principales para el registro y modificación de dispositivos, además de servir como capa de control anticorrupción (ACL).
+
+*   **DevicesCommandServiceImpl:** Ejecuta comandos de vinculación física, renombrado y baja de dispositivos interactuando con las pasarelas.
+*   **DevicesQueryServiceImpl:** Ejecuta la recuperación y mapeo de dispositivos filtrados por espacios físicos.
+*   **DeviceVitalsAcl (Anti-Corruption Layer):** Componente ACL que conecta de forma segura con el contexto de evaluación de telemetría (`TelemetryEvaluationQueryService`) para construir resúmenes rápidos de estado de hardware (`DeviceVitalsSnapshot`) sin contaminar el dominio de dispositivos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/devices_class_diagram/application-layer.svg" alt="Mobile Devices Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.4.2.4. Infrastructure Layer
+
+Contiene los contratos crudos y adaptadores HTTP mediante la biblioteca `Dio` para interactuar con los servicios REST del backend.
+
+*   **DevicesGateway (Interface) / DevicesHttpGateway:** Adaptador físico encargado de codificar los cuerpos de solicitud y parsear las respuestas crudas en mapas asociativos (`Map`) para el registro y borrado de sensores.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/devices_class_diagram/infrastructure-layer.svg" alt="Mobile Devices Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.4.2.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device & Space Management muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/devices_class_diagram/unified.svg" alt="Unified Mobile Devices Class Diagram" width="850">
+</p>
+
+---
+
+
+### 4.4.3. Bounded Context: Air Quality Evaluation
+
+#### 4.4.3.1. Domain Layer
+
+Encapsula los modelos de lectura y contratos para obtener las lecturas de telemetría procesadas por el motor de calidad de aire.
+
+*   **TelemetryEvaluationReadModel:** Modelo de lectura para representar el estado de salubridad y métricas físicas de conectividad y uptime ambiental.
+*   **Connectivity (Value Object):** Objeto de valor que detalla el estado del enlace inalámbrico, red y nivel de señal (dBm) del sensor.
+*   **TelemetryEvaluationQueryService (Interface):** Interfaz del dominio que declara la firma para recuperar la última telemetría del hardware.
+*   **GetLatestTelemetryEvaluationByDeviceQuery / EvaluationDeviceId (Value Objects):** Parámetros para la ejecución de la consulta.
+
+
+classDiagram
+namespace domain {
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/evaluation_class_diagram/domain-layer.svg" alt="Mobile Evaluation Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.4.3.2. Interface Layer
+
+*(Nota: En la aplicación móvil, este contexto no expone pantallas o Cubits independientes. Su representación visual se integra directamente en las vistas del contexto de Dispositivos a través de la capa de adaptación o control anticorrupción).*
+
+*   **TelemetryEvaluationResponseResource:** DTO del lado del cliente que expone los datos serializados del backend.
+*   **ConnectivityResource:** DTO que mapea el estado de red de la infraestructura.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/evaluation_class_diagram/interfaces-layer.svg" alt="Mobile Evaluation Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.4.3.3. Application Layer
+
+Orquesta las consultas relativas a las últimas métricas capturadas por el dispositivo.
+
+*   **TelemetryEvaluationQueryServiceImpl:** Servicio de aplicación que delega en el gateway la obtención física de la telemetría calculada y la mapea a los modelos de dominio.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/evaluation_class_diagram/application-layer.svg" alt="Mobile Evaluation Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.4.3.4. Infrastructure Layer
+
+Maneja la serialización y la interacción HTTP para las solicitudes de telemetría ambiental procesada.
+
+*   **TelemetryEvaluationGateway (Interface) / TelemetryEvaluationHttpGateway:** Define e implementa las peticiones HTTP con la biblioteca `Dio` para recuperar la última lectura de telemetría del sensor.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/evaluation_class_diagram/infrastructure-layer.svg" alt="Mobile Evaluation Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.4.3.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Air Quality Evaluation muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/evaluation_class_diagram/unified.svg" alt="Unified Mobile Evaluation Class Diagram" width="850">
+</p>
+
+---
+
+### 4.4.4. Bounded Context: Alerting & Response
+
+#### 4.4.4.1. Domain Layer
+
+Define las entidades centrales de los incidentes y los servicios para consultar resúmenes agregados e históricos de alertas en el dispositivo.
+
+*   **Alert:** Entidad del dominio que encapsula las propiedades de la alerta (identificador, tipo de métrica, valor disparado, valor del umbral y estado de la alerta).
+*   **AlertStatus (Enum):** Representa el estado del ciclo de vida del incidente (`active`, `acknowledged`, `resolved`).
+*   **MetricType (Enum):** Enumerador de las variables físicas que disparan alertas (`pm25`, `co2`, `temperature`, `humidity`).
+*   **AlertsQueryService (Interface):** Contrato para el control del caso de uso de lectura de alertas por sensor o por establecimiento.
+*   **AlertsCommandService (Interface):** Contrato para cambiar el estado de las alertas (reconocimiento o resolución).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/alerts_class_diagram/domain-layer.svg" alt="Mobile Alerts Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.4.4.2. Interface Layer
+
+Implementa la captura de eventos visuales y la administración de estados del panel de alertas utilizando el patrón BLoC/Cubit.
+
+*   **AlertsCubit:** Componente reactivo encargado de despachar búsquedas filtradas por estado, tipo de métrica o espacio, además de controlar la paginación de los históricos.
+*   **AlertsState:** Representa el estado actual de la UI (cargando, errores, página activa de alertas, resumen diario).
+*   **AlertTab / AlertViewMode (Enums):** Enumerados que definen las pestañas de visualización (activas vs históricas) y modos de grilla o lista.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/alerts_class_diagram/interfaces-layer.svg" alt="Mobile Alerts Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.4.4.3. Application Layer
+
+Orquesta la lógica de aplicación para la gestión y consulta de incidentes y conteos diarios de telemetrías fuera de rango.
+
+*   **AlertsQueryServiceImpl:** Orquestador de la lógica de aplicación que interactúa con la pasarela de alertas para obtener los datos mapeados a entidades de dominio.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/alerts_class_diagram/application-layer.svg" alt="Mobile Alerts Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.4.4.4. Infrastructure Layer
+
+Proporciona el adaptador HTTP concreto para consumir la API de alertas de Clair.
+
+*   **AlertsGateway (Interface) / AlertsHttpGateway:** Pasarela física y su implementación concreta mediante `Dio` para realizar las llamadas HTTP para obtener alertas y resúmenes analíticos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/alerts_class_diagram/infrastructure-layer.svg" alt="Mobile Alerts Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.4.4.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Alerting & Response muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/alerts_class_diagram/unified.svg" alt="Unified Mobile Alerts Class Diagram" width="850">
+</p>
+
+### 4.4.5. Bounded Context: Analytics & Reporting
+
+#### 4.4.5.1. Domain Layer
+
+Define la representación de datos analíticos, índices de calidad y contratos de consulta para series de datos históricos y transmisiones de telemetría en tiempo real.
+
+*   **DashboardMetrics:** Entidad de dominio que consolida métricas ambientales en tiempo real (`Aqi`, `CO2`, `PM2.5`, temperatura, humedad) e indica deltas comparativos de comportamiento.
+*   **LiveTelemetry:** Modelo de dominio para representar la telemetría en tiempo real transmitida mediante flujos de datos asíncronos (`Streams`).
+*   **TrendPoint / Aqi / MetricDelta (Value Objects):** Objetos de valor que describen puntos de tendencia histórica, valores de ICA y variaciones en las lecturas de los sensores.
+*   **AnalyticsQueryService (Interface):** Contrato que declara la firma para recuperar dashboards analíticos, tendencias históricas y flujos en tiempo real.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/analytics_class_diagram/domain-layer.svg" alt="Mobile Analytics Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.4.5.2. Interface Layer
+
+Implementa componentes reactivos y controladores mediante Cubit para gestionar la carga de opciones, filtros de fechas y renderizado de telemetría viva.
+
+*   **AnalyticsCubit:** Cubit encargado de controlar los ciclos de refresco de datos, iniciar o detener la escucha de telemetría viva mediante suscripciones a streams (`StreamSubscription`) y reaccionar ante cambios en los filtros de organizaciones, espacios y sensores.
+*   **AnalyticsState:** Almacena el estado inmutable de los listados cargados, opciones seleccionadas y los datos calculados de tendencias y tiempo real.
+*   **AnalyticsSelectOption:** Estructura para almacenar las opciones seleccionadas en los menús desplegables de la interfaz.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/analytics_class_diagram/interfaces-layer.svg" alt="Mobile Analytics Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.4.5.3. Application Layer
+
+Orquesta los servicios de aplicación encargados de recuperar la información consolidada de los sensores y retornar flujos reactivos de datos.
+
+*   **AnalyticsQueryServiceImpl:** Implementa el servicio de consultas de aplicación mapeando los resultados de infraestructura hacia modelos del dominio y controlando la conversión asíncrona de telemetrías.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/analytics_class_diagram/application-layer.svg" alt="Mobile Analytics Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.4.5.4. Infrastructure Layer
+
+Maneja los adaptadores concretos para interactuar con la API REST y las tecnologías de transmisión asíncrona del backend.
+
+*   **AnalyticsGateway (Interface) / AnalyticsHttpGateway:** Contrato de red y su adaptador que utiliza `Dio` y `TokenLocalStorage` para realizar peticiones autenticadas hacia el API de Clair, transformando respuestas JSON crudas a modelos y mapeando transmisiones en tiempo real.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/analytics_class_diagram/infrastructure-layer.svg" alt="Mobile Analytics Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.4.5.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Analytics & Reporting muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/analytics_class_diagram/unified.svg" alt="Unified Mobile Analytics Class Diagram" width="850">
+</p>
+
+### 4.4.6. Bounded Context: Notifications
+
+#### 4.4.6.1. Domain Layer
+
+Define la estructura de logs de auditoría de mensajes enviados, objetos de valor para identificación/paginación y los contratos para recuperar el historial de notificaciones push desde el móvil.
+
+*   **NotificationLog (Entity):** Entidad de dominio que representa una notificación enviada (identificador, título, cuerpo del mensaje, estado de envío y fecha de despacho).
+*   **NotificationId (Value Object):** Objeto de valor inmutable que encapsula el identificador único del log de notificación.
+*   **NotificationPage (Value Object):** Estructura de valor que empaqueta una página de registros de notificaciones con metadata de paginación.
+*   **GetNotificationsQuery (Value Object):** Consulta inmutable que encapsula las opciones de paginación para la lista de notificaciones.
+*   **NotificationsQueryService (Interface):** Contrato que declara la firma del caso de uso de obtención de notificaciones, retornando un `Either` con el resultado.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/notifications_class_diagram/domain-layer.svg" alt="Mobile Notifications Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.4.6.2. Interface Layer
+
+Implementa la gestión de estados interactivos para mostrar la bandeja de notificaciones push dentro de la aplicación móvil.
+
+*   **NotificationsCubit (Cubit):** Controlador de estado que orquesta las llamadas a la carga, refresco y marca de lectura de notificaciones push.
+*   **NotificationsState:** Representa el estado inmutable del feed de notificaciones (indicadores de carga, lista actual de `NotificationLog`, número de elementos no leídos y banderas de paginación).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/notifications_class_diagram/interfaces-layer.svg" alt="Mobile Notifications Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.4.6.3. Application Layer
+
+Orquesta la lógica del caso de uso para consultar el listado de alertas de forma asíncrona.
+
+*   **NotificationsQueryServiceImpl:** Servicio de aplicación que implementa el contrato de consulta, interactuando con la pasarela de red para obtener el historial paginado.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/notifications_class_diagram/application-layer.svg" alt="Mobile Notifications Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.4.6.4. Infrastructure Layer
+
+Adaptadores concretos que gestionan el consumo de la API de Clair sobre el canal de red del móvil.
+
+*   **NotificationsGateway (Interface):** Contrato de red requerido para recuperar el log de notificaciones.
+*   **NotificationsHttpGateway:** Implementación concreta del gateway que realiza peticiones HTTP GET seguras mediante el cliente `Dio` para deserializar el recurso de red.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/notifications_class_diagram/infrastructure-layer.svg" alt="Mobile Notifications Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.4.6.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Notifications muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/mobile/notifications_class_diagram/unified.svg" alt="Unified Mobile Notifications Class Diagram" width="850">
+</p>
+
+## 4.5. Tactical-Level Domain-Driven Design - Edge station
+
+La estación base local (Edge Station) está desarrollada en Python utilizando Flask, siguiendo principios de DDD y Arquitectura Limpia para coordinar las operaciones locales fuera de la nube, la comunicación directa con las estaciones embebidas (ESP32) mediante HTTP/REST, la persistencia local y la sincronización asíncrona hacia la nube mediante Apache Kafka. A continuación, se detallan los contextos acotados que estructuran la estación local:
+
+**Arquitectura de Componentes de la Estación Base Local (Edge Station)**
+
+A continuación se detalla el diagrama C4 de nivel de Componentes para la estación base local (Edge Station) de Clair, ilustrando la interacción de las capas de la aplicación desarrollada en Flask:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/edge/EdgeStationComponents-dark.svg" alt="Edge Station Component Architecture Diagram" width="850">
+</p>
+
+*   **Interfaces Layer (Capa de Interfaces):** Expone los endpoints REST para interactuar de forma síncrona con los dispositivos embebidos y controladores locales, recibiendo telemetrías y entregando comandos.
+*   **Application Layer (Capa de Aplicación):** Orquesta los flujos de control de las tareas locales (ingesta de telemetría, encolado de comandos, publicación de presencia y ejecución de tareas programadas en segundo plano).
+*   **Domain Layer (Capa de Dominio):** Contiene la lógica central independiente del framework (entidades locales, value objects y las abstracciones de repositorio).
+*   **Infrastructure Layer (Capa de Infraestructura):** Implementa el almacenamiento físico local (SQLite / ORM SQLAlchemy), la mensajería asíncrona hacia Kafka y la comunicación externa con Clair Core API en la nube.
+
+### 4.5.1. Bounded Context: Identity & Access Management (IAM)
+
+#### 4.5.1.1. Domain Layer
+
+Define las entidades principales y las interfaces del repositorio que gobiernan el acceso local de dispositivos en el Edge.
+
+*   **Device (Entity):** Representa el dispositivo local registrado en el Edge, con atributos como `device_id`, `hardware_id`, `api_key`, `status` y la marca de tiempo de última comunicación `last_seen_at`.
+*   **AuthService (Domain Service):** Servicio encargado de validar las credenciales de un dispositivo contra sus datos registrados.
+*   **DevicePresenceChangedEvent (Event):** Evento de dominio emitido cuando cambia el estado de conexión del dispositivo.
+*   **DeviceRepositoryInterface (Interface):** Interfaz para consultar y actualizar la persistencia de los dispositivos en el Edge.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/iam_class_diagram/domain-layer.svg" alt="Edge IAM Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.5.1.2. Interface Layer
+
+Puntos de entrada HTTP que manejan las llamadas entrantes para validar y registrar la presencia de dispositivos periféricos.
+
+*   **IamApi:** Expone las rutas HTTP/REST para autenticar solicitudes entrantes provenientes de las estaciones embebidas y actualizar su marca de última conexión.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/iam_class_diagram/interfaces-layer.svg" alt="Edge IAM Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.5.1.3. Application Layer
+
+Orquesta la lógica de autenticación y el rastreo asíncrono de presencia en segundo plano.
+
+*   **AuthApplicationService:** Coordina la autenticación delegando la lógica al servicio del dominio y al repositorio.
+*   **DevicePresenceApplicationService:** Gestiona el registro de presencia y publica las actualizaciones de conexión en Kafka.
+*   **DevicePresenceMonitor:** Componente en segundo plano que vigila y marca los dispositivos inactivos como offline si superan el umbral de inactividad.
+*   **KafkaPresencePublisher:** Publicador concreto encargado de despachar eventos de presencia hacia Apache Kafka.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/iam_class_diagram/application-layer.svg" alt="Edge IAM Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.5.1.4. Infrastructure Layer
+
+Adaptadores concretos de base de datos relacional y mensajería para IAM en el Edge.
+
+*   **DeviceRepository:** Implementación concreta del repositorio de persistencia local (ej. SQLite / SQLAlchemy).
+*   **DeviceModel:** Modelo de base de datos relacional para la entidad Device.
+*   **IamKafkaTopics:** Mapea los tópicos de Kafka configurados para IAM (`DEVICE_PRESENCE_CHANGED`).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/iam_class_diagram/infrastructure-layer.svg" alt="Edge IAM Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.5.1.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Identity & Access Management (IAM) muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/iam_class_diagram/unified.svg" alt="Unified Edge IAM Class Diagram" width="850">
+</p>
+
+---
+
+### 4.5.2. Bounded Context: Device & Space Management
+
+#### 4.5.2.1. Domain Layer
+
+Modela las telemetrías entrantes y los comandos de actuación generados en la nube para el control de los microcontroladores.
+
+*   **DeviceTelemetry (Entity):** Representa el reporte consolidado de mediciones del ESP32.
+*   **DeviceCommand (Entity):** Representa comandos de actuación dirigidos a las estaciones embebidas (estado, payload, marcas de tiempo de entrega y confirmación).
+*   **OutboxEntry (Entity):** Registro del patrón Outbox para la entrega confiable de eventos de telemetría a la nube.
+*   **DeviceTelemetryService:** Lógica del dominio para validar y construir reportes de telemetría a partir de payloads crudos.
+*   **AirQuality / ParticulateMatter / Connectivity / Location / DeviceConnectionStatus (Value Objects):** Atributos inmutables de telemetría y estado.
+*   **DeviceTelemetryRepositoryInterface / DeviceCommandRepositoryInterface / OutboxRepositoryInterface (Interfaces):** Contratos de persistencia.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/device_class_diagram/domain-layer.svg" alt="Edge Device Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.5.2.2. Interface Layer
+
+Endpoints expuestos al microcontrolador para reportar telemetrías y recuperar tareas de actuación.
+
+*   **DeviceApi:** Endpoint REST para recibir telemetría de las estaciones embebidas, entregar comandos pendientes y recibir confirmaciones de ejecución de comandos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/device_class_diagram/interfaces-layer.svg" alt="Edge Device Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.5.2.3. Application Layer
+
+Orquesta los flujos de telemetría local, el procesamiento del outbox transaccional y la ingestión asíncrona de comandos.
+
+*   **DeviceTelemetryAppService:** Procesa la telemetría, persiste localmente y crea una entrada en el Outbox.
+*   **DeviceCommandApplicationService:** Ingiere comandos desde Kafka y expone los pendientes a las estaciones embebidas.
+*   **GetDeviceConnectionStatusQueryHandler:** Recupera el estado de conexión actual basado en la telemetría.
+*   **TelemetryOutboxProcessor:** Procesador en segundo plano que consume el Outbox local y reenvía los datos a la API en la nube con reintentos y tolerancia a fallos.
+*   **Commands & Queries (Value Objects):** Estructuras para transferir parámetros de entrada a los servicios de aplicación.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/device_class_diagram/application-layer.svg" alt="Edge Device Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.5.2.4. Infrastructure Layer
+
+Componentes de almacenamiento de base de datos relacional local e integración con APIs externas en la nube.
+
+*   **DeviceTelemetryRepository / DeviceCommandRepository / OutboxRepository:** Implementaciones concretas de persistencia mapeadas a bases de datos SQL locales.
+*   **DeviceTelemetryModel / DeviceCommandModel / OutboxRecordModel:** Modelos de base de datos ORM.
+*   **ExternalCoreService:** Cliente que consume la API en la nube (Clair Core API) para sincronizar telemetrías y confirmaciones de comandos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/device_class_diagram/infrastructure-layer.svg" alt="Edge Device Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.5.2.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device & Space Management muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/device_class_diagram/unified.svg" alt="Unified Edge Devices Class Diagram" width="850">
+</p>
+
+---
+
+### 4.5.3. Bounded Context: Alerting & Response
+
+#### 4.5.3.1. Domain Layer
+
+Define la abstracción del repositorio para almacenar los incidentes de alerta que ameritan respuesta local.
+
+*   **AlertIncidentEventRepositoryInterface (Interface):** Contrato para el control y registro de incidentes de alertas que deben propagarse a los actuadores físicos locales.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/alerting_class_diagram/domain-layer.svg" alt="Edge Alerting Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.5.3.2. Interface Layer
+
+Endpoints REST para la interacción de los actuadores del dispositivo embebido con la estación local.
+
+*   **AlertingApi:** Expone endpoints HTTP para que los ESP32 consulten incidentes activos y confirmen visualmente (LEDs/zumbador) la recepción de la alerta.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/alerting_class_diagram/interfaces-layer.svg" alt="Edge Alerting Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.5.3.3. Application Layer
+
+Orquesta la recepción asíncrona de alertas del bus de mensajería y la posterior consulta por parte del hardware periférico.
+
+*   **AlertIncidentEventApplicationService:** Ingiere alertas críticas de Kafka, recupera pendientes para los ESP32 y registra sus acuses de recibo.
+*   **KafkaAlertIncidentConsumer:** Consumidor en segundo plano que escucha el tópico de alertas críticas del backend en la nube.
+*   **IngestAlertIncidentEventResult (Value Object):** Estructura del resultado de la ingesta de alertas.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/alerting_class_diagram/application-layer.svg" alt="Edge Alerting Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.5.3.4. Infrastructure Layer
+
+Componentes de persistencia local y constantes de bus de eventos para las alertas.
+
+*   **AlertIncidentEventRepository:** Implementación del repositorio de base de datos local.
+*   **AlertIncidentEventModel:** ORM para registrar eventos de incidentes.
+*   **AlertingKafkaTopics:** Constantes de los tópicos Kafka de alertas.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/alerting_class_diagram/infrastructure-layer.svg" alt="Edge Alerting Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.5.3.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Alerting & Response muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/alerting_class_diagram/unified.svg" alt="Unified Edge Alerting Class Diagram" width="850">
+</p>
+
+---
+
+### 4.5.4. Bounded Context: Device Provisioning
+
+#### 4.5.4.1. Domain Layer
+
+Define las reglas de negocio y abstracciones de persistencia para mantener sincronizada la lista de dispositivos registrados.
+
+*   **DeviceCacheService:** Lógica de validación de registros de dispositivos sincronizados desde el backend central.
+*   **DeviceCacheRepositoryInterface (Interface):** Contrato para actualizar en lote la cache local de dispositivos autorizados.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/provisioning_class_diagram/domain-layer.svg" alt="Edge Provisioning Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.5.4.2. Interface Layer
+
+DTOs y recursos para transformar y mapear payloads de eventos de integración.
+
+*   **DeviceCacheResource (DTO):** Objeto de transferencia que representa la información de los dispositivos para mapear actualizaciones.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/provisioning_class_diagram/interfaces-layer.svg" alt="Edge Provisioning Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.5.4.3. Application Layer
+
+Orquesta la recepción de eventos de cambio en la definición de dispositivos (altas, modificaciones, bajas) para refrescar la base de datos local.
+
+*   **DeviceProvisioningApplicationService:** Servicio que maneja eventos de adición, edición o eliminación de dispositivos y actualiza la base de datos local.
+*   **KafkaProvisioningConsumer:** Consumidor que escucha tópicos de aprovisionamiento en la nube.
+*   **DeviceChangedIntegrationEvent / DevicesSyncRequestedIntegrationEvent (Events):** Eventos de integración correspondientes.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/provisioning_class_diagram/application-layer.svg" alt="Edge Provisioning Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.5.4.4. Infrastructure Layer
+
+Implementaciones de persistencia local y definición de tópicos de aprovisionamiento.
+
+*   **DeviceCacheRepository:** Adaptador concreto que actualiza la base de datos SQL local.
+*   **DeviceModel:** Modelo persistido de la base de datos.
+*   **ProvisioningKafkaTopics:** Definición de tópicos Kafka para aprovisionamiento.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/provisioning_class_diagram/infrastructure-layer.svg" alt="Edge Provisioning Infrastructure Layer Class Diagram" width="750">
+</p>
+
+#### 4.5.4.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device Provisioning muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/edge/provisioning_class_diagram/unified.svg" alt="Unified Edge Provisioning Class Diagram" width="850">
+</p>
+
+---
+
+## 4.6. Tactical-Level Domain-Driven Design - Embedded application
+
+La aplicación embebida (Embedded Application) está desarrollada en C++ para ESP32, siguiendo los principios del framework **ModestIoT** (basado en eventos y comandos) para gestionar la adquisición de sensores, el control de actuadores y la comunicación con la estación base local (Edge Station) mediante HTTP/REST. A continuación, se detallan los componentes que estructuran la aplicación embebida, organizados según una arquitectura dirigida por eventos que respeta los bounded contexts implícitos del dominio.
+
+**Arquitectura de Componentes de la Aplicación Embebida (Clair Device)**
+
+A continuación se detalla el diagrama C4 de nivel de Componentes para la aplicación embebida de Clair, ilustrando la interacción de sus capas internas y su comunicación con el hardware y la Edge Station:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/containers/embedded/EmbeddedAppComponents-dark.svg" alt="Embedded Application Component Architecture Diagram" width="850">
+</p>
+
+> **Nota sobre la arquitectura de comunicación:**  
+> El framework ModestIoT implementa un patrón de comunicación basado en eventos y comandos mediante handlers encadenados. No existen clases `EventBus` o `CommandBus` en el código; los recuadros con ese nombre en el diagrama son **representaciones conceptuales** para facilitar la comprensión del flujo de datos.
+
+*   **Interfaces Layer (Capa de Interfaces):** Expone los mecanismos para recibir comandos remotos y consultar incidentes desde la Edge Station mediante polling HTTP/REST.
+*   **Application Layer (Capa de Aplicación):** Orquesta los flujos de control del dispositivo: adquisición de sensores, evaluación de calidad del aire, publicación de telemetría y respuesta a comandos.
+*   **Domain Layer (Capa de Dominio):** Contiene la lógica central independiente del hardware (cálculo de AQI, evaluación de umbrales, estados de calidad del aire).
+*   **Infrastructure Layer (Capa de Infraestructura):** Implementa la comunicación con los sensores (I2C/UART), el control de actuadores (GPIO) y el envío de telemetría a la Edge Station (HTTP/REST).
+
+Esta arquitectura basada en eventos y comandos, con un orquestador central desacoplado de los adaptadores de hardware y de comunicación, permite un diseño modular, testeable y altamente mantenible para el firmware del dispositivo Clair.
+
+### 4.6.1. Bounded Context: Device Telemetry
+
+#### 4.6.1.1. Domain Layer
+
+Define las entidades principales, value objects y reglas de negocio para la captura y procesamiento de datos de telemetría en el dispositivo embebido.
+
+*   **ClairData (Aggregate Root):** Agrega todos los datos de telemetría del dispositivo. Incluye las lecturas de CO₂, temperatura, humedad, partículas (PM1.0, PM2.5, PM10), el índice de calidad del aire (AQI), el estado general de calidad del aire y metadatos como timestamp y timezone.
+*   **AirQuality (Value Object):** Contiene los valores de calidad del aire: `co2` (ppm), `temperature` (°C), `humidity` (%), y un flag `valid`.
+*   **ParticulateMatter (Value Object):** Contiene las concentraciones de partículas: `pm1_0`, `pm2_5`, `pm10` (µg/m³), y un flag `valid`.
+*   **AirQualityIndex (Value Object):** Calcula el AQI basado en PM2.5, incluye `aqi` (0-500) y la `category` (Good, Moderate, Unhealthy, etc.).
+*   **AirQualityThresholds (Value Object):** Define los umbrales configurables para evaluar la calidad del aire: límites para PM2.5, PM10, CO₂ y humedad.
+*   **AirQualityStatus (Enum):** Estados de calidad del aire: `OPTIMAL`, `MODERATE`, `CRITICAL`.
+*   **Event (Entity):** Evento base del framework ModestIoT. Contiene un `id` único. Los sensores propagan `DATA_READY_EVENT` a través del Event Propagation.
+*   **EventHandler (Interface):** Interfaz que deben implementar los suscriptores de eventos. Define el método `on(Event event)`.
+*   **Sensor (Abstract Entity):** Clase base abstracta para todos los sensores. Contiene `pin` y un `handler` opcional para propagar eventos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_telemetry_class_diagram/domain-layer.svg" alt="Device Telemetry Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.1.2. Interface Layer
+
+Punto de entrada principal que orquesta la adquisición de datos, el procesamiento de eventos y la gestión del estado del dispositivo.
+
+*   **ClairDevice (Orchestrator):** Es el orquestador central que implementa las interfaces `EventHandler` y `CommandHandler` del framework ModestIoT. Coordina la actualización de sensores, consume eventos (`on()`), ejecuta comandos (`handle()`), gestiona el estado del sistema (inicialización, modo normal, standby) y publica telemetría a través del `TelemetryPublisher`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_telemetry_class_diagram/interfaces-layer.svg" alt="Device Telemetry Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.1.3. Application Layer
+
+Orquesta los flujos de control para la publicación de telemetría y la coordinación de la actualización de sensores.
+
+*   **TelemetryPublisher (Application Service):** Servicio que construye el payload de telemetría (formato JSON), gestiona los intervalos de envío con throttling (cada 10 segundos), envía los datos a la Edge Station mediante HTTPS (`POST /api/v1/device/telemetry`) y mantiene estadísticas de envíos exitosos/fallidos.
+*   **TelemetryScheduler:** Componente auxiliar que gestiona los temporizadores para el envío periódico de telemetría.
+*   **SensorUpdateOrchestrator:** Coordina la activación de lecturas de sensores (SCD41 y PMS5003) cuando se reciben eventos `DATA_READY_EVENT`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_telemetry_class_diagram/application-layer.svg" alt="Device Telemetry Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.1.4. Infrastructure Layer
+
+Adaptadores concretos para comunicación con hardware de sensores (I2C/UART), mapeo de datos y mecanismo de propagación de eventos.
+
+*   **SCD41Sensor (Concrete Sensor):** Implementación del sensor de CO₂, temperatura y humedad. Comunica vía I2C usando la librería Sensirion. Publica `DATA_READY_EVENT` a través del Event Propagation cuando hay nuevas lecturas.
+*   **PMS5003Sensor (Concrete Sensor):** Implementación del sensor de partículas (PM1.0, PM2.5, PM10). Comunica vía UART (HardwareSerial), con manejo de trama de 32 bytes y checksum. Publica `DATA_READY_EVENT` a través del Event Propagation.
+*   **SCD41SensorDevice (Wrapper):** Wrapper que contiene el `SCD41Sensor` y conecta sus eventos al Device Orchestrator.
+*   **PMS5003SensorDevice (Wrapper):** Wrapper que contiene el `PMS5003Sensor` y conecta sus eventos al Device Orchestrator.
+*   **PMS5003Data (Data Model):** Estructura de datos cruda del PMS5003 (pm1_0, pm2_5, pm10, valid).
+*   **EventPropagation (Conceptual):** Mecanismo conceptual del framework ModestIoT que permite a los sensores llamar a `handler->on(event)` para notificar al orquestador. No existe una clase `EventBus` dedicada; se representa en el diagrama para claridad arquitectónica.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_telemetry_class_diagram/infrastructure-layer.svg" alt="Device Telemetry Infrastructure Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.1.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device Telemetry muestra la relación entre todas sus entidades, value objects, servicios y adaptadores de interfaz e infraestructura. Se incluyen también las relaciones conceptuales de Event Propagation propias del framework ModestIoT.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_telemetry_class_diagram/unified.svg" alt="Unified Device Telemetry Class Diagram" width="850">
+</p>
+
+> **Nota sobre la arquitectura de comunicación:**  
+> El framework ModestIoT implementa un patrón de comunicación basado en eventos y comandos mediante handlers encadenados. Los sensores publican eventos invocando `handler->on(event)`, y el `ClairDevice` los consume implementando la interfaz `EventHandler`. No existen clases `EventBus` o `CommandBus` en el código; los recuadros con ese nombre en el diagrama son **representaciones conceptuales** para facilitar la comprensión del flujo de datos.
+
+### 4.6.2. Bounded Context: Device Command
+
+#### 4.6.2.1. Domain Layer
+
+Define las abstracciones de comandos y el contrato para su manejo dentro del framework ModestIoT.
+
+*   **Command (Entity):** Comando base del framework ModestIoT. Contiene un `id` único que identifica el tipo de acción a ejecutar (ej. `LED_ON_COMMAND`, `STANDBY_COMMAND`).
+*   **CommandHandler (Interface):** Interfaz que deben implementar los suscriptores de comandos. Define el método `handle(Command command)`. `ClairDevice`, `Led` y `OLEDDisplay` implementan esta interfaz.
+*   **RemoteCommandType (Enum):** Enumeración de los tipos de comandos remotos que el dispositivo puede recibir desde la Edge Station: `STANDBY`, `WAKE`, `RESTART`, `REPORT`, `CALIBRATE`.
+*   **CommandResult (Value Object):** Objeto que encapsula el resultado de la ejecución de un comando. Incluye `success` (bool), `failureReason` (String) y `executionTimeMs` (unsigned long).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_command_class_diagram/domain-layer.svg" alt="Device Command Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.2.2. Interface Layer
+
+Punto de entrada principal que procesa los comandos recibidos y los despacha a los actuadores correspondientes.
+
+*   **ClairDevice (Orchestrator):** Implementa la interfaz `CommandHandler` y actúa como el gestor central de comandos. Recibe comandos del `EdgeService` (vía `CommandDispatch`), los procesa según su tipo (`STANDBY`, `WAKE`, `REPORT`, `CALIBRATE`, `RESET`) y ejecuta las acciones correspondientes (cambiar estado del dispositivo, forzar reporte, recalibrar sensores, etc.). También es responsable de rutar comandos específicos hacia `Led` y `OLEDDisplay`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_command_class_diagram/interfaces-layer.svg" alt="Device Command Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.2.3. Application Layer
+
+Orquesta el polling de comandos remotos, la cola de comandos pendientes y el envío de ACKs a la Edge Station.
+
+*   **EdgeService (Application Service):** Servicio unificado que gestiona tanto la telemetría como los comandos remotos. Contiene:
+    *   **Command Polling:** Consulta periódicamente (`pollCommands()`, cada 5-10 segundos) la Edge Station (`GET /api/v1/device/commands/pending`) en busca de comandos pendientes.
+    *   **Command Queue:** Mantiene una cola interna (`queue<RemoteCommand>`) para procesar comandos de forma ordenada y con un retraso configurable entre ellos (`commandProcessDelay`).
+    *   **Command Dispatch:** A través de un callback (`CommandCallback`), entrega los comandos al `ClairDevice` para su ejecución.
+    *   **Acknowledgments:** Envía ACKs a la Edge Station (`POST /api/v1/device/commands/{id}/ack`) indicando si el comando fue `EXECUTED` o `FAILED`.
+*   **RemoteCommand (DTO):** Estructura que representa un comando recibido del Edge. Contiene `commandId`, `type` (ej. "STANDBY"), `parameters` (JSON opcional) y un flag `valid`.
+*   **CommandProcessor:** Componente auxiliar que valida y parsea los comandos entrantes, extrayendo el tipo y los parámetros.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_command_class_diagram/application-layer.svg" alt="Device Command Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.2.4. Infrastructure Layer
+
+Adaptadores concretos que ejecutan comandos sobre el hardware y gestionan la comunicación HTTP con la Edge Station.
+
+*   **Led (Actuator):** Implementa `CommandHandler`. Ejecuta comandos específicos de LED: `LED_ON_COMMAND` (enciende), `LED_OFF_COMMAND` (apaga), `LED_BLINK_COMMAND` (inicia parpadeo cada 500ms), `LED_ACKNOWLEDGE_ALL` (detiene parpadeo). Controla el GPIO directamente.
+*   **OLEDDisplay (Actuator):** Implementa `CommandHandler`. Ejecuta comandos de pantalla: `DISPLAY_ON_COMMAND`, `DISPLAY_OFF_COMMAND`, `DISPLAY_SLEEP_COMMAND`, `DISPLAY_WAKE_COMMAND`, `DISPLAY_CLEAR_COMMAND`. Controla la pantalla vía I2C.
+*   **CommandDispatch (Conceptual):** Mecanismo conceptual del framework ModestIoT que permite la propagación de comandos a través de `handler->handle(command)`. Los comandos fluyen desde el `EdgeService` hacia el `ClairDevice` y desde éste hacia los actuadores `Led` y `OLEDDisplay`.
+*   **HttpCommandClient:** Cliente HTTP reutilizable para comunicarse con la Edge Station. Maneja los endpoints de comandos pendientes (GET) y ACKs (POST), incluyendo headers de autenticación (`X-Hardware-Id`, `X-API-Key`).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_command_class_diagram/infrastructure-layer.svg" alt="Device Command Infrastructure Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.2.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device Command muestra la relación entre todas sus entidades, servicios y adaptadores. Se incluyen las relaciones conceptuales de Command Dispatch propias del framework ModestIoT, que conectan el `EdgeService` con el `ClairDevice` y éste con los actuadores `Led` y `OLEDDisplay`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_command_class_diagram/unified.svg" alt="Unified Device Command Class Diagram" width="850">
+</p>
+
+> **Nota sobre la arquitectura de comandos:**  
+> El framework ModestIoT implementa un patrón de comunicación basado en comandos mediante handlers encadenados. El `EdgeService` recibe comandos remotos y los propaga a través del `CommandDispatch` hacia el `ClairDevice` (que implementa `CommandHandler`). A su vez, el `ClairDevice` puede reenviar comandos específicos a `Led` y `OLEDDisplay`. No existe una clase `CommandBus` dedicada; el mecanismo es una representación conceptual para facilitar la comprensión del flujo de comandos.
+
+### 4.6.3. Bounded Context: Device State
+
+#### 4.6.3.1. Domain Layer
+
+Define las enumeraciones de estados del dispositivo y las reglas de transición entre ellos.
+
+*   **DeviceState (Enum):** Enumeración que representa los estados de inicialización del dispositivo: `INIT_NOT_STARTED` (no iniciado), `INIT_STARTING_SENSORS` (iniciando sensores), `INIT_WAITING_SENSORS` (esperando sensores), `INIT_COMPLETE` (inicialización completa), `INIT_PARTIAL` (inicialización parcial por timeout).
+*   **OperationalMode (Enum):** Enumeración de los modos operativos del dispositivo: `NORMAL_MODE` (operación normal), `STANDBY_MODE` (modo bajo consumo), `SIMULATION_MODE` (modo simulación con datos sintéticos).
+*   **AirQualityStatus (Enum):** Enumeración de los estados de calidad del aire: `OPTIMAL` (óptimo), `MODERATE` (moderado), `CRITICAL` (crítico).
+*   **SystemHealth (Value Object):** Agrega indicadores de salud del sistema: `allSensorsReady`, `timeSynchronized`, `wifiConnected`, `displayInitialized`, `healthPercentage`. Incluye el método `evaluateHealth()` que calcula la salud general del dispositivo.
+*   **StateTransition (Value Object):** Registra una transición de estado, incluyendo `fromState`, `toState`, `transitionTime` y `success`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_state_class_diagram/domain-layer.svg" alt="Device State Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.3.2. Interface Layer
+
+Punto de entrada principal que gestiona y mantiene todos los estados del dispositivo, coordinando las transiciones según los eventos y comandos recibidos.
+
+*   **ClairDevice (Orchestrator):** Es el orquestador central responsable de mantener y gestionar:
+    *   **Estado de Inicialización:** Controla la secuencia de inicialización de sensores con timeout de 10 segundos (`initState`, `initStartTime`, `INIT_TIMEOUT_MS`). Métodos: `updateInitialization()`, `isInitializationComplete()`, `getInitStateString()`.
+    *   **Modo Operativo:** Gestiona el modo normal (`NORMAL_MODE`), modo standby (`STANDBY_MODE`) y modo simulación (`SIMULATION_MODE`). Métodos: `setStandbyMode()`, `isStandbyMode()`, `setSimulationEnabled()`.
+    *   **Estado de Calidad del Aire:** Mantiene el estado actual (`currentData.status`) y su etiqueta (`statusLabel`). Se actualiza automáticamente cuando llegan nuevos datos de sensores.
+    *   **Flags de Estado:** Mantiene indicadores como `allSensorsReady`, `displayInitialized`, `timeSynchronized`, `standbyMode`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_state_class_diagram/interfaces-layer.svg" alt="Device State Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.3.3. Application Layer
+
+Orquesta la lógica de transición de estados, la gestión de timeouts y la evaluación del estado general del dispositivo.
+
+*   **StateManager (Application Service):** Coordina las transiciones de estado. Métodos: `transitionTo(newState)`, `getCurrentState()`, `canTransitionTo(newState)`, `onStateEnter()`, `onStateExit()`.
+*   **InitStateManager:** Gestiona específicamente la inicialización del dispositivo. Métodos: `startInitialization()`, `updateInitialization()`, `isInitializationComplete()`, `hasInitializationTimeout()`, `getInitState()`, `getInitStateString()`.
+*   **StandbyManager:** Gestiona el modo standby. Métodos: `enableStandby()`, `disableStandby()`, `isStandbyActive()`, `suspendOperations()` (apaga display, duerme sensores), `resumeOperations()` (reactiva sensores, enciende display).
+*   **StatusEvaluator:** Evalúa el estado general de calidad del aire combinando todos los parámetros (CO₂, PM2.5, PM10, humedad). Métodos: `evaluateOverallStatus()`, `getCurrentStatus()`, `getStatusLabel()`, `getStatusIcon()`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_state_class_diagram/application-layer.svg" alt="Device State Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.3.4. Infrastructure Layer
+
+Adaptadores concretos para persistencia opcional de estado y temporización.
+
+*   **StatePersistence:** Servicio opcional para guardar/cargar el estado del dispositivo en memoria no volátil (ej. preferences). Métodos: `saveState(state)`, `loadState()`, `clearState()`.
+*   **StateTimer:** Componente de temporización utilizado para gestionar timeouts (como el timeout de inicialización de 10 segundos). Métodos: `start()`, `hasTimedOut()`, `reset()`, `getElapsedMs()`.
+*   **StateEventEmitter (Conceptual):** Mecanismo conceptual para emitir eventos cuando ocurren cambios de estado significativos (ej. `STATE_CHANGED`, `MODE_CHANGED`). Los suscriptores (como `ClairDevice`) pueden reaccionar a estos cambios.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_state_class_diagram/infrastructure-layer.svg" alt="Device State Infrastructure Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.3.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Device State muestra la relación entre todas las enumeraciones de estado, los servicios de aplicación que gestionan las transiciones y el orquestador central que mantiene los estados del dispositivo.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/device_state_class_diagram/unified.svg" alt="Unified Device State Class Diagram" width="850">
+</p>
+
+> **Nota sobre la gestión de estados:**  
+> El `ClairDevice` actúa como el agregador de estados del dispositivo. Mantiene los flags de inicialización, modo operativo y calidad del aire. La inicialización sigue una secuencia no bloqueante con timeout de 10 segundos. El modo standby suspende las operaciones no esenciales (sensores, display, telemetría) para ahorrar energía. El estado de calidad del aire se actualiza automáticamente tras cada lectura de sensores y determina el comportamiento del LED.
+
+### 4.6.4. Bounded Context: Alerting
+
+#### 4.6.4.1. Domain Layer
+
+Define las entidades de incidentes, tipos de métricas y reglas de prioridad para las alertas en el dispositivo embebido.
+
+*   **Incident (Entity):** Representa un incidente o alerta activa en el dispositivo. Contiene `id`, `metric` (CO2, PM25, TEMP, HUMIDITY), `status` (ACTIVE, RESOLVED), `occurredAt`, `resolvedAt` y `acknowledged`. Incluye el método `print()` para depuración.
+*   **MetricType (Enum):** Enumeración de los tipos de métricas que pueden generar incidentes: `CO2`, `PM25`, `TEMP`, `HUMIDITY`.
+*   **IncidentStatus (Enum):** Estados de un incidente: `ACTIVE` (activo), `RESOLVED` (resuelto), `ACKNOWLEDGED` (reconocido).
+*   **IncidentPriority (Enum):** Niveles de prioridad para incidentes según la métrica: `HIGH` (CO2), `MEDIUM` (PM25), `LOW` (TEMP), `LOWEST` (HUMIDITY).
+*   **AlertRule (Value Object):** Define las reglas que determinan cuándo se genera un incidente. Contiene `metric`, `thresholdValue`, `operator` (ej. >, <) y `priority`. Incluye el método `evaluate(actualValue)` para evaluar si se debe activar una alerta.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/alerting_class_diagram/domain-layer.svg" alt="Alerting Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.4.2. Interface Layer
+
+Punto de entrada principal que integra el subsistema de alertas con el orquestador central y controla el LED según el estado de los incidentes.
+
+*   **ClairDevice (Orchestrator):** Integra el `IncidentManager` en el flujo principal del dispositivo. En cada ciclo `update()` llama a `incidentManager.pollIncidents()` y `incidentManager.process()`. Implementa los callbacks estáticos `onIncidentDetected()` e `onIncidentResolved()` que son invocados por el `IncidentManager` cuando cambia el estado de un incidente. El método `updateWarningLed()` verifica `hasActiveIncidents()` y controla el LED (parpadeo si hay incidentes activos, apagado si no).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/alerting_class_diagram/interfaces-layer.svg" alt="Alerting Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.4.3. Application Layer
+
+Orquesta el polling de incidentes, la gestión de la cola de ACKs y la lógica de reintentos para confirmar la recepción de incidentes.
+
+*   **IncidentManager (Application Service):** Servicio central que gestiona todo el ciclo de vida de los incidentes:
+    *   **Polling:** Consulta periódicamente (`pollIncidents()`, cada 5 segundos) la Edge Station (`GET /api/v1/alerting/incidents/pending`) para obtener incidentes activos y resueltos.
+    *   **Almacenamiento Local:** Mantiene un array de incidentes activos (`activeIncidents[5]`, máximo 5) y una cola de ACKs pendientes (`pendingAcks[10]`, máximo 10).
+    *   **Callbacks:** Invoca los callbacks configurados (`onIncidentDetected`, `onIncidentResolved`) cuando cambia el estado de un incidente.
+    *   **ACK Queue Management:** Encola ACKs cuando se detectan incidentes nuevos o resueltos, y los procesa en segundo plano con lógica de reintentos (máximo 3 reintentos, intervalo de 5 segundos).
+    *   **Métricos de Prioridad:** Proporciona `getMetricPriority()` y `getMostCriticalIncident()` para determinar el incidente más crítico cuando múltiples están activos.
+*   **Incident (DTO):** Estructura de datos que representa un incidente recibido del Edge o almacenado localmente.
+*   **PendingAck (Value Object):** Representa un ACK pendiente de envío. Contiene `incidentId`, `status` (ACTIVE/RESOLVED), `lastAttempt`, `retryCount` y `active`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/alerting_class_diagram/application-layer.svg" alt="Alerting Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.4.4. Infrastructure Layer
+
+Adaptadores concretos para la comunicación HTTP con la Edge Station, control del LED y gestión de la cola de ACKs.
+
+*   **Led (Actuator):** Implementa `CommandHandler`. Es controlado indirectamente por el `IncidentManager` a través del `ClairDevice`. Cuando `hasActiveIncidents()` es `true`, se inicia el parpadeo (`startBlink(500)`); cuando no hay incidentes activos, el LED se apaga (`off()`).
+*   **IncidentHttpClient:** Cliente HTTP para comunicarse con la Edge Station. Maneja el endpoint de incidentes pendientes (`GET /api/v1/alerting/incidents/pending`) y el endpoint de ACK (`POST /api/v1/alerting/incidents/{id}/ack`). Incluye headers de autenticación (`X-Hardware-Id`, `X-API-Key`).
+*   **IncidentAckQueue:** Cola especializada para gestionar ACKs pendientes. Métodos: `add(incidentId, status)`, `remove(incidentId)`, `getNext()`, `size()`, `isEmpty()`.
+*   **LedController (Conceptual):** Mecanismo conceptual que conecta el estado de incidentes con el control del LED. El `ClairDevice` actúa como este controlador en la implementación actual.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/alerting_class_diagram/infrastructure-layer.svg" alt="Alerting Infrastructure Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.4.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Alerting muestra la relación entre todas las entidades de incidentes, el servicio de aplicación `IncidentManager`, el orquestador `ClairDevice` y el actuador `Led`. Se incluyen las relaciones de polling HTTP hacia la Edge Station y el flujo de control que activa el parpadeo del LED cuando hay incidentes activos.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/alerting_class_diagram/unified.svg" alt="Unified Alerting Class Diagram" width="850">
+</p>
+
+> **Nota sobre el flujo de incidentes:**  
+> El `IncidentManager` consulta periódicamente la Edge Station para obtener incidentes pendientes. Cuando se detecta un nuevo incidente activo, se añade al array local y se invoca el callback `onIncidentDetected()`, que a su vez llama a `updateWarningLed()` en el `ClairDevice`. Este método verifica `hasActiveIncidents()` y controla el LED (inicia parpadeo a 500ms si hay incidentes, apaga si no). Los ACKs se encolan y se envían en segundo plano con reintentos automáticos (máximo 3, cada 5 segundos).
+
+### 4.6.5. Bounded Context: Display
+
+#### 4.6.5.1. Domain Layer
+
+Define las estructuras de datos para mostrar en la pantalla, los estados de la pantalla y las reglas de gestión de energía.
+
+*   **DisplayData (Aggregate Root):** Agrega todos los datos que se muestran en la pantalla OLED. Contiene `AirQualityDisplay` (CO₂, temperatura, humedad, validez, etiqueta de estado), `ParticulateMatterDisplay` (PM1.0, PM2.5, PM10, validez) y `AQIDisplay` (valor AQI, categoría).
+*   **DisplayState (Enum):** Estados de la pantalla: `DISPLAY_ON` (encendida), `DISPLAY_SLEEP` (suspensión, ahorro de energía), `DISPLAY_OFF` (apagada completamente).
+*   **DisplayConfig (Value Object):** Configuración de la pantalla. Contiene `width` (128), `height` (64), `i2cAddress` (0x3C), `sdaPin` (21), `sclPin` (22), `sleepAfterMs` (30000 ms de inactividad antes de dormir), `wakeDurationMs` (10000 ms de actividad tras despertar).
+*   **AirQualityDisplay (Value Object):** Datos de calidad del aire para mostrar: `co2` (ppm), `temperature` (°C), `humidity` (%), `valid` (bool), `statusLabel` (String: "Optimal", "Moderate", "Critical").
+*   **ParticulateMatterDisplay (Value Object):** Datos de partículas para mostrar: `pm1_0`, `pm2_5`, `pm10` (µg/m³), `valid` (bool).
+*   **AQIDisplay (Value Object):** Índice de calidad del aire para mostrar: `value` (0-500), `category` (String: "Good", "Moderate", "Unhealthy", etc.).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/display_class_diagram/domain-layer.svg" alt="Display Domain Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.5.2. Interface Layer
+
+Punto de entrada principal que actualiza la pantalla cuando cambian los datos del dispositivo o cuando se reciben comandos de control.
+
+*   **ClairDevice (Orchestrator):** Integra la pantalla en el flujo principal del dispositivo. En el método `refreshDisplay()` crea un objeto `DisplayData` a partir del `ClairData` actual y llama a `display.updateData(displayData)`. También envía comandos a la pantalla (`DISPLAY_ON_COMMAND`, `DISPLAY_OFF_COMMAND`, etc.) cuando recibe comandos remotos o cambia el estado del dispositivo (ej. al entrar/salir de modo standby). Mantiene el flag `displayInitialized` y la variable `lastDisplayedStatus` para evitar refrescos innecesarios.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/display_class_diagram/interfaces-layer.svg" alt="Display Interface Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.5.3. Application Layer
+
+Orquesta la actualización de la pantalla, el mapeo de datos y la gestión automática de energía.
+
+*   **DisplayManager (Application Service):** Servicio central que coordina todas las operaciones de la pantalla. Métodos: `updateDisplay(data)` (actualiza y refresca), `refreshScreen()` (redibuja), `clearScreen()`, `sleep()`, `wake()`, `off()`, `on()`, `autoPowerManagement()` (gestiona el apagado automático por inactividad), `isInitialized()`, `getState()`.
+*   **DisplayDataMapper:** Servicio responsable de transformar `ClairData` (del dominio de telemetría) a `DisplayData` (del dominio de display). Métodos: `fromClairData(clairData)`, `toDisplayData(clairData)`, `getAirQualityLabel(co2)` (convierte CO₂ en etiqueta textual: "Excellent", "Good", "Normal", "Moderate", "Poor", "Bad").
+*   **DisplayScheduler:** Componente auxiliar que gestiona los temporizadores para el refresco periódico de la pantalla. Métodos: `scheduleRefresh(interval)`, `isTimeToRefresh()`, `resetTimer()`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/display_class_diagram/application-layer.svg" alt="Display Application Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.5.4. Infrastructure Layer
+
+Adaptadores concretos para la comunicación I2C con el hardware de la pantalla OLED SSD1306, la gestión de energía y el despacho de comandos.
+
+*   **OLEDDisplay (Actuator):** Implementa `CommandHandler`. Es el adaptador principal que controla la pantalla SSD1306 de 128x64 píxeles.
+    *   **Inicialización:** Configura I2C (`Wire.begin(sdaPin, sclPin)`, clock a 400kHz) e inicializa el display con `display.begin(SSD1306_SWITCHCAPVCC, i2cAddress)`.
+    *   **Rendering:** Métodos `refresh()`, `clear()`, y métodos privados de dibujo (`drawStatusBar()`, `drawAirQualityData()`, `drawParticulateMatterData()`, `drawAQI()`, `drawFooter()`).
+    *   **Power Management:** Métodos `sleep()` (envía comando `SSD1306_DISPLAYOFF`), `wake()` (envía `SSD1306_DISPLAYON` y refresca), `off()`, `on()`, `autoPowerManagement()` (duerme tras 30 segundos de inactividad).
+    *   **Command Handling:** Procesa comandos `DISPLAY_ON_COMMAND`, `DISPLAY_OFF_COMMAND`, `DISPLAY_SLEEP_COMMAND`, `DISPLAY_WAKE_COMMAND`, `DISPLAY_CLEAR_COMMAND`.
+*   **I2CBus:** Componente de bajo nivel para la comunicación I2C. Métodos: `begin(sda, scl)`, `setClock(frequency)`, `scanDevices()` (útil para depuración).
+*   **CommandDispatch (Conceptual):** Mecanismo conceptual del framework ModestIoT que permite la propagación de comandos hacia la pantalla a través de `handler->handle(command)`.
+*   **DisplayPowerManager:** Componente especializado en la gestión de energía de la pantalla. Métodos: `managePower(currentState, lastUpdateTime, sleepAfterMs)`, `shouldSleep(lastUpdateTime, sleepAfterMs)`.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/display_class_diagram/infrastructure-layer.svg" alt="Display Infrastructure Layer Class Diagram" width="750">
+</p>
+
+---
+
+#### 4.6.5.5. Bounded Context Software Architecture Code Level Diagrams
+
+El diagrama de clases unificado del contexto acotado de Display muestra la relación entre todas las estructuras de datos de visualización, el servicio de aplicación `DisplayManager`, el orquestador `ClairDevice` y el actuador `OLEDDisplay`. Se incluyen las relaciones de mapeo desde `ClairData` (proveniente del contexto de telemetría) hacia `DisplayData`, y el flujo de comandos a través del `CommandDispatch` del framework ModestIoT.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/class-diagrams/embedded/display_class_diagram/unified.svg" alt="Unified Display Class Diagram" width="850">
+</p>
+
+> **Nota sobre el diseño de la pantalla:**  
+> La pantalla OLED se actualiza automáticamente cuando cambia el estado de calidad del aire o cuando se completa la inicialización del dispositivo. El contenido mostrado incluye PM1.0, PM2.5, PM10, CO₂ y temperatura/humedad. La pantalla implementa gestión automática de energía: tras 30 segundos sin actualizaciones entra en modo de suspensión para ahorrar energía, y se reactiva automáticamente cuando hay nuevos datos o se recibe un comando de activación. El layout utiliza texto de tamaño pequeño (8 píxeles por línea) y muestra "--" cuando los datos no son válidos.

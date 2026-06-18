@@ -1098,19 +1098,24 @@ El tablero principal presenta una implementación visual final con un estilo min
 
 <img src="../assets/webapp-mockup/SPACE&DEVICES3.png" alt="SPACE&DEVICES3" width="1000">
 
-La interfaz de gestión de dispositivos se presenta con un estilo "dark mode" de alta fidelidad que optimiza la supervisión técnica de los activos. El diseño emplea una arquitectura modular mediante tarjetas interactivas que permiten alternar entre vistas de cuadrícula y lista, integrando un panel de detalle profundo para cada sensor donde se visualizan métricas de conectividad y umbrales operativos. Esta implementación logra una estética tecnológica sofisticada que facilita la administración jerárquica de espacios y organizaciones en el ecosistema Clair.
+La sección de "Space & Devices" en el sistema Clair está diseñada para ofrecer una gestión jerárquica y detallada de la infraestructura. Su estructura permite a los usuarios navegar a través de organizaciones, edificios y plantas específicas, proporcionando un control granular sobre el despliegue de sensores.
+* Navegación y Flexibilidad: La interfaz central ofrece opciones para visualizar los dispositivos en formato de "Grid" (cuadrícula) o "List" (lista), facilitando el monitoreo según las preferencias del usuario.
+* Gestión de Dispositivos: Al seleccionar un dispositivo específico como "Clair-01", se accede a un panel de control detallado que muestra información técnica vital, incluyendo el estado (online/offline), ubicación, versión del software, conectividad (dBm), tiempo de actividad (uptime) y salud del dispositivo.
+* Configuración Operativa: La vista de dispositivos incluye una sección dedicada a los "Thresholds" (umbrales) para variables ambientales críticas como PM2.5, $CO_2$, temperatura y humedad, los cuales pueden ajustarse para mantener los estándares de calidad del aire requeridos.
 
 **Air Quality**
 
 <img src="../assets/webapp-mockup/AIR-QUALITY.png" alt="AIR-QUALITY" width="1000">
 
-La interfaz de análisis ambiental presenta una implementación visual final sofisticada con un estilo "dark mode" que jerarquiza los datos mediante acentos de color y tipografía técnica. El mockup integra un gráfico circular progresivo para el índice de calidad de aire, tarjetas detalladas para parámetros específicos como $PM2.5$ y $CO_2$, y una sección de comparativa entre espacios, culminando en un centro de reportes especializado que refuerza la capacidad analítica y profesional del sistema Clair.
+La pantalla de Air Quality en AIR-QUALITY.png ofrece una visión integral y dinámica del estado ambiental actual mediante un panel de control avanzado. La interfaz incluye los siguientes elementos destacados:
+* Filtros Jerárquicos: Controles superiores que permiten segmentar la información por organización, espacio y dispositivo específico para un monitoreo preciso.Indicadores de Estado: Un marcador central del "Air Quality Index" que clasifica la calidad como "GOOD" con un valor de 75, junto con tarjetas que detallan métricas específicas como PM2.5, $CO_2$, temperatura y humedad, todas mostrando tendencias porcentuales.
+* Visualización de Tendencias: Un gráfico de líneas que ilustra la evolución de los datos, permitiendo al usuario cambiar entre vistas temporales como tiempo real (LIVE), día, semana o mes.
 
 **Alerts & Actions**
 
 <img src="../assets/webapp-mockup/ALERTS&ACTION.png" alt="ALERTS&ACTION" width="1000">
 
-La interfaz de alertas presenta una implementación visual final sofisticada en "dark mode" que centraliza el monitoreo crítico y las respuestas automatizadas del sistema. El diseño destaca un gráfico de barras apiladas para la distribución de incidencias por severidad y una tabla de alertas activas con estados en tiempo real. La sección integra un constructor de reglas lógicas ("Rules Builder") y paneles laterales para la gestión de preferencias, detalles de eventos específicos con sugerencias de acciones automatizadas y un registro detallada de auditoría, consolidando una estética técnica y profesional para la gestión proactiva de Clair.
+La pantalla de "Alerts & Actions" presenta una interfaz de gestión centralizada para el monitoreo de incidentes en el sistema Clair. En la parte superior, un gráfico de barras detalla la frecuencia y severidad de las alertas ocurridas en los últimos 30 días, facilitando la identificación de patrones temporales. Debajo del gráfico, una tabla organizada permite visualizar de manera exhaustiva las alertas activas, categorizándolas por un identificador único (ID), nivel de severidad, ubicación (Space), variable afectada (como $CO_2$), marca temporal y estado actual. Esta vista se integra en una estructura de navegación lateral que incluye acceso a otras funciones clave como calidad del aire y reportes, consolidando así un panel de control robusto para la respuesta operativa ante eventos críticos.
 
 **Reports**
 
@@ -1132,23 +1137,29 @@ La pantalla de autenticación presenta una implementación visual final de estil
 
 La interfaz de registro mantiene la coherencia visual con la pantalla de login, utilizando un fondo oscuro y una tarjeta central que organiza el contenido de forma vertical. El mockup integra campos de entrada para correo electrónico y contraseña, este último con un indicador visual de caracteres enmascarados ("●●●●●●●"), acompañados de un componente de verificación para la aceptación de términos y condiciones. El botón de registro principal se complementa con una opción de autenticación ("Google")mediante un contenedor secundario. Finalmente, un enlace "Login" dirige a los usuarios ya registrados, completando un flujo de alta eficiente y visualmente consistente.
 
-**Dashboard**
+**AIR QUALITY**
 
-<img src="../assets/mobileapp-mockup/DASHBOARD.png" alt="mobile-dashboard" width="300">
+<img src="../assets/mobileapp-mockup/AIRQUALITY.png" alt="mobile-dashboard" width="300">
 
-La pantalla principal de la aplicación presenta un tablero de control resumido que prioriza los indicadores críticos de calidad del aire. Este diseño permite una supervisión inmediata de la salud ambiental y de red desde el primer vistazo.
+La pantalla de calidad del aire presentada en AIRQUALITY.png ofrece una visión centralizada y altamente legible del estado ambiental actual. En la parte superior, selectores desplegables permiten filtrar los datos por organización, espacio y dispositivo específico, lo cual se complementa con un indicador visual del "Air Quality Index" que clasifica la calidad del aire como "GOOD" con una puntuación numérica. Debajo, se despliegan tarjetas individuales para variables clave como material particulado (PM2.5), $CO_2$, temperatura y humedad, cada una con su valor actual y un indicador de estado. Finalmente, la sección de "Thresholds" proporciona una referencia clara de los límites operativos configurados para cada parámetro, asegurando que el usuario tenga visibilidad completa sobre los niveles que podrían afectar la salud del dispositivo o el entorno monitorizado.
 
 **Sensor Selection**
 
-<img src="../assets/mobileapp-mockup/SENSOR-SELECTION.png" alt="mobile-sensor-selection" width="300">
+<img src="../assets/mobileapp-mockup/SENSOR-SELECTION1.png" alt="mobile-sensor-selection" width="300">
 
-La interfaz de selección de piso o ubicación adopta un patrón de lista modal que cubre la mayor parte de la pantalla, facilitando la elección en contextos de navegación jerárquica. El mockup muestra un título superior "Select Floor" seguido de una serie de opciones textuales presentadas como botones o celdas de alto contraste y fácil pulsación. Un botón de acción primaria anclado en la parte inferior, "CONFIRM SELECTION", permite validar la elección y avanzar en el flujo. Este diseño es ideal para espacios con múltiples niveles o edificios, reduciendo pasos y errores en la selección.
+<img src="../assets/mobileapp-mockup/SENSOR-SELECTION2.png" alt="mobile-sensor-selection" width="300">
+
+<img src="../assets/mobileapp-mockup/SENSOR-SELECTION3.png" alt="mobile-sensor-selection" width="300">
+
+La estructura de selección de sensores en Clair sigue una jerarquía de navegación lógica, diseñada para gestionar grandes despliegues de infraestructura de forma intuitiva. El sistema guía al usuario a través de niveles de agregación progresiva: desde el despliegue general de organizaciones, pasando por edificios específicos y niveles de planta, hasta llegar a la gestión individual de los dispositivos (como los sensores "Clair-01"). Esta arquitectura jerárquica permite al usuario alternar entre vistas de "cuadrícula" (grid) y "lista", proporcionando flexibilidad visual para monitorear el estado operativo y la última actividad de múltiples dispositivos simultáneamente, garantizando una administración eficiente de los activos físicos en entornos industriales complejos.
 
 **Sensor Detail**
 
-<img src="../assets/mobileapp-mockup/SENSOR.png" alt="mobile-sensor-detail" width="300">
+<img src="../assets/mobileapp-mockup/SENSOR1.png" alt="mobile-sensor-detail" width="300">
 
-La vista de detalle de un sensor específico concentra información técnica operativa en una pantalla optimizada para diagnóstico rápido. Este diseño ofrece una experiencia de monitoreo técnico completa pero accesible en formato móvil.
+<img src="../assets/mobileapp-mockup/SENSOR2.png" alt="mobile-sensor-detail" width="300">
+
+La interfaz de detalle del sensor "Clair-01" proporciona un diagnóstico técnico integral y una capacidad de configuración precisa del entorno monitorizado. La vista principal despliega métricas de estado operativo como conectividad, tiempo de actividad (uptime), salud general del dispositivo y la antigüedad de la última actualización, estableciendo un marco de transparencia operativa. Bajo este, la sección de umbrales permite el ajuste granular de parámetros críticos de calidad ambiental —como material particulado (PM2.5), $CO_2$, temperatura y humedad— a través de una interfaz interactiva de deslizadores que facilita definir los límites de tolerancia para cada variable, optimizando así la respuesta del sistema ante desviaciones en tiempo real.
 
 **Settings**
 
@@ -1160,7 +1171,7 @@ La pantalla de configuración sigue el estándar de plataformas móviles mediant
 
 <img src="../assets/mobileapp-mockup/ALERTS.png" alt="mobile-alerts" width="300">
 
-La pantalla de alertas consolida las notificaciones generadas por el sistema Clair. Cada alerta presenta un encabezado descriptivo, un mensaje contextual y un par de acciones rápidas que permiten responder de manera inmediata o ignorar la notificación. Refleja una arquitectura de notificaciones que equilibra la urgencia operativa con el mantenimiento programado, siguiendo las mejores prácticas de diseño de centros de control y monitoreo en aplicaciones móviles industriales o de seguridad.
+La pantalla mostrada en ALERTS presenta un panel de control dentro del sistema Clair dedicado al monitoreo de alertas. En la parte superior, destaca un gráfico de barras que resume la frecuencia de eventos durante los últimos 30 días, permitiendo visualizar tendencias de actividad a lo largo del tiempo. Debajo, una interfaz tabulada divide la información en "Active Alerts" y "History", enfocándose en la gestión inmediata de incidencias críticas —como niveles elevados de $CO_2$ en el Floor 2— mediante una tabla organizada por severidad, ubicación y variable afectada, integrando una navegación intuitiva y una barra de navegación inferior para el acceso rápido a otras funciones del sistema.
 
 
 ### 5.4.4. Applications User Flow Diagrams.
@@ -1258,13 +1269,23 @@ El prototipo de la aplicación web muestra la estructura general de navegación,
 
 Web Application Prototype: https://sl1nk.com/1a68tor
 
+<img src="../assets/prototypes/webapp-video.png" alt="webapp-proto" width="1000">
+
+Video de presentación del prototipo Web Application: https://bit.ly/3Q84l7g
+
+
 **Mobile Application Prototype**
 
 El prototipo de la aplicación móvil representa la materialización interactiva de los wireframes y mockups diseñados para dispositivos móviles. Este prototipo simula la experiencia táctil del usuario final, permitiendo validar la ergonomía y la coherencia entre las diferentes secciones operativas del sistema Clair en formato móvil.
 
 <img src="../assets/prototypes/mobileapp-proto.png" alt="webapp-proto" width="300">
-
+    
 Mobile Application Prototype:  https://sl1nk.com/s0e7d73
+
+<img src="../assets/prototypes/mobileapp-video.png" alt="webapp-proto" width="300">
+
+Video de presentación del prototipo Mobile Application: https://bit.ly/43bBBh7
+
 
 ## 5.6. IoT Device Design
 

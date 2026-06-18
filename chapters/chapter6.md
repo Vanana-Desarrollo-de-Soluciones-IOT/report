@@ -13,7 +13,7 @@ Esta sección establece el ecosistema de herramientas y servicios seleccionados 
 | **Git** | Software Development | Control de versiones distribuido para seguimiento de cambios en el código fuente. | https://git-scm.com/ |
 | **GitHub** | Software Development | Alojamiento del repositorio de código fuente y colaboración en equipo. | https://github.com/ |
 | **HTML / CSS / JavaScript** | Landing Page Development | Desarrollo de la landing page estática y componentes frontend básicos. | https://developer.mozilla.org/es/docs/Web |
-| **Bruno** | API Testing | Alternativa ligera a Postman para validación de endpoints y pruebas de API REST. | https://www.usebruno.com/ |
+| **Bruno** | API Testing | Cliente ligero para validación de endpoints y pruebas de integración de la API REST. | https://www.usebruno.com/ |
 | **Spring Boot (Java)** | Backend Development | Framework principal para el desarrollo de la API y lógica del negocio. | https://spring.io/projects/spring-boot |
 | **OpenAPI / Swagger** | Software Documentation | Generación de documentación interactiva y técnica de los endpoints del backend. | https://swagger.io/ |
 | **C++ (Arduino IDE)** | Embedded App | Programación de la lógica de sensores y conectividad en hardware físico. | https://www.arduino.cc/en/software |
@@ -24,7 +24,15 @@ Esta sección establece el ecosistema de herramientas y servicios seleccionados 
 | **Google OAuth2** | Identity & Access | Servicio para la autenticación segura de usuarios mediante cuentas de Google. | https://console.cloud.google.com/ |
 | **Stripe** | Billing & Subscription | Pasarela de pagos para la gestión de suscripciones y transacciones. | https://stripe.com/ |
 | **Resend** | Notifications | Plataforma para el envío de correos electrónicos y alertas críticas a usuarios. | https://resend.com/ |
-| **Postman** | Software Testing | Validación de endpoints y pruebas de integración de la API REST. | https://www.postman.com/downloads/ |
+| **OneSignal** | Push Notifications | Servicio de notificaciones push multiplataforma para el envío de alertas en tiempo real a dispositivos móviles. | https://onesignal.com/ |
+| **Angular** | Web App Development | Framework principal para el desarrollo de la aplicación web SPA de Clair. | https://angular.dev/ |
+| **TypeScript** | Web App Development | Lenguaje tipado utilizado en el desarrollo de la aplicación web Angular y lógica del frontend. | https://www.typescriptlang.org/ |
+| **Bun** | JavaScript Runtime | Entorno de ejecución y gestor de paquetes ultrarrápido utilizado para el desarrollo de la aplicación web. | https://bun.sh/ |
+| **Java** | Backend Development | Lenguaje de programación principal para el desarrollo del backend con Spring Boot. | https://www.oracle.com/java/technologies/downloads/ |
+| **Maven** | Build Automation | Herramienta de gestión de dependencias y automatización de compilación del proyecto backend Java. | https://maven.apache.org/ |
+| **Nix** | Environment Management | Gestor de paquetes y entornos reproducibles para garantizar consistencia en los entornos de desarrollo del equipo. | https://nixos.org/ |
+| **PostgreSQL** | Database | Sistema de gestión de base de datos relacional utilizado para la persistencia de datos del monolito modular. | https://www.postgresql.org/ |
+| **Redis** | Caching \& Messaging | Almacén de datos en memoria utilizado como caché y broker de mensajes para eventos en tiempo real. | https://redis.io/ |
 | **Docker** | Deployment | Contenedorización de microservicios para asegurar la portabilidad del sistema. | https://www.docker.com/products/docker-desktop |
 | **Vercel** | Deployment | Plataforma de despliegue serverless para la landing page y aplicación web Angular. | https://vercel.com/ |
 | **Cloudflare Tunnel** | Deployment | Túnel seguro para exponer la API Gateway y servicios Spring Boot sin IP pública. | https://www.cloudflare.com/products/tunnel/ |
@@ -34,6 +42,8 @@ Esta sección establece el ecosistema de herramientas y servicios seleccionados 
 | **Angular CLI** | Web Development | Herramienta de línea de comandos para la creación y gestión de la aplicación web. | https://angular.io/cli |
 | **Material Design 3** | UI Framework | Librería de componentes y tokens de diseño para la interfaz de la web app. | https://m3.material.io/ |
 | **Dart DevTools** | Debugging | Conjunto de herramientas para el perfilado y depuración de la app en Flutter. | https://dart.dev/tools/dart-devtools |
+| **Caddy** | Web Server \& Reverse Proxy | Servidor web con HTTPS automático usado como proxy inverso para enrutar el tráfico de los servicios web. | https://caddyserver.com/ |
+| **Cloudflare** | DNS \& Security | Plataforma de DNS, seguridad de red y proxy inverso para proteger y acelerar la entrega de las aplicaciones. | https://www.cloudflare.com/ |
 
 ### 6.1.2. Source Code Management.
 
@@ -93,9 +103,9 @@ Los productos orientados al usuario web, como la Landing Page y la Web Applicati
 En el ámbito móvil, la Mobile Application desarrollada en Flutter se distribuye para Android e iOS. La aplicación incorpora SQLite como base de datos local, permitiendo almacenar preferencias y telemetría histórica directamente en el dispositivo. Gracias a ello, la aplicación puede seguir operando incluso con conectividad limitada, sincronizando la información de manera asíncrona con el API Gateway cuando el acceso a internet se restablece.
 
 La solución integra una capa de computación perimetral (Edge) y aplicaciones embebidas para la gestión directa del hardware. La Edge Station se despliega en nodos físicos locales utilizando Python y Flask, funcionando como un punto intermedio de procesamiento que deduplica y sincroniza la información capturada. Por otro lado, la aplicación embebida en C++ se distribuye como firmware dentro de los sensores físicos de Clair Hardware, permitiendo la captura de métricas ambientales en tiempo real. El ecosistema se complementa con servicios SaaS para autenticación mediante Google OAuth2, procesamiento de pagos con Stripe y mensajería transaccional a través de Resend.
-
-<img src="../assets/c4-diagrams/deploy/Development-dark.svg" alt="deploy-diagram">
-
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vanana-Desarrollo-de-Soluciones-IOT/c4-diagrams/main/assets/c4/deploy/Development-dark.svg" alt="deploy-diagram" width="850">
+</p>
 
 # 6.2. Landing Page, Services & Applications Implementation.
 
@@ -195,24 +205,36 @@ Para facilitar la lectura de la matriz, se han utilizado los siguientes acrónim
 
 #### 6.2.1.3. Sprint Backlog 1.
 
-El **Sprint Backlog** representa la selección de historias de usuario y tareas técnicas que el equipo de desarrollo se ha comprometido a completar durante la presente iteración. Para el **Sprint 1**, el esfuerzo se ha concentrado en establecer la infraestructura crítica de **Clair**, priorizando la visibilidad comercial del producto a través de la Landing Page y la seguridad de la información mediante el sistema de gestión de identidades y accesos (**IAM**). Esta fase inicial es fundamental para garantizar que las bases tecnológicas y visuales de la solución sean sólidas antes de proceder con el desarrollo de funcionalidades de monitoreo avanzado.
-
-La gestión y el seguimiento del progreso se realizan de manera centralizada en la plataforma **Trello**, la cual permite una visibilidad en tiempo real del estado de cada unidad de trabajo. Este sistema de control facilita la descomposición de las historias de usuario en tareas técnicas específicas (*Work-items*), así como la gestión de actividades transversales relacionadas con la configuración del entorno y el cumplimiento de los estándares de diseño de **Material Design 3**. A continuación, se detalla el desglose de los elementos de trabajo seleccionados para este periodo.
-
-<p align="center">
- <img src="https://i.imgur.com/IKoNdzg.png" width="700">
-</p>
-| **StoryID** | **Title**              | **ID task** | **Título**             | **Descripción**                                              | **Estimation (Hours)** | **Assigned To** | **Status** |
-| :---------: | :--------------------- | :---------- | :--------------------- | :----------------------------------------------------------- | :--------------------- | :-------------- | :--------- |
-|    US01     | Register a new account | TA1         | Register a new account | As a Visitor, I want to create an account with my email and a password, so that I can access Clair as a registered Customer. | 3                      | Mateo           | done       |
-|    US02     | Verify email address   | TA2         | Verify email address   | As a Customer, I want to confirm ownership of my email through a verification link, so that my account is activated and I can log in. | 3                      | Ian             | done       |
-|    US03     | Log in                 | TA3         | Log in                 | As a Customer, I want to authenticate with my credentials, so that I can access my personalized Clair workspace. | 3                      | Fabrizio        | done       |
-|    US57     | FAQ & Help Center      | TA4         | FAQ & Help Center      | As a Visitor, I want to resolve doubts about Device installation and data privacy, to feel secure implementing the system in my home. | 4                      | Josue           | done       |
-|    US58     | Multi-language Support | TA5         | Multi-language Support | As a Visitor, I want the Landing Page to be available in English and Spanish, to understand the technical specifications in my preferred language. | 2                      | Neil            | done       |
-|    US01     | Register a new account | TA7         | Register a new account | As a Visitor, I want to create an account with my email and a password, so that I can access Clair as a registered Customer. | 3                      | Mateo           | done       |
-|    US59     | Log in                 | TA9         | Log in                 | As a Visitor, I want to access the terms of service, to know the legal handling of my data and Clair's responsibilities regarding the hardware. | 3                      | Ian             | done       |
+En el presente Sprint Backlog se detallan las Historias de Usuario correspondientes a la etapa inicial del proyecto, enfocándose principalmente en la construcción de la Landing Page informativa y la implementación de los módulos fundamentales de seguridad, gestión de identidad y control de sesiones (IAM) tanto en la aplicación web como en los servicios de backend.
 
 
+
+<img src="https://i.imgur.com/7ugv2lf.png" alt="">
+
+| N | Story ID | Título | Descripción | Story Points |
+|---|----------|--------|-------------|--------------|
+| 1 | LP-US-01 | Conocer la propuesta de valor y precio base | Como Visitante, quiero conocer el nombre del dispositivo, su beneficio de sensado y su costo inicial, para que pueda comprender el propósito de Clair Alpha de inmediato. | 2 |
+| 2 | LP-US-02 | Evaluar las especificaciones del dispositivo y su diseño | Como Visitante, quiero conocer el rendimiento de sensado y la ausencia de pantallas en el dispositivo, para que pueda evaluar su funcionalidad e integración estética en mi espacio. | 2 |
+| 3 | LP-US-03 | Comparar las opciones de precios y suscripciones | Como Visitante, quiero comparar el costo de adquisición frente a los beneficios de los planes básico y multi-dispositivo, para que pueda elegir la opción que se ajuste a mi presupuesto y cantidad de sensores. | 3 |
+| 4 | LP-US-04 | Conocer la trayectoria y los profesionales detrás del proyecto | Como Visitante, quiero conocer la misión de la marca y la experiencia del equipo de desarrollo, para que pueda confiar en la calidad del sensor. | 2 |
+| 5 | LP-US-05 | Obtener canales de atención comercial y horarios | Como Visitante, quiero conocer los medios de contacto y disponibilidad del equipo de ventas, para que pueda planificar mis consultas preventa. | 2 |
+| 6 | WA-US-01 | Registro con Correo y Contraseña | Como Visitante, quiero registrar una cuenta nueva proporcionando mi correo electrónico y una contraseña, para iniciar mi registro en la plataforma. | 3 |
+| 7 | WA-US-02 | Verificación de Cuenta | Como Visitante, quiero introducir el código enviado a mi correo electrónico, para confirmar mi dirección y activar mi cuenta. | 2 |
+| 8 | WA-US-03 | Inicio de Sesión con Credenciales | Como Visitante, quiero iniciar sesión con mi correo electrónico y contraseña, para acceder a la plataforma como Usuario. | 3 |
+| 9 | WA-US-04 | Alternar Visibilidad de Contraseña | Como Visitante o Usuario, quiero poder visualizar u ocultar los caracteres de mi contraseña al escribirla, para verificar que es correcta. | 2 |
+| 10 | WA-US-05 | Autenticación con Google (SSO) | Como Visitante, quiero iniciar sesión o registrarme usando mi cuenta de Google, para acceder a la plataforma de forma rápida. | 3 |
+| 11 | WA-US-06 | Renovación Automática de Sesión | Como Usuario, quiero que mi sesión se renueve de forma automática antes de expirar, para poder continuar con mis actividades sin interrupciones. | 3 |
+| 12 | WA-US-07 | Restricción de Acceso a Secciones Privadas | Como Usuario, quiero que las secciones de la plataforma estén protegidas contra accesos no autorizados, para asegurar que nadie pueda ver mi información sin iniciar sesión. | 2 |
+| 13 | WA-US-08 | Cierre de Sesión Seguro | Como Usuario, quiero cerrar mi sesión activa, para asegurar que mis datos queden protegidos al dejar de usar la plataforma. | 2 |
+| 14 | WS-US-01 | Iniciar Registro de Usuario | Como Desarrollador, quiero iniciar el registro de un nuevo usuario a través de una API, para crear una sesión de validación temporal y despachar un código de verificación. | 3 |
+| 15 | WS-US-02 | Confirmar Registro de Usuario | Como Desarrollador, quiero confirmar un registro de usuario validando el código de verificación a través de una API, para persistir definitivamente la cuenta del usuario. | 3 |
+| 16 | WS-US-03 | Iniciar Sesión con Contraseña | Como Desarrollador, quiero autenticar las credenciales de correo y contraseña a través de una API, para emitir los tokens de acceso JWT. | 3 |
+| 17 | WS-US-04 | Autenticar mediante Token de Google | Como Desarrollador, quiero autenticar usuarios mediante su ID token de Google OAuth a través de una API, para permitir inicios de sesión directos federados. | 3 |
+| 18 | WS-US-05 | Iniciar Flujo de Autorización de Google | Como Desarrollador, quiero iniciar el flujo de autorización de Google OAuth a través de una API, para redirigir al usuario al formulario de consentimiento oficial de Google. | 5 |
+| 19 | WS-US-06 | Procesar Callback de Google OAuth | Como Desarrollador, quiero recibir y procesar el código devuelto por Google en el callback a través de una API, para generar las credenciales de acceso y devolver al usuario al frontend. | 2 |
+| 20 | WS-US-07 | Cerrar Sesión del Usuario | Como Desarrollador, quiero revocar la validez de los tokens del usuario a través de una API, para asegurar el cierre de sesión de la cuenta. | 5 |
+| 21 | WS-US-08 | Refrescar Token de Acceso | Como Desarrollador, quiero emitir un nuevo token de acceso a partir de un token de refresco válido a través de una API, para extender el tiempo de sesión del usuario. | 5 |
+| 22 | WS-US-09 | Verificar Validez del Token | Como Desarrollador, quiero validar la vigencia de un token de acceso a través de una API, para permitir la verificación de sesiones en servicios externos. | 5 |
 
 #### 6.2.1.4. Development Evidence for Sprint Review.
 
@@ -339,7 +361,7 @@ En esta sección se presenta la evidencia de las pruebas automatizadas diseñada
 
 Para la validación de los requerimientos, se han diseñado pruebas bajo el enfoque de Behavior-Driven Development (BDD), permitiendo una comunicación clara entre los objetivos del negocio y la implementación técnica. A continuación, se detallan los archivos `.feature` elaborados en lenguaje Gherkin, los cuales se relacionan directamente con los User Stories del Sprint (US01, US02 y US03). Asimismo, se expone la tabla de control de versiones que documenta la integración continua de estas pruebas tanto en el repositorio del backend (`clair-core`) como en el del frontend (`clair-ui`).
 
-#### **Control de Versiones de Testing**
+**Control de Versiones de Testing**
 
 La siguiente tabla consolida los *commits* realizados en los repositorios del proyecto, evidenciando el avance en la configuración del entorno Cucumber y la implementación de los escenarios de prueba para el módulo de autenticación:
 
@@ -443,51 +465,24 @@ A continuación, se resumen las principales operaciones implementadas y document
 
 **1. Autenticación y Sesión**
 
-* **Inicio de Sesión (`POST /api/v1/auth/sign-in`):**
-  * **Input:** `email` y `password`.
-  * **Output:** HTTP 200 OK con tokens JWT de acceso y refresco (o 401 si falla).
-  * **Ejemplo de Respuesta:**
-    ```json
-    {
-      "id": "8dc54a71-6ca1-4205-923c-c1a684585bc1",
-      "email": "usuario@ejemplo.com",
-      "token": "eyJhbGciOiJIUzI1NiIsInR5c...",
-      "refreshToken": "d7a8fcc-45f8-4b72-826a..."
-    }
-    ```
-* **Cierre de Sesión (`DELETE /api/v1/auth/sign-out`):**
-  * **Input:** Cabecera `Authorization` con token Bearer.
-  * **Output:** HTTP 204 No Content (sesión cerrada) o 401.
-* **Otras operaciones:** Registro (`POST /api/v1/auth/sign-up`), Confirmación (`POST /api/v1/auth/confirm`), y Autenticación con Google (`POST /api/v1/auth/google/sign-in`).
-**2. Gestión de Facturación y Suscripciones**
+| endpoint                      | verbo http | descripción                                                            | parámetros                                                 | request body                      | response body                        | explicación                                                                                             |
+|-------------------------------|------------|------------------------------------------------------------------------|------------------------------------------------------------|-----------------------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------|
+| /api/v1/auth/sign-up          | POST       | Registra un nuevo usuario en el sistema.                               | —                                                          | `{ email, password }`             | `{ sessionId, message }`             | Inicia el proceso de registro enviando un código de verificación al correo del usuario.                 |
+| /api/v1/auth/sign-in          | POST       | Autentica a un usuario previamente registrado.                         | —                                                          | `{ email, password }`             | `{ id, email, token, refreshToken }` | Permite iniciar sesión y obtener los tokens necesarios para acceder a recursos protegidos.              |
+| /api/v1/auth/refresh          | POST       | Genera un nuevo token de acceso usando un refresh token válido.        | —                                                          | `{ refreshToken }`                | `{ id, email, token, refreshToken }` | Permite renovar la sesión del usuario sin necesidad de volver a autenticarse.                           |
+| /api/v1/auth/google/sign-in   | POST       | Autentica o registra usuarios mediante Google OAuth 2.0.               | —                                                          | `{ idToken }`                     | `{ id, email, token, refreshToken }` | Permite iniciar sesión utilizando una cuenta de Google y obtener los tokens de acceso de la aplicación. |
+| /api/v1/auth/confirm          | POST       | Confirma el registro de un usuario mediante un código de verificación. | —                                                          | `{ sessionId, verificationCode }` | `{ id, email }`                      | Finaliza el proceso de registro y crea la cuenta del usuario una vez validado el código recibido.       |
+| /api/v1/auth/verify           | GET        | Verifica la validez de un token de acceso.                             | `Authorization` (header)                                   | —                                 | `{ valid, userId, expiresAt }`       | Permite comprobar si el token sigue siendo válido y obtener información básica sobre su vigencia.       |
+| /api/v1/auth/google/callback  | GET        | Procesa la respuesta de Google OAuth después de la autenticación.      | `code` (query), `state` (query), `error` (query, opcional) | —                                 | Redirección al frontend.             | Intercambia el código de autorización por tokens y redirige al usuario a la aplicación cliente.         |
+| /api/v1/auth/google/authorize | GET        | Inicia el flujo de autenticación mediante Google OAuth 2.0.            | —                                                          | —                                 | Redirección a Google OAuth.          | Redirige al usuario a la pantalla de consentimiento de Google para autorizar el acceso.                 |
+| /api/v1/auth/sign-out         | DELETE     | Cierra la sesión del usuario y revoca los tokens activos.              | `Authorization` (header)                                   | —                                 | —                                    | Finaliza la sesión actual e invalida los tokens asociados al usuario autenticado.                       |
 
-* **Consultar Plan de Usuario (`GET /api/v1/subscriptions/plans/{userId}`):**
-  
-  * **Output:** HTTP 200 OK con el tipo de plan y estado.
-  * **Ejemplo de Respuesta:**
-    ```json
-    {
-      "userId": "8dc54a71-6ca1-4205-923c-c1a684585bc1",
-      "plan": "premium",
-      "status": "ACTIVE"
-    }
-    ```
-* **Crear Sesión Checkout en Stripe (`POST /api/v1/subscriptions/checkout-session`):**
-  
-  * **Input:** `userId`, `amount`, `currency`, `returnUrl`.
-  * **Output:** HTTP 200 OK con la URL de redirección al pago.
-  * **Ejemplo de Respuesta:**
-    ```json
-    {
-      "checkoutUrl": "https://checkout.stripe.com/pay/cs_test_..."
-    }
-    ```
+**2. Notificaciones**
 
-Evidencia de Interacción (Capturas Swagger UI)
+| endpoint                   | verbo http | descripción                                                          | parámetros               | request body | response body                                                                                           | explicación                                                                                                                                             |
+|----------------------------|------------|----------------------------------------------------------------------|--------------------------|--------------|---------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/notifications/push | GET        | Obtiene el historial de notificaciones push del usuario autenticado. | `page` (query, opcional) | —            | Página de notificaciones con información de envío, alertas asociadas y estado de entrega de las mismas. | Permite consultar las notificaciones push enviadas al usuario, incluyendo si fueron entregadas correctamente o si ocurrió algún error durante el envío. |
 
-<p align="center">
- <img src="https://imgur.com/zkJ0AV3.png">
-</p>
 
 #### 6.2.1.8. Software Deployment Evidence for Sprint Review.
 
@@ -497,7 +492,7 @@ En esta sección se resume los procesos realizados en relación con el Deploymen
 
 Para el despliegue de la Landing Page, se creó una cuenta en **Vercel** y se configuró el proyecto vinculado al repositorio de GitHub (`Vanana-Desarrollo-de-Soluciones-IOT/site`). Se configuró el dominio personalizado y se establecieron las variables de entorno necesarias para la internacionalización (i18n). La Landing Page fue desplegada como sitio estático, aprovechando la infraestructura global de CDN de Vercel para garantizar baja latencia y alta disponibilidad. El sitio incluye múltiples **Call-to-Action (CTA)** estratégicamente ubicados para guiar a los visitantes hacia el registro.
 
-**URL de producción:** https://clair-psi.vercel.app/
+**URL de producción:** https://site-beige-mu.vercel.app/
 
 <p align="center">
  <img src="https://imgur.com/MgnEBBK.png">
@@ -510,6 +505,7 @@ Para la Web Application desarrollada en Angular, se creó un proyecto en **Verce
 <p align="center">
  <img src="https://imgur.com/IhiWayd.png">
 </p>
+**URL de producción:** https://clair-ui.vercel.app/
 
 **3. Web Services**
 
@@ -522,27 +518,6 @@ Los servicios incluyen la integración con dos proveedores externos configurados
 <p align="center">
  <img src="https://imgur.com/rHOetSh.png">
 </p>
-
-2. **Web application**
-
-   La Web Application desarrollada en Angular ha sido desplegada en Vercel, aprovechando su infraestructura global de CDN para la distribución de la Single Page Application (SPA). Esto garantiza baja latencia y alta disponibilidad para los usuarios que acceden a la plataforma web.
-
-   **URL de producción:** https://clair-ui.vercel.app/
-
-   <p align="center">
-    <img src="https://imgur.com/IhiWayd.png">
-   </p>
-
-3. **Web services**
-
-   Los Web Services implementados durante este sprint comprenden el módulo de Identity and Access Management (IAM) y el contexto de Billing, desplegados en un servidor Contabo. Estos servicios incluyen la integración con dos proveedores externos: Google OAuth2 para autenticación de usuarios y Resend para el envío de notificaciones por correo electrónico. La exposición segura de los servicios hacia internet se realiza mediante Cloudflare Tunnel, el cual establece un túnel seguro y encriptado sin necesidad de exponer directamente la dirección IP pública del servidor, protegiendo así la infraestructura backend.
-
-   <p align="center">
-    <img src="https://imgur.com/rHOetSh.png">
-   </p>
-
-
-
 
 #### 6.2.1.9. Team Collaboration Insights during Sprint.
 
@@ -579,26 +554,586 @@ El avance preliminar de los servicios web es de los servicios genericos como IAM
 
 
 
-
 ### 6.2.2. Sprint 2
 
 #### 6.2.2.1. Sprint Planning 2.
 
+El Sprint Planning 2 tuvo como propósito definir el alcance de las funcionalidades core del sistema Clair, priorizando la integración completa del hardware de sensado ambiental, la telemetría en tiempo real y su visualización en las aplicaciones cliente. Durante esta sesión, el equipo revisó los avances del Sprint 1 y acordó enfocar los esfuerzos en completar la lectura de sensores de aire (CO₂, material particulado, temperatura y humedad), la transmisión de estos datos hacia los Web Services y su presentación tanto en la aplicación móvil como en la aplicación web.
+
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sprint #</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">Sprint 2</td>
+  </tr>
+  <tr>
+    <td colspan="2" style="border: 1px solid #ddd; padding: 8px; font-weight: bold; text-align: center;">Sprint Planning Background</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Date</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">20/04/2026</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Time</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">10:00 AM</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Location</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">Google Meet</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Prepared By</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">Aleman Romano, Dante Mateo</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Attendees (to planning meeting)</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">Contreras Peralta Fabrizio Alessandro; Macavilca Quispe Ian; Paiva Quispe Josue Gonzalo; Curipaco Huayllani Neil</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sprint n - 1 Review Summary</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">En el Sprint 1 se completó exitosamente la Landing Page con todas sus secciones (Home, Product, Pricing, About, Privacy, Contact), incluyendo soporte de internacionalización (i18n) y diseño responsive. También se implementó el módulo de Identity and Access Management (IAM) tanto en el backend (registro, login, JWT, Google OAuth2) como en el frontend web, permitiendo a los usuarios registrarse, verificar su correo e iniciar sesión de forma segura. Finalmente, se aprobaron los mockups de alta fidelidad de la Web App y se configuró la infraestructura de despliegue inicial en Vercel y Contabo.</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sprint n - 1 Retrospective Summary</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">El equipo reconoció que la entrega de la Landing Page y el sistema IAM fue exitosa dentro del tiempo planificado. Se identificó como punto positivo el uso de GitFlow y Conventional Commits, que facilitó la integración continua. Como área de mejora, se sugirió anticipar la configuración de variables de entorno y credenciales de servicios externos (como Google OAuth2 y Resend) antes del inicio del desarrollo para evitar bloqueos. Se acordó mantener la comunicación diaria mediante el canal de Discord y actualizar el tablero de Trello con mayor frecuencia.</td>
+  </tr>
+  <tr>
+    <td colspan="2" style="border: 1px solid #ddd; padding: 8px; font-weight: bold; text-align: center;">Sprint Goal & User Stories</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sprint 2 Goal</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">
+      Our focus is on completing the core air quality sensing functionality by implementing the full suite of environmental sensors (CO₂, particulate matter, temperature, humidity), enabling real-time transmission of telemetry data to the web services, and surfacing these metrics through the mobile and web application dashboards.<br><br>
+      We believe it delivers actionable environmental visibility to end users, a reliable data pipeline from edge devices to the cloud, and a unified user experience across platforms.<br><br>
+      This will be confirmed when the embedded device successfully reads and displays air quality metrics on its OLED screen, the edge station and web services ingest and persist telemetry in real time, and users can view live sensor data, historical trends, thresholds, and alerts on both the mobile app and the web dashboard.
+    </td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sprint 2 Velocity</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">419</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Sum of Story Points</td>
+    <td style="border: 1px solid #ddd; padding: 8px;">419</td>
+  </tr>
+</table>
+
 #### 6.2.2.2. Aspect Leaders and Collaborators.
+
+En esta sección se detalla la **Leadership-and-Collaboration Matrix (LACX)** para el Sprint 2. Dado que el objetivo de este sprint se centra en las funcionalidades core de monitoreo ambiental, la matriz distribuye la responsabilidad sobre nueve aspectos críticos: la gestión jerárquica de organizaciones y espacios, el emparejamiento y administración de dispositivos, la ingestión de telemetría, la configuración de alertas y umbrales, la visualización analítica en dashboards, el sistema de suscripciones y pagos, la experiencia de la aplicación móvil, el firmware embebido de sensores y la conectividad perimetral (Edge).
+
+| **Team Member (Last Name, First Name)** | **GitHub Username** | **ORG (L/C)** | **DEV (L/C)** | **TEL (L/C)** | **ALR (L/C)** | **DSH (L/C)** | **SUB (L/C)** | **MOB (L/C)** | **EMB (L/C)** | **EDG (L/C)** |
+| --------------------------------------- | ------------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| **Aleman Romano, Dante Mateo**          | zGIKS               | C             | **L**         | C             | C             | C             | C             | **L**         | C             | C             |
+| **Contreras Peralta, Fabrizio**         | fabriziocpa         | C             | C             | C             | C             | **L**         | C             | C             | C             | C             |
+| **Curipaco Huayllani, Neil A.**         | Neilcur7            | C             | C             | C             | C             | C             | **L**         | C             | C             | C             |
+| **Macavilca Quispe, Ian**               | IanMQ               | C             | C             | **L**         | C             | C             | C             | C             | **L**         | C             |
+| **Paiva Quispe, Josue Gonzalo**         | JosuePaiva02        | **L**         | C             | C             | **L**         | C             | C             | C             | C             | **L**         |
+
+**Leyenda de Aspectos (Key):**
+
+Para facilitar la lectura de la matriz, se han utilizado los siguientes acrónimos basados en las tareas del Sprint:
+
+- **ORG:** Organization & Space Management (Gestión jerárquica de organizaciones y espacios físicos)
+- **DEV:** Device Pairing & Management (Emparejamiento, reclamo y administración de dispositivos IoT)
+- **TEL:** Telemetry Ingestion & Real-time Metrics (Ingesta de telemetría y métricas en tiempo real desde los sensores)
+- **ALR:** Alerts & Thresholds Configuration (Configuración de umbrales y gestión de alertas ambientales)
+- **DSH:** Dashboard & Analytics Visualization (Visualización de analíticas, tendencias históricas y resúmenes globales)
+- **SUB:** Subscriptions & Billing (Gestión de suscripciones, pagos e integración con Stripe)
+- **MOB:** Mobile Application Core (Funcionalidades core de la aplicación móvil Flutter)
+- **EMB:** Embedded Sensors & Hardware (Firmware embebido, lectura de sensores CO₂, PM, temperatura y humedad)
+- **EDG:** Edge Station & Connectivity (Estación perimetral, autenticación de dispositivos, comandos y sincronización con la nube)
+
+> **L:** Leader (Responsable principal de la entrega y calidad del aspecto).
+>
+> **C:** Collaborator (Apoyo técnico, revisión de código y soporte en la implementación).
 
 #### 6.2.2.3. Sprint Backlog 2.
 
+Para este segundo Sprint, el Backlog engloba las funcionalidades core de la plataforma Clair. Se incluyen todas las historias restantes relacionadas con la gestión jerárquica de dispositivos, organizaciones y espacios, el procesamiento analítico y telemetría, el sistema de facturación y suscripciones, así como la integración con la aplicación móvil y los componentes físicos (Edge y Embedded).
+
+<img src="https://i.imgur.com/7ugv2lf.png" alt="">
+
+| N | Story ID | Título | Descripción | Story Points |
+|---|----------|--------|-------------|--------------|
+| 1 |WA-US-09|Crear Organización|Como Usuario, quiero crear una organización nueva proporcionando un nombre, para agrupar mis espacios y dispositivos bajo una entidad.|3|
+| 2 |WA-US-10|Renombrar Organización|Como Usuario, quiero actualizar el nombre de una de mis organizaciones, para mantener precisa la información de mi cuenta.|2|
+| 3 |WA-US-11|Eliminar Organización|Como Usuario, quiero eliminar una organización de mi cuenta, para quitar las agrupaciones que ya no son necesarias.|2|
+| 4 |WA-US-12|Ver Mis Organizaciones|Como Usuario, quiero obtener el listado de mis organizaciones asociadas, para poder seleccionar sobre cuál navegar y trabajar.|2|
+| 5 |WA-US-13|Crear Espacio|Como Usuario, quiero crear un espacio físico dentro de una organización, para agrupar mis dispositivos por área o sala de monitoreo.|3|
+| 6 |WA-US-14|Renombrar Espacio|Como Usuario, quiero modificar el nombre de un espacio físico existente, para mantener actualizada la información de mis ubicaciones.|2|
+| 7 |WA-US-15|Eliminar Espacio|Como Usuario, quiero eliminar un espacio físico de mi organización, para quitar las ubicaciones que ya no utilizo.|2|
+| 8 |WA-US-16|Ver Espacios por Organización|Como Usuario, quiero consultar los espacios físicos que pertenecen a una organización, para poder seleccionar uno de ellos y ver sus dispositivos.|2|
+| 9 |WA-US-17|Reclamar Dispositivo para un Espacio|Como Usuario, quiero reclamar un dispositivo utilizando un token de reclamo y asignarlo a un espacio, para registrarlo en mi cuenta y comenzar a monitorear la calidad del aire.|3|
+| 10 |WA-US-18|Emparejar Dispositivo por ID de Hardware|Como Usuario, quiero vincular un dispositivo físico utilizando su identificador de hardware, para registrarlo en la plataforma.|3|
+| 11 |WA-US-19|Renombrar Dispositivo|Como Usuario, quiero cambiar el nombre de un dispositivo registrado, para poder identificarlo fácilmente por su ubicación o función.|2|
+| 12 |WA-US-20|Eliminar Dispositivo|Como Usuario, quiero dar de baja un dispositivo registrado en la plataforma, para quitar del sistema los sensores que ya no utilizo.|2|
+| 13 |WA-US-21|Restablecer Asignación de Espacio del Dispositivo|Como Usuario, quiero desvincular un dispositivo de su espacio actual sin eliminarlo de la plataforma, para poder reasignarlo a otro espacio en el futuro.|2|
+| 14 |WA-US-22|Ver Dispositivos por Espacio|Como Usuario, quiero obtener el listado de dispositivos registrados en un espacio físico determinado, para conocer qué sensores están asignados a dicha área.|2|
+| 15 |WA-US-23|Ver Detalles del Dispositivo|Como Usuario, quiero consultar la configuración y los parámetros del sistema de un dispositivo registrado, para evaluar sus detalles técnicos.|2|
+| 16 |WA-US-24|Monitorear el Estado en Tiempo Real del Dispositivo|Como Usuario, quiero conocer el estado de conexión actual de un dispositivo en tiempo real, para saber si está activo, inactivo o en falla.|2|
+| 17 |WA-US-25|Ver Reporte de Telemetría de Dispositivo|Como Usuario, quiero obtener las lecturas de telemetría de comunicación más recientes de un dispositivo, para evaluar la calidad de su señal Wi-Fi y su estado de salud de hardware.|2|
+| 18 |WA-US-26|Ver Consolidado de Telemetría para Dispositivos de un Espacio|Como Usuario, quiero obtener un resumen de telemetría de todos los dispositivos asignados a un espacio, para identificar rápidamente sensores con problemas de conexión o de hardware.|2|
+| 19 |WA-US-27|Cambiar Dispositivo a Standby|Como Usuario, quiero enviar un comando de reposo a un dispositivo activo, para reducir su consumo de energía cuando no se requiera monitoreo.|3|
+| 20 |WA-US-28|Despertar Dispositivo de Standby|Como Usuario, quiero enviar un comando de activación a un dispositivo en reposo, para reanudar el monitoreo ambiental.|3|
+| 21 |WA-US-29|Reiniciar Dispositivo|Como Usuario, quiero enviar un comando de reinicio a un dispositivo, para intentar recuperarlo de un estado de error o falta de respuesta.|3|
+| 22 |WA-US-30|Crear Umbral para Métrica del Dispositivo|Como Usuario, quiero configurar un límite de alerta para una métrica del aire en un dispositivo, para que el sistema controle las condiciones ambientales de forma automática.|3|
+| 23 |WA-US-31|Actualizar Umbral de Métrica del Dispositivo|Como Usuario, quiero modificar un límite de alerta configurado previamente, para ajustar las reglas de monitoreo ambiental.|3|
+| 24 |WA-US-32|Eliminar Umbral de Métrica del Dispositivo|Como Usuario, quiero borrar una regla de umbral configurada en un dispositivo, para quitar reglas de alertas obsoletas.|2|
+| 25 |WA-US-33|Ver Umbrales del Dispositivo|Como Usuario, quiero consultar todas las reglas de umbrales configuradas en un dispositivo, para revisar las reglas de alerta activas para PM2.5, CO₂, temperatura y humedad.|2|
+| 26 |WA-US-34|Ver Alertas Activas|Como Usuario, quiero consultar las alertas que se encuentran activas en la plataforma, para identificar qué dispositivos están superando actualmente los límites de calidad del aire configurados.|2|
+| 27 |WA-US-35|Identificar la Gravedad de la Alerta|Como Usuario, quiero conocer el nivel de gravedad de las alertas del sistema, para priorizar mi atención en las anomalías más críticas de la calidad del aire.|2|
+| 28 |WA-US-36|Navegar por la Lista de Alertas|Como Usuario, quiero paginar los registros de la lista de alertas, para poder revisar todos los eventos cuando el volumen total supere la capacidad de visualización del sistema.|2|
+| 29 |WA-US-37|Ver Historial de Alertas Resueltas|Como Usuario, quiero consultar las alertas que han vuelto a condiciones normales y se encuentran resueltas, para evaluar el histórico de incidentes ambientales.|2|
+| 30 |WA-US-38|Distinguir Alertas Activas de Resueltas|Como Usuario, quiero alternar mis consultas entre alertas activas e historial de alertas resueltas, para separar las tareas pendientes de atención de los registros pasados.|2|
+| 31 |WA-US-39|Ver Resumen Diario de Alertas|Como Usuario, quiero obtener un resumen diario del recuento de alertas generadas en la plataforma, para identificar de forma global los patrones de anomalías a lo largo de los días.|2|
+| 32 |WA-US-40|Ver Resumen Global de ICA|Como Usuario, quiero obtener el Índice de Calidad del Aire (ICA) promedio y los valores agregados de todos mis dispositivos, para conocer la calidad del aire global.|2|
+| 33 |WA-US-41|Ver Resumen de Infraestructura|Como Usuario, quiero obtener los recuentos totales de mi despliegue de IoT, para conocer la escala de mi infraestructura en la plataforma.|2|
+| 34 |WA-US-42|Ver ICA por Espacio|Como Usuario, quiero consultar el estado de la calidad del aire clasificado por cada uno de mis espacios físicos y organizaciones, para detectar áreas críticas de contaminación.|2|
+| 35 |WA-US-43|Ver Alertas Activas en el Consolidado|Como Usuario, quiero obtener la lista de las alertas críticas activas más recientes de mi plataforma, para estar enterado de anomalías en curso sin necesidad de ir a la sección de alertas.|2|
+| 36 |WA-US-44|Identificar la Frescura de los Datos|Como Usuario, quiero conocer qué tan recientes son los datos analíticos calculados, para evaluar la confiabilidad de la información presentada.|2|
+| 37 |WA-US-45|Ver Métricas Agregadas para un Dispositivo|Como Usuario, quiero consultar las métricas de calidad del aire agregadas para un dispositivo en un período de tiempo determinado, para comprender su comportamiento.|2|
+| 38 |WA-US-46|Consultar Variación Porcentual de Métricas|Como Usuario, quiero conocer la variación porcentual de cada métrica en comparación con el período de tiempo anterior, para evaluar si las condiciones del aire están mejorando o empeorando.|2|
+| 39 |WA-US-47|Clasificar la Calidad del Aire por Métrica|Como Usuario, quiero que el sistema categorice de forma lógica el nivel de seguridad de cada métrica de calidad de aire en base a umbrales, para saber si los parámetros individuales están en rangos saludables.|3|
+| 40 |WA-US-48|Actualización Automática de Datos|Como Usuario, quiero que los cálculos analíticos del dispositivo se actualicen periódicamente de forma automática, para disponer de datos actualizados de calidad del aire.|3|
+| 41 |WA-US-49|Obtener Tendencia de Métricas Históricas|Como Usuario, quiero obtener las series temporales de datos históricos de un dispositivo para un período de tiempo, para analizar la evolución temporal de la calidad del aire.|3|
+| 42 |WA-US-50|Segmentar Tendencia por Métrica Específica|Como Usuario, quiero solicitar el histórico del dispositivo filtrando por un único indicador, para focalizar mi análisis en una métrica específica de la calidad del aire.|3|
+| 43 |WA-US-51|Filtrar Tendencias por Rango Predefinido|Como Usuario, quiero solicitar el histórico del dispositivo utilizando rangos de tiempo predefinidos (en vivo, día, semana, mes), para simplificar la consulta de datos comunes.|3|
+| 44 |WA-US-52|Filtrar Tendencias por Rango de Fechas Personalizado|Como Usuario, quiero definir fechas de inicio y fin específicas para consultar el histórico del dispositivo, para analizar la calidad del aire en ventanas de tiempo precisas.|3|
+| 45 |WA-US-53|Consultar Último Reporte de Telemetría|Como Usuario, quiero obtener la telemetría más reciente registrada por el dispositivo, para evaluar su estado de comunicación física e integridad actual en paralelo a los datos históricos.|5|
+| 46 |WA-US-54|Filtrar Analíticas por Organización|Como Usuario, quiero seleccionar una organización para limitar las búsquedas analíticas a sus elementos relacionados, para gestionar mi información de forma ordenada.|8|
+| 47 |WA-US-55|Filtrar Analíticas por Espacio Físico|Como Usuario, quiero seleccionar un espacio físico perteneciente a la organización activa, para limitar las búsquedas analíticas a los sensores de esa zona.|8|
+| 48 |WA-US-56|Seleccionar Dispositivo para Análisis|Como Usuario, quiero seleccionar un dispositivo específico perteneciente al espacio físico activo, para cargar toda su información de métricas y tendencias.|3|
+| 49 |WA-US-57|Ver Planes Disponibles|Como Usuario, quiero ver los planes de suscripción disponibles en el sistema, para comparar sus características y precios antes de tomar una decisión.|2|
+| 50 |WA-US-58|Revisar Características del Plan Free|Como Usuario, quiero revisar las características del plan Free, para comprender qué capacidades de monitoreo puedo acceder sin costo.|2|
+| 51 |WA-US-59|Revisar Características del Plan Premium|Como Usuario, quiero revisar las características del plan Premium, para evaluar si las capacidades adicionales justifican el coste mensual.|2|
+| 52 |WA-US-60|Iniciar Proceso de Suscripción Premium|Como Usuario, quiero iniciar el proceso de suscripción al plan Premium, para proceder al pago y activar mi cuenta.|5|
+| 53 |WA-US-61|Confirmar Resumen del Pedido|Como Usuario, quiero verificar el resumen de mi suscripción antes de realizar el pago, para confirmar el nombre del plan, el coste y el monto total debido.|5|
+| 54 |WA-US-62|Ver Fecha de Auto-Renovación|Como Usuario, quiero conocer la fecha en la que se renovará mi suscripción, para prever los cargos automáticos.|2|
+| 55 |WA-US-63|Proporcionar Información de Pago|Como Usuario, quiero ingresar los detalles de mi tarjeta de pago de manera segura, para proceder con la transacción de suscripción.|5|
+| 56 |WA-US-64|Completar Pago de Suscripción Premium|Como Usuario, quiero completar la transacción de pago, para activar mi suscripción Premium de inmediato.|5|
+| 57 |WA-US-65|Control de Fallos en el Pago|Como Usuario, quiero recibir detalles sobre fallos en mi transacción de pago, para poder corregir la información o utilizar otro medio.|5|
+| 58 |WA-US-66|Consultar Plan de Usuario Actual|Como Usuario, quiero comprobar mi tipo de plan activo y su estado de validez, para saber si mi cuenta se encuentra en el nivel Free, Freemium o Premium.|3|
+| 59 |WS-US-10|Pair Physical Device|Como Desarrollador, quiero emparejar un dispositivo físico a través de una API, para que esté disponible para el flujo de inicialización del dispositivo.|3|
+| 60 |WS-US-11|Claim Device Ownership|Como Desarrollador, quiero reclamar la propiedad de un dispositivo emparejado a través de una API, para poder asignarlo a un espacio del usuario.|3|
+| 61 |WS-US-12|Retrieve Space Devices|Como Desarrollador, quiero obtener la lista de dispositivos de un espacio a través de una API, para que las aplicaciones clientes puedan renderizar los dispositivos activos.|3|
+| 62 |WS-US-13|View Device Details|Como Desarrollador, quiero consultar los detalles de un dispositivo por su ID a través de una API, para inspeccionar su configuración y atributos.|3|
+| 63 |WS-US-14|Monitor Device Status|Como Desarrollador, quiero consultar el estado de conexión de un dispositivo a través de una API, para verificar si se encuentra en línea.|3|
+| 64 |WS-US-15|Update Device Name|Como Desarrollador, quiero actualizar el nombre de un dispositivo a través de una API, para poder reflejar cambios de identificación en el sistema.|3|
+| 65 |WS-US-16|Reset Device Assignment|Como Desarrollador, quiero desasignar un dispositivo de su espacio actual a través de una API, para dejarlo disponible para futuras configuraciones.|3|
+| 66 |WS-US-17|View Device Thresholds|Como Desarrollador, quiero recuperar todos los umbrales de métricas asociados a un dispositivo a través de una API, para evaluar las reglas activas de alerta.|3|
+| 67 |WS-US-18|Create Device Threshold|Como Desarrollador, quiero registrar un nuevo umbral de métrica para un dispositivo a través de una API, para establecer alertas automatizadas de calidad del aire.|3|
+| 68 |WS-US-19|Update Device Threshold|Como Desarrollador, quiero actualizar un umbral de métrica existente para un dispositivo a través de una API, para modificar los límites de alerta.|3|
+| 69 |WS-US-20|Remove Device Threshold|Como Desarrollador, quiero eliminar un umbral de métrica de un dispositivo a través de una API, para desactivar el monitoreo de esa métrica en particular.|2|
+| 70 |WS-US-21|Create Device Command|Como Desarrollador, quiero enviar comandos de control a un dispositivo a través de una API, para habilitar operaciones remotas de hardware.|5|
+| 71 |WS-US-22|Retrieve Device Command|Como Desarrollador, quiero consultar el estado de un comando por su ID a través de una API, para verificar el estado de ejecución en el hardware.|5|
+| 72 |WS-US-23|Retrieve Latest Command|Como Desarrollador, quiero obtener el último comando enviado a un dispositivo a través de una API, para comprobar la instrucción activa más reciente.|3|
+| 73 |WS-US-24|Create Organization|Como Desarrollador, quiero crear una organización a través de una API, para poder estructurar y segmentar los espacios de trabajo de los usuarios.|3|
+| 74 |WS-US-25|Retrieve Organization Details|Como Desarrollador, quiero obtener los detalles de una organización por su ID a través de una API, para inspeccionar sus atributos de auditoría y propiedad.|3|
+| 75 |WS-US-26|Retrieve User Organizations|Como Desarrollador, quiero listar las organizaciones pertenecientes a un usuario a través de una API, para permitir la navegación multi-inquilino en la aplicación cliente.|3|
+| 76 |WS-US-27|Delete Organization|Como Desarrollador, quiero eliminar una organización a través de una API, para poder depurar espacios obsoletos.|2|
+| 77 |WS-US-28|Update Organization Name|Como Desarrollador, quiero renombrar una organización a través de una API, para mantener actualizada su identificación en la plataforma.|2|
+| 78 |WS-US-29|Create Space|Como Desarrollador, quiero crear un espacio físico dentro de una organización a través de una API, para agrupar y ubicar los dispositivos sensores.|3|
+| 79 |WS-US-30|Retrieve Space Details|Como Desarrollador, quiero obtener los detalles de un espacio específico a través de una API, para validar su relación de pertenencia organizacional.|3|
+| 80 |WS-US-31|Retrieve Spaces by Organization|Como Desarrollador, quiero obtener la lista de espacios asociados a una organización a través de una API, para estructurar los selectores en las pantallas de administración.|3|
+| 81 |WS-US-32|Delete Space|Como Desarrollador, quiero eliminar un espacio a través de una API, para permitir la limpieza de zonas de monitoreo inactivas.|2|
+| 82 |WS-US-33|Update Space Name|Como Desarrollador, quiero cambiar el nombre de un espacio a través de una API, para corregir o actualizar la etiqueta de ubicación física.|3|
+| 83 |WS-US-34|Obtener Alertas del Usuario|Como Desarrollador, quiero obtener la lista de alertas del usuario autenticado a través de una API, para poder visualizarlas en el panel de notificaciones principal.|3|
+| 84 |WS-US-35|Obtener Resumen Diario de Alertas del Usuario|Como Desarrollador, quiero obtener un resumen diario de ocurrencia de alertas del usuario a través de una API, para alimentar gráficos de volumen de fallos históricos.|3|
+| 85 |WS-US-36|Obtener Alertas por Dispositivo|Como Desarrollador, quiero obtener las alertas pertenecientes a un dispositivo específico a través de una API, para permitir diagnósticos detallados por hardware en la aplicación cliente.|5|
+| 86 |WS-US-37|Obtener Alertas por Espacio|Como Desarrollador, quiero obtener las alertas de un espacio a través de una API, para que los usuarios puedan identificar problemas en ubicaciones físicas particulares.|3|
+| 87 |WS-US-38|Obtener Resumen Diario de Alertas por Espacio|Como Desarrollador, quiero obtener el resumen diario agregador de alertas de un espacio a través de una API, para alimentar los gráficos de métricas físicas locales.|3|
+| 88 |WS-US-39|Obtener Métricas en Tiempo Real|Como Desarrollador, quiero obtener las métricas clave de rendimiento en tiempo real a través de una API, para poder renderizar inmediatamente los valores de telemetría en el panel de control.|5|
+| 89 |WS-US-40|Transmitir Telemetría en Vivo mediante SSE|Como Desarrollador, quiero establecer un canal de Server-Sent Events (SSE) para un dispositivo a través de una API, para transmitir flujos de datos en tiempo real al navegador.|5|
+| 90 |WS-US-41|Obtener Métricas Históricas|Como Desarrollador, quiero consultar métricas de rendimiento históricas agrupadas por períodos a través de una API, para permitir análisis retrospectivos del entorno físico.|3|
+| 91 |WS-US-42|Obtener Tendencias Históricas del Dispositivo|Como Desarrollador, quiero recuperar series temporales de datos históricos de un dispositivo a través de una API, para alimentar los gráficos de tendencias temporales en el frontend.|3|
+| 92 |WS-US-43|Obtener Resumen General de Analíticas|Como Desarrollador, quiero obtener una vista global unificada de espacios, dispositivos y alertas recientes a través de una API, para renderizar la página principal del dashboard del usuario.|8|
+| 93 |WS-US-44|Crear Intento de Pago en Stripe|Como Desarrollador, quiero crear un intento de pago en Stripe a través de una API, para iniciar flujos de pago integrados directos.|3|
+| 94 |WS-US-45|Obtener Suscripciones del Usuario|Como Desarrollador, quiero consultar el historial de suscripciones de un usuario a través de una API, para poder renderizar su estado de pagos en su perfil.|5|
+| 95 |WS-US-46|Obtener Plan del Usuario|Como Desarrollador, quiero resolver el plan de servicios activo de un usuario a través de una API, para validar sus límites de uso en otros módulos.|2|
+| 96 |WS-US-47|Degradación de Plan a Freemium|Como Desarrollador, quiero degradar manualmente o por vencimiento el plan de un usuario a Freemium a través de una API, para suspender los beneficios premium.|3|
+| 97 |WS-US-48|Procesar Notificaciones de Stripe mediante Webhook|Como Desarrollador, quiero procesar los eventos de confirmación de pago de Stripe mediante una API de webhook, para activar o extender de forma automatizada las suscripciones de los usuarios.|5|
+| 98 |WS-US-49|Registrar Telemetría del Dispositivo|Como Desarrollador, quiero almacenar y evaluar lecturas de sensores de un dispositivo en el borde a través de una API, para registrar la calidad del aire histórica y el estado de salud del hardware.|3|
+| 99 |WS-US-50|Obtener Historial de Evaluaciones de Telemetría|Como Desarrollador, quiero obtener una lista paginada de registros de telemetría de un dispositivo a través de una API, para permitir la auditoría e inspección de reportes previos.|5|
+| 100 |WS-US-51|Obtener Último Registro de Telemetría|Como Desarrollador, quiero recuperar la lectura de telemetría más reciente de un dispositivo a través de una API, para mostrar el estado instantáneo actual de la calidad del aire.|5|
+| 101 |WS-US-52|Obtener Historial de Notificaciones Push del Usuario|Como Desarrollador, quiero recuperar la lista paginada de registros de notificaciones push enviadas a un usuario a través de una API, para mostrar su historial de alertas en el panel de control.|3|
+| 102 |WS-US-53|Generar Resúmenes Diarios de Calidad del Aire|Como Desarrollador, quiero que el sistema calcule y persista diariamente un resumen consolidado de calidad del aire para cada dispositivo, para evitar procesar lecturas brutas repetidamente.|5|
+| 103 |WS-US-54|Obtener Reporte Diario de Calidad del Aire|Como Desarrollador, quiero obtener el resumen diario de calidad del aire de un dispositivo a través de una API, para renderizar reportes diarios históricos en el cliente.|3|
+| 104 |WS-US-55|Generar Resúmenes Mensuales de Calidad del Aire|Como Desarrollador, quiero que el sistema cascade y consolide mensualmente los resúmenes diarios de cada dispositivo, para mantener un histórico de largo plazo eficiente.|5|
+| 105 |WS-US-56|Obtener Reporte Mensual de Calidad del Aire|Como Desarrollador, quiero obtener el reporte mensual de calidad del aire de un dispositivo a través de una API, para permitir a los usuarios premium analizar tendencias mensuales.|5|
+| 106 |MA-US-01|Iniciar Registro de Cuenta|Como Visitante, quiero iniciar mi registro proporcionando mis datos básicos, para que el sistema comience mi proceso de alta en la plataforma.|3|
+| 107 |MA-US-02|Confirmar Registro con Código|Como Visitante, quiero ingresar mi código de verificación recibido, para que mi cuenta de usuario quede activada de manera definitiva.|3|
+| 108 |MA-US-03|Iniciar Sesión con Correo y Contraseña|Como Visitante, quiero iniciar sesión con mi correo electrónico y contraseña, para que pueda acceder de forma segura a mi cuenta.|3|
+| 109 |MA-US-04|Autenticar con Cuenta de Google|Como Visitante, quiero iniciar sesión usando mi cuenta de Google, para que pueda acceder de forma simplificada sin recordar contraseñas adicionales.|3|
+| 110 |MA-US-05|Cerrar Sesión|Como Usuario, quiero cerrar mi sesión activa, para que mis credenciales se invaliden y se evite el acceso no autorizado en mi dispositivo.|3|
+| 111 |MA-US-06|Crear Organización|Como Usuario, quiero crear una organización, para que pueda comenzar a organizar mis espacios y dispositivos bajo un grupo dedicado.|3|
+| 112 |MA-US-07|Actualizar Nombre de Organización|Como Usuario, quiero actualizar el nombre de una organización, para que pueda mantener su etiqueta de grupo de manera precisa.|3|
+| 113 |MA-US-08|Eliminar Organización|Como Usuario, quiero eliminar una organización, para que pueda remover grupos que ya no son necesarios.|2|
+| 114 |MA-US-09|Crear Espacio|Como Usuario, quiero crear un espacio en una organización, para que pueda agrupar dispositivos en una ubicación física o lógica.|3|
+| 115 |MA-US-10|Actualizar Nombre de Espacio|Como Usuario, quiero actualizar el nombre de un espacio, para que pueda renombrar ubicaciones y reflejar mejor su uso.|2|
+| 116 |MA-US-11|Eliminar Espacio|Como Usuario, quiero eliminar un espacio, para que pueda remover ubicaciones que ya no están en uso.|2|
+| 117 |MA-US-12|Vincular Dispositivo|Como Usuario, quiero vincular un dispositivo a mi cuenta usando su ID de hardware y token de vinculación, para que pueda ser authorized y registrado.|5|
+| 118 |MA-US-13|Reclamar Dispositivo a un Espacio|Como Usuario, quiero reclamar un dispositivo a un espacio específico usando su token de reclamo, para que el dispositivo quede enlazado a una ubicación física.|5|
+| 119 |MA-US-14|Actualizar Nombre de Dispositivo|Como Usuario, quiero actualizar el nombre de un dispositivo, para que pueda identificarlo fácilmente.|3|
+| 120 |MA-US-15|Eliminar Dispositivo|Como Usuario, quiero eliminar un dispositivo, para que pueda darlo de baja o removerlo de mi espacio.|2|
+| 121 |MA-US-16|Configurar Umbral de Métrica de Dispositivo|Como Usuario, quiero establecer una configuración de umbral para una métrica de dispositivo, para que pueda definir rangos operativos seguros para las lecturas de telemetría.|3|
+| 122 |MA-US-17|Remover Umbral de Métrica de Dispositivo|Como Usuario, quiero remover un umbral de una métrica de dispositivo, para que la métrica ya no esté restringida a rangos operativos específicos.|2|
+| 123 |MA-US-18|Enviar Comando de Control a Dispositivo|Como Usuario, quiero encolar un comando para un dispositivo, para que pueda activar acciones como actualizar su estado de energía.|3|
+| 124 |MA-US-19|Ver Lista Completa de Alertas|Como Usuario, quiero ver la lista completa de alertas generadas en mi plataforma, para que pueda conocer todas las notificaciones de problemas en mis dispositivos.|2|
+| 125 |MA-US-20|Filtrar Alertas por Dispositivo o Espacio|Como Usuario, quiero filtrar las alertas por un dispositivo o espacio específico, para que pueda enfocar mi atención en áreas particulares del sistema.|3|
+| 126 |MA-US-21|Ver Resumen Diario de Alertas|Como Usuario, quiero ver un resumen diario del conteo de alertas generadas, para que pueda comprender la frecuencia y evolución de las incidencias en el tiempo.|2|
+| 127 |MA-US-22|Reconocer Alerta Activa|Como Usuario, quiero reconocer una alerta activa en el sistema, para que quede registrado que la incidencia ha sido revisada o atendida.|2|
+| 128 |MA-US-23|Ver Métricas Actuales del Dashboard|Como Usuario, quiero ver las métricas actuales de calidad del aire del dispositivo, para que pueda conocer el estado actual de mi entorno de manera rápida.|2|
+| 129 |MA-US-24|Monitorear Telemetría en Tiempo Real|Como Usuario, quiero ver lecturas de telemetría en tiempo real con un indicador en vivo, para que pueda reaccionar ante cambios inmediatos en el entorno.|2|
+| 130 |MA-US-25|Visualizar Gráfico de Tendencias|Como Usuario, quiero ver un gráfico de tendencias de las métricas del dispositivo, para que pueda identificar patrones o anomalías visualmente.|2|
+| 131 |MA-US-26|Filtrar Tendencias por Rango de Fechas|Como Usuario, quiero seleccionar un rango de fechas para el gráfico de tendencias, para que pueda analizar datos históricos en un intervalo específico de tiempo.|3|
+| 132 |MA-US-27|Ver Lista de Notificaciones|Como Usuario, quiero ver el listado de mis notificaciones recibidas, para que pueda enterarme de los avisos del sistema y eventos ocurridos.|2|
+| 133 |ES-US-01|Autenticación de Credenciales de Dispositivo|Como Desarrollador, quiero que el sistema valide el identificador de hardware y la clave de API del dispositivo físico, para que la autenticación esté disponible al construir solicitudes seguras para mis aplicaciones.|5|
+| 134 |ES-US-02|Monitoreo de Presencia y Transición de Estado a Fuera de Línea|Como Desarrollador, quiero que el sistema identifique dispositivos inactivos en segundo plano y publique sus cambios de estado, para que los eventos de conectividad actualizados estén disponibles para mis aplicaciones.|3|
+| 135 |ES-US-03|Sincronizar Evento de Aprovisionamiento de Dispositivos|Como Desarrollador, quiero que el sistema consuma y procese eventos de cambio de dispositivos desde un tema de Kafka, para que la información del dispositivo esté disponible para mis aplicaciones en el caché local.|5|
+| 136 |ES-US-04|Ingestar Telemetría de Dispositivos|Como Desarrollador, quiero enviar datos de telemetría a través de la API REST, para que estén disponibles al construir funcionalidades en mis aplicaciones.|5|
+| 137 |ES-US-05|Obtener Comandos Pendientes|Como Desarrollador, quiero obtener la lista de comandos pendientes de un dispositivo a través de la API REST, para que el dispositivo edge pueda consultar las acciones que debe ejecutar.|3|
+| 138 |ES-US-06|Confirmar Ejecución de Comando|Como Desarrollador, quiero enviar una confirmación de ejecución de comando a través de la API REST, para que el estado de ejecución quede registrado y disponible para las aplicaciones.|3|
+| 139 |ES-US-07|Consultar Estado de Conexión del Dispositivo|Como Desarrollador, quiero consultar el estado de conexión de un dispositivo a través de la API REST, para verificar si un equipo está en línea o fuera de línea al construir paneles de control.|3|
+| 140 |EMB-US-01|Leer Datos de CO2 y Clima|Como Usuario, quiero que el dispositivo mida el CO2, la temperatura y la humedad relativa a intervalos periódicos, para poder monitorear los indicadores estándar de la calidad del aire interior.|3|
+| 141 |EMB-US-02|Leer Material Particulado|Como Usuario, quiero que el dispositivo mida los niveles de concentración de polvo fino (PM1.0, PM2.5 y PM10) a intervalos periódicos, para poder monitorear la contaminación por partículas respirables.|3|
+| 142 |EMB-US-03|Visualizar Métricas en Pantalla|Como Usuario, quiero ver las últimas lecturas de los sensores en la pantalla OLED, para poder conocer el estado ambiental a simple vista sin tener que ingresar a un panel web.|2|
+| 143 |EMB-US-04|Parpadear LED por Incidentes Activos|Como Usuario, quiero que una luz de advertencia parpadee cuando se detecten incidentes activos de calidad del aire, para recibir una notificación visual directa aunque no esté mirando la pantalla OLED.|3|
+| 144 |EMB-US-05|Conectar a Red WiFi Local|Como Administrador, quiero ingresar las credenciales de WiFi en el dispositivo, para permitir la comunicación remota con el servidor de la plataforma.|3|
+| 145 |EMB-US-06|Sincronizar Hora con Servidor NTP|Como Administrador, quiero que el sistema obtenga la hora de un servidor NTP, para que el historial de telemetría de mi dispositivo tenga marcas de tiempo exactas.|5|
+| 146 |EMB-US-07|Activar y Desactivar Modo Standby|Como Usuario, quiero que el dispositivo entre en un estado de bajo consumo donde la pantalla y el LED de alarma estén apagados, para que el dispositivo no me perturbe durante la noche.|3|
+| 147 |EMB-US-08|Solicitar Reporte de Telemetría en Tiempo Real|Como Administrador, quiero forzar el envío inmediato de un reporte de telemetría bajo demanda, para poder verificar el estado del entorno de manera instantánea.|5|
+| 148 |EMB-US-09|Visualizar Estado de Salud del Dispositivo|Como Administrador, ver el estado de salud calculado del dispositivo en el panel de control, para identificar rápidamente unidades que tengan problemas de conexión o fallas en los sensores.|2|
+
 #### 6.2.2.4. Development Evidence for Sprint Review.
+
+Durante el desarrollo del Sprint 2, el equipo concentró sus esfuerzos en consolidar la arquitectura de la plataforma y expandir sus capacidades funcionales a través de los múltiples componentes del ecosistema. En el backend (`clair-core`), se implementaron reglas críticas de negocio como el soporte para organizaciones y control de límites, además de robustecer la persistencia histórica y la cobertura de pruebas unitarias para flujos de telemetría y autenticación. Por otro lado, la interfaz web (`clair-ui`) y la aplicación móvil (`mobile`) experimentaron una evolución significativa mediante la creación de paneles de gestión para organizaciones y espacios, vistas avanzadas de analíticas y métricas de calidad del aire en tiempo real, así como la integración de controles interactivos para la manipulación de umbriles de dispositivos y el encendido/apagado de los mismos. A continuación, se detalla la evidencia técnica del progreso alcanzado a través del registro de confirmaciones (*commits*) integrados en las ramas principales de desarrollo:
+
+| Repository   | Branch | Commit Id | Commit Message                                               | Commit Message Body                                          | Commited on (Date) |
+| ------------ | ------ | --------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------ |
+| clair-core   | main   | 2761b4a   | Add organization support and limits                          | Associate Space with Organization and require organizationId when creating spaces. Add OrganizationRepository and queries for fetching organizations. Enforce limits: MAX_SPACES_PER_ORG = 5 and MAX_DEVICES_PER_SPACE = 10 in SpaceCommandServiceImpl and DeviceCommandServiceImpl. Add repository methods and service API changes to support counting and querying by organization/space. | 2026-05-15         |
+| clair-core   | main   | cb3f200   | Move organization plan logic to billing service              | Use ExternalBillingService in OrganizationCommandServiceImpl to fetch user plan and max allowed organizations and disallow VISITORs from creating organizations. Remove PlanType from Organization, CreateOrganizationCommand, CreateOrganizationRequest, and OrganizationResponse; update controller to no longer accept or return plan info. | 2026-05-15         |
+| clair-core   | main   | 9a3c67a   | Add unit tests for telemetry evaluation and related services | - Implement tests for TelemetryRecordedKafkaConsumer to validate event processing, including handling duplicates, invalid payloads, and device resolution. - Create tests for ExternalDeviceService to ensure correct device ID retrieval and ownership checks. - Add tests for TelemetryEvaluationQueryService to verify querying evaluations by device and fetching the latest evaluation. - Introduce tests for EvaluateTelemetryCommand to validate command creation and constraints. - Develop tests for TelemetryEvaluation entity to ensure proper instantiation and validation. - Implement tests for query models GetEvaluationsByDeviceQuery and GetLatestEvaluationByDeviceQuery to validate query creation and constraints. - Add tests for value objects including AirQuality, Connectivity, DeviceId, Location, and ParticulateMatter to ensure proper validation and instantiation. - Create controller tests for TelemetryEvaluationController to validate API behavior, including successful telemetry evaluation submissions and error handling for unknown devices. - Implement transformation tests for TelemetryEvaluationTransform to ensure correct response mapping. | 2026-06-06         |
+| clair-core   | main   | 1f642e4   | Add unit tests for user registration, authentication, and Google OAuth integration | - Created tests for UserRegisteredEvent, GetTokenSessionByJtiQuery, GetUserByEmailQuery, and various value objects including EmailAddress, GoogleIdToken, and UserId. - Implemented tests for GoogleAuthorizationCodeTokenClient and GoogleTokenVerifierImpl to validate Google OAuth functionality. - Added JwtAuthenticationFilter tests to ensure proper handling of JWT tokens in requests. - Developed AuthenticationControllerTest to verify user sign-up, sign-in, and sign-out processes. - Included request assembler tests for mapping incoming requests to command objects. | 2026-06-06         |
+| clair-core   | main   | ba60e24   | Refactor persistence to history repo and query service       | - Introduce history-based persistence interfaces and query service - Replace EmailLogRepository with EmailLogPersistence and   PushNotificationLogRepository   with PushNotificationHistoryRepository - Wire new interfaces in EmailCommandServiceImpl and   AlertIncidentChangedKafkaConsumer - Add GetPushNotificationHistoryQuery and   PushNotificationHistoryQueryServiceImpl - Update NotificationController to use history query and   PushNotificationResponse - Update docs to reflect new interfaces and models | 2026-06-06         |
+| clair-ui     | main   | 7a991b1   | feat: add organization and space management dialogs, device card component, and space devices page | - Implemented AddOrganizationDialogComponent for creating organizations. - Implemented AddSpaceDialogComponent for creating spaces. - Created DeviceCardComponent for displaying device information in grid and list views. - Developed SpaceDevicesPageComponent to manage organizations, spaces, and devices. - Added REST resources and transformation functions for organization, space, and device management. - Enhanced sidebar navigation to include route for Space & Devices. - Introduced loading and error states for better user experience. | 2026-05-16         |
+| clair-ui     | main   | 3a8753a   | feat: implement device list and organization panel components | - Added DeviceListComponent to display devices in grid or list view with loading and error states. - Introduced OrganizationsPanelComponent to manage organizations and spaces selection. - Created SpaceDetailHeaderComponent for displaying space details and actions. - Refactored SpaceDevicesPageComponent to integrate new components and simplify logic. - Updated styles for new components and removed unused CSS from SpaceDevicesPage. | 2026-05-16         |
+| clair-ui     | main   | 798a0ea   | feat: add device command handling and telemetry evaluation features | - Introduced DeviceCommandType value object for device command types. - Enhanced DeviceStatus value object to include STANDBY and ERROR states. - Implemented DeviceCommandService to handle device command creation. - Added DeviceCommand and DeviceCommandResource interfaces for command representation. - Created REST resources and transformations for device commands. - Developed telemetry evaluation command and query services. - Added value objects for telemetry evaluation, including air quality, connectivity, and health status. - Implemented REST resources and transformations for telemetry evaluations. - Updated OrganizationsPanelComponent to use current user organizations query. - Enhanced SpaceDevicesPageComponent to handle device power toggling with commands. | 2026-05-19         |
+| clair-ui     | main   | d72fbe8   | feat: implement device threshold management                  | - Add DeviceThresholdQueryService implementation for fetching thresholds by device. - Create command models for creating, updating, and deleting device thresholds. - Introduce value objects for metric thresholds, threshold operators, and threshold values. - Implement HTTP gateway for device threshold operations. - Enhance device detail panel to display and edit device thresholds. - Create a dialog component for editing device thresholds with form validation. - Update space devices page to load and manage device thresholds. - Add transformation functions for converting between API resources and domain models. | 2026-05-24         |
+| clair-ui     | main   | 35768e0   | feat: add air quality monitoring page with live data and trends | - Implemented air quality page component with HTML template and TypeScript logic. - Added interfaces for air quality live data and trends. - Created transformation functions for mapping API resources to domain models. - Integrated device context facade for fetching organizations, spaces, and devices. - Updated API configuration to include analytics endpoint. - Added routing for air quality page and updated sidebar navigation. - Enhanced loading and error handling states in the UI. | 2026-05-24         |
+| clair-ui     | main   | e72ea41   | feat: Implement analytics page with air quality metrics and trend visualization | - Added analytics-page.component.html for the layout and structure of the analytics page. - Created analytics-page.component.ts to handle data fetching, state management, and user interactions. - Introduced DashboardMetricsResource and TrendDataPointResource interfaces for API responses. - Implemented transformation functions to convert API resources to domain models. - Updated routing to point to the new analytics page instead of the old air quality page. - Modified sidebar component to reflect the new analytics navigation. | 2026-05-26         |
+| edge         | main   | 7debac4   | first commint                                                |                                                              | 2026-05-16         |
+| embedded-sim | main   | 96ea413   | feat: initial commit                                         |                                                              | 2026-05-17         |
+| embedded-sim | main   | 998d736   | feat: class daigram                                          |                                                              | 2026-05-17         |
+| landing-page | main   | 0054814   | refactor: replace buttons with anchor tags for account navigation |                                                              | 2026-05-13         |
+| landing-page | main   | a90f5d3   | feat: add user stories for Clair landing page                |                                                              | 2026-06-02         |
+| mobile       | main   | 06334f0   | feat: migration to secure storage and session management     | - Replace `shared_preferences` with `flutter_secure_storage` for token and user data persistence. - Implement `AuthSession` to manage global authentication state and navigation redirection. - Update `DioClient` with a request interceptor for token injection and an error interceptor for automatic token refresh (401 handling). - Add session restoration logic in `main.dart` to verify tokens on app startup. - Update `AppRouter` to use `AuthSession` as a `refreshListenable` for reactive routing. - Replace static text titles with `ClairName` widget in `Alerts`, `Analytics`, and `Spaces` screens. | 2026-05-27         |
+| mobile       | main   | f5c2487   | feat: add google sign-in authentication support              | - Implement `AuthenticateWithGoogleCommand` and its corresponding handler in `AuthenticationCommandService`. - Add `google_sign_in` package dependency and configure `GoogleIdTokenProvider`. - Update `LoginCubit` to handle Google authentication logic. - Add "Continue with Google" button to the `LoginScreen`. - Register new dependencies and configurations in `ServiceLocator` and `ApiConstants`. - Update `shell.nix` to use a local Android SDK path. - Remove existing `ios/` project files. | 2026-05-27         |
+| mobile       | main   | 166c144   | feat: add organization management structure and UI           | - Implement domain models, commands, and queries for Organizations. - Add `OrganizationsGateway` and HTTP implementation using Dio. - Implement `OrganizationsCommandService` and `OrganizationsQueryService`. - Create `OrganizationsCubit` for state management. - Add `OrganizationsScreen` and `CreateOrganizationForm` widgets. - Register organization services and cubits in the service locator. - Update app router to replace `/spaces` with `/organizations` functionality. | 2026-05-27         |
+| mobile       | main   | 4b812bd   | refactor: redesign OrganizationsScreen layout and styling    | - Remove `Scaffold` with `AppBar` and `FloatingActionButton` in favor of a `SafeArea` and `Column` based layout. - Replace floating action buttons with an inline `_AddOrganizationButton`. - Update `_OrganizationCard` styling with a transparent background, borders, and a chevron icon. - Remove hardcoded "DEVICES" label from organization cards. - Refine typography and spacing throughout the organizations list. | 2026-05-27         |
+| mobile       | main   | 606f5aa   | feat: add google sign-up to register screen                  | - Implement `signUpWithGoogle` in `RegisterCubit` using `GoogleIdTokenProvider`. - Add `isSuccess` flag to `RegisterState` and update `service_locator` to inject dependencies. - Update `RegisterScreen` to handle Google authentication and navigation to dashboard. - Refine UI labels and layout in `ConfirmRegistrationScreen`. - Add optional `hint` support to `AuthTextField`. | 2026-05-27         |
+| mobile       | main   | ba5fc8a   | feat: add settings screen and cubit for user sign out        | - Create `SettingsScreen`, `SettingsCubit`, and `SettingsState` to manage user settings and logout logic. - Replace `LogoutButton` with a settings icon in `AnalyticsScreen`, `AlertsScreen`, and `SpacesScreen` app bars. - Add navigation route for `/settings` in `AppRouter`. - Register `SettingsCubit` in the service locator. | 2026-05-27         |
+| mobile       | main   | 49a5bca   | feat: add custom SVG icons for air quality, alerts, and space devices | - Create `AirQualityIcon`, `AlertsIcon`, and `SpaceDevicesIcon` as standalone SVG widgets. - Update `ScaffoldWithNavBar` to use the new custom icons instead of Material icons. - Export new icon widgets in `widgets.dart`. | 2026-05-27         |
+| mobile       | main   | b0f6057   | feat: add update and delete functionality for organizations  | - Implement `DeleteOrganizationCommand` and `UpdateOrganizationNameCommand` in the domain layer. - Add `deleteOrganization` and `updateOrganizationName` methods to `OrganizationsCubit` for state management. - Introduce `EditOrganizationNameForm` widget and update `OrganizationsScreen` with edit/delete UI actions. - Update `OrganizationsCommandService` and `OrganizationsGateway` to support these new operations. - Implement HTTP gateway methods using `DELETE` and `PATCH` requests. | 2026-05-28         |
+| mobile       | main   | 32c8d14   | feat: improve authentication error handling and token refresh logic | - Implement comprehensive `DioException` mapping in authentication query and command services to provide user-friendly error messages based on HTTP status codes. - Enhance `DioClient` interceptor to skip Authorization headers for public authentication endpoints. - Improve token refresh mechanism with retry logic and infinite loop prevention. - Add session invalidation to clear storage and update authentication state on persistent 401 errors. | 2026-05-28         |
+| mobile       | main   | bf200cd   | refactor: reorganize widgets and introduce common `ClairAppBar` | - Move icon widgets to `lib/shared/interfaces/widgets/icons/` for better organization. - Extract `LogoutButton` to `lib/iam/interfaces/widgets/`. - Introduce `ClairAppBar` to unify app bar behavior across screens (`AlertsScreen`, `AnalyticsScreen`, `OrganizationsScreen`, `SpacesScreen`, `SpaceDevicesScreen`). - Extract several internal widgets into standalone files within `lib/devices/interfaces/widgets/`:     - `AddOrganizationButton`     - `OrganizationCard`     - `SpaceCard`     - `DeviceCard`     - `DeviceListTile`     - `DeviceLayoutToggle`     - `DevicePowerStatusBadge` - Create `device_list_item_labels.dart` for shared device labeling logic. - Update imports and component references across the project. | 2026-05-29         |
+| mobile       | main   | 2013bad   | feat: add device management and extended query capabilities  | - Implement device deletion and name updates in `DevicesCommandService`. - Add `getDeviceById`, `getDeviceStatus`, and pagination support for devices. - Extend `OrganizationsQueryService` and `SpacesQueryService` with "get by ID" functionality. - Introduce `DeviceStatusResponseResource` and update `DeviceResponseResource` to include thresholds. - Improve `SpacesCubit` performance by using `Future.wait` for device counts. - Enhance `SpaceDevicesCubit` with pagination and device deletion logic. | 2026-05-29         |
+| mobile       | main   | 4fd775a   | feat: add device detail screen and navigation                | - Implement `DeviceDetailScreen` with associated cubit, state, and resources. - Add UI components for device details: `DeviceDetailHeader`, `DeviceDetailMetricsGrid`, and `DeviceThresholdsSection`. - Configure routing for `/devices/:deviceId` and update `service_locator` to include `DeviceDetailCubit`. - Update `DeviceCard` and `DeviceListTile` to navigate to the device detail page on tap. - Refactor `SettingsScreen` and `ClairAppBar` to improve navigation behavior and UI consistency. | 2026-05-29         |
+| mobile       | main   | 32dcd18   | feat: implement device pairing and claiming functionality    | - Add `ClaimDeviceForm` and `PairDeviceForm` widgets. - Implement `DevicesCommandService` and its implementation to handle pairing and claiming logic. - Add domain models, commands, and value objects for `ClaimToken` and `HardwareId`. - Update `DevicesGateway` and `DevicesHttpGateway` with new REST API endpoints. - Integrate pairing and claiming actions into `SpaceDevicesCubit` and `SpaceDevicesScreen`. - Register new command service in the service locator. | 2026-05-29         |
+| mobile       | main   | bf31db1   | feat: add space devices navigation and data services         | - Register `DevicesQueryService` and `SpaceDevicesCubit` in the service locator. - Implement `getDevicesBySpaceRaw` in `DevicesGateway` and `DevicesHttpGateway`. - Add navigation route for space devices in `AppRouter`. - Update `SpacesScreen` to support navigating to specific space details. | 2026-05-29         |
+| mobile       | main   | ebeef66   | refactor: reorganize project structure and implement read models | - Move REST resource classes from `interfaces/rest/resources` to `infrastructure/api/resources`. - Introduce domain Read Models (e.g., `DeviceReadModel`, `SpaceReadModel`, `OrganizationReadModel`) to decouple the domain layer from API responses. - Update domain services and repositories to return Read Models instead of REST resources. - Introduce View Models (e.g., `DeviceDetailViewModel`) for UI state management. - Add new command and query objects (e.g., `DeleteDeviceCommand`, `GetDeviceByIdQuery`) to follow a CQRS-like pattern in the application layer. - Update Cubits and UI components to consume the new Read Models and View Models. | 2026-05-31         |
+| mobile       | main   | cd1cc16   | feat: implement telemetry evaluation and device vitals ACL   | - Add `Connectivity` and `EvaluationDeviceId` value objects to the evaluation domain. - Create `TelemetryEvaluationReadModel` and `TelemetryEvaluationResponseResource` for handling evaluation data. - Implement `TelemetryEvaluationHttpGateway` and `TelemetryEvaluationQueryService` to fetch latest device evaluations. - Introduce `DeviceVitalsAcl` to bridge the Evaluation and Devices contexts, transforming telemetry data into a `DeviceVitalsSnapshot`. - Update `DeviceDetailCubit` to use the new ACL for real-time device vitals instead of hardcoded/fallback values. - Register new gateways, services, and ACLs in the service locator. | 2026-05-31         |
+| mobile       | main   | c17e5f4   | feat: add device thresholds management                       | - Implement `DeviceThresholdsGateway` and its HTTP implementation for API communication. - Add domain models, commands, and queries for device thresholds (PM2.5, CO2, temperature, humidity). - Integrate `DeviceThresholdQueryService` and `DeviceThresholdCommandService` into `DeviceDetailCubit`. - Implement `DeviceThresholdsEditorDialog` with vertical sliders for threshold adjustment. - Update `DeviceDetailScreen` to support viewing and editing device-specific thresholds. - Register new services and gateways in the service locator. | 2026-05-31         |
+| mobile       | main   | 0a80979   | feat: add device power toggle and command queueing functionality | - Implement `DeviceCommandsGateway` and `DeviceCommandsCommandService` for managing device commands (standby, wake, restart). - Add `toggleDevicePower` to `DeviceDetailCubit` to handle power state transitions. - Relocate API resource classes from `infrastructure/api/resources` to `interfaces/rest/resources`. - Update `DeviceDetailHeader` and `DeviceDetailScreen` to support power toggle interactions and notification snackbars. - Register new command services and gateways in the service locator. | 2026-05-31         |
+| mobile       | main   | 49e9463   | refactor: improve threshold value formatting and step-based slider control | - Update `device_thresholds_section` and `device_thresholds_editor_dialog` to use a consistent number formatting logic that strips trailing zeros and dots. - Refactor `_rangeFor` to `_configFor` to include `step` and `defaultValue` for different metrics (PM2.5, CO2, temperature, humidity). - Implement step-based rounding in `_VerticalThresholdSlider` to allow for precise adjustments (e.g., 0.1 for temperature). - Update slider ranges and default values for all metrics. | 2026-05-31         |
+| mobile       | main   | 10e0250   | feat: add edit and delete device functionality               | - Add `EditDeviceNameForm` widget for renaming devices. - Implement `updateDeviceName` and `deleteDevice` methods in `DeviceDetailCubit`. - Update `DeviceDetailScreen` to include a device menu with edit and delete actions. - Add `deleted` state to `DeviceDetailState` to handle navigation after device removal. - Inject `DevicesCommandService` into `DeviceDetailCubit` via service locator. - Clean up unused comments in `device_card.dart` and `space_devices_screen.dart`. | 2026-05-31         |
+| mobile       | main   | 3337d77   | feat: add edit and delete device functionality               | - Add `EditDeviceNameForm` widget for renaming devices. - Implement `updateDeviceName` and `deleteDevice` methods in `DeviceDetailCubit`. - Update `DeviceDetailScreen` to include a device menu with edit and delete actions. - Add `deleted` state to `DeviceDetailState` to handle navigation after device removal. - Inject `DevicesCommandService` into `DeviceDetailCubit` via service locator. - Clean up unused comments in `device_card.dart` and `space_devices_screen.dart`. | 2026-05-31         |
+| mobile       | main   | 74a9b41   | refactor: update alerts model, cubit injection, and command structure | - Delete `AlertResource` model in favor of domain-driven approach. - Simplify `AlertsCubit` dependency injection and resolve duplicate registrations in `ServiceLocator`. - Update `RefreshAlertsCommand` to support pagination parameters (`page`, `size`) with validation. - Downgrade `meta` and `test_api` versions in `pubspec.lock`. | 2026-06-02         |
+| mobile       | main   | 111b418   | refactor: update alerts model, cubit injection, and command structure | - Delete `AlertResource` model in favor of domain-driven approach. - Simplify `AlertsCubit` dependency injection and resolve duplicate registrations in `ServiceLocator`. - Update `RefreshAlertsCommand` to support pagination parameters (`page`, `size`) with validation. - Downgrade `meta` and `test_api` versions in `pubspec.lock`. | 2026-06-02         |
+| mobile       | main   | 8b8ce93   | Add class diagrams for Analytics, Devices, Evaluation, IAM, and Notifications bounded contexts | - Created unified class diagrams for Analytics, Devices, Evaluation, IAM, and Notifications, detailing their structure across Interfaces, Application, Domain, and Infrastructure layers. - Included layer-specific class diagrams for each bounded context to illustrate the components and their relationships within each layer. | 2026-06-05         |
+
+
 
 #### 6.2.2.5. Testing Suite Evidence for Sprint Review.
 
+En esta sección se presenta la evidencia del conjunto de pruebas automatizadas diseñadas e implementadas para asegurar la calidad, fiabilidad y correcto funcionamiento de los servicios desarrollados durante el presente Sprint. La estrategia de aseguramiento de calidad (Testing Suite) aplicada en el repositorio principal (`clair-core`) abarca dos enfoques complementarios: pruebas de aceptación basadas en comportamiento (Behavior-Driven Development o BDD) y pruebas unitarias (Unit Tests) exhaustivas para validar la lógica interna de los diferentes módulos.
+
+Por un lado, bajo el enfoque BDD, se elaboraron archivos `.feature` utilizando el lenguaje Gherkin apoyados por el framework Cucumber. Estas pruebas se centran en validar los criterios de aceptación del Bounded Context de **Identity and Access Management (IAM)**, asegurando que los flujos críticos de cara al usuario, tales como el registro de nuevas cuentas, la verificación de correos electrónicos y el inicio de sesión, cumplan con los requerimientos de negocio esperados.
+
+Por otro lado, se ha desarrollado un robusto conjunto de **Unit Tests** que garantizan la integridad técnica a nivel de código. Estas pruebas validan el comportamiento aislado de entidades, objetos de valor (value objects), comandos, consultas (queries), servicios de dominio y controladores REST. La cobertura de estas pruebas unitarias se extiende a través de múltiples Bounded Contexts críticos de la plataforma, incluyendo:
+
+- **IAM:** Validación de registro, filtros de autenticación JWT y flujos de integración con Google OAuth.
+- **Devices:** Verificación de los servicios de comandos y consultas para el control, presencia y gestión de umbrales de los sensores.
+- **Analytics & Evaluation:** Comprobación del cálculo correcto del Air Quality Index (AQI), servicios de agregación de datos y la evaluación de la telemetría entrante.
+- **Notifications & Billing:** Aseguramiento de los servicios de envío de correos, gestión de notificaciones y fachadas de suscripción.
+
+A continuación, se detalla la estructura y contenido de las pruebas diseñadas, junto con la tabla de control de versiones. Esta tabla documenta de manera trazable los *commits* y ramas (`branches`) correspondientes a los avances de *testing* integrados en el repositorio del proyecto durante la iteración.
+
+| Repository                                     | Branch                            | Commit Id | Commit Message                                               | Commit Message Body                                          | Commited on (Date) |
+| ---------------------------------------------- | --------------------------------- | --------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------ |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | test/Testing-Suite                | c26f0e0   | test(iam): configure BDD environment and step definitions    | Set up Cucumber dependencies in pom.xml and implement step definitions for IAM bounded context tests | 13/05/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | test/Testing-Suite                | 3ea2e69   | test(iam): add BDD scenario for US01 Register a new account  | Implement cucumber feature file for US01 to validate new account registration | 13/05/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | test/Testing-Suite                | f027fe4   | test(iam): add BDD scenario for US02 Verify email address    | Implement cucumber feature file for US02 to validate email verification process | 13/05/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | test/Testing-Suite                | 946de87   | test(iam): add BDD scenario for US03 Log in                  | Implement cucumber feature file for US03 to validate user login and session establishment | 13/05/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-iam              | 1f642e4   | Add unit tests for user registration, authentication, and Google OAuth integration | Add comprehensive unit tests for IAM entities, commands, queries, value objects, services, and controllers | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-iam              | e07f4b4   | test: refactor tests to use setup methods and improve event verification | Refactor IAM tests to use setup methods and improve event verification | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-iam              | 94857cf   | test: set user ID for existing user in Google authentication test | Set user ID for existing user in Google authentication test scenario | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-iam              | 5bdfba6   | test: add unit tests for Google token verification and JWT authentication filter | Add unit tests for Google token verification and JWT authentication filter | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-iam              | c62f2c2   | test: update mock annotations to use MockitoBean for improved test configuration | Update mock annotations to use MockitoBean for improved test configuration | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-iam              | 7c38322   | test: refactor user creation in tests to use rehydrate method and improve clarity | Refactor user creation in tests to use rehydrate method and improve clarity | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-devices          | 276e358   | feat: add unit test                                          | Add unit tests for DeviceCommandServiceImpl, DeviceQueryServiceImpl, commands, queries, and value objects | 05/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-devices          | a243a67   | feat: add unit test                                          | Add unit tests for DeviceControlCommandServiceImpl, DevicePresenceCommandServiceImpl, DeviceThresholdCommandServiceImpl, and other application services | 05/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-test-devices          | c49fb08   | feat: add unit tests for command and query classes           | Add unit tests for command and query classes in device bounded context | 05/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/test-analytics            | 84057c6   | test: add unit tests for AirQualityIndex and Analytics controllers | Add unit tests for AQI calculation, aggregation services, and REST controllers | 05/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-evaluaiton-test-bc    | 9a3c67a   | Add unit tests for telemetry evaluation and related services | Add unit tests for telemetry evaluation commands, entities, queries, value objects, and controllers | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-notifications-testing | 84784eb   | feat: add unit tests for notification services and related entities | Add unit tests for EmailCommandServiceImpl, notification entities, queries, and controllers | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-notifications-testing | 735d23b   | feat: add TokenQueryService mock to NotificationControllerTest | Add mock configuration for TokenQueryService in NotificationControllerTest | 06/06/2026         |
+| Vanana-Desarrollo-de-Soluciones-IOT/clair-core | feature/add-unit-test-billing     | d48fa98   | feat: add unit tests for BillingContextFacadeImpl and SubscriptionCommandServiceImpl | Add unit tests for billing context facade and subscription command services | 06/06/2026         |
+
 #### 6.2.2.6. Execution Evidence for Sprint Review.
+
+**Clair UI (Wep App)**
+
+Se presenta Clair ejecutando en entorno web, leyendo metricas y procesandola con los diferentes servicios disponibles como Alerts, Analytics, Overview, etc
+
+<img src="../assets/execution-evidences/web-execution.png" alt="c4-container" width="800">
+
+Link: https://413rsr4.s.gy/W0C0gD
+
+**Clair Mobile (Mobile App)**
+
+Ademas se implemento Clair Mobile, una version ágil y limpia de la version web, con las vistas Analytics, Alerts y Spaces
+
+<img src="../assets/execution-evidences/mobile-execution.png" alt="c4-container" width="800">
+
+Link: https://413rsr4.s.gy/r0nBbK
+
 
 #### 6.2.2.7. Services Documentation Evidence for Sprint Review.
 
+En el sprint 2 se completó en su totalidad la implementación de Clair Core, a continuación se documentan los endpoints implementados
+
+**Devices:** Representación de los dispositivos físicos Clair
+
+| endpoint                          | verbo http | descripción                                                | parámetros                                        | request body              | response body                             | explicación                                                                                                                                                        |
+|-----------------------------------|------------|------------------------------------------------------------|---------------------------------------------------|---------------------------|-------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/devices/pair              | POST       | Inicia el proceso de vinculación de un dispositivo físico. | —                                                 | `{ hardwareId }`          | `{ deviceId, claimToken }`                | Permite registrar un dispositivo Clair utilizando su identificador de hardware y generar un token temporal para asociarlo posteriormente a un espacio monitoreado. |
+| /api/v1/devices/claim             | POST       | Asigna un dispositivo a un espacio del usuario.            | —                                                 | `{ claimToken, spaceId }` | Datos completos del dispositivo asignado. | Permite incorporar un dispositivo Clair a un espacio específico para comenzar el monitoreo de calidad del aire y la recolección de mediciones ambientales.         |
+| /api/v1/devices/{deviceId}        | GET        | Obtiene la información de un dispositivo específico.       | `deviceId` (path)                                 | —                         | Datos detallados del dispositivo.         | Permite consultar la configuración, estado y datos generales de un dispositivo instalado en un espacio monitoreado.                                                |
+| /api/v1/devices/{deviceId}        | DELETE     | Restablece la asignación de un dispositivo.                | `deviceId` (path)                                 | —                         | —                                         | Permite desvincular un dispositivo de un espacio para su reubicación, mantenimiento o nueva configuración.                                                         |
+| /api/v1/devices/{deviceId}        | PATCH      | Actualiza el nombre visible de un dispositivo.             | `deviceId` (path)                                 | `{ name }`                | Dispositivo actualizado.                  | Permite personalizar el nombre con el que se identifica el dispositivo dentro de la plataforma Clair.                                                              |
+| /api/v1/devices/{deviceId}/name   | PATCH      | Actualiza el nombre visible de un dispositivo.             | `deviceId` (path)                                 | `{ name }`                | Dispositivo actualizado.                  | Permite modificar la identificación visual del dispositivo para facilitar su reconocimiento dentro de un espacio monitoreado.                                      |
+| /api/v1/devices                   | GET        | Obtiene los dispositivos asociados a un espacio.           | `spaceId` (query), `page` (query), `size` (query) | —                         | Lista paginada de dispositivos.           | Permite visualizar todos los dispositivos Clair instalados en un espacio determinado y gestionar su estado de monitoreo.                                           |
+| /api/v1/devices/{deviceId}/status | GET        | Obtiene el estado actual de un dispositivo.                | `deviceId` (path)                                 | —                         | `{ deviceId, status, lastSeenAt }`        | Permite verificar si el dispositivo se encuentra conectado y transmitiendo datos ambientales correctamente a la plataforma.                                        |
+
+
+**Device Commands:** Maneja las instrucciones y consulta de las mismas sobre un dispositivo Clair
+
+| endpoint                                        | verbo http | descripción                                         | parámetros                            | request body        | response body                   | explicación                                                                                                                                                                           |
+|-------------------------------------------------|------------|-----------------------------------------------------|---------------------------------------|---------------------|---------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/devices/{deviceId}/commands             | POST       | Crea un comando para un dispositivo específico.     | `deviceId` (path)                     | `{ type, payload }` | Datos del comando creado.       | Permite enviar instrucciones a un dispositivo Clair para modificar su comportamiento operativo, como cambiar de estado, aplicar configuraciones o ejecutar acciones de mantenimiento. |
+| /api/v1/devices/{deviceId}/commands/{commandId} | GET        | Obtiene la información de un comando específico.    | `deviceId` (path), `commandId` (path) | —                   | Datos detallados del comando.   | Permite verificar el estado de ejecución de una instrucción enviada a un dispositivo, incluyendo si fue procesada correctamente o si ocurrió algún error.                             |
+| /api/v1/devices/{deviceId}/commands/latest      | GET        | Obtiene el último comando enviado a un dispositivo. | `deviceId` (path)                     | —                   | Datos del comando más reciente. | Permite consultar la última instrucción enviada al dispositivo para conocer su estado actual de procesamiento y validar que la acción solicitada haya sido recibida.                  |
+
+
+**Device Thresholds:** Limites que el usuario puede configurar a su preferencia sobre las métricas (PM2.5, CO₂, temperatura o humedad)
+
+| endpoint                                       | verbo http | descripción                                                  | parámetros                         | request body                 | response body                   | explicación                                                                                                                                                                               |
+|------------------------------------------------|------------|--------------------------------------------------------------|------------------------------------|------------------------------|---------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/devices/{deviceId}/thresholds          | GET        | Obtiene todos los umbrales configurados para un dispositivo. | `deviceId` (path)                  | —                            | Lista de umbrales configurados. | Permite consultar los límites establecidos para las métricas ambientales monitoreadas por el dispositivo, como PM2.5, CO₂, temperatura y humedad.                                         |
+| /api/v1/devices/{deviceId}/thresholds          | POST       | Crea un nuevo umbral para una métrica específica.            | `deviceId` (path)                  | `{ metric, value, enabled }` | Datos del umbral creado.        | Permite definir valores máximos aceptables para una métrica ambiental, de modo que Clair pueda detectar condiciones potencialmente perjudiciales y generar alertas cuando sean superadas. |
+| /api/v1/devices/{deviceId}/thresholds          | PUT        | Actualiza un umbral existente para una métrica específica.   | `deviceId` (path)                  | `{ metric, value, enabled }` | Datos del umbral actualizado.   | Permite ajustar los criterios de monitoreo según las necesidades del ambiente, modificando los valores que activan alertas de calidad del aire.                                           |
+| /api/v1/devices/{deviceId}/thresholds/{metric} | DELETE     | Elimina el umbral configurado para una métrica específica.   | `deviceId` (path), `metric` (path) | —                            | —                               | Permite retirar una regla de monitoreo para que las mediciones de esa métrica ya no generen alertas basadas en límites configurados por el usuario.                                       |
+
+
+**Spaces:** Representación de los ambientes físicos donde se ubica un dispositivo Clair
+
+| endpoint                      | verbo http | descripción                                        | parámetros               | request body | response body                   | explicación                                                                                                                                  |
+|-------------------------------|------------|----------------------------------------------------|--------------------------|--------------|---------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/spaces                | GET        | Obtiene los espacios asociados a una organización. | `organizationId` (query) | —            | Lista de espacios registrados.  | Permite visualizar todos los ambientes monitoreados dentro de una organización para gestionar la calidad del aire en diferentes ubicaciones. |
+| /api/v1/spaces                | POST       | Crea un nuevo espacio.                             | `organizationId` (query) | `{ name }`   | Datos del espacio creado.       | Permite registrar un nuevo ambiente que será monitoreado por dispositivos Clair para el seguimiento de las condiciones ambientales.          |
+| /api/v1/spaces/{spaceId}      | GET        | Obtiene la información de un espacio específico.   | `spaceId` (path)         | —            | Datos detallados del espacio.   | Permite consultar la información de un ambiente monitoreado y su relación con la organización a la que pertenece.                            |
+| /api/v1/spaces/{spaceId}      | DELETE     | Elimina un espacio registrado.                     | `spaceId` (path)         | —            | —                               | Permite remover un ambiente de la plataforma cuando ya no requiere monitoreo, siempre que no tenga dispositivos asociados.                   |
+| /api/v1/spaces/{spaceId}      | PATCH      | Actualiza el nombre de un espacio.                 | `spaceId` (path)         | `{ name }`   | Datos actualizados del espacio. | Permite modificar la identificación de un ambiente monitoreado para reflejar cambios en su uso o ubicación.                                  |
+| /api/v1/spaces/{spaceId}/name | PATCH      | Actualiza el nombre de un espacio.                 | `spaceId` (path)         | `{ name }`   | Datos actualizados del espacio. | Permite cambiar el nombre visible de un ambiente dentro de la plataforma para facilitar su administración.                                   |
+
+
+**Organizations:** Representación del local o entidad donde se encuentran diversos dispositivos Clair en Spaces diferentes
+
+| endpoint                                    | verbo http | descripción                                                  | parámetros              | request body | response body                          | explicación                                                                                                                                         |
+|---------------------------------------------|------------|--------------------------------------------------------------|-------------------------|--------------|----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/organizations                       | GET        | Obtiene las organizaciones asociadas al usuario autenticado. | —                       | —            | Lista de organizaciones registradas.   | Permite visualizar las organizaciones que administra el usuario y desde las cuales se gestionan los espacios y dispositivos de monitoreo ambiental. |
+| /api/v1/organizations                       | POST       | Crea una nueva organización.                                 | —                       | `{ name }`   | Datos de la organización creada.       | Permite registrar una nueva organización dentro de Clair para centralizar la gestión de espacios, dispositivos y métricas de calidad del aire.      |
+| /api/v1/organizations/{organizationId}      | GET        | Obtiene la información de una organización específica.       | `organizationId` (path) | —            | Datos detallados de la organización.   | Permite consultar la información de una organización y acceder a su estructura de monitoreo ambiental.                                              |
+| /api/v1/organizations/{organizationId}      | DELETE     | Elimina una organización registrada.                         | `organizationId` (path) | —            | —                                      | Permite remover una organización de la plataforma cuando ya no requiere monitoreo, siempre que no existan recursos asociados que dependan de ella.  |
+| /api/v1/organizations/{organizationId}      | PATCH      | Actualiza el nombre de una organización.                     | `organizationId` (path) | `{ name }`   | Datos actualizados de la organización. | Permite modificar la identificación de una organización para reflejar cambios administrativos o de denominación.                                    |
+| /api/v1/organizations/{organizationId}/name | PATCH      | Actualiza el nombre de una organización.                     | `organizationId` (path) | `{ name }`   | Datos actualizados de la organización. | Permite cambiar el nombre visible de una organización dentro de la plataforma Clair.                                                                |
+
+
+**Analytics:** Transforma mediciones en indicadores, tendencias e información sobre un Space
+
+| endpoint                                    | verbo http | descripción                                                        | parámetros                                                                  | request body | response body                                                | explicación                                                                                                                                                                                                                                      |
+|---------------------------------------------|------------|--------------------------------------------------------------------|-----------------------------------------------------------------------------|--------------|--------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/analytics/devices/{deviceId}/trends | GET        | Obtiene datos históricos de tendencias para un dispositivo.        | `deviceId` (path), `period` (query), `startDate` (query), `endDate` (query) | —            | Serie temporal de mediciones ambientales.                    | Permite visualizar la evolución de indicadores como AQI, PM2.5, CO₂, temperatura y humedad a lo largo del tiempo para identificar patrones, variaciones y posibles problemas recurrentes en la calidad del aire.                                 |
+| /api/v1/analytics/devices/{deviceId}/live   | GET        | Obtiene indicadores clave de desempeño (KPIs) para un dispositivo. | `deviceId` (path), `period` (query), `startDate` (query), `endDate` (query) | —            | Métricas agregadas y estado actual del ambiente monitoreado. | Permite consultar un resumen de las condiciones ambientales de un espacio, incluyendo el índice de calidad del aire (AQI), promedios de CO₂, PM2.5, temperatura y humedad, así como las variaciones porcentuales respecto a periodos anteriores. |
+
+**Analytics Overview:** Panel que presenta las métricas y el AQI de manera limpia y directa al usuario
+
+| endpoint                   | verbo http | descripción                                                                | parámetros                                          | request body | response body                                                                          | explicación                                                                                                                                                                                                                                                                                                                                                                                               |
+|----------------------------|------------|----------------------------------------------------------------------------|-----------------------------------------------------|--------------|----------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/analytics/overview | GET        | Obtiene el dashboard consolidado de analítica para el usuario autenticado. | `deviceLimitPerSpace` (query), `alertLimit` (query) | —            | Resumen general de métricas ambientales, organizaciones, espacios y alertas recientes. | Proporciona una vista integral del estado ambiental de todos los espacios asociados al usuario. Incluye indicadores globales como AQI, niveles promedio de CO₂, PM2.5, temperatura y humedad, variaciones porcentuales respecto a periodos anteriores, cantidad de organizaciones, espacios y dispositivos registrados, así como un resumen de alertas activas y el estado de actualización de los datos. |
+
+**Evaluations:** Registros de telemetría registrada por un Device
+
+| endpoint                                      | verbo http | descripción                                                        | parámetros                                        | request body | response body                              | explicación                                                                                                                                                                                                                  |
+|-----------------------------------------------|------------|--------------------------------------------------------------------|---------------------------------------------------|--------------|--------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/evaluations/devices/{deviceId}        | GET        | Obtiene el historial de registros de telemetría de un dispositivo. | `deviceId` (path), `page` (query), `size` (query) | —            | Lista paginada de registros de telemetría. | Permite consultar las mediciones históricas capturadas por un dispositivo Clair, incluyendo indicadores de calidad del aire, material particulado, condiciones ambientales, conectividad y estado operativo del dispositivo. |
+| /api/v1/evaluations/devices/{deviceId}/latest | GET        | Obtiene el registro de telemetría más reciente de un dispositivo.  | `deviceId` (path)                                 | —            | Último registro de telemetría almacenado.  | Permite conocer las condiciones ambientales más recientes detectadas por el dispositivo, así como su estado de funcionamiento y conectividad en tiempo real.                                                                 |
+
+
+**Alerts:** Notifica amenazas en la calidad del aire del ambiente detectadas por un Device
+
+| endpoint                                      | verbo http | descripción                                                                               | parámetros                                                          | request body | response body                                        | explicación                                                                                                                                                                                                                                                                              |
+|-----------------------------------------------|------------|-------------------------------------------------------------------------------------------|---------------------------------------------------------------------|--------------|------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/spaces/{spaceId}/alerts               | GET        | Obtiene las alertas registradas para un espacio específico.                               | `spaceId` (path), `page` (query), `size` (query), `status` (query)  | —            | Lista paginada de alertas.                           | Permite consultar todas las alertas generadas por los dispositivos instalados en un espacio determinado. Incluye información sobre la métrica afectada (PM2.5, temperatura, humedad, CO₂, etc.), valores detectados, severidad, estado de la alerta y fechas de ocurrencia o resolución. |
+| /api/v1/spaces/{spaceId}/alerts/daily-summary | GET        | Obtiene un resumen diario de alertas para un espacio.                                     | `spaceId` (path), `days` (query)                                    | —            | Lista de fechas con cantidad de alertas registradas. | Permite visualizar la cantidad de alertas generadas por día dentro de un espacio durante un período determinado, facilitando el análisis de tendencias e identificación de periodos con mayor incidencia de eventos ambientales.                                                         |
+| /api/v1/devices/{deviceId}/alerts             | GET        | Obtiene las alertas generadas por un dispositivo específico.                              | `deviceId` (path), `page` (query), `size` (query), `status` (query) | —            | Lista paginada de alertas del dispositivo.           | Permite consultar el historial de alertas asociadas a un dispositivo concreto, incluyendo las métricas monitoreadas, valores registrados, nivel de severidad y estado actual de cada alerta para facilitar el diagnóstico y seguimiento del dispositivo.                                 |
+| /api/v1/alerts                                | GET        | Obtiene todas las alertas asociadas a los dispositivos del usuario autenticado.           | `page` (query), `size` (query), `status` (query)                    | —            | Lista paginada de alertas.                           | Permite centralizar la consulta de alertas provenientes de todos los dispositivos pertenecientes al usuario, facilitando el monitoreo global de incidentes y condiciones ambientales detectadas en sus espacios registrados.                                                             |
+| /api/v1/alerts/daily-summary                  | GET        | Obtiene un resumen diario de alertas para todos los dispositivos del usuario autenticado. | `days` (query)                                                      | —            | Lista de fechas con cantidad de alertas registradas. | Permite analizar la evolución diaria de las alertas generadas en todos los dispositivos del usuario durante un período determinado, ayudando a identificar patrones de comportamiento y frecuencia de incidentes ambientales.                                                            |
+
+
+**Subscriptions:** Gestiona los planes de suscripción y los procesos de pago asociados a Clair.
+
+| endpoint                                 | verbo http | descripción                                                  | parámetros      | request body                                | response body                                 | explicación                                                                                                                                                                                |
+|------------------------------------------|------------|--------------------------------------------------------------|-----------------|---------------------------------------------|-----------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/subscriptions/payment-intent     | POST       | Crea una intención de pago mediante Stripe.                  | —               | `userId`, `amount`, `currency`, `returnUrl` | Información de la intención de pago generada. | Permite iniciar el proceso de pago para la contratación o renovación de servicios premium dentro de Clair, preparando la transacción que será procesada por Stripe.                        |
+| /api/v1/subscriptions/checkout-session   | POST       | Crea una sesión de pago en Stripe.                           | —               | `userId`, `amount`, `currency`, `returnUrl` | Información de la sesión de pago creada.      | Permite redirigir al usuario a una experiencia de pago segura para completar la suscripción a planes premium y habilitar funcionalidades avanzadas de monitoreo ambiental.                 |
+| /api/v1/subscriptions/downgrade/{userId} | POST       | Cambia el plan de un usuario a FREEMIUM.                     | `userId` (path) | —                                           | Confirmación de la operación.                 | Permite cancelar los beneficios premium y regresar al plan gratuito, ajustando el acceso del usuario a las funcionalidades disponibles dentro de Clair.                                    |
+| /api/v1/subscriptions/user/{userId}      | GET        | Obtiene el historial de suscripciones y pagos de un usuario. | `userId` (path) | —                                           | Lista de suscripciones registradas.           | Permite consultar las transacciones y suscripciones realizadas por el usuario, facilitando el seguimiento de pagos, renovaciones y estados de facturación asociados a la plataforma.       |
+| /api/v1/subscriptions/plans/{userId}     | GET        | Obtiene el plan actual de un usuario.                        | `userId` (path) | —                                           | Información del plan y estado de suscripción. | Permite verificar si el usuario dispone de un plan FREEMIUM o PREMIUM, determinando el acceso a funcionalidades avanzadas relacionadas con el monitoreo y análisis de la calidad del aire. |
+
+
+**Webhooks:** Procesa eventos enviados por Stripe para sincronizar el estado de pagos y suscripciones dentro de Clair.
+
+| endpoint                | verbo http | descripción                                 | parámetros                  | request body                     | response body            | explicación                                                                                                                                                                                                                                  |
+|-------------------------|------------|---------------------------------------------|-----------------------------|----------------------------------|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/v1/webhooks/stripe | POST       | Recibe eventos webhook enviados por Stripe. | `Stripe-Signature` (header) | Evento enviado por Stripe (JSON) | Mensaje de confirmación. | Permite que Clair reciba notificaciones automáticas cuando ocurre un evento de pago o suscripción en Stripe, asegurando que el estado de las membresías Premium se mantenga sincronizado con la plataforma de pagos sin intervención manual. |
+
 #### 6.2.2.8. Software Deployment Evidence for Sprint Review.
 
+En esta sección se resumen los procesos realizados en relación con el Deployment durante el Sprint 2. Durante esta iteración, se consolidaron los procesos de empaquetamiento y despliegue del servidor utilizando **NixOS** (una distribución Linux declarativa) y **Nix** para la gestión del entorno. Este ecosistema garantiza que la infraestructura del servidor de producción y los artefactos generados sean consistentes, inmutables y estén completamente libres de discrepancias de entorno.
+
+Para asegurar un despliegue exitoso y libre de fallos provocados por diferencias de software o configuraciones de sistema incompatibles, el equipo adoptó **NixOS** como el sistema operativo principal para alojar los servicios del backend. **NixOS** es una distribución de Linux revolucionaria construida sobre el gestor de paquetes Nix, en la cual todo el estado del sistema operativo —incluyendo el kernel, servicios del sistema, archivos de configuración y paquetes, se define de manera declarativa y centralizada. Esto garantiza que la infraestructura de producción sea inmutable, totalmente reproducible mediante código y admita reversiones (*rollbacks*) seguras e instantáneas ante fallos.
+
+Complementariamente, se utiliza el entorno reproducible de Nix a través de un archivo `shell.nix` para desarrollo. Este archivo especifica las versiones exactas de herramientas esenciales como **JDK 25**, **Maven** y **stripe-cli**. De este modo, el runtime local del equipo de desarrollo coincide de manera idéntica con el entorno de producción en **NixOS**. Esto elimina por completo el clásico conflicto de *"funciona en mi máquina"*, permitiendo que el backend compile y se ejecute nativamente sobre el sistema operativo NixOS sin requerir la sobrecarga de virtualización que introduce Docker.
+
+**1. Web Application**
+Para la aplicación web en Angular, el proceso de construcción se simplificó al máximo utilizando **Bun** (`bun run build`), el cual permitió compilar de manera ultra rápida los activos estáticos y flujos SPA de la interfaz. Estos archivos estáticos listos para producción son distribuidos globalmente a través de **Vercel**, integrando los dashboards de analítica de calidad del aire y la gestión de organizaciones de este Sprint.
+
+<p align="center">
+  <img src="https://imgur.com/zPq9hhb.png" alt="Vercel Web App Deployment" width="700">
+</p>
+**2. Web Service**
+A diferencia de los entornos tradicionales, para los servicios web de Clair Core no se emplea Docker. En su lugar, el despliegue se realiza de forma nativa aprovechando el ecosistema de **Nix** y **NixOS** para la administración declarativa del sistema y del entorno. El tráfico web externo y las solicitudes son gestionadas y redirigidas utilizando **Caddy** como servidor web y proxy inverso, configurado directamente en la declaración de NixOS. Esto permite la asignación segura de dominios a los puertos internos de la API (`clair-api`), además de resolver automáticamente la seguridad mediante HTTPS. A continuación se presenta la configuración declarativa de NixOS empleada:
+
+```
+{ pkgs, ... }:
+
+let
+  ports = {
+    caddy = "8088";
+    clair-api = "8081";
+    clair-edge = "5000";
+  };
+in
+{
+  services.caddy = {
+    enable = true;
+    configFile = pkgs.writeText "Caddyfile" ''
+      :${ports.caddy} {
+        @api host clair-api.giks.net
+        handle @api {
+          reverse_proxy 127.0.0.1:${ports.clair-api}
+        }
+
+        @edge host clair-edge.giks.net
+        handle @edge {
+          reverse_proxy 127.0.0.1:${ports.clair-edge}
+        }
+
+        respond "not found" 404
+      }
+    '';
+  };
+}
+```
+
+**Configuración y Estado del Servidor VPS con NixOS:**
+<p align="center">
+  <img src="https://imgur.com/xAjvwmM.png" alt="NixOS VPS Backend Deployment" width="700">
+</p>
+
+**3. Mobile Application**
+Para la aplicación móvil de Clair desarrollada en Flutter, se implementó el sistema de distribución de compilaciones de prueba a través de **Firebase App Distribution**. Esto permitió al equipo generar binarios rápidos (como el archivo APK para dispositivos Android) y compartirlos de manera segura con los desarrolladores y evaluadores del proyecto para validar los flujos de telemetría y alertas en tiempo real. 
+
+<p align="center">
+  <img src="https://imgur.com/mIrwg5J.png" alt="Firebase App Distribution - Mobile Application" width="700">
+</p>
 #### 6.2.2.9. Team Collaboration Insights during Sprint.
+
+1. **Web application**
+
+Durante el Sprint 2, el equipo de frontend colaboró de forma continua e integrada en la implementación de los dashboards de analítica de calidad del aire y la gestión de organizaciones, asegurando un flujo de trabajo optimizado mediante el uso de Bun para compilaciones rápidas.
+
+<p align="center">
+  <img src="https://imgur.com/Q0KqTiz.png" width="500">
+</p>
+<p align="center">
+  <img src="https://imgur.com/R6ZxFO5.png" width="500">
+</p>
+
+2. **Web services**
+
+La colaboración en el desarrollo del backend se centró en los contextos core (Devices, Spaces, Organizations y Analytics) de la API de Spring Boot, logrando un entorno de desarrollo reproducible con Nix y realizando integraciones seguras en el servidor NixOS.
+
+<p align="center">
+  <img src="https://imgur.com/gexgt3G.png" width="500">
+</p>
+<p align="center">
+  <img src="https://imgur.com/p2Ui7X9.png" width="500">
+</p>
+
+3. **Mobile application**
+
+A continuación se presentan las métricas de colaboración y la actividad de desarrollo en el repositorio de la aplicación móvil (desarrollada en Flutter) durante este sprint:
+
+<p align="center">
+  <img src="https://imgur.com/BJz5p5E.png" width="500">
+</p>
+<p align="center">
+  <img src="https://imgur.com/sYCM0ZC.png" width="500">
+</p>
+
+4. **Edge service**
+
+Durante el Sprint 2, el equipo colaboró activamente en el diseño y la implementación de la Edge Station construida con Python y Flask. Se logró establecer la autenticación de dispositivos perimetrales de forma segura, estructurar las rutas para la recepción local de telemetría de manera distribuida y coordinar el mecanismo de sincronización de datos con los servicios en la nube en caso de pérdida de conexión.
+
+<p align="center">
+  <img src="https://imgur.com/insvBgt.png" width="500">
+</p>
+<p align="center">
+  <img src="https://imgur.com/SB1Krqx.png" width="500">
+</p>
+
+5. **Embedded**
+
+La colaboración para la aplicación embebida se centró en el desarrollo cooperativo del firmware en C++ para las tarjetas de simulación y físicas basadas en ESP32. Se integraron de manera fluida las librerías para la lectura en tiempo real de los sensores ambientales (CO₂, PM2.5, temperatura y humedad), la lógica de renderizado dinámico en pantallas OLED y las alertas visuales mediante la activación automática de actuadores LED basados en umbrales específicos de calidad del aire.
+
+<p align="center">
+  <img src="https://imgur.com/OySKcVh.png" width="500">
+</p>
+<p align="center">
+  <img src="https://imgur.com/GKW2Mns.png" width="500">
+</p>
 
 ### 6.2.3. Sprint 3
 
@@ -620,32 +1155,238 @@ El avance preliminar de los servicios web es de los servicios genericos como IAM
 
 #### 6.2.3.9. Team Collaboration Insights during Sprint.
 
-### 6.2.4. Sprint 4
-
-#### 6.2.4.1. Sprint Planning 4.
-
-#### 6.2.4.2. Aspect Leaders and Collaborators.
-
-#### 6.2.4.3. Sprint Backlog 4.
-
-#### 6.2.4.4. Development Evidence for Sprint Review.
-
-#### 6.2.4.5. Testing Suite Evidence for Sprint Review.
-
-#### 6.2.4.6. Execution Evidence for Sprint Review.
-
-#### 6.2.4.7. Services Documentation Evidence for Sprint Review.
-
-#### 6.2.4.8. Software Deployment Evidence for Sprint Review.
-
-#### 6.2.4.9. Team Collaboration Insights during Sprint.
-
 ## 6.3. Validation Interviews.
 
 ### 6.3.1. Diseño de Entrevistas.
 
+Segmento Objetivo 1: Administradores de Establecimientos Públicos y Privados
+
+Landing Page — Elementos a Validar
+
+| #    | Sección del Landing Page | Pregunta asociada |
+| ---- | ------------------------ | ----------------- |
+| 1    | Propuesta de Valor (Multi-local) | Si tuvieras que gestionar digitalmente múltiples locales (ejemplo: la sede central y 2 sucursales), ¿cómo esperarías que la plataforma web te permita estructurar y visualizar estos distintos edificios y sus respectivos pisos/salas? |
+| 2    | Nomenclatura del Producto | Para tu entorno corporativo, ¿los términos "Organización" y "Espacio" en la interfaz se ajustan a la nomenclatura que utilizan internamente en tu empresa? |
+
+Aplicación web — Elementos a Validar
+
+| #    | Pantalla / Módulo | Pregunta asociada |
+| ---- | ----------------- | ----------------- |
+| 1    | Configuración de Organización (Set-up) | ¿Cómo te imaginas el flujo dentro de la plataforma web para invitar a otros miembros de tu equipo (ej. técnicos) y asignarles permisos de visualización? |
+| 2    | Despliegue de Dispositivos (Escalamiento) | Proyectándonos a cuando sean dispositivos reales, si tuvieras que registrar 5 sensores nuevos en la plataforma web, ¿cómo esperarías que sea el proceso para no tener que agregarlos manualmente uno por uno? |
+| 3    | Panel de Administración de Sensores | ¿En qué momento del uso de la plataforma te resulta más eficiente etiquetar y asignar un dispositivo a su sala correspondiente: al momento de crearlo en el sistema o posteriormente desde un panel de administración? |
+| 4    | Tabla de Dispositivos | Al monitorear la lista de dispositivos en la web-app, ¿qué información técnica del sensor (ej. estado de conexión, última lectura, tiempo en línea) necesitas ver a simple vista en la tabla principal? |
+| 5    | Dashboard (Monitoreo General) | Cuando abres el panel de control general (dashboard), ¿qué métrica, gráfica o sistema de colores te permitiría identificar de inmediato qué sala específica del edificio requiere atención por mala calidad del aire? |
+| 6    | Reportes e Históricos (Analytics) | Pensando en auditorías internas o reportes de salud ocupacional, ¿con qué frecuencia descargarías los datos históricos y qué formato o filtros (fechas, promedios) considerarías indispensables en la plataforma web? |
+| 7    | Reglas y Alertas de Sensor (Rules Builder) | Si el sistema detecta que el nivel de PM2.5 supera el umbral permitido en una sala de reuniones, ¿qué tipo de automatización o alerta esperas de la web-app (ej. un correo automático a mantenimiento, una alerta visual prioritaria)? |
+
+Aplicación movil — Elementos a Validar
+
+| #    | Pantalla / Módulo | Pregunta asociada |
+| ---- | ----------------- | ----------------- |
+| 1    | Pantalla de Alertas / Notificaciones | En la aplicación móvil, ¿cómo esperarías que se notifiquen y visualicen de forma inmediata las alertas críticas de los sensores para facilitar una respuesta rápida del equipo técnico o de mantenimiento? |
+
+User Flows a Validar
+
+| #    | Nombre del User Flow | Descripción del flujo |
+| ---- | -------------------- | --------------------- |
+| 1    | Gestión de alertas y acciones correctivas (Web/Mobile) | El administrador recibe una alerta por niveles de CO2/PM2.5 fuera de rango en un área específica y activa una respuesta correctiva preconfigurada para garantizar la productividad y salud. |
+| 2    | Generación y gestión de reportes de cumplimiento (Web) | El administrador accede a Reports, define el rango de fechas y zonas, y descarga reportes históricos de calidad de aire para auditorías de salud ocupacional o cumplimiento de regulaciones. |
+
+Segmento Objetivo 2: Personas preocupadas por la calidad del aire en el hogar
+
+Landing Page — Elementos a Validar
+
+| #    | Sección del Landing Page | Pregunta asociada |
+| ---- | ------------------------ | ----------------- |
+| 1    | Nomenclatura del Producto | En la aplicación utilizamos el término "Espacio" para referirnos a las habitaciones. ¿Este término te resulta claro y natural para tu hogar, o preferirías llamarlo de otra forma (como "Habitación" o "Cuarto")? |
+
+Aplicación web — Elementos a Validar
+
+| #    | Pantalla / Módulo | Pregunta asociada |
+| ---- | ----------------- | ----------------- |
+| 1    | Configuración de Umbrales (Rules Builder) | Si la gráfica muestra que la calidad del aire está empeorando progresivamente, ¿qué opciones de acción o notificaciones esperarías que la aplicación te sugiera en ese momento configurar desde la plataforma web? |
+
+Aplicación movil — Elementos a Validar
+
+| #    | Pantalla / Módulo | Pregunta asociada |
+| ---- | ----------------- | ----------------- |
+| 1    | Configuración de Áreas (Set-up) | ¿Cómo esperarías estructurar las diferentes áreas de tu casa dentro de la aplicación (por ejemplo, "Mi Casa" > "Sala", "Dormitorio")? |
+| 2    | Registro Inicial (Onboarding) | ¿Qué pasos intuitivos intentarías seguir en la app para registrar tu casa por primera vez? |
+| 3    | Registro de Dispositivo / Vinculación | Al momento de vincular este "sensor virtual" a tu cuenta en la aplicación, ¿el proceso de registro te pareció claro o hubo algún paso confuso? |
+| 4    | Notificaciones de Estado (Desconexión) | Si el simulador perdiera conexión con nuestra plataforma y dejara de enviar datos, ¿qué tipo de advertencia visual o notificación esperarías ver en tu celular para darte cuenta de la desconexión? |
+| 5    | Pantalla de Éxito de Emparejamiento | Al finalizar el proceso de agregar el dispositivo en la app, ¿qué mensaje o pantalla específica te daría la tranquilidad de que el emparejamiento fue exitoso y ya puedes ver los datos? |
+| 6    | Dashboard (Visualización del Aire) | Al abrir la aplicación, ¿cuál es el primer dato, gráfica o color que buscas para saber rápidamente si el aire de tu casa es seguro? |
+| 7    | Explicación de Métricas (Dashboard) | Si la aplicación te muestra que tu sala tiene "CO2: 800 ppm" proveniente del simulador, ¿comprendes qué significa esa métrica? ¿Cómo te gustaría que la app te explique si ese nivel es saludable o perjudicial? |
+
+User Flows a Validar
+
+| #    | Nombre del User Flow | Descripción del flujo |
+| ---- | -------------------- | --------------------- |
+| 1    | Verificación de calidad del aire (Refugio seguro) (Mobile) | El usuario accede al Dashboard móvil para validar en tiempo real los indicadores de calidad del aire interior (AQI y sensores) y verificar que su hogar es un entorno respirable seguro. |
+| 2    | Configuración de umbrales personalizados (Rules Builder) (Web) | El usuario crea reglas y alertas personalizadas basadas en síntomas o alergias (rinitis, asma) en la Web App, recibiendo notificaciones preventivas en su celular ante anomalías ambientales. |
+
 ### 6.3.2. Registro de Entrevistas.
+
+| Segmento objetivo                                                                                                             | Administradores de Establecimientos Públicos y Privados                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Video                          |
+| ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| **Angela Cabrera**<br />![](https://i.imgur.com/pAwxorp.png)                                                                  | **Datos Demográficos:** <br/>Mujer de 35 años de edad, reside en el distrito de Jesús María, Lima, y vive sola.<br/><br/>**Ocupación y Background:** <br/>Es gerente de una empresa. Tiene un background técnico que le permite gestionar herramientas digitales y comprender la estructura de organizaciones y espacios dentro de la plataforma.<br/><br/>**Resumen:**<br/>Entiende que el dispositivo calibra la calidad del aire (CO2, limpieza). Para la gestión de múltiples locales, espera que la plataforma se estructure por organización y luego por espacios (sala de conferencias, recepción), con un dispositivo por espacio. En el dashboard, le gustaría que al seleccionar su organización le liste todos los espacios y muestre un dashboard general, no solo uno por espacio. Para invitar miembros, espera un botón de agregar donde pueda seleccionar empleados previamente registrados. Sobre calidad de aire, conoce los datos de PM2.5, CO2, temperatura y humedad. Para auditorías, descargaría datos históricos una vez al año como mínimo; para su propio uso, mensualmente. Espera alertas sobre humedad y CO2. En la app móvil, le interesa principalmente las notificaciones en tiempo real para recibir alertas lo más pronto posible.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | URL: https://bit.ly/4xI4vDB<br/>Inicio: 0:25:44<br/>Fin: 0:37:39 |
+| **Luis Herrera**<br /><img src="../assets/entrevistas/segmento 2 entrevista 5.png" alt="segmento 2 entrevista 5" width="500"> | **Datos Demográficos:**<br/>Hombre de 25 años de edad, reside en el distrito de San Borja, Lima, y trabaja como administrador de edificios en el Edificio Quadra.<br/><br/>**Ocupación y Background:**<br/>Se desempeña como administrador de edificios y supervisa la gestión de 13 departamentos distribuidos en un edificio de aproximadamente cinco pisos, además de dos niveles de estacionamiento. Tiene experiencia en la administración de espacios comunes y en la atención de incidencias relacionadas con el mantenimiento y operación del edificio.<br/><br/>**Resumen:**<br/>Comprende rápidamente el propósito de la plataforma y la identifica como una herramienta para monitorear la calidad del aire mediante dispositivos instalados en distintos espacios. Considera importante que la configuración inicial sea sencilla, especialmente el proceso de instalación y vinculación de dispositivos. Valora positivamente la estructura basada en organizaciones y espacios, ya que le permite asociar sensores a áreas específicas del edificio.<br/>Durante la navegación, sugirió que los indicadores principales, como CO2, temperatura y humedad, sean más visibles dentro del dashboard y que exista una vista consolidada que permita monitorear todos los espacios desde una sola pantalla. También comentó que la representación visual del dispositivo podría generar confusión al parecer una cámara.<br/>La funcionalidad que considera más útil son las alertas en tiempo real, ya que le permitirían detectar rápidamente situaciones fuera de los umbrales establecidos. Mostró interés en conocer cómo se reciben las notificaciones y destacó la importancia de recibirlas directamente en el celular. Además, sugirió incorporar alertas de batería para evitar que los dispositivos dejen de funcionar sin ser detectados.<br/>Respecto a la interfaz, espera contar con una versión completamente en español para facilitar su uso. En términos generales, percibe la solución como útil y fácil de adoptar, siempre que la instalación de los dispositivos sea simple y el mantenimiento requerido sea mínimo. Indicó que utilizaría la plataforma con alta probabilidad si estas condiciones se cumplen. | URL: https://bit.ly/4xI4vDB<br/>Inicio: 0:37:39<br/>Fin: 0:45:48 |
+| ![](https://i.imgur.com/RIxq5mt.png)                                                                                           | **Datos Demográficos:** <br/>Mujer de 20 años de edad, emprendedora y vive sola.<br/><br/>**Ocupación y Background:** <br/>Tiene su local de uñas y trabaja de manera independiente.<br/><br/>**Resumen:**<br/>Comprende que el dispositivo monitorea la calidad del aire para asegurar un ambiente saludable en su negocio. Valora la simplicidad en la configuración de espacios y dispositivos. Sugiere que el dashboard sea intuitivo y que permita visualizar rápidamente el estado de la calidad del aire con un sistema de colores sencillo (semáforo). Le gustaría recibir alertas en su celular ante cambios significativos en los niveles de CO2 para poder tomar medidas rápidas como ventilar el local. Considera que la plataforma es una solución útil y accesible para su tipo de negocio pequeño.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | URL: https://bit.ly/4xI4vDB<br/>Inicio: 0:45:48<br/>Fin: 0:54:40 |
+| ![](https://i.imgur.com/RIxq5mt.png)                                                                                           | **Datos Demográficos:** <br/>Mujer de 20 años de edad, emprendedora y vive sola.<br/><br/>**Ocupación y Background:** <br/>Tiene su local de uñas y trabaja de manera independiente.<br/><br/>**Resumen:**<br/>Comprende que el dispositivo monitorea la calidad del aire para asegurar un ambiente saludable en su negocio. Valora la simplicidad en la configuración de espacios y dispositivos. Sugiere que el dashboard sea intuitivo y que permita visualizar rápidamente el estado de la calidad del aire con un sistema de colores sencillo (semáforo). Le gustaría recibir alertas en su celular ante cambios significativos en los niveles de CO2 para poder tomar medidas rápidas como ventilar el local. Considera que la plataforma es una solución útil y accesible para su tipo de negocio pequeño.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | URL: https://bit.ly/4xI4vDB<br/>Inicio: 0:45:48<br/>Fin: 0:54:40 |
+
+| Segmento objetivo                                                                                       | Personas preocupadas por la calidad del aire en el hogar                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Video                                                                   |
+| ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Viviana Rivera<br /><img src="../assets/entrevistas/vi1.png" alt="segmento 2 entrevista 1" width="500"> | **Datos Demográficos:** <br/>Es una señora de 64 años de edad, reside en Santiago de Surco con su pareja y su unico hijo.<br/><br/>**Ocupación y Background:** <br/>Se dedica de manera independiente a la traduccion junto a su esposo y ofrecen sus servicios a compañias cliente<br/><br/>**Tecnología y Canales:** <br/>Trabaja diariamente con una laptop y utiliza frecuentemente su smartphone para consumir contenido multimedia<br/><br/>**Resumen:**<br/>Entiende que el sistema monitorea la calidad del aire en el hogar. Para estructurar las áreas, prefiere una jerarquía sencilla como "Mi Casa" > "Habitación/Sala", señalando que el término "Habitación" le resulta más familiar que "Espacio". Considera que el proceso de onboarding virtual para vincular el sensor simulado es directo, y sugiere una pantalla final con un mensaje explícito como "Sensor del Hogar Conectado Correctamente". Ante una desconexión, esperaría una alerta en su celular y un indicador gris de "Desconectado". Al abrir la app, busca un sistema de colores tipo semáforo; indica que la cifra "800 ppm" de CO2 no le es familiar, por lo que valora que la aplicación use colores descriptivos (como amarillo) y explicaciones simples. Espera recomendaciones del sistema como abrir ventanas cuando el aire decae. | URL: https://bit.ly/4xI4vDB<br/>Inicio: 0:00:00<br/>Fin: 0:08:26 |
+| Damian Hager<br /><img src="../assets/entrevistas/vi2.png" alt="segmento 2 entrevista 1" width="500">   | **Datos Demográficos:** <br/>Señor de 58 años, reside en Santiago de Surco con su esposa e hijo.<br/><br/>**Ocupación y Background:** <br/>Al igual que su esposa, se dedica a la traduccion de manera independiente<br/><br/>**Tecnología y Canales:** <br/>Esta familiarizado en el uso de PC de sobremesa y laptops, usa su celular solo para lo necesario<br/><br/>**Resumen:**<br/>Comprende el propósito de medir la calidad del aire. Organizaría su casa dividiéndola en "Cuartos" o "Habitaciones" (dormitorio principal, sala, cocina). Le parece claro el onboarding y la vinculación simulada, sugiriendo un botón visible de "Finalizar" que lleve directo al panel una vez emparejado. Si el dispositivo pierde señal, prefiere ver un ícono visual parpadeante de advertencia rojo directamente en el widget del espacio afectado. Al ingresar al dashboard, busca la barra de color principal de calidad del aire (AQI). Sobre la métrica de CO2 a 800 ppm, sugiere acompañarla de una leyenda breve que aclare el rango óptimo (ej. "Saludable por debajo de 1000 ppm"). Si los indicadores empeoran, esperaría notificaciones push preventivas y sugerencias directas sobre ventilación de las áreas.                                                                                                      | URL: https://bit.ly/4xI4vDB<br/>Inicio: 0:08:26<br/>Fin: 0:18:37 |
+| **Shirley Jurado<br />**<br />![](https://i.imgur.com/2J8G75Q.png)                                      | **Datos Demográficos:** <br/>Mujer de 30 años de edad, reside en el distrito de Miraflores, Lima, y vive con su pareja.<br/><br/>**Ocupación y Background:** <br/>Es profesional independiente en el área de marketing digital. Está familiarizada con el uso de aplicaciones móviles y plataformas web para la gestión de proyectos.<br/><br/>**Resumen:**<br/>Entiende que el producto mide la calidad del aire. Organizaría su casa como una organización y dentro de ella crearía espacios (sala, dormitorio, cocina). El término "espacio" le resulta claro y natural. El proceso de vinculación del dispositivo le pareció claro e intuitivo, y esperaría un mensaje de "emparejado" o "conectado".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | URL: https://bit.ly/4xI4vDB<br/>Inicio: 0:18:37<br/>Fin: 0:25:44 |
 
 ### 6.3.3. Evaluaciones según heurísticas.
 
+Las evaluaciones heurísticas se realizarán en base al siguiente cuadro de calificación de severidad. Cada hallazgo identificado se clasificará según su impacto para priorizar su corrección.
+
+| Nivel | Descripción |
+| --- | --- |
+| 1 | Problema superficial: puede ser fácilmente superado por el usuario o ocurre con muy poca frecuencia. No necesita ser arreglado a no ser que exista disponibilidad de tiempo. |
+| 2 | Problema menor: puede ocurrir un poco más frecuentemente o es un poco más difícil de superar para el usuario. Se le debería asignar una prioridad baja de cara al siguiente releasе. |
+| 3 | Problema mayor: ocurre frecuentemente o los usuarios no son capaces de resolverlo. Es importante que sea corregido y se le debe asignar una prioridad alta. |
+| 4 | Problema muy grave: un error de gran impacto que impide al usuario continuar con el uso de la herramienta. Es imperativo que sea corregido antes del lanzamiento. |
+
+- Segmento 1: Administradores de Establecimientos Públicos y Privados.
+
+Tabla 1 — Evaluación de UX según Heurísticas segmento 1
+
+**UX Heuristics & Principles Evaluation**
+Usability – Inclusive Design – Information Architecture
+
+Datos del curso
+
+| Campo      | Valor                                          |
+| ---------- | ---------------------------------------------- |
+| Carrera    | Ingeniería de Software                         |
+| Curso      | Desarrollo de Soluciones IoT                   |
+| Sección    | 1ASI0572                                       |
+| Profesores | Marco Antonio Leon Baca                        |
+| Auditor    | Vanana                                         |
+| Cliente(s) | Angela Cabrera, Luis Herrera, Valentina Dumont |
+
+Site o App a evaluar
+
+| Campo     | Valor             |
+| --------- | ----------------- |
+| App/Sitio | Clair Landing Page, Aplicación Web y Aplicación Móvil |
+
+Tareas a evaluar
+
+Incluidas en el alcance
+
+| N°   | Tarea                            |
+| ---- | -------------------------------- |
+| 1    | Monitoreo general de múltiples locales (Dashboard consolidado) |
+| 2    | Configuración de la estructura organizacional (Organización y Espacios) |
+| 3    | Registro y vinculación de dispositivos IoT (Clair Alpha) |
+| 4    | Configuración de reglas de alertas y umbrales personalizados (Rules Builder) |
+| 5    | Descarga de reportes históricos de calidad de aire (Analytics) |
+| 6    | Invitación de colaboradores y asignación de permisos |
+| 7    | Recepción y gestión de notificaciones push en tiempo real (Mobile app) |
+
+No incluidas en esta versión
+
+| N°   | Tarea                                           |
+| ---- | ----------------------------------------------- |
+| 1    | Registro masivo de dispositivos por lote (Bulk Onboarding) |
+| 2    | Control y automatización directa sobre actuadores de sistemas HVAC comerciales |
+| 3    | Envío automático programado de reportes de calidad del aire por correo electrónico |
+| 4    | Gestión de roles avanzados con permisos granulares y personalizados |
+| 5    | Historial de auditoría para registrar modificaciones de configuraciones |
+
+**Matriz de Evaluación Heurística - Segmento 1**
+
+| Heurística | Hallazgo / Problema Identificado | Severidad | Propuesta de Solución / Recomendación |
+| --- | --- | :---: | --- |
+| **1. Visibility of system status** | Si un dispositivo pierde conexión, el usuario no se entera fácilmente en el dashboard de forma visual antes de entrar a la sección técnica. | 2 | Agregar un estado claro en la tarjeta principal de cada espacio ("Online" en verde / "Offline" en gris o rojo parpadeante). |
+| **2. Match between system and the real world** | El modelo visual del dispositivo de sensado parece una cámara en la interfaz, lo cual genera susceptibilidad y desconfianza en los colaboradores. | 3 | Cambiar la ilustración/icono por una silueta abstracta o un sensor de aire clásico y añadir aclaraciones en el onboarding. |
+| **3. User control and freedom** | No se cuenta con una opción de deshacer o revertir inmediatamente la eliminación accidental de un espacio u organización, obligando a reconfigurar todo. | 2 | Implementar un historial de papelera temporal o confirmación de deshacer al eliminar un espacio. |
+| **4. Consistency and standards** | Las métricas técnicas de CO2 e indicadores no especifican los rangos óptimos de manera estandarizada y familiar para el usuario común. | 2 | Incorporar un sistema de colores tipo semáforo y una leyenda breve con los límites saludables de CO2 (ej. menor a 1000 ppm). |
+| **5. Error prevention** | La falta de una advertencia previa o validación de rango antes de guardar umbrales críticamente bajos de calidad de aire en el Rules Builder. | 2 | Implementar validaciones en tiempo real para evitar ingresar valores imposibles o peligrosos en los umbrales. |
+| **6. Recognition rather than recall** | Los administradores de múltiples locales deben ingresar uno a uno para ver el estado del aire en vez de tener un resumen global consolidado. | 3 | Diseñar una vista consolidada de inicio que muestre una cuadrícula con todos los locales, sus espacios y alertas activas principales. |
+| **7. Flexibility and efficiency of use** | No existe opción para registrar múltiples sensores a la vez (por ejemplo, para 13 departamentos), lo que ralentiza el despliegue a gran escala. | 2 | Implementar una función de importación masiva por lote o emparejamiento secuencial rápido desde la web-app. |
+| **8. Aesthetic and minimalist design** | El dashboard de visualización muestra demasiados metadatos técnicos redundantes del hardware (IP, MAC, Firmware) en primer plano. | 1 | Reubicar los metadatos técnicos en una pestaña de detalles avanzados y priorizar el tamaño de los indicadores de aire. |
+| **9. Help users recognize, diagnose, and recover from errors** | Ante niveles críticos de CO2, la app web muestra un aviso de alerta pero no proporciona recomendaciones de acción (como ventilar o abrir ventanas). | 2 | Incluir mensajes de recomendación contextuales específicos e inmediatos junto a la notificación de alerta. |
+| **10. Help and documentation** | Ausencia de una sección de ayuda, preguntas frecuentes (FAQs) o guías rápidas integradas para resolver problemas de emparejamiento del hardware. | 2 | Diseñar una pestaña de "Ayuda y Soporte" con las guías de instalación y resolución de problemas comunes de conexión. |
+
+- Segmento 2: Personas preocupadas por la calidad del aire en el hogar.
+
+Tabla 2 — Evaluación de UX según Heurísticas segmento 2
+
+**UX Heuristics & Principles Evaluation**
+Usability – Inclusive Design – Information Architecture
+
+Datos del curso
+
+| Campo      | Valor                           |
+| ---------- | ------------------------------- |
+| Carrera    | Ingeniería de Software          |
+| Curso      | Desarrollo de Soluciones IoT    |
+| Sección    | 1ASI0572                        |
+| Profesores | Marco Antonio Leon Baca         |
+| Auditor    | Vanana                          |
+| Cliente(s) | Viviana Rivera, Damian Hager, Shirley Jurado |
+
+Site o App a evaluar
+
+| Campo     | Valor             |
+| --------- | ----------------- |
+| App/Sitio | Clair Landing Page, Aplicación Web y Aplicación Móvil |
+
+Tareas a evaluar
+
+Incluidas en el alcance
+
+| N°   | Tarea                            |
+| ---- | -------------------------------- |
+| 1    | Monitoreo del estado del aire en el hogar (Dashboard móvil) |
+| 2    | Proceso de onboarding y emparejamiento guiado del dispositivo |
+| 3    | Configuración de habitaciones/cuartos del hogar |
+| 4    | Recepción de notificaciones push de umbrales en el smartphone |
+| 5    | Configuración de reglas y sugerencias preventivas ante picos de CO2 |
+| 6    | Comprensión de explicaciones y métricas ambientales en pantalla |
+| 7    | Visualización del historial de alertas de los últimos 30 días |
+
+No incluidas en esta versión
+
+| N°   | Tarea                                           |
+| ---- | ----------------------------------------------- |
+| 1    | Integración directa con asistentes inteligentes del hogar (Alexa, Google Home, Apple HomeKit) |
+| 2    | Reportes clínicos avanzados descargables en PDF para compartir con neumólogos o alergólogos |
+| 3    | Automatización de electrodomésticos inteligentes de terceros (purificadores de aire) |
+| 4    | Modo offline completo de la aplicación móvil (requiere conexión activa) |
+| 5    | Geolocalización de sensores para alertas climáticas externas automáticas |
+
+**Matriz de Evaluación Heurística - Segmento 2**
+
+| Heurística | Hallazgo / Problema Identificado | Severidad | Propuesta de Solución / Recomendación |
+| --- | --- | :---: | --- |
+| **1. Visibility of system status** | Al finalizar el proceso de vinculación del sensor virtual, la interfaz no proporciona una pantalla clara que certifique que el emparejamiento fue exitoso. | 2 | Mostrar una pantalla final de éxito con un mensaje amigable como "Sensor de Hogar Conectado Correctamente". |
+| **2. Match between system and the real world** | La aplicación utiliza el término técnico "Espacios" en lugar de palabras familiares del ámbito doméstico como "Habitación", "Cuarto" o "Sala". | 2 | Adaptar la interfaz para el segmento hogar reemplazando "Espacio" por nombres de habitaciones personalizables. |
+| **3. User control and freedom** | Si el usuario agrega por error una habitación o dispositivo, no hay un botón directo y visible de retroceder o cancelar durante el flujo, forzando a completar el asistente. | 2 | Añadir controles estándar de retroceso ("Atrás") y de salida ("Cancelar") visibles en la barra superior del flujo de configuración. |
+| **4. Consistency and standards** | El sistema muestra el nivel de CO2 en formato numérico bruto "800 ppm" sin explicar si es un nivel saludable mediante colores (semáforo) o etiquetas comprensibles. | 3 | Acompañar el valor numérico de una barra de color semáforo y una etiqueta explicativa clara (ej. "Excelente", "Ventilación recomendada"). |
+| **5. Error prevention** | Falta de un paso de confirmación de guardado de los límites de temperatura y humedad en el panel de configuración móvil, lo que genera cambios accidentales al deslizar el dedo. | 2 | Implementar un retardo de confirmación o un botón explícito de "Aplicar Cambios" para evitar deslizamientos erróneos. |
+| **6. Recognition rather than recall** | El usuario debe recordar el significado de las siglas de métricas como "PM2.5" y "AQI" al navegar por el historial, debido a que no cuentan con etiquetas explicativas accesibles. | 2 | Añadir botones de información flotante (tooltip) que al tocarlos desplieguen una definición rápida e intuitiva del indicador. |
+| **7. Flexibility and efficiency of use** | No existe un panel de atajos en la pantalla de inicio móvil para encender/apagar rápidamente las notificaciones de un cuarto específico. | 2 | Incorporar interruptores (switches) rápidos de alerta en la vista general del dashboard del hogar. |
+| **8. Aesthetic and minimalist design** | La pantalla principal del dashboard móvil satura visualmente al usuario del hogar con gráficas de datos temporales muy complejas en lugar de priorizar un indicador de estado general limpio. | 2 | Simplificar la vista principal del dashboard centrándose en el estado consolidado del hogar con una paleta de colores minimalista y armónica. |
+| **9. Help users recognize, diagnose, and recover from errors** | Ante la desconexión del sensor perimetral, la app móvil muestra un indicador gris pero no ofrece instrucciones paso a paso para reconectarlo o solucionar problemas del Wi-Fi. | 2 | Incorporar sugerencias automatizadas directas (ej. "Se sugiere revisar el enrutador de red o reubicar el dispositivo"). |
+| **10. Help and documentation** | Ausencia de guías rápidas explicativas o tutorial inicial interactivo para la correcta ubicación del sensor dentro de las habitaciones del hogar para evitar lecturas falsas. | 2 | Diseñar una guía interactiva dentro del menú de ayuda sobre las mejores prácticas de ubicación física de sensores de aire. |
+
 ## 6.4. Video About-the-Product.
+
+El video About-the-Product es una herramienta de comunicación audiovisual diseñada para presentar la propuesta de valor, el modelo de negocio y el funcionamiento de la solución Clair. Este recurso audiovisual está dirigido a dos audiencias principales:
+
+1. **Visitantes del Landing Page:** Administradores y propietarios de locales comerciales (gimnasios, restaurantes, coworkings) interesados en comprender el valor de negocio de Clair, sus beneficios competitivos y las características clave del producto.
+2. **Usuarios de las Aplicaciones:** Clientes y operadores finales que buscan interactuar con el sistema de monitoreo en tiempo real, visualizar indicadores de CO2 y PM2.5, y ejecutar acciones preventivas basadas en las notificaciones del sistema.
+
+| Detalle Técnico | Información / Recurso |
+| --- | --- |
+| **Duración total (Timing)** | 46 segundos |
+| **Enlace del video** | https://bit.ly/4olR1cf |
+| **Screenshot del Video** | ![About the product](https://i.imgur.com/3SeQtsr.png) |

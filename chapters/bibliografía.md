@@ -19,14 +19,25 @@ Balestrieri, E., De Vito, L., Lamonaca, F., Picariello, F., Rapuano, S., & Tudos
 Cirkit Designer. (s. f.). *Online circuit design and prototyping platform for IoT projects*. https://app.cirkitdesigner.com
 
 
-# Anexo
+# Anexos
 
-- Entrevista: https://goo.su/KKwEhz4
+- Entrevistas: https://goo.su/KKwEhz4
 - Big Picture Event Storming: https://bit.ly/3QwYkAS
 - Candidate Context Discovery: https://imgur.com/a/OX5FnV6
 - Backlog en Trello: https://sl1nk.com/r2diehi
 - Diagramas C4: https://bit.ly/48eogr9
+- Diagramas de Clases: https://bit.ly/48eogr9
 
 - Landing Page: https://github.com/Vanana-Desarrollo-de-Soluciones-IOT/site
 - Web Services: https://github.com/Vanana-Desarrollo-de-Soluciones-IOT/clair-core
 - Frontend Web Applications: https://github.com/Vanana-Desarrollo-de-Soluciones-IOT/clair-ui
+- Mobile Application: https://github.com/Vanana-Desarrollo-de-Soluciones-IOT/mobile
+- Edge Station: https://github.com/Vanana-Desarrollo-de-Soluciones-IOT/edge
+- Embedded Application: https://github.com/Vanana-Desarrollo-de-Soluciones-IOT/embedded
+
+- Execution Evidence Web: https://413rsr4.s.gy/W0C0gD
+- Execution Evidence Mobile: https://413rsr4.s.gy/r0nBbK
+- Prototype Web App Navigation Video: https://bit.ly/3Q84l7g
+- Prototype Mobile App Navigation Video: https://bit.ly/43bBBh7
+- About the Product: https://bit.ly/4olR1cf
+- Validation Interviews Video: https://bit.ly/4xI4vDB
