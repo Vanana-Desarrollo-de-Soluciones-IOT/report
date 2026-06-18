@@ -141,5 +141,6 @@ Dante Mateo Aleman Romano finalizó la documentación de las validaciones de exp
   <img src="https://imgur.com/pbPgR6l.png" width="500">
 </p>
 <p align="center">
-  <img src="https://imgur.com/3pUu3zG.png" width="500">
+  <img src="https://imgur.com/jlNQWrt.png" width="500">
 </p>
+
