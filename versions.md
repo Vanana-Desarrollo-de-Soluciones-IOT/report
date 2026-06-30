@@ -18,7 +18,7 @@
 | 0.1.4   | 05/04/2026 | Josue Paiva                           | Añadí y mejoré la sección de estrategias y tácticas frente a competidores |
 | 0.1.5   | 06/04/2026 | Fabrizio Alessandro Contreras Peralta | Corrección de preguntas de la entrevista.                    |
 | 0.1.6   | 06/04/2026 | Neil Curipaco Huayllani               | Agregue las descripciónes de cada competidor                 |
-| 0.1.7   | 08/04/2026 | Neil Curipaco Huayllani               | Realicé la grabación de las entrevistas del segmento objetivo 2 y redacté su descripción y registré 2 ent                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |revistas del segmento 1 y puse el link y los tiempos de cada entrevista del vídeo |
+| 0.1.7   | 08/04/2026 | Neil Curipaco Huayllani               | Realicé la grabación de las entrevistas del segmento objetivo 2 y redacté su descripción y registré 2 ent |
 | 0.1.8   | 09/04/2026 | Fabrizio Alessandro Contreras Peralta | Realice la grabación de la tercera entrevista del segmento 1, asimismo redacté la descripción. |
 | 0.1.9   | 09/04/2026 | Dante Mateo Aleman Romano             | Realicé el análisis de las entrevistas de ambos segmentos objetivo, elaborando las tablas de características objetivas y subjetivas en el Capítulo II, identificando patrones clave sobre comportamiento y conocimiento respecto a la calidad del aire interior. |
 | 0.2.0   | 10/04/2026 | Neil Curipaco Huayllani               | Realice la el esquema de user persona para los segmentos 1 y 2 identificando sus metas, motivaciones y frustraciones, así mismo realice el cuadro de User Task Matrix |
@@ -77,6 +77,7 @@
 | 2.1.5   | 16/06/2026 | Neil Curipaco Huayllani               | Se ha agregado una entrevista para cada segmento objetivo    |
 | 2.1.6   | 17/06/2026 | Fabrizio Contreras                    | Se agrego una entrevista al primer segmento                  |
 | 2.1.7   | 17/06/2026 | Dante Mateo Aleman Romano             | Completé las Evaluaciones Heurísticas para los Segmentos 1 y 2 bajo las 10 heurísticas de Jakob Nielsen, actualicé las tareas fuera de alcance para Clair, y finalicé el cuadro de Student Outcome en el informe. |
+| 2.1.8   | 29/06/2026 | Neil Curipaco Huayllani               | Realicé la división y reorganización de las historias de usuario del Sprint 2 para crear la planificación, matriz de colaboración (LACX), Sprint Backlog y evidencias de desarrollo y pruebas correspondientes al Sprint 3. |
 
 
 # Project Report Collaboration Insights
